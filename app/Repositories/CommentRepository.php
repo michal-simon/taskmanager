@@ -21,6 +21,18 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
         $this->model = $comment;
     }
 
+     /**
+         * @param array $data
+         * @param int $id
+         *
+         * @return bool
+         * @throws \Exception
+         */
+        public function updateComment(array $data) : bool
+        {
+            return $this->update($data);
+        }
+
     /**
     * @param array $data
     *
@@ -69,7 +81,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
     }
 
     public function getAllCommentsForTask(Task $objTask)
-    {        
+    {
        return Comment::where('task_id', $objTask->id)
                             ->orderBy('created_at', 'desc')
                             ->with('user')
