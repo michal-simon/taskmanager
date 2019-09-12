@@ -7,6 +7,8 @@ use App\File;
 use App\Http\Requests\UploadRequest;
 use App\Repositories\Interfaces\FileRepositoryInterface;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
+use App\Repositories\UserRepository;
+use App\User;
 
 class UploadController extends Controller
 {
@@ -31,18 +33,27 @@ class UploadController extends Controller
 
     public function store(UploadRequest $request) {
 
+        $objUser = (new UserRepository(new User))->findUserById($request->user_id);
+        $arrAddedFiles = [];
+
         if($request->hasFile('file')) {
-            foreach($request->file('file') as $file)
+            foreach($request->file('file') as $count => $file)
             {
                 $filename = $file->getClientOriginalName();
                 $file->move(public_path().'/files/', $filename);  
                 
-                $this->fileRepository->createFile([
+                $file = $this->fileRepository->createFile([
                     'task_id' => $request->task_id,
                     'filename' => $filename,
-                    'user_id' => $request->user_id
+                    'user_id' => $objUser->id
                 ]);
+
+                $arrAddedFiles[$count] = $file;
+                $arrAddedFiles[$count]['user'] = $objUser->toArray();
+
             }
+
+            return collect($arrAddedFiles)->toJson();
         }
     }
 }

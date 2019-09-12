@@ -3,6 +3,8 @@ import React from "react";
 export default function FileUpload(props) {
     const file = props.file
 
+    console.log('file', file)
+
     return (
         <div className="col-lg-5 col-md-6 col-8">
             <a href="#" className="d-block">

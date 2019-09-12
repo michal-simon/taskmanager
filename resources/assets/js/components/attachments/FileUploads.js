@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FileUploadForm from './FileUploadForm';
 import FileUploadList from './FileUploadList';
 import axios from 'axios'
@@ -12,44 +12,57 @@ export default class FileUploads extends Component {
             files: [],
             loading: false
         };
+
+        this.addFile = this.addFile.bind(this);
+    }
+
+    /**
+     * Add new file
+     * @param {Object} file
+     */
+    addFile(file) {
+        this.setState({
+            files: [file, ...this.state.files]
+        });
     }
 
     componentDidMount() {
         // loading
-        this.setState({ loading: true });
+        this.setState({loading: true});
 
         // get all the comments
         axios.get(`/api/uploads/${this.props.task.id}`)
-            .then((r)=> {
+            .then((r) => {
                 this.setState({
                     files: r.data,
-                    loading:false
+                    loading: false
                 })
             })
-            .catch((e)=>{
+            .catch((e) => {
                 this.setState({
-                loading:false
+                    loading: false
+                })
             })
-        })
     }
 
     render() {
         return (
-           
-               <div className="col-12">
-                    <h1 className="font-weight-light text-center text-lg-left mt-4 mb-0">Attachments</h1>
 
-                     {<FileUploadForm 
-                        user_id={101}
-                        task={this.props.task} 
-                    />}
+            <div className="col-12">
+                <h1 className="font-weight-light text-center text-lg-left mt-4 mb-0">Attachments</h1>
 
-                     {<FileUploadList
-                            loading={this.state.loading}
-                            files={this.state.files}
-                        />}
-                </div>
-            
+                {<FileUploadForm
+                    addFile={this.addFile}
+                    user_id={101}
+                    task={this.props.task}
+                />}
+
+                {<FileUploadList
+                    loading={this.state.loading}
+                    files={this.state.files}
+                />}
+            </div>
+
         );
     }
 }

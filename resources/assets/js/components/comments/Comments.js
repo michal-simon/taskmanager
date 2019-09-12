@@ -20,17 +20,10 @@ export default class Comments extends Component {
     * Add new comment
     * @param {Object} comment
     */
-    addComment(comments) {
+    addComment(comment) {
         this.setState({
-            loading: false,
-            comments: comments
+            comments: [comment, ...this.state.comments]
         });
-
-
-        // this.setState({
-        //     loading: false,
-        //     comments: [comment, ...this.state.comments]
-        // });
     }
 
     componentDidMount() {

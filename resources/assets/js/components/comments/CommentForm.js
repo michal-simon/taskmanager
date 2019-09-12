@@ -56,9 +56,10 @@ export default class CommentForm extends Component {
                 this.setState({ loading: false, error: res.error });
             } else {
                 // add time return from api and push comment to parent state
-                this.props.addComment(response.data);
 
-                console.log('response', response.data)
+               if(response.data && response.data.length) {
+                   this.props.addComment(response.data[0]);
+               }
 
                 // clear the message box
                 this.setState({

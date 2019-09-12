@@ -92213,6 +92213,8 @@ var Tab = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -92249,16 +92251,10 @@ var Comments = function (_Component) {
 
     _createClass(Comments, [{
         key: 'addComment',
-        value: function addComment(comments) {
+        value: function addComment(comment) {
             this.setState({
-                loading: false,
-                comments: comments
+                comments: [comment].concat(_toConsumableArray(this.state.comments))
             });
-
-            // this.setState({
-            //     loading: false,
-            //     comments: [comment, ...this.state.comments]
-            // });
         }
     }, {
         key: 'componentDidMount',
@@ -92424,9 +92420,10 @@ var CommentForm = function (_Component) {
                     _this2.setState({ loading: false, error: res.error });
                 } else {
                     // add time return from api and push comment to parent state
-                    _this2.props.addComment(response.data);
 
-                    console.log('response', response.data);
+                    if (response.data && response.data.length) {
+                        _this2.props.addComment(response.data[0]);
+                    }
 
                     // clear the message box
                     _this2.setState({
@@ -92591,6 +92588,8 @@ function Comment(props) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -92614,10 +92613,25 @@ var FileUploads = function (_Component) {
             files: [],
             loading: false
         };
+
+        _this.addFile = _this.addFile.bind(_this);
         return _this;
     }
 
+    /**
+     * Add new file
+     * @param {Object} file
+     */
+
+
     _createClass(FileUploads, [{
+        key: 'addFile',
+        value: function addFile(file) {
+            this.setState({
+                files: [file].concat(_toConsumableArray(this.state.files))
+            });
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             var _this2 = this;
@@ -92649,6 +92663,7 @@ var FileUploads = function (_Component) {
                     'Attachments'
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__FileUploadForm__["a" /* default */], {
+                    addFile: this.addFile,
                     user_id: 101,
                     task: this.props.task
                 }),
@@ -92718,10 +92733,11 @@ var FileUpload = function (_Component) {
                 if (files[x].size > size) {
                     err[x] = files[x].type + 'is too large, please pick a smaller file\n';
                 }
-            };
+            }
+            ;
 
             for (var z = 0; z < err.length; z++) {
-                // if message not same old that mean has error 
+                // if message not same old that mean has error
                 // discard selected file
                 __WEBPACK_IMPORTED_MODULE_3_react_toastify__["b" /* toast */].error(err[z]);
                 event.target.value = null;
@@ -92750,10 +92766,11 @@ var FileUpload = function (_Component) {
                     // create error message and assign to container   
                     err[x] = files[x].type + ' is not a supported format\n';
                 }
-            };
+            }
+            ;
 
             for (var z = 0; z < err.length; z++) {
-                // if message not same old that mean has error 
+                // if message not same old that mean has error
                 // discard selected file
                 __WEBPACK_IMPORTED_MODULE_3_react_toastify__["b" /* toast */].error(err[z]);
                 event.target.value = null;
@@ -92808,8 +92825,15 @@ var FileUpload = function (_Component) {
                         loaded: ProgressEvent.loaded / ProgressEvent.total * 100
                     });
                 }
-            }).then(function (res) {
+            }).then(function (response) {
                 // then print response status
+
+                if (response.data && response.data.length) {
+                    response.data.map(function (file, index) {
+                        return _this2.props.addFile(file);
+                    });
+                }
+
                 __WEBPACK_IMPORTED_MODULE_3_react_toastify__["b" /* toast */].success('upload success');
             }).catch(function (err) {
                 // then print response status
@@ -92839,11 +92863,13 @@ var FileUpload = function (_Component) {
                                     null,
                                     'Browse'
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'file', multiple: true, name: 'img-file-input', onChange: this.onChangeHandler.bind(this) })
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'file', multiple: true, name: 'img-file-input',
+                                    onChange: this.onChangeHandler.bind(this) })
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'button',
-                                { type: 'button', className: 'btn btn-success btn-block col-4 pull-right', onClick: this.onClickHandler.bind(this) },
+                                { type: 'button', className: 'btn btn-success btn-block col-4 pull-right',
+                                    onClick: this.onClickHandler.bind(this) },
                                 'Upload'
                             )
                         ),
@@ -92853,7 +92879,8 @@ var FileUpload = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_toastify__["a" /* ToastContainer */], null),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_reactstrap__["l" /* Progress */],
-                                { max: '100', color: 'success', value: this.state.loaded },
+                                { max: '100', color: 'success',
+                                    value: this.state.loaded },
                                 Math.round(this.state.loaded, 2),
                                 '%'
                             )
@@ -95139,6 +95166,8 @@ function CommentList(props) {
 
 function FileUpload(props) {
     var file = props.file;
+
+    console.log('file', file);
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         "div",

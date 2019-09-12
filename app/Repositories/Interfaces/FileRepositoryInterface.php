@@ -3,6 +3,7 @@ namespace App\Repositories\Interfaces;
 
 use App\File;
 use App\Task;
+use Illuminate\Support\Collection;
 
 interface FileRepositoryInterface
 {
