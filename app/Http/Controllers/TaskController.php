@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Task;
 use App\Http\Requests\TaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
@@ -73,4 +74,17 @@ class TaskController extends Controller
         $taskRepo->deleteTask();
         return response()->json('Task deleted!');
     }
+
+     /**
+      * @param UpdateTaskRequest $request
+      * @param $id
+      *
+      * @return Response
+      */
+      public function update(UpdateTaskRequest $request, $id)
+      {
+            $task = $this->taskRepository->findTaskById($id);
+            $taskRepo = new TaskRepository($task);
+            $taskRepo->updateTask($request->all());
+      }
 }
