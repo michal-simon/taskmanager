@@ -63,7 +63,7 @@ class CommentTest extends TestCase {
         $commentRepo = new CommentRepository(new Comment);
         $found = $commentRepo->findCommentById($comment->id);
         $this->assertInstanceOf(Comment::class, $found);
-        $this->assertEquals($comment->name, $found->name);
+        $this->assertEquals($comment->comment, $found->comment);
     }
 
     /** @test */

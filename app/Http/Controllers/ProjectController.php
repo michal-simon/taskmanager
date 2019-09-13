@@ -39,7 +39,7 @@ class ProjectController extends Controller
           'created_by' => $validatedData['created_by'],
         ]);
 
-        return response()->json('Project created!');
+       return $project->toJson();
       }
 
     /**

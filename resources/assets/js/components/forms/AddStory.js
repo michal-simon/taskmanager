@@ -75,6 +75,11 @@ class AddStory extends React.Component {
               alert(response.data.error)
           else{
               this.toggle();
+
+              if(response.data) {
+                  this.props.addProject(response.data)
+              }
+
               this.setState({
                   title:null,
                   description:null,

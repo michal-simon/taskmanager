@@ -65,6 +65,7 @@ class TaskTest extends TestCase {
 
     /** @test */
     public function it_can_create_a_task() {
+        
         $data = [
             'title' => 'unit-test',
             'content' => 'new task',

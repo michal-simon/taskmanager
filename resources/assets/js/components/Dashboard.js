@@ -23,6 +23,7 @@ class Dashboard extends Component{
         this.handleClick = this.handleClick.bind(this);
         this.project_id = this.props.project_id
         this.updateTasks = this.updateTasks.bind(this);
+        this.addProject = this.addProject.bind(this);
     }
 
     componentDidMount() {
@@ -101,6 +102,16 @@ class Dashboard extends Component{
         })
     }
 
+    /**
+     * Add new comment
+     * @param {Object} comment
+     */
+    addProject(project) {
+        this.setState({
+            stories: [project, ...this.state.stories]
+        });
+    }
+
     handleClick(project_id) {
 
         this.setState({
@@ -156,7 +167,7 @@ class Dashboard extends Component{
                         </ul>
 
                         <div className="otherMenu">
-                            <AddStory/>
+                            <AddStory addProject={this.addProject} />
                         </div>
                     </div>
 

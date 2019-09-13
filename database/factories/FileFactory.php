@@ -14,6 +14,7 @@ use Faker\Generator as Faker;
 use App\File;
 $factory->define(File::class, function (Faker $faker) {
     return [
+        'is_active' => 1,
         'task_id' => 5,
         'user_id' => 1,
         'filename' => $faker->text,

@@ -48,7 +48,7 @@ class FileTest extends TestCase {
         $fileRepo = new FileRepository(new File);
         $found = $fileRepo->findFileById($file->id);
         $this->assertInstanceOf(File::class, $found);
-        $this->assertEquals($file->name, $found->name);
+        $this->assertEquals($file->filename, $found->filename);
     }
 
     /** @test */

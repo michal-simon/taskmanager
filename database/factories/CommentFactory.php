@@ -14,6 +14,7 @@ use Faker\Generator as Faker;
 use App\Comment;
 $factory->define(Comment::class, function (Faker $faker) {
     return [
+        'is_active' => 1,
         'task_id' => 5,
         'user_id' => 1,
         'comment' => $faker->text,
