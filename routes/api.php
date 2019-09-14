@@ -8,6 +8,7 @@ Route::get('projects', 'ProjectController@index');
 Route::get('projects', 'ProjectController@index');
 Route::post('projects', 'ProjectController@store');
 Route::get('users/dashboard', 'UserController@dashboard');
+Route::get('customers/dashboard', 'CustomerController@dashboard');
 Route::get('projects/{id}', 'ProjectController@show');
 Route::put('projects/{project}', 'ProjectController@markAsCompleted');
 Route::post('tasks', 'TaskController@store');
@@ -24,5 +25,10 @@ Route::get('uploads/{task_id}', 'UploadController@index');
 Route::get('comments/{task_id}', 'CommentController@index');
 Route::put('tasks/{task_id}', 'TaskController@update');
 Route::get('roles', 'RoleController@index');
+Route::get('customers', 'CustomerController@index');
+Route::get('customers/{customer_id}', 'CustomerController@show');
+Route::put('customers/{customer_id}', 'CustomerController@update');
+Route::post('customers', 'CustomerController@store');
+Route::delete('customers/{customer_id}', 'CustomerController@destroy');
 
 

@@ -9,6 +9,7 @@ class AddStory extends React.Component {
             modal: false,
             title:'',
             description: '',
+            customer_id: '',
             created_by:'',
             count:2,
             errors: [],
@@ -69,6 +70,7 @@ class AddStory extends React.Component {
         axios.post('/api/projects', {
           title:this.state.title,
           description:this.state.description,
+            customer_id:this.state.customer_id,
           created_by:this.state.created_by,
           storyId:this.state.count
         })
@@ -85,6 +87,7 @@ class AddStory extends React.Component {
               this.setState({
                   title:null,
                   description:null,
+                  customer_id: null,
                   created_by:null,
                   storyId:null,
                   loading:false
@@ -97,6 +100,7 @@ class AddStory extends React.Component {
             })
         });
     }
+
 
     getCustomers() {
         axios.get('/api/customers')
@@ -127,6 +131,7 @@ class AddStory extends React.Component {
               <option key={index} value={customer.id}>{customer.first_name + " " + customer.last_name}</option>
           ))
       }
+
 
     return (
       <div>

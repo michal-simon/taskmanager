@@ -124,6 +124,7 @@ class Dashboard extends Component{
             loading:true,
             loadingStory:true,
         })
+        
 
         this.project_id = project_id
         this.getStoryDetails();
