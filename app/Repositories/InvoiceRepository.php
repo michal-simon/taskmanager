@@ -31,16 +31,27 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
             return false;
         }
     }
+    
+      /**
+     * @param int $id
+     *
+     * @return Invoice
+     * @throws \Exception
+     */
+    public function findInvoiceById(int $id) : Invoice
+    {
+        return $this->findOneOrFail($id);
+    }
 
     /**
      * 
      * @param int $customerId
      * @return type
      */
-    public function getInvoicesForCustomer(int $customerId) {
+    public function getInvoicesByIdWithLines(int $invoiceId) {
         return Invoice::join('invoice_lines', 'invoice_lines.invoice_id', '=', 'invoices.id')
                         ->select('invoice_lines.*')
-                        ->where('customer_id', $customerId)
+                        ->where('invoices.id', $invoiceId)
                         ->get();
     }
 

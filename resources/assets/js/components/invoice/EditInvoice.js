@@ -22,7 +22,8 @@ class EditInvoice extends Component {
 
         this.state = {
             lines: [],
-            existingLines: []
+            existingLines: [],
+            customer_id: 1
         }
 
         this.updateData = this.updateData.bind(this)
@@ -33,8 +34,15 @@ class EditInvoice extends Component {
     }
 
     componentDidMount() {
-        axios.get(`/api/invoice/${this.props.customer_id}`)
+
+        if(!this.props.invoice_id.length) {
+
+            return false
+        }
+
+        axios.get(`/api/invoice/${this.props.invoice_id}`)
             .then((r)=> {
+                console.log('invoices', r.data)
                 this.setState({existingLines: r.data})
             })
             .catch((e)=>{
@@ -73,9 +81,9 @@ class EditInvoice extends Component {
     }
 
     saveData() {
-
         const data = {
-            customer_id: this.props.customer_id,
+            invoice_id: this.props.invoice_id,
+            customer_id: this.state.customer_id,
             data: JSON.stringify(this.state.data),
             total: this.total,
             payment_type: 1

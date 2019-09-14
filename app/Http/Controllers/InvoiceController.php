@@ -17,8 +17,12 @@ class InvoiceController extends Controller {
 
     public function store(Request $request) {
 
-        $invoice = $this->invoiceRepository->createInvoice($request->all());
-
+        if(!empty($request->invoice_id)) {
+            $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
+        } else {
+            $invoice = $this->invoiceRepository->createInvoice($request->all());
+        }
+        
         $arrLines = json_decode($request->data, true);
 
         foreach ($arrLines as $arrLine) {
@@ -33,11 +37,16 @@ class InvoiceController extends Controller {
      * @param int $customer_id
      * @return type
      */
-    public function show(int $customer_id) {
+    public function show(int $invoice_id) {
         
-        $lines = $this->invoiceRepository->getInvoicesForCustomer($customer_id);
-        
-        return $lines->toJson();     
+        try {
+            $lines = $this->invoiceRepository->getInvoicesByIdWithLines($invoice_id);
+             return $lines->toJson();  
+        } catch (Exception $ex) {
+            echo $ex->getException();
+            die;
+        }
+
     }
 
 }

@@ -14,7 +14,7 @@ class Invoice extends Component {
 
     componentDidMount() {
 
-        axios.get(`/api/customers/${this.props.customer_id}`)
+        axios.get('/api/customers/')
             .then((r) => {
                 this.setState({
                     customer: r.data,
@@ -36,7 +36,7 @@ class Invoice extends Component {
             <div className="App">
                 <Header />
                 <div className="ph5">
-                    <EditInvoice customer_id={this.props.customer_id} />
+                    <EditInvoice invoice_id={this.props.invoice_id} />
                 </div>
             </div>
         );
