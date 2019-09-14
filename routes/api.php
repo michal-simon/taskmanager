@@ -22,4 +22,8 @@ Route::post('comments', 'CommentController@store');
 Route::get('uploads/{task_id}', 'UploadController@index');
 Route::get('comments/{task_id}', 'CommentController@index');
 Route::put('tasks/{task_id}', 'TaskController@update');
+Route::post('invoice', 'InvoiceController@store');
+Route::get('invoice/{customer_id}', 'InvoiceController@show');
+
+
 
