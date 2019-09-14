@@ -98,7 +98,17 @@ class CustomerController extends Controller {
             ]);
         }
 
-        return response()->json('Customer updated!');
+        $list = $this->customerRepo->listCustomers('created_at', 'desc');
+
+        if (request()->has('q')) {
+            $list = $this->customerRepo->searchCustomer(request()->input('q'));
+        }
+
+        $customers = $list->map(function (Customer $customer) {
+                    return $this->transformCustomer($customer);
+                })->all();
+
+        return collect($customers)->toJson();
     }
 
     /**

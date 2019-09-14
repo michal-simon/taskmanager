@@ -81,6 +81,10 @@ class AddCustomer extends React.Component {
                 else{
                     this.toggle();
 
+                    const newCustomer = response.data
+                    this.props.customers.push(newCustomer)
+                    this.props.action(this.props.customers)
+
                     this.setState({
                         first_name: null,
                         last_name: null,

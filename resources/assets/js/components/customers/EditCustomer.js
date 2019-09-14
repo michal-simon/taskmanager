@@ -68,15 +68,12 @@ class EditCustomer extends React.Component {
                     alert(response.data.error)
                 else{
                     this.toggle();
-
-//                    if(response.data) {
-//                        this.props.addProject(response.data)
-//                    }
-
+                    this.props.action(response.data);
                     this.setState({ submitSuccess: true, loading: false })
                 }
             })
             .catch((error)=> {
+                alert(error)
                 this.setState({
                     errors: error.response.data.errors
                 })

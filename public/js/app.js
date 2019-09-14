@@ -56164,19 +56164,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 switch (true) {
-    case window.location.pathname.indexOf("users/dashboard") >= 0:
-        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_UserList__["a" /* default */], null), document.getElementById('app'));
-        break;
+        case window.location.pathname.indexOf("users/dashboard") >= 0:
+                __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_UserList__["a" /* default */], null), document.getElementById('app'));
+                break;
 
-    case window.location.pathname.indexOf("customers/dashboard") >= 0:
+        case window.location.pathname.indexOf("customers/dashboard") >= 0:
 
-        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_customers_Customers__["a" /* default */], null), document.getElementById('app'));
+                __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_customers_Customers__["a" /* default */], null), document.getElementById('app'));
 
-        break;
+                break;
 
-    default:
-        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_Dashboard__["a" /* default */], { project_id: '2' }), document.getElementById('app'));
-        break;
+        default:
+                __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_Dashboard__["a" /* default */], { project_id: '2' }), document.getElementById('app'));
+                break;
 }
 
 /***/ }),
@@ -96611,7 +96611,6 @@ var DataTable = function (_Component) {
     value: function pageList() {
       var _this7 = this;
 
-      alert('pagination');
       return this.pagesNumbers().map(function (page) {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'li',
@@ -96724,6 +96723,8 @@ var DataTable = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__AddCustomer__ = __webpack_require__(246);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__EditCustomer__ = __webpack_require__(247);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -96747,41 +96748,235 @@ var Customers = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Customers.__proto__ || Object.getPrototypeOf(Customers)).call(this, props));
 
         _this.state = {
-            customers: []
+            customers: [],
+            entities: {
+                meta: {
+                    current_page: 1,
+                    from: 1,
+                    last_page: 1,
+                    per_page: 5,
+                    to: 1,
+                    total: 1
+                }
+            },
+            first_page: 1,
+            current_page: 1,
+            sorted_column: [],
+            data: [],
+            columns: [],
+            offset: 4,
+            order: 'asc'
         };
+
+        _this.updateCustomers = _this.updateCustomers.bind(_this);
         return _this;
     }
 
     _createClass(Customers, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
+        key: 'updateCustomers',
+        value: function updateCustomers(customers) {
+            this.setState({ customers: customers });
+        }
+    }, {
+        key: 'fetchEntities',
+        value: function fetchEntities() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/customers').then(function (data) {
-                _this2.setState({ customers: data.data });
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/customers').then(function (response) {
+                _this2.state.columns = Object.keys(response.data[0]);
+                _this2.setState({ customers: response.data });
+            });
+        }
+    }, {
+        key: 'changePage',
+        value: function changePage(pageNumber) {
+            var _this3 = this;
+
+            this.setState({ current_page: pageNumber }, function () {
+                _this3.fetchEntities();
+            });
+        }
+    }, {
+        key: 'columnHead',
+        value: function columnHead(value) {
+            return value.split('_').join(' ').toUpperCase();
+        }
+    }, {
+        key: 'pagesNumbers',
+        value: function pagesNumbers() {
+            if (!this.state.entities.meta.to) {
+                return [];
+            }
+            var from = this.state.entities.meta.current_page - this.state.offset;
+            if (from < 1) {
+                from = 1;
+            }
+            var to = from + this.state.offset * 2;
+            if (to >= this.state.entities.meta.last_page) {
+                to = this.state.entities.meta.last_page;
+            }
+            var pagesArray = [];
+            for (var page = from; page <= to; page++) {
+                pagesArray.push(page);
+            }
+            return pagesArray;
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this4 = this;
+
+            this.setState({ current_page: this.state.entities.meta.current_page }, function () {
+                _this4.fetchEntities();
+            });
+        }
+    }, {
+        key: 'tableHeads',
+        value: function tableHeads() {
+            var _this5 = this;
+
+            var icon = void 0;
+            if (this.state.order === 'asc') {
+                icon = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-arrow-up' });
+            } else {
+                icon = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-arrow-down' });
+            }
+            return this.state.columns.map(function (column) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'th',
+                    { className: 'table-head', key: column, onClick: function onClick() {
+                            return _this5.sortByColumn(column);
+                        } },
+                    _this5.columnHead(column),
+                    column === _this5.state.sorted_column && icon
+                );
+            });
+        }
+    }, {
+        key: 'userList',
+        value: function userList() {
+            var _this6 = this;
+
+            if (this.state.customers && this.state.customers.length) {
+                return this.state.customers.map(function (user) {
+
+                    var test = Object.keys(user).map(function (index, element) {
+
+                        if (_typeof(user[index]) === 'object') {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                _this6.displayCustomerAddress(user[index]),
+                                _this6.displayCustomerPhone(user[index])
+                            );
+                        } else {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                user[index]
+                            );
+                        }
+                    });
+
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tr',
+                        null,
+                        test,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'td',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__EditCustomer__["a" /* default */], {
+                                id: user.id,
+                                action: _this6.updateCustomers,
+                                customers: _this6.state.customers
+                            }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'button',
+                                { className: 'btn btn-sm btn-outline-secondary', onClick: function onClick() {
+                                        return _this6.deleteCustomer(user.id);
+                                    } },
+                                'Delete Customer'
+                            )
+                        )
+                    );
+                });
+            } else {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'tr',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'td',
+                        { colSpan: this.state.columns.length, className: 'text-center' },
+                        'No Records Found.'
+                    )
+                );
+            }
+        }
+    }, {
+        key: 'sortByColumn',
+        value: function sortByColumn(column) {
+            var _this7 = this;
+
+            if (column === this.state.sorted_column) {
+                this.state.order === 'asc' ? this.setState({ order: 'desc', current_page: this.state.first_page }, function () {
+                    _this7.fetchEntities();
+                }) : this.setState({ order: 'asc' }, function () {
+                    _this7.fetchEntities();
+                });
+            } else {
+                this.setState({ sorted_column: column, order: 'asc', current_page: this.state.first_page }, function () {
+                    _this7.fetchEntities();
+                });
+            }
+        }
+    }, {
+        key: 'pageList',
+        value: function pageList() {
+            var _this8 = this;
+
+            return this.pagesNumbers().map(function (page) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'li',
+                    { className: page === _this8.state.entities.meta.current_page ? 'page-item active' : 'page-item', key: page },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { className: 'page-link', onClick: function onClick() {
+                                return _this8.changePage(page);
+                            } },
+                        page
+                    )
+                );
             });
         }
     }, {
         key: 'deleteCustomer',
         value: function deleteCustomer(id) {
-            var _this3 = this;
+            var _this9 = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete('/api/customers/' + id).then(function (data) {
-                var index = _this3.state.customers.findIndex(function (customer) {
+                var index = _this9.state.customers.findIndex(function (customer) {
                     return customer.id === id;
                 });
-                var customers = _this3.state.customers.splice(index, 1);
-                _this3.setState({ customer: customers });
+                var customers = _this9.state.customers.splice(index, 1);
+                _this9.setState({ customer: customers });
             });
         }
     }, {
         key: 'displayCustomerAddress',
-        value: function displayCustomerAddress(customer) {
+        value: function displayCustomerAddress(address) {
 
-            var addresses = customer.addresses.map(function (address) {
+            if (!address) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'p',
-                    { key: customer.id },
+                    null,
+                    '&nbsp'
+                );
+            }
+
+            var addresses = address.map(function (address) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'p',
+                    { key: address.id },
                     address.address_1,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
                     address.address_2,
@@ -96800,9 +96995,17 @@ var Customers = function (_Component) {
         }
     }, {
         key: 'displayCustomerPhone',
-        value: function displayCustomerPhone(customer) {
+        value: function displayCustomerPhone(address) {
 
-            var phone = customer.addresses.map(function (address) {
+            if (!address) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    null,
+                    '&nbsp'
+                );
+            }
+
+            var phone = address.map(function (address) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'span',
                     null,
@@ -96819,127 +97022,82 @@ var Customers = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this10 = this;
 
-            var customers = this.state.customers;
-
-            console.log('customers', customers);
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                null,
-                customers.length === 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'text-center' },
+                { className: 'data-table' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__AddCustomer__["a" /* default */], { action: this.updateCustomers, customers: this.state.customers }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'table',
+                    { className: 'table table-bordered' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'h2',
+                        'thead',
                         null,
-                        'No customer found at the moment'
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'tr',
+                            null,
+                            this.tableHeads(),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                'Action'
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tbody',
+                        null,
+                        this.userList()
                     )
                 ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'container' },
+                this.state.customers && this.state.customers.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'nav',
+                    null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'row' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__AddCustomer__["a" /* default */], null),
+                        'ul',
+                        { className: 'pagination' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'table',
-                            { className: 'table table-bordered' },
+                            'li',
+                            { className: 'page-item' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'thead',
-                                { className: 'thead-light' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'tr',
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'th',
-                                        { scope: 'col' },
-                                        'Firstname'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'th',
-                                        { scope: 'col' },
-                                        'Lastname'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'th',
-                                        { scope: 'col' },
-                                        'Email'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'th',
-                                        { scope: 'col' },
-                                        'Phone'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'th',
-                                        { scope: 'col' },
-                                        'Address'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'th',
-                                        { scope: 'col' },
-                                        'Description'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'th',
-                                        { scope: 'col' },
-                                        'Actions'
-                                    )
-                                )
-                            ),
+                                'button',
+                                { className: 'page-link',
+                                    disabled: 1 === this.state.entities.meta.current_page,
+                                    onClick: function onClick() {
+                                        return _this10.changePage(_this10.state.entities.meta.current_page - 1);
+                                    }
+                                },
+                                'Previous'
+                            )
+                        ),
+                        this.pageList(),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'li',
+                            { className: 'page-item' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'tbody',
+                                'button',
+                                { className: 'page-link',
+                                    disabled: this.state.entities.meta.last_page === this.state.entities.meta.current_page,
+                                    onClick: function onClick() {
+                                        return _this10.changePage(_this10.state.entities.meta.current_page + 1);
+                                    }
+                                },
+                                'Next'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            { style: { marginTop: '8px' } },
+                            ' \xA0 ',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'i',
                                 null,
-                                customers && customers.map(function (customer) {
-                                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'tr',
-                                        { key: customer.id },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'td',
-                                            null,
-                                            customer.first_name
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'td',
-                                            null,
-                                            customer.last_name
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'td',
-                                            null,
-                                            customer.email
-                                        ),
-                                        _this4.displayCustomerPhone(customer),
-                                        _this4.displayCustomerAddress(customer),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'td',
-                                            null,
-                                            customer.description
-                                        ),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'td',
-                                            null,
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                'div',
-                                                { className: 'd-flex justify-content-between align-items-center' },
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    'div',
-                                                    { className: 'btn-group', style: { marginBottom: "20px" } },
-                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__EditCustomer__["a" /* default */], { id: customer.id }),
-                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                        'button',
-                                                        { className: 'btn btn-sm btn-outline-secondary', onClick: function onClick() {
-                                                                return _this4.deleteCustomer(customer.id);
-                                                            } },
-                                                        'Delete Customer'
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    );
-                                })
+                                'Displaying ',
+                                this.state.customers.length,
+                                ' of ',
+                                this.state.entities.meta.total,
+                                ' entries.'
                             )
                         )
                     )
@@ -97344,6 +97502,10 @@ var AddCustomer = function (_React$Component) {
                 if (response.data.error) alert(response.data.error);else {
                     _this2.toggle();
 
+                    var newCustomer = response.data;
+                    _this2.props.customers.push(newCustomer);
+                    _this2.props.action(_this2.props.customers);
+
                     _this2.setState({
                         first_name: null,
                         last_name: null,
@@ -97635,14 +97797,11 @@ var EditCustomer = function (_React$Component) {
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put('/api/customers/' + this.state.id, this.state.customer).then(function (response) {
                 if (response.data.error) alert(response.data.error);else {
                     _this3.toggle();
-
-                    //                    if(response.data) {
-                    //                        this.props.addProject(response.data)
-                    //                    }
-
+                    _this3.props.action(response.data);
                     _this3.setState({ submitSuccess: true, loading: false });
                 }
             }).catch(function (error) {
+                alert(error);
                 _this3.setState({
                     errors: error.response.data.errors
                 });

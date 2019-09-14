@@ -112,7 +112,6 @@ export default class DataTable extends Component {
   }
 
   pageList() {
-    alert('pagination')
     return this.pagesNumbers().map(page => {
       return <li className={ page === this.state.entities.meta.current_page ? 'page-item active' : 'page-item' } key={page}>
         <button className="page-link" onClick={() => this.changePage(page)}>{page}</button>
