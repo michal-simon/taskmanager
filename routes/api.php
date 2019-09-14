@@ -17,6 +17,7 @@ Route::get('tasks/getTasksForProject/{project_id}', 'TaskController@getTasksForP
 Route::delete('tasks/{task}', 'TaskController@destroy');
 Route::delete('users/{user_id}', 'UserController@destroy');
 Route::post('users', 'UserController@store');
+Route::put('users/{user_id}', 'UserController@update');
 Route::get('status', 'TaskStatusController@index');
 Route::get('users', 'UserController@index');
 Route::post('uploads', 'UploadController@store');

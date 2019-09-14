@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import EditUser from './EditUser'
+import AddUser from '../forms/AddUser'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter,Input,FormGroup,Label } from 'reactstrap';
-
+import AddCustomer from "../customers/AddCustomer";
 
 export default class DataTable extends Component {
   constructor(props) {
@@ -26,12 +28,13 @@ export default class DataTable extends Component {
       offset: 4,
       order: 'asc',
     };
+
+    this.updateUserState = this.updateUserState.bind(this);
   }
 
   fetchEntities() {
 
     let fetchUrl = `/api/users/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.meta.per_page}`;
-    //let fetchUrl = `${this.props.url}/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.meta.per_page}`;
     axios.get(fetchUrl)
       .then(response => {
           this.state.columns = Object.keys(response.data[0])
@@ -48,6 +51,10 @@ export default class DataTable extends Component {
 
   columnHead(value) {
     return value.split('_').join(' ').toUpperCase()
+  }
+
+  updateUserState(user) {
+    this.setState({data: user})
   }
 
   pagesNumbers() {
@@ -90,10 +97,29 @@ export default class DataTable extends Component {
   }
 
   userList() {
+
     if (this.state.data && this.state.data.length) {
       return this.state.data.map(user => {
+
+
+        const columnList = Object.keys(user).map(key => {
+
+          if(key === 'profile_photo') {
+            return <td>&nbsp;</td>
+          }
+
+          return <td key={key}>{user[key]}</td>
+        })
+
+
         return <tr key={ user.id }>
-          {Object.keys(user).map(key => <td key={key}>{ user[key] }</td>)}
+
+          {columnList}
+
+          <td>
+            <i id="delete" className="fas fa-times" onClick={() => this.deleteUser(user.id)}></i>
+            <EditUser user={user} users={this.state.data} action={this.updateUserState} />
+          </td>
         </tr>
       })
     } else {
@@ -112,7 +138,6 @@ export default class DataTable extends Component {
   }
 
   pageList() {
-    alert('pagination')
     return this.pagesNumbers().map(page => {
       return <li className={ page === this.state.entities.meta.current_page ? 'page-item active' : 'page-item' } key={page}>
         <button className="page-link" onClick={() => this.changePage(page)}>{page}</button>
@@ -126,8 +151,8 @@ export default class DataTable extends Component {
 
        axios.delete('/api/users/' + id)
        .then(function (response) {
-            let filteredArray = self.props.data.filter(item => item.id !== id)
-            this.setState({data: filteredArray})
+            let filteredArray = self.state.data.filter(item => item.id !== id)
+            self.setState({data: filteredArray})
         })
         .catch(function (error) {
             console.log(error);
@@ -137,9 +162,14 @@ export default class DataTable extends Component {
   render() {
     return (
       <div className="data-table">
+
+        <AddUser />
         <table className="table table-bordered">
           <thead>
-            <tr>{ this.tableHeads() }</tr>
+            <tr>
+              { this.tableHeads() }
+              <th>Actions</th>
+            </tr>
           </thead>
           <tbody>{ this.userList() }</tbody>
         </table>

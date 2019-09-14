@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Dashboard from './components/Dashboard'
-import UserList from './components/UserList'
+import UserList from './components/users/UserList'
 import Customers from './components/customers/Customers'
 
 import {Router,browserHistory} from 'react-router'

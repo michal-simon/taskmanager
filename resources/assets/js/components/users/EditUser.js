@@ -7,15 +7,9 @@ class EditUser extends React.Component {
         super(props);
         this.state = {
             modal: false,
-            username:'',
-            email:'',
-            first_name:'',
-            last_name:'',
-            profile_photo:'5af1921c0fe5703dd4a463ec',
-            role_id: 0,
-            password: '',
             loading:false,
             errors: [],
+            user: this.props.user,
             roles: []
         };
 
@@ -24,14 +18,14 @@ class EditUser extends React.Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
     }
 
-    handleChange(event) {
-        this.setState({ name: event.target.value });
+    handleInput(e) {
+        this.setValues({ [e.target.name]: e.target.value })
     }
 
-    handleInput(e) {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+    setValues(values) {
+        this.setState({ user: { ...this.state.user, ...values } });
+
+        console.log(this.state.user)
     }
 
     hasErrorFor (field) {
@@ -60,33 +54,27 @@ class EditUser extends React.Component {
             })
     }
 
-    getUser() {
-        axios.get('/api/users')
-            .then((r) => {
-                this.setState({
-                    roles: r.data,
-                })
-            })
-            .catch((e) => {
-                console.error(e)
-            })
-    }
-
     handleClick() {
-        axios.put('/api/users', {
-            username:this.state.username,
-            email:this.state.email,
-            first_name:this.state.first_name,
-            last_name:this.state.last_name,
-            profile_photo:this.state.profile_photo,
-            password: this.state.password,
-            role_id:this.state.role_id
+
+        axios.put(`/api/users/${this.state.user.id}`, {
+            username:this.state.user.username,
+            email:this.state.user.email,
+            first_name:this.state.user.first_name,
+            last_name:this.state.user.last_name,
+            profile_photo:this.state.user.profile_photo,
+            password: this.state.user.password,
+            role_id:this.state.user.role_id
         })
             .then((response)=> {
                 if(response.data.message)
                     alert(response.data.message)
                 else{
                     this.toggle();
+
+                    let index = this.props.users.findIndex(user => user.id == this.props.user.id)
+                    this.props.users[index] = this.state.user;
+                    this.props.action(this.props.users);
+
                     this.setState({
                         username:null,
                         email: null,
@@ -127,7 +115,7 @@ class EditUser extends React.Component {
 
         return (
             <div>
-                <i className="fas fa-user-plus" onClick={this.toggle}></i>
+                <a onClick={this.toggle}>Edit</a>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         <i className="fas fa-user-circle"></i> Add User
@@ -135,25 +123,25 @@ class EditUser extends React.Component {
                     <ModalBody>
                         <FormGroup>
                             <Label for="username">Username(*):</Label>
-                            <Input className={this.hasErrorFor('username') ? 'is-invalid' : ''} type="text" name="username" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('username') ? 'is-invalid' : ''} type="text" name="username" defaultValue={this.state.user.username} onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('username')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="email">Email(*):</Label>
-                            <Input className={this.hasErrorFor('email') ? 'is-invalid' : ''} type="email" name="email" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('email') ? 'is-invalid' : ''} type="email" name="email" defaultValue={this.state.user.email} onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('email')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="first_name">Name(*):</Label>
-                            <Input className={this.hasErrorFor('first_name') ? 'is-invalid' : ''} type="text" name="first_name" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('first_name') ? 'is-invalid' : ''} type="text" name="first_name" defaultValue={this.state.user.first_name} onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('first_name')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="last_name">Last Name(*):</Label>
-                            <Input className={this.hasErrorFor('last_name') ? 'is-invalid' : ''} type="text" name="last_name" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('last_name') ? 'is-invalid' : ''} type="text" name="last_name" defaultValue={this.state.user.last_name} onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('last_name')}
                         </FormGroup>
 
@@ -165,13 +153,13 @@ class EditUser extends React.Component {
 
                         <FormGroup>
                             <Label for="password">Password:</Label>
-                            <Input className={this.hasErrorFor('password') ? 'is-invalid' : ''} type="password" name="password" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('password') ? 'is-invalid' : ''} type="password" name="password" defaultValue={this.state.user.password} onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('password')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="role_id">Role:</Label>
-                            <Input className={this.hasErrorFor('role_id') ? 'is-invalid' : ''} type="select"
+                            <Input defaultValue={this.state.user.role_id} className={this.hasErrorFor('role_id') ? 'is-invalid' : ''} type="select"
                                    name="role_id" id="role_id" onChange={this.handleInput.bind(this)}>
                                 <option value="">Choose:</option>
                                 {roleList}
