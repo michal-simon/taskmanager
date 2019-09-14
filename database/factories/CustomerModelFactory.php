@@ -17,7 +17,8 @@ use App\Customer;
 $factory->define(Customer::class, function (Faker\Generator $faker) {
     static $password;
     return [
-        'name' => $faker->firstName,
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'status' => 1
     ];

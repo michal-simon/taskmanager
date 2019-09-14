@@ -53,8 +53,20 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
      * Delete the address
      *
      */
-    public function deleteAddress()
-    {
+    public function deleteAddress() {
         return $this->model->delete();
     }
+
+    /**
+     * Return the address
+     *
+     * @param int $id
+     *
+     * @return Address
+     * @throws AddressNotFoundException
+     */
+    public function findAddressById(int $id): Address {
+        return $this->findOneOrFail($id);
+    }
+
 }

@@ -20,18 +20,19 @@ class AddressUnitTest extends TestCase {
     public function it_can_delete_the_address() {
         $created = factory(Address::class)->create();
         $address = new AddressRepository($created);
-        $address->deleteAddress();
-        $this->assertDatabaseHas('addresses', ['id' => $created->id]);
+        $delete = $address->deleteAddress();
+        $this->assertTrue($delete);
+        //$this->assertDatabaseHas('addresses', ['id' => $created->id]);
     }
 
     /** @test */
     public function it_can_update_the_address() {
         $address = factory(Address::class)->create();
         $data = [
-            'alias' => $this->faker->unique()->word,
-            'address_1' => $this->faker->unique()->word,
+            'alias' => 'Mr',
+            'address_1' => 'test address',
             'address_2' => null,
-            'zip' => 1101,
+            'zip' => 'BH25 5PH',
             'status' => 1
         ];
         $addressRepo = new AddressRepository($address);

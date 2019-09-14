@@ -50,11 +50,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      * @throws CustomerNotFoundException
      */
     public function findCustomerById(int $id): Customer {
-        try {
-            return $this->findOneOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            throw new CustomerNotFoundException($e);
-        }
+        return $this->findOneOrFail($id);
     }
 
     /**
@@ -65,14 +61,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      * @throws CreateCustomerInvalidArgumentException
      */
     public function createCustomer(array $params): Customer {
-        try {
-            $data = collect($params)->except('password')->all();
-            $customer = new Customer($data);
-            $customer->save();
-            return $customer;
-        } catch (QueryException $e) {
-            return false;
-        }
+       return $this->create($params);
     }
 
     /**
@@ -94,11 +83,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      * @throws UpdateCustomerInvalidArgumentException
      */
     public function updateCustomer(array $params): bool {
-        try {
-            return $this->model->update($params);
-        } catch (QueryException $e) {
-            return false;
-        }
+        return $this->model->update($params);
     }
 
 }

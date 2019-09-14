@@ -14,6 +14,7 @@ use Faker\Generator as Faker;
 use App\Project;
 $factory->define(Project::class, function (Faker $faker) {
     return [
+        'customer_id' => null,
         'title' => $faker->text,
         'description' => $faker->text,
         'created_by' => $faker->firstNameMale,
