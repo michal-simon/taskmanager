@@ -9,6 +9,7 @@ import Header from './common/Header'
 class Dashboard extends Component{
     constructor(props, context) {
         super(props, context);
+
         this.state = {
             open: false,
             show: true,
@@ -33,7 +34,9 @@ class Dashboard extends Component{
 
     getTasks() {
 
-        axios.get(`/api/tasks/getTasksForProject/${this.project_id}`)
+        const url = this.props.task_type == 2 ? '/api/leads' : `/api/tasks/getTasksForProject/${this.project_id}`
+
+        axios.get(url)
         .then((r)=> {
             this.setState({
                 tasks: r.data,
@@ -114,24 +117,15 @@ class Dashboard extends Component{
 
     handleClick(project_id) {
 
-        this.setState({
-            open: false,
-            show: true,
-            tasks:[],
-            stories:[],
-            err:'',
-            err2:'',
-            loading:true,
-            loadingStory:true,
-        })
+        const url = this.props.task_type == 1 ? `?project_id=${project_id}` : `/leads?project_id=${project_id}`;
 
-        this.project_id = project_id
-        this.getStoryDetails();
-        this.getTasks();
+       window.location.href = url
     }
 
-    render() {
+    getStories() {
+
         let {stories,loadingStory} = this.state;
+
         let storyTable;
 
         if(!loadingStory) {
@@ -142,36 +136,58 @@ class Dashboard extends Component{
                 return(
                     <li key={index}>
                         <a onClick={() => this.handleClick(story.id)} className={activeClass}>
-                        <i className="fas fa-list-alt"></i>
-                        <span className="menu-text">{story.title}</span>
+                            <i className="fas fa-list-alt"></i>
+                            <span className="menu-text">{story.title}</span>
                         </a>
                     </li>
                 )
             })
-           
+
         } else {
             storyTable = <li>
                 <div className="loader">
-                <Loader/>
+                    <Loader/>
                 </div>
             </li>
         }
 
-            return (
-                <div>
+        return storyTable
+
+    }
+
+    render() {
+
+        let storyTable
+
+        const divStyle = this.props.task_type == 2 ? {
+            left: 0,
+            width: '100%',
+        } : {};
+
+        if(this.props.task_type != 2) {
+
+            storyTable = (
+                    
                     <div className="side">
                         <span className="logo">Hampton's</span>
 
                         <ul className="side-menu">
-                            {storyTable}
+                            {this.getStories()}
                         </ul>
 
                         <div className="otherMenu">
                             <AddStory addProject={this.addProject} />
                         </div>
                     </div>
+                
 
-                    <div className="con">
+            )
+        }
+            return (
+                <div>
+                    {storyTable}
+
+                    <div className="con" style={divStyle}>
                         <Header/>
                         <aside>
                             <Story 
@@ -179,7 +195,9 @@ class Dashboard extends Component{
                                 action={this.updateTasks}
                                 storyName={this.state.stories.filter(i=>i.id===parseInt(this.project_id))} 
                                 storyType={this.project_id} tasks={this.state.tasks} 
-                                loading={this.state.loading}/>
+                                loading={this.state.loading}
+                                task_type={this.props.task_type}
+                            />
                         </aside>
 
                     </div>

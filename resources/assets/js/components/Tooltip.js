@@ -30,7 +30,9 @@ class Tooltips extends Component {
             tasks={this.props.tasks}
             storyType={this.props.storyType} 
             action={this.props.action}
-            status={this.props.id}/>}
+            status={this.props.id}
+            task_type={this.props.task_type}
+        />}
       </span>
     );
   }

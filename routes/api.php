@@ -15,11 +15,14 @@ Route::get('tasks/getTasksForProject/{project_id}', 'TaskController@getTasksForP
 //Route::put('tasks/{task}', 'TaskController@markAsCompleted');
 Route::delete('tasks/{task}', 'TaskController@destroy');
 Route::post('users', 'UserController@store');
-Route::get('status', 'TaskStatusController@index');
+Route::get('status/{task_type}', 'TaskStatusController@index');
 Route::get('users', 'UserController@index');
 Route::post('uploads', 'UploadController@store');
 Route::post('comments', 'CommentController@store');
 Route::get('uploads/{task_id}', 'UploadController@index');
 Route::get('comments/{task_id}', 'CommentController@index');
 Route::put('tasks/{task_id}', 'TaskController@update');
+Route::get('leads', 'TaskController@getLeads');
+Route::put('tasks/status/{task_id}', 'TaskController@updateStatus');
+
 

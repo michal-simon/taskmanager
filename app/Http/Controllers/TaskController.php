@@ -10,13 +10,12 @@ use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 
-class TaskController extends Controller
-{
+class TaskController extends Controller {
+
     private $taskRepository;
     private $projectRepository;
 
-    public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository)
-    {
+    public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository) {
         $this->taskRepository = $taskRepository;
         $this->projectRepository = $projectRepository;
     }
@@ -26,65 +25,87 @@ class TaskController extends Controller
      *
      * @return Response
      */
-    public function store(TaskRequest $request)
-    {
+    public function store(TaskRequest $request) {
 
         $validatedData = $request->validated();
 
         $task = $this->taskRepository->createTask([
+            'task_type' => $validatedData['task_type'],
             'title' => $validatedData['title'],
             'content' => $validatedData['content'],
             'task_color' => $validatedData['task_color'],
             'contributors' => $validatedData['contributors'],
-            'project_id' => $validatedData['project_id'],
             'due_date' => $validatedData['due_date'],
             'task_status' => $validatedData['task_status'],
             'created_by' => $validatedData['created_by'],
         ]);
 
-        return $task->toJson();
-      }
+        if ($validatedData['task_type'] == 1) {
+            $objProject = $this->projectRepository->findProjectById($validatedData['project_id']);
+            $objProject->tasks()->attach($task);
+        }
 
-    public function markAsCompleted(Task $task)
-    {
+        return $task->toJson();
+    }
+
+    /**
+     * 
+     * @param Task $task
+     * @return type
+     */
+    public function markAsCompleted(Task $task) {
         $objTask = $this->taskRepository->findTaskById($id);
         $taskRepo = new TaskRepository($objTask);
         $taskRepo->updateTask(['is_completed' => true]);
         return response()->json('Task updated!');
     }
 
-    public function getTasksForProject($projectId)
-    {
+    public function getTasksForProject($projectId) {
         $objProject = $this->projectRepository->findProjectById($projectId);
         $task = $this->taskRepository->getTasksForProject($objProject);
 
         return $task->toJson();
-      }
+    }
 
     /**
-    * Remove the specified resource from storage.
-    *
-    * @param  int  $id
-    * @return Response
-    */
-    public function destroy($id)
-    {
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id) {
         $objTask = $this->taskRepository->findTaskById($id);
         $taskRepo = new TaskRepository($objTask);
         $taskRepo->deleteTask();
         return response()->json('Task deleted!');
     }
 
-     /**
-      * @param UpdateTaskRequest $request
-      * @param $id
-      *
-      * @return Response
-      */
-      public function update(UpdateTaskRequest $request, $id)
-      {
-            $task = $this->taskRepository->findTaskById($id);
-            $taskRepo = new TaskRepository($task);
-            $taskRepo->updateTask($request->all());
-      }
+    /**
+     * @param UpdateTaskRequest $request
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function update(UpdateTaskRequest $request, int $id) {
+        $task = $this->taskRepository->findTaskById($id);
+        $taskRepo = new TaskRepository($task);
+        $taskRepo->updateTask($request->all());
+    }
+    
+    public function getLeads() {
+        $tasks = $this->taskRepository->getLeads();
+        return $tasks->toJson();
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @param int $id
+     */
+    public function updateStatus(Request $request, int $id) {
+        $task = $this->taskRepository->findTaskById($id);
+        $taskRepo = new TaskRepository($task);
+        $taskRepo->updateTask(['task_status' => $request->task_status]);
+    }
+
 }

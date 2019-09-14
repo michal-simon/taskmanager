@@ -10,7 +10,13 @@ import ViewTask from './forms/viewTask';
 
 class Task extends Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     componentWillReceiveProps() {
+
+        const self = this;
 
         setTimeout(function () {
             $(".mcell-task").draggable({
@@ -26,8 +32,32 @@ class Task extends Component {
                 activeClass: "ui-state-default",
                 hoverClass: "ui-state-hover",
                 drop: function (event, ui) {
+
+                    event.preventDefault()
+
                     $(this).append($(ui.draggable));
-                    console.log($(this).find("li").attr('id'))
+                    const id = $(ui.draggable).attr('id')
+                    const status = $(this).data('status')
+
+                    let index = self.props.tasks.findIndex(task => task.id == id)
+                    const currentObject = self.props.tasks[index]
+
+                    axios.put(`/api/tasks/status/${id}`, {
+                        task_status: status
+                    })
+                        .then((response) => {
+                            // currentObject.task_status = status
+                            // console.log('all tasks', self.props.tasks)
+                            // self.props.action(self.props.tasks)
+                        })
+                        .catch((error) => {
+                            alert(error)
+                        });
+
+
+                    // alert($(this).data('status'))
+                    //
+                    // alert($(this).find("li").attr('id'))
                 }
             });
         }, 3000);
@@ -58,8 +88,15 @@ class Task extends Component {
             content =
                 tasks.filter(i => i.task_status === Number(filter))
                     .map((i, index) => {
+
+                        const color = i.task_color.replace("color", "").toLowerCase();
+
+                        const divStyle = {
+                            borderLeft: `2px solid ${color}`
+                        }
+
                         return (
-                            <li id={i.id} className="mcell-task" key={index}>
+                            <div style={divStyle} data-task={i.id} id={i.id} className="mcell-task card" key={index}>
                        
                     <span className="task-name">
                         <ViewTask
@@ -78,7 +115,7 @@ class Task extends Component {
                                 </div>
                                 <div className={i.color}/>
                                 {/* <ModalExampleDimmer propContent={i} classType="btnDashboard"/> */}
-                            </li>
+                            </div>
                         )
                     })
         }

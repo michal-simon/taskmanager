@@ -18,5 +18,6 @@ $factory->define(Project::class, function (Faker $faker) {
         'description' => $faker->text,
         'created_by' => $faker->firstNameMale,
         'is_completed' => 0,
+        'customer_id' => null
     ];
 });
