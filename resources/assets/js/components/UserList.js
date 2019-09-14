@@ -119,6 +119,20 @@ export default class DataTable extends Component {
       </li>
     })
   }
+  
+    deleteUser(id) {
+
+        const self = this;
+
+       axios.delete('/api/users/' + id)
+       .then(function (response) {
+            let filteredArray = self.props.data.filter(item => item.id !== id)
+            this.setState({data: filteredArray})
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
 
   render() {
     return (

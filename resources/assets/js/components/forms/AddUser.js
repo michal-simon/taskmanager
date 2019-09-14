@@ -12,8 +12,11 @@ class AddUser extends React.Component {
           first_name:'',
           last_name:'',
           profile_photo:'5af1921c0fe5703dd4a463ec',
+            role_id: 0,
+            password: '',
           loading:false,
-          errors: []
+          errors: [],
+            roles: []
         };
         
         this.toggle = this.toggle.bind(this);
@@ -45,13 +48,27 @@ class AddUser extends React.Component {
         }
     }
 
+    getRoles() {
+        axios.get('/api/roles')
+            .then((r) => {
+                this.setState({
+                    roles: r.data,
+                })
+            })
+            .catch((e) => {
+                console.error(e)
+            })
+    }
+
     handleClick() {
         axios.post('/api/users', {
           username:this.state.username,
           email:this.state.email,
           first_name:this.state.first_name,
           last_name:this.state.last_name,
-          profile_photo:this.state.profile_photo
+          profile_photo:this.state.profile_photo,
+            password: this.state.password,
+            role_id:this.state.role_id
         })
         .then((response)=> {
           if(response.data.message)
@@ -64,6 +81,8 @@ class AddUser extends React.Component {
               first_name:null,
               last_name:null,
               profile_photo:null,
+                password: null,
+                role_id: null,
               loading:false
             })
           }
@@ -76,12 +95,23 @@ class AddUser extends React.Component {
     }
 
     toggle() {
+        this.getRoles();
         this.setState({
           modal: !this.state.modal
         });
     }
 
     render() {
+
+        let roleList = null
+
+        if (!this.state.roles.length) {
+            roleList = <option value="">Loading...</option>
+        } else {
+            roleList = this.state.roles.map((role, index) => (
+                <option key={index} value={role.id}>{role.name}</option>
+            ))
+        }
 
         return (
           <div>
@@ -119,6 +149,22 @@ class AddUser extends React.Component {
                       <Label for="profile_photo">Profile Photo URL(*):</Label>
                       <Input className={this.hasErrorFor('profile_photo') ? 'is-invalid' : ''} type="text" name="profile_photo" onChange={this.handleInput.bind(this)}/>
                       {this.renderErrorFor('profile_photo')}
+                  </FormGroup>
+
+                  <FormGroup>
+                      <Label for="password">Password:</Label>
+                      <Input className={this.hasErrorFor('password') ? 'is-invalid' : ''} type="password" name="password" onChange={this.handleInput.bind(this)}/>
+                      {this.renderErrorFor('password')}
+                  </FormGroup>
+
+                  <FormGroup>
+                      <Label for="role_id">Role:</Label>
+                      <Input className={this.hasErrorFor('role_id') ? 'is-invalid' : ''} type="select"
+                             name="role_id" id="role_id" onChange={this.handleInput.bind(this)}>
+                          <option value="">Choose:</option>
+                          {roleList}
+                      </Input>
+                      {this.renderErrorFor('role_id')}
                   </FormGroup>
               </ModalBody>
 

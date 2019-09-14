@@ -95960,7 +95960,8 @@ var AddStory = function (_React$Component) {
             description: '',
             created_by: '',
             count: 2,
-            errors: []
+            errors: [],
+            customers: []
         };
 
         _this.toggle = _this.toggle.bind(_this);
@@ -96002,6 +96003,9 @@ var AddStory = function (_React$Component) {
                 );
             }
         }
+
+        /** To be done */
+
     }, {
         key: 'getStoryCount',
         value: function getStoryCount() {
@@ -96052,8 +96056,22 @@ var AddStory = function (_React$Component) {
             });
         }
     }, {
+        key: 'getCustomers',
+        value: function getCustomers() {
+            var _this4 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/customers').then(function (r) {
+                _this4.setState({
+                    customers: r.data
+                });
+            }).catch(function (e) {
+                console.error(e);
+            });
+        }
+    }, {
         key: 'toggle',
         value: function toggle() {
+            this.getCustomers();
             this.setState({
                 modal: !this.state.modal
             });
@@ -96061,6 +96079,24 @@ var AddStory = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var customerList = void 0;
+
+            if (!this.state.customers.length) {
+                customerList = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'option',
+                    { value: '' },
+                    'Loading...'
+                );
+            } else {
+                customerList = this.state.customers.map(function (customer, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'option',
+                        { key: index, value: customer.id },
+                        customer.first_name + " " + customer.last_name
+                    );
+                });
+            }
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -96102,6 +96138,27 @@ var AddStory = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('description') ? 'is-invalid' : '', type: 'textarea', name: 'description', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('description')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                { 'for': 'contributors' },
+                                'Customer:'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */],
+                                { className: this.hasErrorFor('customer_id') ? 'is-invalid' : '', type: 'select',
+                                    name: 'customer_id', id: 'customer_id', onChange: this.handleInput.bind(this) },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'option',
+                                    { value: '' },
+                                    'Choose:'
+                                ),
+                                customerList
+                            ),
+                            this.renderErrorFor('contributors')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
@@ -96239,8 +96296,11 @@ var AddUser = function (_React$Component) {
             first_name: '',
             last_name: '',
             profile_photo: '5af1921c0fe5703dd4a463ec',
+            role_id: 0,
+            password: '',
             loading: false,
-            errors: []
+            errors: [],
+            roles: []
         };
 
         _this.toggle = _this.toggle.bind(_this);
@@ -96280,30 +96340,47 @@ var AddUser = function (_React$Component) {
             }
         }
     }, {
+        key: 'getRoles',
+        value: function getRoles() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/roles').then(function (r) {
+                _this2.setState({
+                    roles: r.data
+                });
+            }).catch(function (e) {
+                console.error(e);
+            });
+        }
+    }, {
         key: 'handleClick',
         value: function handleClick() {
-            var _this2 = this;
+            var _this3 = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/users', {
                 username: this.state.username,
                 email: this.state.email,
                 first_name: this.state.first_name,
                 last_name: this.state.last_name,
-                profile_photo: this.state.profile_photo
+                profile_photo: this.state.profile_photo,
+                password: this.state.password,
+                role_id: this.state.role_id
             }).then(function (response) {
                 if (response.data.message) alert(response.data.message);else {
-                    _this2.toggle();
-                    _this2.setState({
+                    _this3.toggle();
+                    _this3.setState({
                         username: null,
                         email: null,
                         first_name: null,
                         last_name: null,
                         profile_photo: null,
+                        password: null,
+                        role_id: null,
                         loading: false
                     });
                 }
             }).catch(function (error) {
-                _this2.setState({
+                _this3.setState({
                     errors: error.response.data.errors
                 });
             });
@@ -96311,6 +96388,7 @@ var AddUser = function (_React$Component) {
     }, {
         key: 'toggle',
         value: function toggle() {
+            this.getRoles();
             this.setState({
                 modal: !this.state.modal
             });
@@ -96318,6 +96396,24 @@ var AddUser = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+
+            var roleList = null;
+
+            if (!this.state.roles.length) {
+                roleList = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'option',
+                    { value: '' },
+                    'Loading...'
+                );
+            } else {
+                roleList = this.state.roles.map(function (role, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'option',
+                        { key: index, value: role.id },
+                        role.name
+                    );
+                });
+            }
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -96389,6 +96485,38 @@ var AddUser = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('profile_photo') ? 'is-invalid' : '', type: 'text', name: 'profile_photo', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('profile_photo')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                { 'for': 'password' },
+                                'Password:'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('password') ? 'is-invalid' : '', type: 'password', name: 'password', onChange: this.handleInput.bind(this) }),
+                            this.renderErrorFor('password')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                { 'for': 'role_id' },
+                                'Role:'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */],
+                                { className: this.hasErrorFor('role_id') ? 'is-invalid' : '', type: 'select',
+                                    name: 'role_id', id: 'role_id', onChange: this.handleInput.bind(this) },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'option',
+                                    { value: '' },
+                                    'Choose:'
+                                ),
+                                roleList
+                            ),
+                            this.renderErrorFor('role_id')
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -96612,6 +96740,21 @@ var DataTable = function (_Component) {
             page
           )
         );
+      });
+    }
+  }, {
+    key: 'deleteUser',
+    value: function deleteUser(id) {
+
+      var self = this;
+
+      __WEBPACK_IMPORTED_MODULE_1_axios___default.a.delete('/api/users/' + id).then(function (response) {
+        var filteredArray = self.props.data.filter(function (item) {
+          return item.id !== id;
+        });
+        this.setState({ data: filteredArray });
+      }).catch(function (error) {
+        console.log(error);
       });
     }
   }, {

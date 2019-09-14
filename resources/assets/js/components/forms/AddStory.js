@@ -6,12 +6,13 @@ class AddStory extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          modal: false,
-          title:'',
-          description: '',
-          created_by:'',
-          count:2,
-          errors: []
+            modal: false,
+            title:'',
+            description: '',
+            created_by:'',
+            count:2,
+            errors: [],
+            customers: []
         };
     
         this.toggle = this.toggle.bind(this);
@@ -46,6 +47,7 @@ class AddStory extends React.Component {
         }
     }
 
+    /** To be done */
     getStoryCount() {
         axios.get(`/story/count`)
         .then((r)=> {
@@ -96,13 +98,36 @@ class AddStory extends React.Component {
         });
     }
 
+    getCustomers() {
+        axios.get('/api/customers')
+            .then((r) => {
+                this.setState({
+                    customers: r.data,
+                })
+            })
+            .catch((e) => {
+                console.error(e)
+            })
+    }
+
     toggle() {
+        this.getCustomers();
         this.setState({
           modal: !this.state.modal
         });
     }
 
   render() {
+      let customerList;
+
+      if (!this.state.customers.length) {
+          customerList = <option value="">Loading...</option>
+      } else {
+          customerList = this.state.customers.map((customer, index) => (
+              <option key={index} value={customer.id}>{customer.first_name + " " + customer.last_name}</option>
+          ))
+      }
+
     return (
       <div>
         <Button color="secondary" onClick={this.toggle}><i className="fas fa-plus-circle"/> Add Project</Button>
@@ -122,6 +147,16 @@ class AddStory extends React.Component {
                   <Label for="description">Description(*):</Label>
                   <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="textarea" name="description" onChange={this.handleInput.bind(this)}/>
                   {this.renderErrorFor('description')}
+              </FormGroup>
+
+              <FormGroup>
+                  <Label for="contributors">Customer:</Label>
+                  <Input className={this.hasErrorFor('customer_id') ? 'is-invalid' : ''} type="select"
+                         name="customer_id" id="customer_id" onChange={this.handleInput.bind(this)}>
+                      <option value="">Choose:</option>
+                      {customerList}
+                  </Input>
+                  {this.renderErrorFor('contributors')}
               </FormGroup>
               
               <FormGroup>
