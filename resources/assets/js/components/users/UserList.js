@@ -30,6 +30,11 @@ export default class DataTable extends Component {
     };
 
     this.updateUserState = this.updateUserState.bind(this);
+    this.addUserToState = this.addUserToState.bind(this);
+  }
+
+  addUserToState(users) {
+    this.setState({data: users})
   }
 
   fetchEntities() {
@@ -163,7 +168,7 @@ export default class DataTable extends Component {
     return (
       <div className="data-table">
 
-        <AddUser />
+        <AddUser users={this.state.data} action={this.addUserToState} />
         <table className="table table-bordered">
           <thead>
             <tr>

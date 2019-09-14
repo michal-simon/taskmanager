@@ -75,6 +75,11 @@ class AddUser extends React.Component {
             alert(response.data.message)
           else{
             this.toggle();
+
+              const newUser = response.data
+              this.props.users.push(newUser)
+              this.props.action(this.props.users)
+
             this.setState({
               username:null,
               email: null,

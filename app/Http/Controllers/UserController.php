@@ -22,7 +22,7 @@ class UserController extends Controller {
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
-        $users = $this->userRepository->listUsers(['*'], $orderBy, $orderDir);
+        $users = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
         return $users->toJson();
     }
 

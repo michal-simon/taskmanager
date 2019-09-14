@@ -96257,11 +96257,7 @@ var Header = function (_Component) {
             { className: 'mainMenu' },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('ul', null)
           ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { className: 'profilewidget' },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__forms_AddUser__["a" /* default */], null)
-          )
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'profilewidget' })
         )
       );
     }
@@ -96383,6 +96379,11 @@ var AddUser = function (_React$Component) {
             }).then(function (response) {
                 if (response.data.message) alert(response.data.message);else {
                     _this3.toggle();
+
+                    var newUser = response.data;
+                    _this3.props.users.push(newUser);
+                    _this3.props.action(_this3.props.users);
+
                     _this3.setState({
                         username: null,
                         email: null,
@@ -98071,10 +98072,16 @@ var DataTable = function (_Component) {
     };
 
     _this.updateUserState = _this.updateUserState.bind(_this);
+    _this.addUserToState = _this.addUserToState.bind(_this);
     return _this;
   }
 
   _createClass(DataTable, [{
+    key: 'addUserToState',
+    value: function addUserToState(users) {
+      this.setState({ data: users });
+    }
+  }, {
     key: 'fetchEntities',
     value: function fetchEntities() {
       var _this2 = this;
@@ -98267,7 +98274,7 @@ var DataTable = function (_Component) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'data-table' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__forms_AddUser__["a" /* default */], null),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__forms_AddUser__["a" /* default */], { users: this.state.data, action: this.addUserToState }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'table',
           { className: 'table table-bordered' },
