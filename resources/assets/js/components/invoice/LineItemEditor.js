@@ -15,14 +15,13 @@ class LineItemEditor extends Component {
 
     buildExistingLine(lineItem, index) {
 
-        console.log('item', lineItem)
-
         return (
             <LineItem key={index} id={index} lineItemData={
                 {
                     'quantity': lineItem.quantity,
                     'description': lineItem.description,
                     'unit_price': lineItem.unit_price,
+                    'line_id': lineItem.id
                 }
 
             } canUpdate={false}/>
@@ -54,7 +53,6 @@ class LineItemEditor extends Component {
                 </thead>
                 <tbody>
                 {items}
-                <hr />
                 {lineItemRows}
 
                 <tr>

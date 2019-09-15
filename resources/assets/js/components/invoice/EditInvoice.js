@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Address from './Address';
 import LineItemEditor from './LineItemEditor';
 import axios from 'axios'
+import {Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 
 class LineItemModel {
     constructor(id, quantity, description, unit_price) {
@@ -21,22 +22,50 @@ class EditInvoice extends Component {
         super(props, context);
 
         this.state = {
+            due_date: null,
             lines: [],
             existingLines: [],
-            customer_id: 1
+            customer_id: 1,
+            errors: []
         }
 
         this.updateData = this.updateData.bind(this)
         this.saveData = this.saveData.bind(this)
         this.setTotal = this.setTotal.bind(this)
+        this.toggle = this.toggle.bind(this);
+        this.hasErrorFor = this.hasErrorFor.bind(this)
+        this.renderErrorFor = this.renderErrorFor.bind(this)
         this.total = 0
+
 
     }
 
-    componentDidMount() {
+    renderErrorFor (field) {
+        if (this.hasErrorFor(field)) {
+            return (
+                <span className='invalid-feedback'>
+                    <strong>{this.state.errors[field][0]}</strong>
+                </span>
+            )
+        }
+    }
 
-        if(!this.props.invoice_id.length) {
+    handleInput(e) {
 
+        alert(e.target.name + ' ' + e.target.value)
+
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    hasErrorFor (field) {
+        return !!this.state.errors[field]
+    }
+
+    loadInvoice() {
+
+        if(!this.props.add) {
             return false
         }
 
@@ -60,15 +89,53 @@ class EditInvoice extends Component {
         };
 
         return (
+
             <div>
-                <h1 className='pt4 pt5-ns pb4 dark-gray'>Edit Invoice</h1>
-                <Address address={mockAddress} />
-                <LineItemEditor lineItemModel={this.state.existingLines} update={this.updateData} setTotal={this.setTotal} />
-                <button onClick={this.saveData}>Save</button>
-                <br />
-                <br />
+                <Button color="secondary" onClick={this.toggle}><i className="fas fa-plus-circle"/>Edit</Button>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                    <ModalHeader toggle={this.toggle}>
+                       Invoice
+                    </ModalHeader>
+
+                    <ModalBody>
+                        <div>
+                            <Address address={mockAddress} />
+
+                            <FormGroup>
+                                <Label for="due_date">Due Date(*):</Label>
+                                <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''} type="date" name="due_date" onChange={this.handleInput.bind(this)}/>
+                                {this.renderErrorFor('due_date')}
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label for="customer">Customer(*):</Label>
+                                <Input className={this.hasErrorFor('customer') ? 'is-invalid' : ''} type="select" name="customer_id" onChange={this.handleInput.bind(this)}>
+                                    <option value="">Choose:</option>
+                                    <option value="2">Test Customer</option>
+                                </Input>
+                                {this.renderErrorFor('customer')}
+                            </FormGroup>
+
+                            <LineItemEditor lineItemModel={this.state.existingLines} update={this.updateData} setTotal={this.setTotal} />
+                            <button onClick={this.saveData}>Save</button>
+                            <br />
+                            <br />
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="secondary" onClick={this.toggle}><i className="fas fa-times-circle"></i> Close</Button>
+                    </ModalFooter>
+                </Modal>
             </div>
         );
+    }
+
+    toggle() {
+        this.setState({
+            modal: !this.state.modal
+        });
+
+        this.loadInvoice()
     }
 
     updateData(data) {
@@ -83,6 +150,7 @@ class EditInvoice extends Component {
     saveData() {
         const data = {
             invoice_id: this.props.invoice_id,
+            due_date: this.state.due_date,
             customer_id: this.state.customer_id,
             data: JSON.stringify(this.state.data),
             total: this.total,

@@ -36,4 +36,26 @@ class InvoiceLineRepository extends BaseRepository implements InvoiceLineReposit
         }
     }
 
+    /**
+     * Find the invoice line or fail
+     *
+     * @param int $id
+     *
+     * @return InvoiceLine
+     * @throws \Exception
+     */
+    public function findLineById(int $id): InvoiceLine {
+        return $this->findOneOrFail($id);
+    }
+
+    /**
+     * Delete a invoice line
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function deleteLine(): bool {
+        return $this->delete();
+    }
+
 }

@@ -23,7 +23,10 @@ Route::get('uploads/{task_id}', 'UploadController@index');
 Route::get('comments/{task_id}', 'CommentController@index');
 Route::put('tasks/{task_id}', 'TaskController@update');
 Route::post('invoice', 'InvoiceController@store');
+Route::get('invoice', 'InvoiceController@index');
 Route::get('invoice/{invoice_id}', 'InvoiceController@show');
+Route::delete('invoice/line/{line_id}', 'InvoiceController@destroyLine');
+
 
 
 

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Invoice;
 use App\Repositories\Interfaces\InvoiceRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Collection;
 
 class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInterface {
 
@@ -31,15 +32,14 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
             return false;
         }
     }
-    
-      /**
+
+    /**
      * @param int $id
      *
      * @return Invoice
      * @throws \Exception
      */
-    public function findInvoiceById(int $id) : Invoice
-    {
+    public function findInvoiceById(int $id): Invoice {
         return $this->findOneOrFail($id);
     }
 
@@ -53,6 +53,29 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
                         ->select('invoice_lines.*')
                         ->where('invoices.id', $invoiceId)
                         ->get();
+    }
+
+    /**
+     * List all the invoices
+     *
+     * @param string $order
+     * @param string $sort
+     * @param array $columns
+     * @return \Illuminate\Support\Collection
+     */
+    public function listInvoices(string $order = 'id', string $sort = 'desc', array $columns = ['*']): Collection {
+        return $this->all($columns, $order, $sort);
+    }
+
+    /**
+     * Update the invoice
+     *
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function updateInvoice(array $data): bool {
+        return $this->update($data);
     }
 
 }
