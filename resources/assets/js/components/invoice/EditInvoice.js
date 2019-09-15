@@ -92,7 +92,7 @@ class EditInvoice extends Component {
 
             <div>
                 <Button color="secondary" onClick={this.toggle}><i className="fas fa-plus-circle"/>Edit</Button>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} size="lg">
                     <ModalHeader toggle={this.toggle}>
                        Invoice
                     </ModalHeader>

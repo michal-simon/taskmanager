@@ -58,4 +58,16 @@ class InvoiceLineRepository extends BaseRepository implements InvoiceLineReposit
         return $this->delete();
     }
 
+    /**
+     * Update the customer
+     *
+     * @param array $params
+     *
+     * @return bool
+     * @throws UpdateCustomerInvalidArgumentException
+     */
+    public function updateLine(array $params): bool {
+        return $this->model->update($params);
+    }
+
 }

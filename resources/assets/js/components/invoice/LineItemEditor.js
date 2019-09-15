@@ -21,7 +21,8 @@ class LineItemEditor extends Component {
                     'quantity': lineItem.quantity,
                     'description': lineItem.description,
                     'unit_price': lineItem.unit_price,
-                    'line_id': lineItem.id
+                    'line_id': lineItem.id,
+                    'change_existing': true
                 }
 
             } canUpdate={false}/>
@@ -29,7 +30,6 @@ class LineItemEditor extends Component {
     }
 
     render() {
-
         const lineItemRows = this.state.rowData.map((lineItem, index) =>
             <LineItem key={index} id={index} lineItemData={this.state.rowData[index]} onChange={this.handleRowChange} onDelete={this.handleRowDelete}/>
         );

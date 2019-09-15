@@ -15,13 +15,11 @@ class TaskTest extends TestCase {
     use DatabaseTransactions;
 
     private $user;
-    private $project;
 
     public function setUp() {
         parent::setUp();
         $this->beginDatabaseTransaction();
         $this->user = \App\User::where('is_active', 1)->first();
-        $this->project = \App\Project::where('is_completed', 0)->first();
     }
 
     /** @test */
@@ -71,7 +69,6 @@ class TaskTest extends TestCase {
             'content' => 'new task',
             'is_completed' => 0,
             'contributors' => $this->user->id,
-            'project_id' => $this->project->id,
             'task_color' => 'colorBlue',
             'due_date' => date('Y-m-d H:i:s'),
         ];

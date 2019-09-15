@@ -32,9 +32,21 @@ class LineItem extends Component {
         this.checkedItems[item] = isChecked
     }
 
-    changeStatus(status) {
-        alert('change status  ' + status)
-        console.log('send checkboxes', this.checkedItems)
+    changeStatus(status, line_id) {
+        axios.put(`/api/invoice/line/${line_id}`, {
+            invoice_status:status,
+        })
+            .then((response)=> {
+               alert('good')
+            })
+            .catch((error)=> {
+
+                alert('bad')
+            });
+    }
+
+    updateLine(line_id) {
+        alert('update ' + line_id)
     }
 
     render() {
@@ -50,8 +62,9 @@ class LineItem extends Component {
         if(!this.props.canUpdate) {
             changeStatusButton = (
                 <span>
-                    <button onClick={() => this.changeStatus(2).bind(this)}>Sent</button>
-                    <button onClick={() => this.changeStatus(3).bind(this)}>Paid</button>
+                    <button onClick={() => this.changeStatus(2, line_id).bind(this)}>Sent</button>
+                    <button onClick={() => this.changeStatus(3, line_id).bind(this)}>Paid</button>
+                    {/*<button onClick={() => this.updateLine(line_id).bind(this)}>Update</button>*/}
                 </span>
             )
         }
@@ -71,7 +84,6 @@ class LineItem extends Component {
                     <p className='pa2 mr2 f6'>{quantity * unit_price}</p>
                 </td>
                 <td>
-                    <input type="checkbox" name={line_id} onChange={this.toggleCheckbox.bind(this)} />
                     {button}
                     {changeStatusButton}
                 </td>

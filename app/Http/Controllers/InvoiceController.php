@@ -37,7 +37,7 @@ class InvoiceController extends Controller {
      * @return type
      */
     public function store(Request $request) {
-        
+
         if (!empty($request->invoice_id)) {
             $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
             $invoiceRepo = new InvoiceRepository($invoice);
@@ -70,7 +70,7 @@ class InvoiceController extends Controller {
             die;
         }
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -79,11 +79,19 @@ class InvoiceController extends Controller {
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroyLine(int $id)
-    {
+    public function destroyLine(int $id) {
         $customer = $this->invoiceLineRepository->findLineById($id);
         $customerRepo = new InvoiceLineRepository($customer);
         $customerRepo->deleteLine();
+    }
+
+    public function updateLine($id, Request $request) {
+
+        $invoiceLine = $this->invoiceLineRepository->findLineById($id);
+
+        $update = new InvoiceLineRepository($invoiceLine);
+
+        $update->updateLine($request->all());
     }
 
 }
