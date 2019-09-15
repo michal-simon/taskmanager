@@ -36,11 +36,6 @@ class CustomerController extends Controller {
         $this->addressRepo = $addressRepository;
     }
 
-    public function dashboard() {
-
-        return view('customers/index');
-    }
-
     /**
      * Display a listing of the resource.
      *

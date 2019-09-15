@@ -12,7 +12,7 @@ switch(true) {
         ReactDOM.render(<UserList/>, document.getElementById('app'));
         break;
 
-        case window.location.pathname.indexOf("customers/dashboard") >= 0:
+        case window.location.href.indexOf("customers?view") >= 0:
 
             ReactDOM.render(<Customers/>, document.getElementById('app'));
 

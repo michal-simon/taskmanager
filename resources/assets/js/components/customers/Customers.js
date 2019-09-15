@@ -3,6 +3,8 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
 import AddCustomer from './AddCustomer';
 import EditCustomer from './EditCustomer';
+import { Table } from 'reactstrap';
+
 
 export default class Customers extends Component {
     constructor(props) {
@@ -201,7 +203,7 @@ export default class Customers extends Component {
 
                 <AddCustomer action={this.updateCustomers} customers={this.state.customers} />
 
-                <table className="table table-bordered">
+                <Table striped bordered hover responsive>
                     <thead>
                     <tr>
                         { this.tableHeads() }
@@ -211,7 +213,7 @@ export default class Customers extends Component {
                     <tbody>{ this.userList() }
 
                     </tbody>
-                </table>
+                </Table>
                 { (this.state.customers && this.state.customers.length > 0) &&
                 <nav>
                     <ul className="pagination">
