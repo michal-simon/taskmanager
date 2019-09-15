@@ -8,7 +8,7 @@ import {Router,browserHistory} from 'react-router'
 import routes from './routes'
 
 switch(true) {
-    case window.location.pathname.indexOf("users/dashboard") >= 0:
+    case window.location.href.indexOf("users?view") >= 0:
         ReactDOM.render(<UserList/>, document.getElementById('app'));
         break;
 

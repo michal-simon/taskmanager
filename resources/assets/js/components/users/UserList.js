@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import EditUser from './EditUser'
 import AddUser from '../forms/AddUser'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter,Input,FormGroup,Label } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter,Input,FormGroup,Label, Table } from 'reactstrap';
 import AddCustomer from "../customers/AddCustomer";
 
 export default class DataTable extends Component {
@@ -169,7 +169,7 @@ export default class DataTable extends Component {
       <div className="data-table">
 
         <AddUser users={this.state.data} action={this.addUserToState} />
-        <table className="table table-bordered">
+        <Table striped bordered hover responsive>
           <thead>
             <tr>
               { this.tableHeads() }
@@ -177,7 +177,7 @@ export default class DataTable extends Component {
             </tr>
           </thead>
           <tbody>{ this.userList() }</tbody>
-        </table>
+        </Table>
         { (this.state.data && this.state.data.length > 0) &&
           <nav>
             <ul className="pagination">
