@@ -11,17 +11,15 @@ use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TaskTest extends TestCase {
-    
+
     use DatabaseTransactions;
 
     private $user;
-    private $project;
 
     public function setUp() {
         parent::setUp();
         $this->beginDatabaseTransaction();
         $this->user = \App\User::where('is_active', 1)->first();
-        $this->project = \App\Project::where('is_completed', 0)->first();
     }
 
     /** @test */
@@ -65,13 +63,12 @@ class TaskTest extends TestCase {
 
     /** @test */
     public function it_can_create_a_task() {
-        
+
         $data = [
             'title' => 'unit-test',
             'content' => 'new task',
             'is_completed' => 0,
             'contributors' => $this->user->id,
-            'project_id' => $this->project->id,
             'task_color' => 'colorBlue',
             'due_date' => date('Y-m-d H:i:s'),
         ];
