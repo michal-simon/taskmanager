@@ -26,9 +26,7 @@ class TaskController extends Controller {
      * @return Response
      */
     public function store(TaskRequest $request) {
-
         $validatedData = $request->validated();
-
         $task = $this->taskRepository->createTask([
             'task_type' => $validatedData['task_type'],
             'title' => $validatedData['title'],
@@ -39,12 +37,10 @@ class TaskController extends Controller {
             'task_status' => $validatedData['task_status'],
             'created_by' => $validatedData['created_by'],
         ]);
-
         if ($validatedData['task_type'] == 1) {
             $objProject = $this->projectRepository->findProjectById($validatedData['project_id']);
             $objProject->tasks()->attach($task);
         }
-
         return $task->toJson();
     }
 
@@ -63,7 +59,6 @@ class TaskController extends Controller {
     public function getTasksForProject($projectId) {
         $objProject = $this->projectRepository->findProjectById($projectId);
         $task = $this->taskRepository->getTasksForProject($objProject);
-
         return $task->toJson();
     }
 
@@ -91,12 +86,12 @@ class TaskController extends Controller {
         $taskRepo = new TaskRepository($task);
         $taskRepo->updateTask($request->all());
     }
-    
+
     public function getLeads() {
         $tasks = $this->taskRepository->getLeads();
         return $tasks->toJson();
     }
-    
+
     /**
      * 
      * @param Request $request

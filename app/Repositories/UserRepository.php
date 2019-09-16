@@ -78,16 +78,19 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         return $this->all($columns, $orderBy, $sortBy);
     }
+    
+    /**
+     * 
+     * @param type $columns
+     * @param string $orderBy
+     * @param string $sortBy
+     * @return type
+     */
+    public function getActiveUsers($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc') : Collection {
+        
+         return User::where('is_active', 1)
+                             ->orderBy($orderBy, $sortBy)
+                            ->get();
+    }
 
-    // public function getAll(string $orderBy, string $orderDir, int $recordsPerPage, $blActive = true)
-    // {        
-    //     $query = User::where('is_active', $blActive)
-    //                         ->orderBy($orderBy, $orderDir);
-
-    //     if($recordsPerPage) {
-    //         $query->paginate($recordsPerPage);
-    //     }
-
-    //     return $query->get();
-    // }
 }

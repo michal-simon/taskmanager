@@ -15,16 +15,21 @@ use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\CommentRepository;
 use App\Repositories\Interfaces\FileRepositoryInterface;
 use App\Repositories\FileRepository;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
+use App\Repositories\RoleRepository;
+use App\Repositories\Interfaces\CustomerRepositoryInterface;
+use App\Repositories\CustomerRepository;
+use App\Repositories\Interfaces\AddressRepositoryInterface;
+use App\Repositories\AddressRepository;
 
-class RepositoryServiceProvider extends ServiceProvider
-{
+class RepositoryServiceProvider extends ServiceProvider {
+
     /**
      * Bootstrap the application services.
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         //
     }
 
@@ -33,36 +38,42 @@ class RepositoryServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
+    public function register() {
         $this->app->bind(
-            ProjectRepositoryInterface::class, 
-            ProjectRepository::class
+                ProjectRepositoryInterface::class, ProjectRepository::class
         );
 
         $this->app->bind(
-            TaskRepositoryInterface::class, 
-            TaskRepository::class
+                TaskRepositoryInterface::class, TaskRepository::class
         );
 
         $this->app->bind(
-            TaskStatusRepositoryInterface::class, 
-            TaskStatusRepository::class
+                TaskStatusRepositoryInterface::class, TaskStatusRepository::class
         );
 
         $this->app->bind(
-            UserRepositoryInterface::class, 
-            UserRepository::class
+                UserRepositoryInterface::class, UserRepository::class
         );
 
         $this->app->bind(
-            CommentRepositoryInterface::class, 
-            CommentRepository::class
+                CommentRepositoryInterface::class, CommentRepository::class
         );
 
         $this->app->bind(
-            FileRepositoryInterface::class, 
-            FileRepository::class
+                FileRepositoryInterface::class, FileRepository::class
+        );
+
+        $this->app->bind(
+                CustomerRepositoryInterface::class, CustomerRepository::class
+        );
+        
+        $this->app->bind(
+                AddressRepositoryInterface::class, AddressRepository::class
+        );
+        
+        $this->app->bind(
+                RoleRepositoryInterface::class, RoleRepository::class
         );
     }
+
 }

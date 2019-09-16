@@ -37,31 +37,31 @@ class Dashboard extends Component{
         const url = this.props.task_type == 2 ? '/api/leads' : `/api/tasks/getTasksForProject/${this.project_id}`
 
         axios.get(url)
-        .then((r)=> {
-            this.setState({
-                tasks: r.data,
-                err:''
-            })
-        })
-        .then(()=>{
-            this.setState({
-                loading:false
-            })
-        })
-        .catch((e)=>{
-            if (!e.response){
+            .then((r)=> {
                 this.setState({
-                    loading:true,
-                    err: e
+                    tasks: r.data,
+                    err:''
                 })
-            }
-            else {
+            })
+            .then(()=>{
                 this.setState({
-                    loading:false,
-                    err: e
+                    loading:false
                 })
-            }
-        })
+            })
+            .catch((e)=>{
+                if (!e.response){
+                    this.setState({
+                        loading:true,
+                        err: e
+                    })
+                }
+                else {
+                    this.setState({
+                        loading:false,
+                        err: e
+                    })
+                }
+            })
     }
 
     getStoryDetails() {
@@ -80,15 +80,15 @@ class Dashboard extends Component{
             })
             .catch((e)=>{
                 this.setState({
-                loadingStory:false,
-                err2: e
+                    loadingStory:false,
+                    err2: e
+                })
             })
-        })
     }
 
     story() {
         const test = this.state.stories.length ?  this.state.stories.filter(i=>i.id===parseInt(this.project_id)) : ''
-        
+
         if(test.length) {
             return <Story storyName={test} storyType={this.project_id} tasks={this.state.tasks} loading={this.state.loading}/>
         }
@@ -119,7 +119,7 @@ class Dashboard extends Component{
 
         const url = this.props.task_type == 1 ? `?project_id=${project_id}` : `/leads?project_id=${project_id}`;
 
-       window.location.href = url
+        window.location.href = url
     }
 
     getStories() {
@@ -167,44 +167,37 @@ class Dashboard extends Component{
         if(this.props.task_type != 2) {
 
             storyTable = (
-                    
-                    <div className="side">
-                        <span className="logo">Hampton's</span>
 
-                        <ul className="side-menu">
-                            {this.getStories()}
-                        </ul>
-
-                        <div className="otherMenu">
-                            <AddStory addProject={this.addProject} />
-                        </div>
+                <div className="side">
+                    <span className="logo">Hampton's</span>
+                    <ul className="side-menu">
+                        {this.getStories()}
+                    </ul>
+                    <div className="otherMenu">
+                        <AddStory addProject={this.addProject} />
                     </div>
-                
+                </div>
 
             )
         }
-            return (
-                <div>
-                    {storyTable}
-
-                    <div className="con" style={divStyle}>
-                        <Header/>
-                        <aside>
-                            <Story 
-                                tasks={this.state.tasks}
-                                action={this.updateTasks}
-                                storyName={this.state.stories.filter(i=>i.id===parseInt(this.project_id))} 
-                                storyType={this.project_id} tasks={this.state.tasks} 
-                                loading={this.state.loading}
-                                task_type={this.props.task_type}
-                            />
-                        </aside>
-
-                    </div>
+        return (
+            <div>
+                {storyTable}
+                <div className="con" style={divStyle}>
+                    <Header/>
+                    <aside>
+                        <Story
+                            tasks={this.state.tasks}
+                            action={this.updateTasks}
+                            storyName={this.state.stories.filter(i=>i.id===parseInt(this.project_id))}
+                            storyType={this.project_id} tasks={this.state.tasks}
+                            loading={this.state.loading}
+                            task_type={this.props.task_type}
+                        />
+                    </aside>
                 </div>
-                
-            )
+            </div>
+        )
     }
 }
-
 export default Dashboard
