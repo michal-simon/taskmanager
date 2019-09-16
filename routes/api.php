@@ -27,6 +27,7 @@ Route::get('invoice', 'InvoiceController@index');
 Route::get('invoice/{invoice_id}', 'InvoiceController@show');
 Route::delete('invoice/line/{line_id}', 'InvoiceController@destroyLine');
 Route::put('invoice/line/{line_id}', 'InvoiceController@updateLine');
+Route::put('invoice/{invoice_id}', 'InvoiceController@update');
 
 
 

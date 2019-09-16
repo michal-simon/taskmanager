@@ -15,7 +15,8 @@ class Invoice extends Model {
         'customer_id',
         'total',
         'payment_type',
-        'due_date'
+        'due_date',
+        'invoice_status'
     ];
 
     /**

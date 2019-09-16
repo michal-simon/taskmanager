@@ -48,7 +48,7 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
      * @param int $customerId
      * @return type
      */
-    public function getInvoicesByIdWithLines(int $invoiceId) {
+    public function getInvoiceLinesByInvoiceId(int $invoiceId) {
         return Invoice::join('invoice_lines', 'invoice_lines.invoice_id', '=', 'invoices.id')
                         ->select('invoice_lines.*')
                         ->where('invoices.id', $invoiceId)

@@ -62,13 +62,15 @@ class InvoiceController extends Controller {
      */
     public function show(int $invoice_id) {
 
-        try {
-            $lines = $this->invoiceRepository->getInvoicesByIdWithLines($invoice_id);
-            return $lines->toJson();
-        } catch (Exception $ex) {
-            echo $ex->getException();
-            die;
-        }
+        $lines = $this->invoiceRepository->getInvoiceLinesByInvoiceId($invoice_id);
+        $invoice = $this->invoiceRepository->findInvoiceById($invoice_id);
+
+        $arrTest = [
+            'lines' => $lines,
+            'invoice' => $invoice
+        ];
+
+        return collect($arrTest)->toJson();
     }
 
     /**
@@ -85,13 +87,32 @@ class InvoiceController extends Controller {
         $customerRepo->deleteLine();
     }
 
-    public function updateLine($id, Request $request) {
+    /**
+     * 
+     * @param int $id
+     * @param Request $request
+     */
+    public function updateLine(int $id, Request $request) {
 
         $invoiceLine = $this->invoiceLineRepository->findLineById($id);
 
         $update = new InvoiceLineRepository($invoiceLine);
 
         $update->updateLine($request->all());
+    }
+
+    /**
+     * 
+     * @param int $id
+     * @param Request $request
+     */
+    public function update(int $id, Request $request) {
+
+        $invoice = $this->invoiceRepository->findInvoiceById($id);
+
+        $update = new InvoiceRepository($invoice);
+
+        $update->updateInvoice($request->all());
     }
 
 }

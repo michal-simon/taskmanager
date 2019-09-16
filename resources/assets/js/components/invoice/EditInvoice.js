@@ -26,6 +26,7 @@ class EditInvoice extends Component {
             lines: [],
             existingLines: [],
             customer_id: 1,
+            invoice_status: 1,
             errors: []
         }
 
@@ -36,7 +37,7 @@ class EditInvoice extends Component {
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.total = 0
-
+        this.changeStatus = this.changeStatus.bind(this);
 
     }
 
@@ -71,12 +72,30 @@ class EditInvoice extends Component {
 
         axios.get(`/api/invoice/${this.props.invoice_id}`)
             .then((r)=> {
-                console.log('invoices', r.data)
-                this.setState({existingLines: r.data})
+                this.setState({existingLines: r.data.lines, invoice_status: r.data.invoice.invoice_status})
             })
             .catch((e)=>{
               alert(e)
             })
+    }
+
+    changeStatus(status) {
+
+        if(!this.props.invoice_id) {
+
+            return false
+        }
+
+        axios.put(`/api/invoice/${this.props.invoice_id}`, {
+            invoice_status:status,
+        })
+            .then((response)=> {
+               this.setState({invoice_status: status})
+            })
+            .catch((error)=> {
+
+                alert('bad')
+            });
     }
 
 
@@ -87,6 +106,8 @@ class EditInvoice extends Component {
             county: 'Gwent',
             country: 'Wales'
         };
+
+        const changeStatusButton = this.state.invoice_status == 1 ? <Button color="primary" onClick={() => this.changeStatus(2).bind(this)}>Send</Button> : <Button color="primary" onClick={() => this.changeStatus(3).bind(this)}>Paid</Button>
 
         return (
 
@@ -117,7 +138,8 @@ class EditInvoice extends Component {
                             </FormGroup>
 
                             <LineItemEditor lineItemModel={this.state.existingLines} update={this.updateData} setTotal={this.setTotal} />
-                            <button onClick={this.saveData}>Save</button>
+                            <Button color="success" onClick={this.saveData}>Save</Button>
+                            {changeStatusButton}
                             <br />
                             <br />
                         </div>

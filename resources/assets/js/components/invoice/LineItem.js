@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import {Button} from "reactstrap";
 
 
 class LineItem extends Component {
@@ -13,79 +14,56 @@ class LineItem extends Component {
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.pushToCaller = this.pushToCaller.bind(this);
         this.deleteFromDatabase = this.deleteFromDatabase.bind(this);
-        this.changeStatus = this.changeStatus.bind(this);
-
-        this.checkedItems = new Map()
-        this.toggleCheckbox = this.toggleCheckbox.bind(this);
-
     }
 
-    handleCheckboxChange(e) {
-        const item = e.target.name;
-        const isChecked = e.target.checked;
-        this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
-    }
+    updateLine(e) {
+        const parent = e.target.parentNode.parentNode
+        const lineId = e.target.parentNode.parentNode.getAttribute('data-id')
 
-    toggleCheckbox(e) {
-        const item = e.target.name;
-        const isChecked = e.target.checked;
-        this.checkedItems[item] = isChecked
-    }
+        if(!lineId) {
+            return false
+        }
 
-    changeStatus(status, line_id) {
-        axios.put(`/api/invoice/line/${line_id}`, {
-            invoice_status:status,
-        })
-            .then((response)=> {
+        let inputs = parent.querySelectorAll('input'), i
+
+        const obj = {}
+
+        for (i = 0; i < inputs.length; ++i) {
+
+                obj[inputs[i].getAttribute("name")] =  inputs[i].value
+        }
+
+        axios.put(`/api/invoice/line/${lineId}`, obj)
+            .then((response) => {
                alert('good')
             })
-            .catch((error)=> {
-
-                alert('bad')
+            .catch((error) => {
+                alert(error)
             });
     }
 
-    updateLine(line_id) {
-        alert('update ' + line_id)
-    }
-
     render() {
-        const { quantity, description, unit_price, line_id } = this.props.lineItemData;
+        const { line_id } = this.props.lineItemData;
 
-        const Checkbox = ({ type = 'checkbox', name = line_id, checked = false, onChange }) => (
-            <input type={type} name={name} checked={checked} onChange={onChange} />
-        );
-
-        const button = this.props.canUpdate ? <button onClick={this.handleDeleteClick} className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</button> :  <button onClick={() => this.deleteFromDatabase(line_id)} className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</button>
-        let changeStatusButton = null;
-
-        if(!this.props.canUpdate) {
-            changeStatusButton = (
-                <span>
-                    <button onClick={() => this.changeStatus(2, line_id).bind(this)}>Sent</button>
-                    <button onClick={() => this.changeStatus(3, line_id).bind(this)}>Paid</button>
-                    {/*<button onClick={() => this.updateLine(line_id).bind(this)}>Update</button>*/}
-                </span>
-            )
-        }
+        const button = this.props.canUpdate ? <Button color="danger" onClick={this.handleDeleteClick}>Delete</Button> :  <Button color="danger" onClick={() => this.deleteFromDatabase(line_id)} className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
 
         return (
             <tr data-id={line_id} key={line_id}>
                 <td>
-                    <input type='text' value={quantity} onChange={this.handleQuantityChange} className='pa2 mr2 f6 form-control'></input>
+                    <input name="quantity" data-line={line_id} type='text' value={this.state.quantity} onChange={this.handleQuantityChange} className='pa2 mr2 f6 form-control'></input>
                 </td>
                 <td>
-                    <input type='text' value={description} onChange={this.handleDescriptionChange} className='pa2 mr2 f6 form-control'></input>
+                    <input name="description" data-line={line_id} type='text' value={this.state.description} onChange={this.handleDescriptionChange} className='pa2 mr2 f6 form-control'></input>
                 </td>
                 <td>
-                    <input type='text' data-column="5" value={unit_price} onChange={this.handlePriceChange} className='pa2 mr2 f6 form-control'></input>
+                    <input name="unit_price" data-line={line_id} type='text' data-column="5" value={this.state.unit_price} onChange={this.handlePriceChange} className='pa2 mr2 f6 form-control'></input>
                 </td>
                 <td>
-                    <p className='pa2 mr2 f6'>{quantity * unit_price}</p>
+                    <p className='pa2 mr2 f6'>{this.state.quantity * this.state.unit_price}</p>
                 </td>
                 <td>
                     {button}
-                    {changeStatusButton}
+                    <Button color="primary" onClick={this.updateLine}>Update</Button>
                 </td>
             </tr>
         );
@@ -93,20 +71,38 @@ class LineItem extends Component {
 
     handleQuantityChange(e) {
 
-        if(!e.target.value || isNaN(e.target.value)) {
-            return false
+        if(this.isExistingLine(e)) {
+            this.setState({ quantity: e.target.value });
+            return false;
         }
 
         this.setState({ quantity: e.target.value }, this.pushToCaller);
     }
 
     handleDescriptionChange(e) {
+
+        if(this.isExistingLine(e)) {
+            this.setState({ description: e.target.value });
+            return false
+        }
+
         this.setState({ description: e.target.value }, this.pushToCaller);
+    }
+
+    isExistingLine(e) {
+        const lineId = e.target.parentNode.parentNode.getAttribute('data-id')
+
+        if(lineId) {
+            return true
+        }
+
+        return false
     }
 
     handlePriceChange(e) {
 
-        if(!e.target.value || isNaN(e.target.value)) {
+        if(this.isExistingLine(e)) {
+            this.setState({ unit_price: e.target.value });
             return false
         }
 
