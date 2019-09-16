@@ -2197,12 +2197,10 @@ input::placeholder {
 }
 
 .side {
-  position: absolute;
-  left: 0;
-  top: 0;
   height: 100vh;
+  float: left;
   background: #fff;
-  min-width: 184px;
+  width: 184px;
   -webkit-box-shadow: -3px 0 14px #535353;
           box-shadow: -3px 0 14px #535353;
 }

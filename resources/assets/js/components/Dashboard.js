@@ -172,7 +172,6 @@ class Dashboard extends Component{
                     </div>
 
                     <div className="con">
-                        <Header/>
                         <aside>
                             <Story 
                                 tasks={this.state.tasks}

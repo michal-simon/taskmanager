@@ -189,12 +189,10 @@ input[type=time] {
 	@extend %extend_1;
 }
 .side {
-	position: absolute;
-	left: 0;
-	top: 0;
 	height: 100vh;
+	float: left;
 	background: $white;
-	min-width: 184px;
+	width: 184px;
 	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
 	box-shadow: -3px 0 14px $color_fuscous_gray_approx;
 }
