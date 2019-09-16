@@ -88184,17 +88184,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Task = function (_Component) {
     _inherits(Task, _Component);
 
-    function Task(props) {
+    function Task() {
         _classCallCheck(this, Task);
 
-        return _possibleConstructorReturn(this, (Task.__proto__ || Object.getPrototypeOf(Task)).call(this, props));
+        return _possibleConstructorReturn(this, (Task.__proto__ || Object.getPrototypeOf(Task)).apply(this, arguments));
     }
 
     _createClass(Task, [{
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps() {
-
-            var self = this;
 
             setTimeout(function () {
                 __WEBPACK_IMPORTED_MODULE_4_jquery___default()(".mcell-task").draggable({
@@ -88210,31 +88208,8 @@ var Task = function (_Component) {
                     activeClass: "ui-state-default",
                     hoverClass: "ui-state-hover",
                     drop: function drop(event, ui) {
-
-                        event.preventDefault();
-
                         __WEBPACK_IMPORTED_MODULE_4_jquery___default()(this).append(__WEBPACK_IMPORTED_MODULE_4_jquery___default()(ui.draggable));
-                        var id = __WEBPACK_IMPORTED_MODULE_4_jquery___default()(ui.draggable).attr('id');
-                        var status = __WEBPACK_IMPORTED_MODULE_4_jquery___default()(this).data('status');
-
-                        var index = self.props.tasks.findIndex(function (task) {
-                            return task.id == id;
-                        });
-                        var currentObject = self.props.tasks[index];
-
-                        __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put('/api/tasks/status/' + id, {
-                            task_status: status
-                        }).then(function (response) {
-                            // currentObject.task_status = status
-                            // console.log('all tasks', self.props.tasks)
-                            // self.props.action(self.props.tasks)
-                        }).catch(function (error) {
-                            alert(error);
-                        });
-
-                        // alert($(this).data('status'))
-                        //
-                        // alert($(this).find("li").attr('id'))
+                        console.log(__WEBPACK_IMPORTED_MODULE_4_jquery___default()(this).find("li").attr('id'));
                     }
                 });
             }, 3000);
@@ -88275,16 +88250,9 @@ var Task = function (_Component) {
                 content = tasks.filter(function (i) {
                     return i.task_status === Number(filter);
                 }).map(function (i, index) {
-
-                    var color = i.task_color.replace("color", "").toLowerCase();
-
-                    var divStyle = {
-                        borderLeft: '2px solid ' + color
-                    };
-
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { style: divStyle, 'data-task': i.id, id: i.id, className: 'mcell-task card', key: index },
+                        'li',
+                        { id: i.id, className: 'mcell-task', key: index },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'span',
                             { className: 'task-name' },
@@ -95967,9 +95935,7 @@ var Tooltips = function (_Component) {
           tasks: this.props.tasks,
           storyType: this.props.storyType,
           action: this.props.action,
-          status: this.props.id,
-          task_type: this.props.task_type
-        })
+          status: this.props.id })
       );
     }
   }]);
@@ -96337,11 +96303,9 @@ var AddStory = function (_React$Component) {
             modal: false,
             title: '',
             description: '',
-            customer_id: '',
             created_by: '',
             count: 2,
-            errors: [],
-            customers: []
+            errors: []
         };
 
         _this.toggle = _this.toggle.bind(_this);
@@ -96383,9 +96347,6 @@ var AddStory = function (_React$Component) {
                 );
             }
         }
-
-        /** To be done */
-
     }, {
         key: 'getStoryCount',
         value: function getStoryCount() {
@@ -96411,7 +96372,6 @@ var AddStory = function (_React$Component) {
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/projects', {
                 title: this.state.title,
                 description: this.state.description,
-                customer_id: this.state.customer_id,
                 created_by: this.state.created_by,
                 storyId: this.state.count
             }).then(function (response) {
@@ -96425,7 +96385,6 @@ var AddStory = function (_React$Component) {
                     _this3.setState({
                         title: null,
                         description: null,
-                        customer_id: null,
                         created_by: null,
                         storyId: null,
                         loading: false
@@ -96438,22 +96397,8 @@ var AddStory = function (_React$Component) {
             });
         }
     }, {
-        key: 'getCustomers',
-        value: function getCustomers() {
-            var _this4 = this;
-
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/customers').then(function (r) {
-                _this4.setState({
-                    customers: r.data
-                });
-            }).catch(function (e) {
-                console.error(e);
-            });
-        }
-    }, {
         key: 'toggle',
         value: function toggle() {
-            this.getCustomers();
             this.setState({
                 modal: !this.state.modal
             });
@@ -96461,24 +96406,6 @@ var AddStory = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var customerList = void 0;
-
-            if (!this.state.customers.length) {
-                customerList = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'option',
-                    { value: '' },
-                    'Loading...'
-                );
-            } else {
-                customerList = this.state.customers.map(function (customer, index) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'option',
-                        { key: index, value: customer.id },
-                        customer.first_name + " " + customer.last_name
-                    );
-                });
-            }
-
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -96520,27 +96447,6 @@ var AddStory = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('description') ? 'is-invalid' : '', type: 'textarea', name: 'description', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('description')
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
-                            null,
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
-                                { 'for': 'contributors' },
-                                'Customer:'
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */],
-                                { className: this.hasErrorFor('customer_id') ? 'is-invalid' : '', type: 'select',
-                                    name: 'customer_id', id: 'customer_id', onChange: this.handleInput.bind(this) },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'option',
-                                    { value: '' },
-                                    'Choose:'
-                                ),
-                                customerList
-                            ),
-                            this.renderErrorFor('contributors')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
