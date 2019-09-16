@@ -97494,6 +97494,16 @@ var EditInvoice = function (_Component) {
             return !!this.state.errors[field];
         }
     }, {
+        key: 'loadCustomers',
+        value: function loadCustomers() {
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/customers/').then(function (r) {
+                console.log('customers', r.data);
+                //this.setState({existingLines: r.data.lines, invoice_status: r.data.invoice.invoice_status})
+            }).catch(function (e) {
+                alert(e);
+            });
+        }
+    }, {
         key: 'loadInvoice',
         value: function loadInvoice() {
             var _this2 = this;
@@ -97644,6 +97654,7 @@ var EditInvoice = function (_Component) {
             });
 
             this.loadInvoice();
+            this.loadCustomers();
         }
     }, {
         key: 'updateData',

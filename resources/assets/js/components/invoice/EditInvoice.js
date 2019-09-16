@@ -64,6 +64,17 @@ class EditInvoice extends Component {
         return !!this.state.errors[field]
     }
 
+    loadCustomers() {
+        axios.get('/api/customers/')
+            .then((r)=> {
+                console.log('customers', r.data)
+                //this.setState({existingLines: r.data.lines, invoice_status: r.data.invoice.invoice_status})
+            })
+            .catch((e)=>{
+                alert(e)
+            })
+    }
+
     loadInvoice() {
 
         if(!this.props.add) {
@@ -158,6 +169,7 @@ class EditInvoice extends Component {
         });
 
         this.loadInvoice()
+        this.loadCustomers()
     }
 
     updateData(data) {
