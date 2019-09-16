@@ -24,9 +24,11 @@ class EditInvoice extends Component {
         this.state = {
             due_date: null,
             lines: [],
+            address: {},
             existingLines: [],
             customer_id: 1,
             invoice_status: 1,
+            customers: [],
             errors: []
         }
 
@@ -53,7 +55,23 @@ class EditInvoice extends Component {
 
     handleInput(e) {
 
-        alert(e.target.name + ' ' + e.target.value)
+        if(e.target.name == 'customer_id') {
+
+            let index = this.state.customers.findIndex(customer => customer.id == e.target.value)
+
+            if(this.state.customers[index].addresses) {
+                const address = this.state.customers[index].addresses[0]
+
+                const objAddress = {
+                    line1: address.address_1,
+                    town: address.address_2,
+                    county: address.city,
+                    country: 'United Kingdom'
+                };
+
+                this.setState({address: objAddress})
+            }
+        }
 
         this.setState({
             [e.target.name]: e.target.value
@@ -67,8 +85,8 @@ class EditInvoice extends Component {
     loadCustomers() {
         axios.get('/api/customers/')
             .then((r)=> {
-                console.log('customers', r.data)
-                //this.setState({existingLines: r.data.lines, invoice_status: r.data.invoice.invoice_status})
+
+                this.setState({customers: r.data})
             })
             .catch((e)=>{
                 alert(e)
@@ -111,14 +129,20 @@ class EditInvoice extends Component {
 
 
     render() {
-        const mockAddress = {
-            line1: '16 The Harbor',
-            town: 'Newport',
-            county: 'Gwent',
-            country: 'Wales'
-        };
+        const mockAddress =  this.state.address;
 
         const changeStatusButton = this.state.invoice_status == 1 ? <Button color="primary" onClick={() => this.changeStatus(2).bind(this)}>Send</Button> : <Button color="primary" onClick={() => this.changeStatus(3).bind(this)}>Paid</Button>
+
+        let customerContent;
+
+        if (!this.state.customers.length) {
+            customerContent = <option value="">Loading...</option>
+        } else {
+            customerContent = this.state.customers.map((customer, index) => (
+                <option key={index} value={customer.id}>{customer.first_name + " " + customer.last_name}</option>
+            ))
+        }
+
 
         return (
 
@@ -142,8 +166,8 @@ class EditInvoice extends Component {
                             <FormGroup>
                                 <Label for="customer">Customer(*):</Label>
                                 <Input className={this.hasErrorFor('customer') ? 'is-invalid' : ''} type="select" name="customer_id" onChange={this.handleInput.bind(this)}>
-                                    <option value="">Choose:</option>
-                                    <option value="2">Test Customer</option>
+                                    <option>Choose A customer</option>
+                                    {customerContent}
                                 </Input>
                                 {this.renderErrorFor('customer')}
                             </FormGroup>

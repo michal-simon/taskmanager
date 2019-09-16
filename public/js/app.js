@@ -84,10 +84,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Dashboard__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_UserList__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_invoice_Invoice__ = __webpack_require__(249);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_router__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__routes__ = __webpack_require__(247);
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customers_Customers__ = __webpack_require__(255);
 
 
 
@@ -110,14 +107,26 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
-if (window.location.pathname.indexOf("invoice") >= 0) {
-    var invoice_id = getUrlParameter('invoice_id');
-    invoice_id = invoice_id ? invoice_id : '';
-    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_invoice_Invoice__["a" /* default */], { invoice_id: invoice_id }), document.getElementById('app'));
-} else if (window.location.pathname.indexOf("users/dashboard") >= 0) {
-    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_UserList__["a" /* default */], { project_id: '2' }), document.getElementById('app'));
-} else {
-    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_Dashboard__["a" /* default */], { project_id: '2' }), document.getElementById('app'));
+switch (true) {
+    case window.location.pathname.indexOf("invoice") >= 0:
+        var invoice_id = getUrlParameter('invoice_id');
+        invoice_id = invoice_id ? invoice_id : '';
+        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_invoice_Invoice__["a" /* default */], { invoice_id: invoice_id }), document.getElementById('app'));
+        break;
+
+    case window.location.pathname.indexOf("users/dashboard") >= 0:
+        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_UserList__["a" /* default */], null), document.getElementById('app'));
+        break;
+
+    case window.location.href.indexOf("customers?view") >= 0:
+
+        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_customers_Customers__["a" /* default */], null), document.getElementById('app'));
+
+        break;
+
+    default:
+        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_Dashboard__["a" /* default */], { project_id: '2' }), document.getElementById('app'));
+        break;
 }
 
 /***/ }),
@@ -5711,27 +5720,27 @@ if (true) {
 /* unused harmony export PopoverBody */
 /* unused harmony export PopoverTitle */
 /* unused harmony export PopoverHeader */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return Progress; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return Modal; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return ModalHeader; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return ModalBody; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return ModalFooter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return Progress; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return Modal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return ModalHeader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return ModalBody; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return ModalFooter; });
 /* unused harmony export PopperContent */
 /* unused harmony export PopperTargetHelper */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return Tooltip; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return Table; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return Tooltip; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return Table; });
 /* unused harmony export ListGroup */
-/* unused harmony export Form */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return Form; });
 /* unused harmony export FormFeedback */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return FormGroup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FormGroup; });
 /* unused harmony export FormText */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return Input; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return Input; });
 /* unused harmony export InputGroup */
 /* unused harmony export InputGroupAddon */
 /* unused harmony export InputGroupButton */
 /* unused harmony export InputGroupButtonDropdown */
 /* unused harmony export InputGroupText */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return Label; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return Label; });
 /* unused harmony export CustomInput */
 /* unused harmony export Media */
 /* unused harmony export Pagination */
@@ -12013,14 +12022,14 @@ if (false) {
 /* unused harmony export MemoryRouter */
 /* unused harmony export Prompt */
 /* unused harmony export Redirect */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Route; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Router; });
+/* unused harmony export Route */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Router; });
 /* unused harmony export StaticRouter */
 /* unused harmony export Switch */
 /* unused harmony export generatePath */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return matchPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return matchPath; });
 /* unused harmony export withRouter */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return context; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return context; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mini_create_react_context__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_esm_inheritsLoose__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(8);
@@ -55932,75 +55941,75 @@ var AddUser = function (_React$Component) {
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-user-plus', onClick: this.toggle }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Modal */],
+                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* Modal */],
                     { isOpen: this.state.modal, toggle: this.toggle, className: this.props.className },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalHeader */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["l" /* ModalHeader */],
                         { toggle: this.toggle },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-user-circle' }),
                         ' Add User'
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* ModalBody */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalBody */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'username' },
                                 'Username(*):'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('username') ? 'is-invalid' : '', type: 'text', name: 'username', onChange: this.handleInput.bind(this) }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('username') ? 'is-invalid' : '', type: 'text', name: 'username', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('username')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'email' },
                                 'Email(*):'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('email') ? 'is-invalid' : '', type: 'email', name: 'email', onChange: this.handleInput.bind(this) }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('email') ? 'is-invalid' : '', type: 'email', name: 'email', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('email')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'first_name' },
                                 'Name(*):'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('first_name') ? 'is-invalid' : '', type: 'text', name: 'first_name', onChange: this.handleInput.bind(this) }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('first_name') ? 'is-invalid' : '', type: 'text', name: 'first_name', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('first_name')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'last_name' },
                                 'Last Name(*):'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('last_name') ? 'is-invalid' : '', type: 'text', name: 'last_name', onChange: this.handleInput.bind(this) }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('last_name') ? 'is-invalid' : '', type: 'text', name: 'last_name', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('last_name')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'profile_photo' },
                                 'Profile Photo URL(*):'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('profile_photo') ? 'is-invalid' : '', type: 'text', name: 'profile_photo', onChange: this.handleInput.bind(this) }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('profile_photo') ? 'is-invalid' : '', type: 'text', name: 'profile_photo', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('profile_photo')
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalFooter */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalFooter */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
@@ -88592,15 +88601,15 @@ var ViewTask = function (_React$Component) {
                     this.props.task.title
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Modal */],
+                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* Modal */],
                     { isOpen: this.state.modal, toggle: this.toggle, className: this.props.className },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalHeader */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["l" /* ModalHeader */],
                         { toggle: this.toggle },
                         'Add Story'
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* ModalBody */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalBody */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__tabs_TabContent__["a" /* default */], {
                             allTasks: this.props.allTasks,
@@ -88609,7 +88618,7 @@ var ViewTask = function (_React$Component) {
                         })
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalFooter */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalFooter */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
@@ -92951,7 +92960,7 @@ var FileUpload = function (_Component) {
                             { className: 'form-group' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_toastify__["a" /* ToastContainer */], null),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_reactstrap__["l" /* Progress */],
+                                __WEBPACK_IMPORTED_MODULE_2_reactstrap__["m" /* Progress */],
                                 { max: '100', color: 'success',
                                     value: this.state.loaded },
                                 Math.round(this.state.loaded, 2),
@@ -95515,7 +95524,7 @@ var EditTask = function (_Component) {
                 panelTitle = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'center-block' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { type: 'text', name: 'title', placeholder: this.state.title,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { type: 'text', name: 'title', placeholder: this.state.title,
                         className: 'form-control input-sm taskTitleEditor',
                         value: this.state.title,
                         onChange: this.handleChange })
@@ -95558,37 +95567,37 @@ var EditTask = function (_Component) {
                     'form',
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                             null,
                             'Description'
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { type: 'textarea', name: 'description',
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { type: 'textarea', name: 'description',
                             value: this.state.description,
                             onChange: this.handleChange })
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                             null,
                             'Due Date'
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { type: 'text', name: 'due_date',
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { type: 'text', name: 'due_date',
                             value: this.state.due_date,
                             onChange: this.handleChange })
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'center-block' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */],
                                 { value: this.state.contributors, type: 'select',
                                     className: 'form-control select-index input-xs', name: 'contributors',
                                     onChange: this.handleChange },
@@ -95619,39 +95628,39 @@ var EditTask = function (_Component) {
                     'form',
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                             null,
                             'Description'
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { readOnly: true, type: 'textarea', name: 'description', placeholder: this.state.description,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { readOnly: true, type: 'textarea', name: 'description', placeholder: this.state.description,
                             value: this.state.description,
                             onDoubleClick: this.handleDoubleClick })
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                             null,
                             'Due Date'
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { readOnly: true, type: 'text', name: 'due_date', placeholder: this.state.due_date,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { readOnly: true, type: 'text', name: 'due_date', placeholder: this.state.due_date,
                             value: this.state.due_date,
                             onDoubleClick: this.handleDoubleClick })
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                             null,
                             'User'
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */],
                             (_React$createElement = { disabled: true, value: this.state.contributors, type: 'select',
                                 className: 'form-control select-index input-xs', name: 'contributors'
                             }, _defineProperty(_React$createElement, 'value', this.state.contributors), _defineProperty(_React$createElement, 'onChange', this.handleDoubleClick), _React$createElement),
@@ -95740,15 +95749,15 @@ var ViewTask = function (_React$Component) {
                     this.props.task.title
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Modal */],
+                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* Modal */],
                     { isOpen: this.state.modal, toggle: this.toggle, className: this.props.className },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalHeader */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["l" /* ModalHeader */],
                         { toggle: this.toggle },
                         'Add Story'
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* ModalBody */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalBody */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__tabs_TabContent__["a" /* default */], {
                             allTasks: this.props.allTasks,
@@ -95757,7 +95766,7 @@ var ViewTask = function (_React$Component) {
                         })
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalFooter */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalFooter */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
@@ -95828,7 +95837,7 @@ var Tooltips = function (_Component) {
         null,
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-question-circle', id: 'Tooltip-' + this.props.id, 'data-toggle': 'tooltip' }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_1_reactstrap__["n" /* Tooltip */],
+          __WEBPACK_IMPORTED_MODULE_1_reactstrap__["o" /* Tooltip */],
           { placement: this.props.placement, isOpen: this.state.tooltipOpen, target: 'Tooltip-' + this.props.id, toggle: this.toggle },
           this.props.content
         ),
@@ -96036,51 +96045,51 @@ var AddModal = function (_React$Component) {
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-plus-circle customAddTask', onClick: this.toggle }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Modal */],
+                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* Modal */],
                     { isOpen: this.state.modal, toggle: this.toggle, className: this.props.className },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalHeader */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["l" /* ModalHeader */],
                         { toggle: this.toggle },
                         'Create a New Task to ',
                         this.changeColumnTitle(this.props.status)
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* ModalBody */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalBody */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'title' },
                                 'Task Title(*):'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('title') ? 'is-invalid' : '', type: 'text', name: 'title',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('title') ? 'is-invalid' : '', type: 'text', name: 'title',
                                 id: 'taskTitle', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('title')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'content' },
                                 'Task Details:'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('content') ? 'is-invalid' : '', type: 'textarea',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('content') ? 'is-invalid' : '', type: 'textarea',
                                 name: 'content', id: 'content', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('content')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'contributors' },
                                 'Assign to:'
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */],
                                 { className: this.hasErrorFor('contributors') ? 'is-invalid' : '', type: 'select',
                                     name: 'contributors', id: 'contributors', onChange: this.handleInput.bind(this) },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -96093,15 +96102,15 @@ var AddModal = function (_React$Component) {
                             this.renderErrorFor('contributors')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'task_color' },
                                 'Task Color:'
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */],
                                 { className: this.hasErrorFor('task_color') ? 'is-invalid' : '', type: 'select',
                                     name: 'task_color', id: 'task_color', onChange: this.handleInput.bind(this) },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -96135,12 +96144,12 @@ var AddModal = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-clock' }),
                         ' Due Date:',
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('due_date') ? 'is-invalid' : '', type: 'datetime-local',
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('due_date') ? 'is-invalid' : '', type: 'datetime-local',
                             name: 'due_date', id: 'due_date', onChange: this.handleInput.bind(this) }),
                         this.renderErrorFor('due_date')
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalFooter */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalFooter */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
@@ -96316,52 +96325,52 @@ var AddStory = function (_React$Component) {
                     ' Add Project'
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Modal */],
+                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* Modal */],
                     { isOpen: this.state.modal, toggle: this.toggle, className: this.props.className },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalHeader */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["l" /* ModalHeader */],
                         { toggle: this.toggle },
                         'Add Story'
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* ModalBody */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalBody */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'title' },
                                 'Story Title(*):'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('description') ? 'is-invalid' : '', type: 'text', name: 'title', onChange: this.handleInput.bind(this) }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('description') ? 'is-invalid' : '', type: 'text', name: 'title', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('title')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'description' },
                                 'Description(*):'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('description') ? 'is-invalid' : '', type: 'textarea', name: 'description', onChange: this.handleInput.bind(this) }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('description') ? 'is-invalid' : '', type: 'textarea', name: 'description', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('description')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* FormGroup */],
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Label */],
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
                                 { 'for': 'created_by' },
                                 'Created by(*):'
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* Input */], { className: this.hasErrorFor('description') ? 'is-invalid' : '', type: 'text', name: 'created_by', onChange: this.handleInput.bind(this) }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('description') ? 'is-invalid' : '', type: 'text', name: 'created_by', onChange: this.handleInput.bind(this) }),
                             this.renderErrorFor('created_by')
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalFooter */],
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalFooter */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
@@ -96448,59 +96457,7 @@ var Header = function (_Component) {
 /***/ }),
 /* 245 */,
 /* 246 */,
-/* 247 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Dashboard__ = __webpack_require__(25);
-
-
-
-//import About from './components/about';
-var IndexPage = function IndexPage() {
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        null,
-        'Welcome to Scrum Master',
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'a',
-            { href: '/story/1' },
-            'Homepage'
-        )
-    );
-};
-var NotFoundPage = function NotFoundPage() {
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'h2',
-            null,
-            'Not Found'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'a',
-            { href: '/story/1' },
-            'Homepage'
-        )
-    );
-};
-
-/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_1_react_router__["a" /* Route */],
-    null,
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router__["a" /* Route */], { path: '/dashboard', component: __WEBPACK_IMPORTED_MODULE_2__components_Dashboard__["a" /* default */] }),
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router__["a" /* Route */], { path: '*', exact: true, component: NotFoundPage })
-));
-
-/***/ }),
+/* 247 */,
 /* 248 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -96682,7 +96639,6 @@ var DataTable = function (_Component) {
     value: function pageList() {
       var _this7 = this;
 
-      alert('pagination');
       return this.pagesNumbers().map(function (page) {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'li',
@@ -97032,7 +96988,7 @@ var Invoice = function (_Component) {
                 { className: 'data-table' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__EditInvoice__["a" /* default */], { add: false }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["m" /* Table */],
+                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["n" /* Table */],
                     { striped: true, bordered: true, hover: true, responsive: true },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'thead',
@@ -97170,7 +97126,7 @@ function (_React$Component) {
   var _proto = BrowserRouter.prototype;
 
   _proto.render = function render() {
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["b" /* Router */], {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["a" /* Router */], {
       history: this.history,
       children: this.props.children
     });
@@ -97217,7 +97173,7 @@ function (_React$Component) {
   var _proto = HashRouter.prototype;
 
   _proto.render = function render() {
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["b" /* Router */], {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["a" /* Router */], {
       history: this.history,
       children: this.props.children
     });
@@ -97287,7 +97243,7 @@ function (_React$Component) {
         rest = Object(__WEBPACK_IMPORTED_MODULE_7__babel_runtime_helpers_esm_objectWithoutPropertiesLoose__["a" /* default */])(_this$props, ["innerRef", "replace", "to"]); // eslint-disable-line no-unused-vars
 
 
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* __RouterContext */].Consumer, null, function (context) {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["b" /* __RouterContext */].Consumer, null, function (context) {
       !context ?  true ? Object(__WEBPACK_IMPORTED_MODULE_8_tiny_invariant__["a" /* default */])(false, "You should not use <Link> outside a <Router>") : invariant(false) : void 0;
       var location = typeof to === "string" ? Object(__WEBPACK_IMPORTED_MODULE_3_history__["c" /* createLocation */])(to, null, null, context.location) : to;
       var href = location ? context.history.createHref(location) : "";
@@ -97350,10 +97306,10 @@ function NavLink(_ref) {
   var path = typeof to === "object" ? to.pathname : to; // Regex taken from: https://github.com/pillarjs/path-to-regexp/blob/master/index.js#L202
 
   var escapedPath = path && path.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
-  return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* __RouterContext */].Consumer, null, function (context) {
+  return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["b" /* __RouterContext */].Consumer, null, function (context) {
     !context ?  true ? Object(__WEBPACK_IMPORTED_MODULE_8_tiny_invariant__["a" /* default */])(false, "You should not use <NavLink> outside a <Router>") : invariant(false) : void 0;
     var pathToMatch = locationProp ? locationProp.pathname : context.location.pathname;
-    var match = escapedPath ? Object(__WEBPACK_IMPORTED_MODULE_2_react_router__["d" /* matchPath */])(pathToMatch, {
+    var match = escapedPath ? Object(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* matchPath */])(pathToMatch, {
       path: escapedPath,
       exact: exact,
       strict: strict
@@ -97447,9 +97403,11 @@ var EditInvoice = function (_Component) {
         _this.state = {
             due_date: null,
             lines: [],
+            address: {},
             existingLines: [],
             customer_id: 1,
             invoice_status: 1,
+            customers: [],
             errors: []
         };
 
@@ -97484,7 +97442,25 @@ var EditInvoice = function (_Component) {
         key: 'handleInput',
         value: function handleInput(e) {
 
-            alert(e.target.name + ' ' + e.target.value);
+            if (e.target.name == 'customer_id') {
+
+                var index = this.state.customers.findIndex(function (customer) {
+                    return customer.id == e.target.value;
+                });
+
+                if (this.state.customers[index].addresses) {
+                    var address = this.state.customers[index].addresses[0];
+
+                    var objAddress = {
+                        line1: address.address_1,
+                        town: address.address_2,
+                        county: address.city,
+                        country: 'United Kingdom'
+                    };
+
+                    this.setState({ address: objAddress });
+                }
+            }
 
             this.setState(_defineProperty({}, e.target.name, e.target.value));
         }
@@ -97496,9 +97472,11 @@ var EditInvoice = function (_Component) {
     }, {
         key: 'loadCustomers',
         value: function loadCustomers() {
+            var _this2 = this;
+
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/customers/').then(function (r) {
-                console.log('customers', r.data);
-                //this.setState({existingLines: r.data.lines, invoice_status: r.data.invoice.invoice_status})
+
+                _this2.setState({ customers: r.data });
             }).catch(function (e) {
                 alert(e);
             });
@@ -97506,14 +97484,14 @@ var EditInvoice = function (_Component) {
     }, {
         key: 'loadInvoice',
         value: function loadInvoice() {
-            var _this2 = this;
+            var _this3 = this;
 
             if (!this.props.add) {
                 return false;
             }
 
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/invoice/' + this.props.invoice_id).then(function (r) {
-                _this2.setState({ existingLines: r.data.lines, invoice_status: r.data.invoice.invoice_status });
+                _this3.setState({ existingLines: r.data.lines, invoice_status: r.data.invoice.invoice_status });
             }).catch(function (e) {
                 alert(e);
             });
@@ -97521,7 +97499,7 @@ var EditInvoice = function (_Component) {
     }, {
         key: 'changeStatus',
         value: function changeStatus(status) {
-            var _this3 = this;
+            var _this4 = this;
 
             if (!this.props.invoice_id) {
 
@@ -97531,7 +97509,7 @@ var EditInvoice = function (_Component) {
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put('/api/invoice/' + this.props.invoice_id, {
                 invoice_status: status
             }).then(function (response) {
-                _this3.setState({ invoice_status: status });
+                _this4.setState({ invoice_status: status });
             }).catch(function (error) {
 
                 alert('bad');
@@ -97540,28 +97518,41 @@ var EditInvoice = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this5 = this;
 
-            var mockAddress = {
-                line1: '16 The Harbor',
-                town: 'Newport',
-                county: 'Gwent',
-                country: 'Wales'
-            };
+            var mockAddress = this.state.address;
 
             var changeStatusButton = this.state.invoice_status == 1 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_4_reactstrap__["a" /* Button */],
                 { color: 'primary', onClick: function onClick() {
-                        return _this4.changeStatus(2).bind(_this4);
+                        return _this5.changeStatus(2).bind(_this5);
                     } },
                 'Send'
             ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_4_reactstrap__["a" /* Button */],
                 { color: 'primary', onClick: function onClick() {
-                        return _this4.changeStatus(3).bind(_this4);
+                        return _this5.changeStatus(3).bind(_this5);
                     } },
                 'Paid'
             );
+
+            var customerContent = void 0;
+
+            if (!this.state.customers.length) {
+                customerContent = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'option',
+                    { value: '' },
+                    'Loading...'
+                );
+            } else {
+                customerContent = this.state.customers.map(function (customer, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'option',
+                        { key: index, value: customer.id },
+                        customer.first_name + " " + customer.last_name
+                    );
+                });
+            }
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -97573,52 +97564,48 @@ var EditInvoice = function (_Component) {
                     'Edit'
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["h" /* Modal */],
+                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["i" /* Modal */],
                     { isOpen: this.state.modal, toggle: this.toggle, className: this.props.className, size: 'lg' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_4_reactstrap__["k" /* ModalHeader */],
+                        __WEBPACK_IMPORTED_MODULE_4_reactstrap__["l" /* ModalHeader */],
                         { toggle: this.toggle },
                         'Invoice'
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_4_reactstrap__["i" /* ModalBody */],
+                        __WEBPACK_IMPORTED_MODULE_4_reactstrap__["j" /* ModalBody */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             null,
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Address__["a" /* default */], { address: mockAddress }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_4_reactstrap__["e" /* FormGroup */],
+                                __WEBPACK_IMPORTED_MODULE_4_reactstrap__["f" /* FormGroup */],
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["g" /* Label */],
+                                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["h" /* Label */],
                                     { 'for': 'due_date' },
                                     'Due Date(*):'
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_reactstrap__["f" /* Input */], { className: this.hasErrorFor('due_date') ? 'is-invalid' : '', type: 'date', name: 'due_date', onChange: this.handleInput.bind(this) }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_reactstrap__["g" /* Input */], { className: this.hasErrorFor('due_date') ? 'is-invalid' : '', type: 'date', name: 'due_date', onChange: this.handleInput.bind(this) }),
                                 this.renderErrorFor('due_date')
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_4_reactstrap__["e" /* FormGroup */],
+                                __WEBPACK_IMPORTED_MODULE_4_reactstrap__["f" /* FormGroup */],
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["g" /* Label */],
+                                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["h" /* Label */],
                                     { 'for': 'customer' },
                                     'Customer(*):'
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["f" /* Input */],
+                                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["g" /* Input */],
                                     { className: this.hasErrorFor('customer') ? 'is-invalid' : '', type: 'select', name: 'customer_id', onChange: this.handleInput.bind(this) },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'option',
-                                        { value: '' },
-                                        'Choose:'
+                                        null,
+                                        'Choose A customer'
                                     ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'option',
-                                        { value: '2' },
-                                        'Test Customer'
-                                    )
+                                    customerContent
                                 ),
                                 this.renderErrorFor('customer')
                             ),
@@ -97634,7 +97621,7 @@ var EditInvoice = function (_Component) {
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_4_reactstrap__["j" /* ModalFooter */],
+                        __WEBPACK_IMPORTED_MODULE_4_reactstrap__["k" /* ModalFooter */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_4_reactstrap__["a" /* Button */],
@@ -98149,6 +98136,990 @@ var LineItem = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (LineItem);
+
+/***/ }),
+/* 255 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__AddCustomer__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__EditCustomer__ = __webpack_require__(257);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_reactstrap__ = __webpack_require__(12);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+
+var Customers = function (_Component) {
+    _inherits(Customers, _Component);
+
+    function Customers(props) {
+        _classCallCheck(this, Customers);
+
+        var _this = _possibleConstructorReturn(this, (Customers.__proto__ || Object.getPrototypeOf(Customers)).call(this, props));
+
+        _this.state = {
+            customers: [],
+            entities: {
+                meta: {
+                    current_page: 1,
+                    from: 1,
+                    last_page: 1,
+                    per_page: 5,
+                    to: 1,
+                    total: 1
+                }
+            },
+            first_page: 1,
+            current_page: 1,
+            sorted_column: [],
+            data: [],
+            columns: [],
+            offset: 4,
+            order: 'asc'
+        };
+
+        _this.updateCustomers = _this.updateCustomers.bind(_this);
+        return _this;
+    }
+
+    _createClass(Customers, [{
+        key: 'updateCustomers',
+        value: function updateCustomers(customers) {
+            this.setState({ customers: customers });
+        }
+    }, {
+        key: 'fetchEntities',
+        value: function fetchEntities() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/customers').then(function (response) {
+                _this2.state.columns = Object.keys(response.data[0]);
+                _this2.setState({ customers: response.data });
+            });
+        }
+    }, {
+        key: 'changePage',
+        value: function changePage(pageNumber) {
+            var _this3 = this;
+
+            this.setState({ current_page: pageNumber }, function () {
+                _this3.fetchEntities();
+            });
+        }
+    }, {
+        key: 'columnHead',
+        value: function columnHead(value) {
+            return value.split('_').join(' ').toUpperCase();
+        }
+    }, {
+        key: 'pagesNumbers',
+        value: function pagesNumbers() {
+            if (!this.state.entities.meta.to) {
+                return [];
+            }
+            var from = this.state.entities.meta.current_page - this.state.offset;
+            if (from < 1) {
+                from = 1;
+            }
+            var to = from + this.state.offset * 2;
+            if (to >= this.state.entities.meta.last_page) {
+                to = this.state.entities.meta.last_page;
+            }
+            var pagesArray = [];
+            for (var page = from; page <= to; page++) {
+                pagesArray.push(page);
+            }
+            return pagesArray;
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this4 = this;
+
+            this.setState({ current_page: this.state.entities.meta.current_page }, function () {
+                _this4.fetchEntities();
+            });
+        }
+    }, {
+        key: 'tableHeads',
+        value: function tableHeads() {
+            var _this5 = this;
+
+            var icon = void 0;
+            if (this.state.order === 'asc') {
+                icon = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-arrow-up' });
+            } else {
+                icon = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-arrow-down' });
+            }
+            return this.state.columns.map(function (column) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'th',
+                    { className: 'table-head', key: column, onClick: function onClick() {
+                            return _this5.sortByColumn(column);
+                        } },
+                    _this5.columnHead(column),
+                    column === _this5.state.sorted_column && icon
+                );
+            });
+        }
+    }, {
+        key: 'userList',
+        value: function userList() {
+            var _this6 = this;
+
+            if (this.state.customers && this.state.customers.length) {
+                return this.state.customers.map(function (user) {
+
+                    var test = Object.keys(user).map(function (index, element) {
+
+                        if (_typeof(user[index]) === 'object') {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                _this6.displayCustomerAddress(user[index]),
+                                _this6.displayCustomerPhone(user[index])
+                            );
+                        } else {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                user[index]
+                            );
+                        }
+                    });
+
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tr',
+                        null,
+                        test,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'td',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__EditCustomer__["a" /* default */], {
+                                id: user.id,
+                                action: _this6.updateCustomers,
+                                customers: _this6.state.customers
+                            }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'button',
+                                { className: 'btn btn-sm btn-outline-secondary', onClick: function onClick() {
+                                        return _this6.deleteCustomer(user.id);
+                                    } },
+                                'Delete Customer'
+                            )
+                        )
+                    );
+                });
+            } else {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'tr',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'td',
+                        { colSpan: this.state.columns.length, className: 'text-center' },
+                        'No Records Found.'
+                    )
+                );
+            }
+        }
+    }, {
+        key: 'sortByColumn',
+        value: function sortByColumn(column) {
+            var _this7 = this;
+
+            if (column === this.state.sorted_column) {
+                this.state.order === 'asc' ? this.setState({ order: 'desc', current_page: this.state.first_page }, function () {
+                    _this7.fetchEntities();
+                }) : this.setState({ order: 'asc' }, function () {
+                    _this7.fetchEntities();
+                });
+            } else {
+                this.setState({ sorted_column: column, order: 'asc', current_page: this.state.first_page }, function () {
+                    _this7.fetchEntities();
+                });
+            }
+        }
+    }, {
+        key: 'pageList',
+        value: function pageList() {
+            var _this8 = this;
+
+            return this.pagesNumbers().map(function (page) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'li',
+                    { className: page === _this8.state.entities.meta.current_page ? 'page-item active' : 'page-item', key: page },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { className: 'page-link', onClick: function onClick() {
+                                return _this8.changePage(page);
+                            } },
+                        page
+                    )
+                );
+            });
+        }
+    }, {
+        key: 'deleteCustomer',
+        value: function deleteCustomer(id) {
+            var _this9 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete('/api/customers/' + id).then(function (data) {
+                var index = _this9.state.customers.findIndex(function (customer) {
+                    return customer.id === id;
+                });
+                var customers = _this9.state.customers.splice(index, 1);
+                _this9.setState({ customer: customers });
+            });
+        }
+    }, {
+        key: 'displayCustomerAddress',
+        value: function displayCustomerAddress(address) {
+
+            if (!address) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'p',
+                    null,
+                    '&nbsp'
+                );
+            }
+
+            var addresses = address.map(function (address) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'p',
+                    { key: address.id },
+                    address.address_1,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                    address.address_2,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                    address.zip,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                    address.city
+                );
+            });
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'td',
+                null,
+                addresses
+            );
+        }
+    }, {
+        key: 'displayCustomerPhone',
+        value: function displayCustomerPhone(address) {
+
+            if (!address) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    null,
+                    '&nbsp'
+                );
+            }
+
+            var phone = address.map(function (address) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    null,
+                    address.phone
+                );
+            });
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'td',
+                null,
+                phone
+            );
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this10 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'data-table' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__AddCustomer__["a" /* default */], { action: this.updateCustomers, customers: this.state.customers }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_5_reactstrap__["n" /* Table */],
+                    { striped: true, bordered: true, hover: true, responsive: true },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'thead',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'tr',
+                            null,
+                            this.tableHeads(),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                'Action'
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tbody',
+                        null,
+                        this.userList()
+                    )
+                ),
+                this.state.customers && this.state.customers.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'nav',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'ul',
+                        { className: 'pagination' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'li',
+                            { className: 'page-item' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'button',
+                                { className: 'page-link',
+                                    disabled: 1 === this.state.entities.meta.current_page,
+                                    onClick: function onClick() {
+                                        return _this10.changePage(_this10.state.entities.meta.current_page - 1);
+                                    }
+                                },
+                                'Previous'
+                            )
+                        ),
+                        this.pageList(),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'li',
+                            { className: 'page-item' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'button',
+                                { className: 'page-link',
+                                    disabled: this.state.entities.meta.last_page === this.state.entities.meta.current_page,
+                                    onClick: function onClick() {
+                                        return _this10.changePage(_this10.state.entities.meta.current_page + 1);
+                                    }
+                                },
+                                'Next'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            { style: { marginTop: '8px' } },
+                            ' \xA0 ',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'i',
+                                null,
+                                'Displaying ',
+                                this.state.customers.length,
+                                ' of ',
+                                this.state.entities.meta.total,
+                                ' entries.'
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Customers;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Customers);
+
+/***/ }),
+/* 256 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_reactstrap__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var AddCustomer = function (_React$Component) {
+    _inherits(AddCustomer, _React$Component);
+
+    function AddCustomer(props) {
+        _classCallCheck(this, AddCustomer);
+
+        var _this = _possibleConstructorReturn(this, (AddCustomer.__proto__ || Object.getPrototypeOf(AddCustomer)).call(this, props));
+
+        _this.state = {
+            modal: false,
+            first_name: '',
+            last_name: '',
+            email: '',
+            phone: '',
+            address_1: '',
+            address_2: '',
+            zip: '',
+            city: '',
+            description: '',
+            values: [],
+            loading: false,
+            submitSuccess: false,
+            count: 2,
+            errors: []
+        };
+
+        _this.toggle = _this.toggle.bind(_this);
+        _this.handleInputChanges = _this.handleInputChanges.bind(_this);
+        _this.handleClick = _this.handleClick.bind(_this);
+        _this.hasErrorFor = _this.hasErrorFor.bind(_this);
+        _this.renderErrorFor = _this.renderErrorFor.bind(_this);
+        return _this;
+    }
+
+    _createClass(AddCustomer, [{
+        key: 'hasErrorFor',
+        value: function hasErrorFor(field) {
+            return !!this.state.errors[field];
+        }
+    }, {
+        key: 'handleChange',
+        value: function handleChange(event) {
+            this.setState({ name: event.target.value });
+        }
+    }, {
+        key: 'handleInputChanges',
+        value: function handleInputChanges(e) {
+            e.preventDefault();
+            this.setState(_defineProperty({}, e.currentTarget.name, e.currentTarget.value));
+        }
+    }, {
+        key: 'renderErrorFor',
+        value: function renderErrorFor(field) {
+            if (this.hasErrorFor(field)) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'invalid-feedback' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'strong',
+                        null,
+                        this.state.errors[field][0]
+                    )
+                );
+            }
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick(event) {
+            var _this2 = this;
+
+            this.setState({ loading: true });
+
+            var formData = {
+                first_name: this.state.first_name,
+                last_name: this.state.last_name,
+                email: this.state.email,
+                phone: this.state.phone,
+                address_1: this.state.address_1,
+                address_2: this.state.address_2,
+                zip: this.state.zip,
+                city: this.state.city,
+                description: this.state.description
+            };
+
+            this.setState({ submitSuccess: true, values: [].concat(_toConsumableArray(this.state.values), [formData]), loading: false });
+
+            //this.getStoryCount()
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/customers', formData).then(function (response) {
+                if (response.data.error) alert(response.data.error);else {
+                    _this2.toggle();
+
+                    var newCustomer = response.data;
+                    _this2.props.customers.push(newCustomer);
+                    _this2.props.action(_this2.props.customers);
+
+                    _this2.setState({
+                        first_name: null,
+                        last_name: null,
+                        email: null,
+                        phone: null,
+                        address_1: null,
+                        address_2: null,
+                        zip: null,
+                        city: null,
+                        description: null
+                    });
+                }
+            }).catch(function (error) {
+                _this2.setState({
+                    errors: error.response.data.errors
+                });
+            });
+        }
+    }, {
+        key: 'toggle',
+        value: function toggle() {
+            this.setState({
+                modal: !this.state.modal
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _state = this.state,
+                submitSuccess = _state.submitSuccess,
+                loading = _state.loading;
+
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
+                    { color: 'secondary', onClick: this.toggle },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-plus-circle' }),
+                    ' Add Customer'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* Modal */],
+                    { isOpen: this.state.modal, toggle: this.toggle, className: this.props.className },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["l" /* ModalHeader */],
+                        { toggle: this.toggle },
+                        'Add Customer'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalBody */],
+                        null,
+                        !submitSuccess && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'alert alert-info', role: 'alert' },
+                            'Fill the form below to create a new post'
+                        ),
+                        submitSuccess && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'alert alert-info', role: 'alert' },
+                            'The form was successfully submitted!'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* Form */],
+                            { id: "create-post-form", onSubmit: this.processFormSubmission, noValidate: true },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'first_name' },
+                                    ' First Name '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('first_name') ? 'is-invalid' : '', type: 'text', id: 'first_name', onChange: this.handleInputChanges.bind(this), name: 'first_name', placeholder: 'Enter customer\'s first name' }),
+                                this.renderErrorFor('first_name')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'last_name' },
+                                    ' Last Name '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('last_name') ? 'is-invalid' : '', type: 'text', id: 'last_name', onChange: this.handleInputChanges.bind(this), name: 'last_name', placeholder: 'Enter customer\'s last name' }),
+                                this.renderErrorFor('last_name')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'email' },
+                                    ' Email '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('email') ? 'is-invalid' : '', type: 'email', id: 'email', onChange: this.handleInputChanges.bind(this), name: 'email', placeholder: 'Enter customer\'s email address' }),
+                                this.renderErrorFor('email')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'phone' },
+                                    ' Phone '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('phone') ? 'is-invalid' : '', type: 'text', id: 'phone', onChange: this.handleInputChanges.bind(this), name: 'phone', placeholder: 'Enter customer\'s phone number' }),
+                                this.renderErrorFor('phone')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'address' },
+                                    ' Address 1 '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('address_1') ? 'is-invalid' : '', type: 'text', id: 'address_1', onChange: this.handleInputChanges.bind(this), name: 'address_1', placeholder: 'Enter customer\'s address' }),
+                                this.renderErrorFor('address_1')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'address' },
+                                    ' Address 2 '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('address_2') ? 'is-invalid' : '', type: 'text', id: 'address_2', onChange: this.handleInputChanges.bind(this), name: 'address_2', placeholder: 'Enter customer\'s address' }),
+                                this.renderErrorFor('address_2')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'postcode' },
+                                    ' Postcode '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('zip') ? 'is-invalid' : '', type: 'text', id: 'zip', onChange: this.handleInputChanges.bind(this), name: 'zip', placeholder: 'Enter customer\'s postcode' }),
+                                this.renderErrorFor('zip')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { htmlFor: 'city' },
+                                    ' City '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('city') ? 'is-invalid' : '', type: 'text', id: 'city', onChange: this.handleInputChanges.bind(this), name: 'city', placeholder: 'Enter customer\'s city' }),
+                                this.renderErrorFor('city')
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalFooter */],
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
+                            { color: 'primary', onClick: this.handleClick.bind(this) },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-plus-circle' }),
+                            ' Add'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
+                            { color: 'secondary', onClick: this.toggle },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-times-circle' }),
+                            ' Close'
+                        ),
+                        loading && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fa fa-circle-o-notch fa-spin' })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return AddCustomer;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (AddCustomer);
+
+/***/ }),
+/* 257 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_reactstrap__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var EditCustomer = function (_React$Component) {
+    _inherits(EditCustomer, _React$Component);
+
+    function EditCustomer(props) {
+        _classCallCheck(this, EditCustomer);
+
+        var _this = _possibleConstructorReturn(this, (EditCustomer.__proto__ || Object.getPrototypeOf(EditCustomer)).call(this, props));
+
+        _this.state = {
+            modal: false,
+            id: _this.props.id,
+            customer: {},
+            values: [],
+            loading: false,
+            submitSuccess: false,
+            errors: []
+        };
+
+        _this.toggle = _this.toggle.bind(_this);
+        _this.handleClick = _this.handleClick.bind(_this);
+        _this.hasErrorFor = _this.hasErrorFor.bind(_this);
+        _this.renderErrorFor = _this.renderErrorFor.bind(_this);
+        _this.setValues = _this.setValues.bind(_this);
+        return _this;
+    }
+
+    _createClass(EditCustomer, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/customers/' + this.state.id).then(function (data) {
+                var customerData = _extends({}, data.data, data.data.addresses[0]); // or { ...response } if you want to clone response as well
+                delete customerData['addresses'];
+                //console.log('customer', customerData)
+                _this2.setState({ customer: customerData });
+                console.log('customer', _this2.state.customer);
+            });
+        }
+    }, {
+        key: 'hasErrorFor',
+        value: function hasErrorFor(field) {
+            return !!this.state.errors[field];
+        }
+    }, {
+        key: 'handleInputChanges',
+        value: function handleInputChanges(e) {
+            this.setValues(_defineProperty({}, e.currentTarget.id, e.currentTarget.value));
+        }
+    }, {
+        key: 'setValues',
+        value: function setValues(values) {
+            this.setState({ customer: _extends({}, this.state.customer, values) });
+
+            console.log(this.state.customer);
+        }
+    }, {
+        key: 'renderErrorFor',
+        value: function renderErrorFor(field) {
+            if (this.hasErrorFor(field)) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'invalid-feedback' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'strong',
+                        null,
+                        this.state.errors[field][0]
+                    )
+                );
+            }
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick(event) {
+            var _this3 = this;
+
+            this.setState({ loading: true });
+
+            //this.getStoryCount()
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put('/api/customers/' + this.state.id, this.state.customer).then(function (response) {
+                if (response.data.error) alert(response.data.error);else {
+                    _this3.toggle();
+                    _this3.props.action(response.data);
+                    _this3.setState({ submitSuccess: true, loading: false });
+                }
+            }).catch(function (error) {
+                alert(error);
+                _this3.setState({
+                    errors: error.response.data.errors
+                });
+            });
+        }
+    }, {
+        key: 'toggle',
+        value: function toggle() {
+            this.setState({
+                modal: !this.state.modal
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _state = this.state,
+                submitSuccess = _state.submitSuccess,
+                loading = _state.loading;
+
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
+                    { color: 'secondary', onClick: this.toggle },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-plus-circle' }),
+                    ' Edit Customer'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["i" /* Modal */],
+                    { isOpen: this.state.modal, toggle: this.toggle, className: this.props.className },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["l" /* ModalHeader */],
+                        { toggle: this.toggle },
+                        'Edit Customer'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["j" /* ModalBody */],
+                        null,
+                        submitSuccess && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'alert alert-info', role: 'alert' },
+                            'Customer\'s details has been edited successfully '
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["e" /* Form */],
+                            { id: "create-post-form", onSubmit: this.processFormSubmission, noValidate: true },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'first_name' },
+                                    ' First Name '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('first_name') ? 'is-invalid' : '', type: 'text', id: 'first_name', defaultValue: this.state.customer.first_name, onChange: this.handleInputChanges.bind(this), name: 'first_name', placeholder: 'Enter customer\'s first name' }),
+                                this.renderErrorFor('first_name')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'last_name' },
+                                    ' Last Name '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('last_name') ? 'is-invalid' : '', type: 'text', id: 'last_name', defaultValue: this.state.customer.last_name, onChange: this.handleInputChanges.bind(this), name: 'last_name', placeholder: 'Enter customer\'s last name' }),
+                                this.renderErrorFor('last_name')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'email' },
+                                    ' Email '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('email') ? 'is-invalid' : '', type: 'email', id: 'email', defaultValue: this.state.customer.email, onChange: this.handleInputChanges.bind(this), name: 'email', placeholder: 'Enter customer\'s email address' }),
+                                this.renderErrorFor('email')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'phone' },
+                                    ' Phone '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('phone') ? 'is-invalid' : '', type: 'text', id: 'phone', defaultValue: this.state.customer.phone, onChange: this.handleInputChanges.bind(this), name: 'phone', placeholder: 'Enter customer\'s phone number' }),
+                                this.renderErrorFor('phone')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'address' },
+                                    ' Address 1 '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('address_1') ? 'is-invalid' : '', type: 'text', id: 'address_1', defaultValue: this.state.customer.address_1, onChange: this.handleInputChanges.bind(this), name: 'address_1', placeholder: 'Enter customer\'s address' }),
+                                this.renderErrorFor('address_1')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'address' },
+                                    ' Address 2 '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('address_2') ? 'is-invalid' : '', type: 'text', id: 'address_2', defaultValue: this.state.customer.address_2, onChange: this.handleInputChanges.bind(this), name: 'address_2', placeholder: 'Enter customer\'s address' }),
+                                this.renderErrorFor('address_2')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { 'for': 'postcode' },
+                                    ' Postcode '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('zip') ? 'is-invalid' : '', type: 'text', id: 'zip', defaultValue: this.state.customer.zip, onChange: this.handleInputChanges.bind(this), name: 'zip', placeholder: 'Enter customer\'s postcode' }),
+                                this.renderErrorFor('zip')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_reactstrap__["h" /* Label */],
+                                    { htmlFor: 'city' },
+                                    ' City '
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_reactstrap__["g" /* Input */], { className: this.hasErrorFor('city') ? 'is-invalid' : '', type: 'text', id: 'city', defaultValue: this.state.customer.city, onChange: this.handleInputChanges.bind(this), name: 'city', placeholder: 'Enter customer\'s city' }),
+                                this.renderErrorFor('city')
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_reactstrap__["k" /* ModalFooter */],
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
+                            { color: 'primary', onClick: this.handleClick.bind(this) },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-plus-circle' }),
+                            ' Add'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_reactstrap__["a" /* Button */],
+                            { color: 'secondary', onClick: this.toggle },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-times-circle' }),
+                            ' Close'
+                        ),
+                        loading && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'fa fa-circle-o-notch fa-spin' })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return EditCustomer;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (EditCustomer);
 
 /***/ })
 /******/ ]);

@@ -8,6 +8,7 @@ Route::get('projects', 'ProjectController@index');
 Route::get('projects', 'ProjectController@index');
 Route::post('projects', 'ProjectController@store');
 Route::get('users/dashboard', 'UserController@dashboard');
+Route::get('customers/dashboard', 'CustomerController@dashboard');
 Route::get('projects/{id}', 'ProjectController@show');
 Route::put('projects/{project}', 'ProjectController@markAsCompleted');
 Route::post('tasks', 'TaskController@store');
@@ -28,7 +29,11 @@ Route::get('invoice/{invoice_id}', 'InvoiceController@show');
 Route::delete('invoice/line/{line_id}', 'InvoiceController@destroyLine');
 Route::put('invoice/line/{line_id}', 'InvoiceController@updateLine');
 Route::put('invoice/{invoice_id}', 'InvoiceController@update');
-
+Route::get('customers', 'CustomerController@index');
+Route::get('customers/{customer_id}', 'CustomerController@show');
+Route::put('customers/{customer_id}', 'CustomerController@update');
+Route::post('customers', 'CustomerController@store');
+Route::delete('customers/{customer_id}', 'CustomerController@destroy');
 
 
 
