@@ -97405,6 +97405,7 @@ var EditInvoice = function (_Component) {
             lines: [],
             address: {},
             existingLines: [],
+            customerName: '',
             customer_id: 1,
             invoice_status: 1,
             customers: [],
@@ -97448,8 +97449,11 @@ var EditInvoice = function (_Component) {
                     return customer.id == e.target.value;
                 });
 
-                if (this.state.customers[index].addresses) {
-                    var address = this.state.customers[index].addresses[0];
+                var customer = this.state.customers[index];
+                this.state.customerName = customer.first_name + ' ' + customer.last_name;
+
+                if (customer.addresses) {
+                    var address = customer.addresses[0];
 
                     var objAddress = {
                         line1: address.address_1,
@@ -97520,8 +97524,6 @@ var EditInvoice = function (_Component) {
         value: function render() {
             var _this5 = this;
 
-            var mockAddress = this.state.address;
-
             var changeStatusButton = this.state.invoice_status == 1 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_4_reactstrap__["a" /* Button */],
                 { color: 'primary', onClick: function onClick() {
@@ -97577,7 +97579,12 @@ var EditInvoice = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             null,
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Address__["a" /* default */], { address: mockAddress }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'h2',
+                                null,
+                                this.state.customerName
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Address__["a" /* default */], { address: this.state.address }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_4_reactstrap__["f" /* FormGroup */],
                                 null,

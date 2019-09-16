@@ -26,6 +26,7 @@ class EditInvoice extends Component {
             lines: [],
             address: {},
             existingLines: [],
+            customerName: '',
             customer_id: 1,
             invoice_status: 1,
             customers: [],
@@ -59,8 +60,11 @@ class EditInvoice extends Component {
 
             let index = this.state.customers.findIndex(customer => customer.id == e.target.value)
 
-            if(this.state.customers[index].addresses) {
-                const address = this.state.customers[index].addresses[0]
+            const customer =  this.state.customers[index]
+            this.state.customerName = customer.first_name + ' ' + customer.last_name
+
+            if(customer.addresses) {
+                const address = customer.addresses[0]
 
                 const objAddress = {
                     line1: address.address_1,
@@ -129,8 +133,6 @@ class EditInvoice extends Component {
 
 
     render() {
-        const mockAddress =  this.state.address;
-
         const changeStatusButton = this.state.invoice_status == 1 ? <Button color="primary" onClick={() => this.changeStatus(2).bind(this)}>Send</Button> : <Button color="primary" onClick={() => this.changeStatus(3).bind(this)}>Paid</Button>
 
         let customerContent;
@@ -155,7 +157,8 @@ class EditInvoice extends Component {
 
                     <ModalBody>
                         <div>
-                            <Address address={mockAddress} />
+                            <h2>{this.state.customerName}</h2>
+                            <Address address={this.state.address} />
 
                             <FormGroup>
                                 <Label for="due_date">Due Date(*):</Label>
