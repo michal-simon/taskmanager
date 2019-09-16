@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Project;
 
 class Task extends Model
 {
@@ -14,6 +15,11 @@ class Task extends Model
         'contributors', 
         'due_date', 
         'task_status', 
-        'created_by'
+        'created_by',
+        'task_type'
     ];
+    
+    public function projects() {
+        return $this->belongsTo(Project::class);
+    }
 }

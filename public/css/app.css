@@ -2330,6 +2330,7 @@ input::placeholder {
   display: inline-table;
   -webkit-box-shadow: 0 3px 5px #bababa7d;
           box-shadow: 0 3px 5px #bababa7d;
+  min-height: 400px !important;
 }
 
 .mcell-title {
@@ -3382,5 +3383,84 @@ li .active:before {
   right: 0;
   text-align: right;
   top: 0;
+}
+
+.mcell-task {
+  max-width: 288px;
+}
+
+@media (min-width: 800px) {
+  .tasks {
+    width: 23% !important;
+  }
+}
+
+.task-body {
+  padding: .5rem;
+  min-height: 2rem;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.tasks {
+  margin: 8px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  vertical-align: top;
+  background-color: #e6e8ed;
+  -webkit-box-shadow: 0 0 0 1px rgba(20, 20, 31, 0.05), 0 1px 3px 0 rgba(20, 20, 31, 0.15);
+          box-shadow: 0 0 0 1px rgba(20, 20, 31, 0.05), 0 1px 3px 0 rgba(20, 20, 31, 0.15);
+  border-radius: .25rem;
+}
+
+.task-header {
+  padding: .5rem .75rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-weight: 600;
+}
+
+.task-title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+  .btn-icon {
+    line-height: calc(1.5em + .75rem);
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+.btn-icon {
+  padding: 0;
+  line-height: calc(1.5em + .75rem + 2px);
+  border-radius: 2.25rem;
+  width: calc(1.5em + .75rem + 2px);
+  height: calc(1.5em + .75rem + 2px);
+}
+
+.btn-light {
+  color: #888c9b;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+aside.left-panel {
+  width: 220px !important;
 }
 

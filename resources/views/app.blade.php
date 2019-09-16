@@ -248,17 +248,9 @@
                     </div>
                 </div>
             </div>
-            <div class="content mt-3">
+            <div class="">
                 <div class="animated fadeIn">
-                    <div class="card">
-<!--                        <div class="card-header">
-                            <i class="mr-2 fa fa-align-justify"></i>
-                            <strong class="card-title">Font Awesome</strong>
-                        </div>-->
-                        <div class="card-body">
-                            <div id="app"></div>
-                        </div>
-                    </div>
+                    <div id="app"></div>
                 </div>
             </div>
         </div>

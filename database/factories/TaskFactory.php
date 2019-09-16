@@ -18,8 +18,8 @@ $factory->define(Task::class, function (Faker $faker) {
         'content' => $faker->text,
         'is_completed' => 0,
         'contributors' => 101,
-        'project_id' => 1,
         'task_color' => 'colorBlue',
         'due_date' => $faker->dateTime(),
+        'task_type' => 2
     ];
 });

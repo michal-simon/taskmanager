@@ -17,7 +17,6 @@ class Header extends Component{
                       </ul>
                     </div>
                     <div className="profilewidget">
-                       <AddUser/>
                     </div>
                   </div>
                 </header>

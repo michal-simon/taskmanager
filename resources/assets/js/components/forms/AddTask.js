@@ -96,6 +96,7 @@ class AddModal extends React.Component {
     }
 
     handleClick(event) {
+
         axios.post('/api/tasks', {
             title: this.state.title,
             content: this.state.content,
@@ -104,7 +105,8 @@ class AddModal extends React.Component {
             due_date: this.state.due_date,
             task_color: this.state.task_color,
             project_id: parseInt(this.state.project_id),
-            created_by: this.state.created_by
+            created_by: this.state.created_by,
+            task_type: this.props.task_type
         })
             .then((response) => {
                 if (response.data.message)
@@ -146,7 +148,8 @@ class AddModal extends React.Component {
 
         return (
             <div>
-                <i className="fas fa-plus-circle customAddTask" onClick={this.toggle}></i>
+                <button className="btn btn-light btn-icon text-muted customAddTask"
+                        title="Add task" onClick={this.toggle}><i className="fa fa-plus-circle"></i></button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Create a New Task to {this.changeColumnTitle(this.props.status)}

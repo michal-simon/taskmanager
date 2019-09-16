@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class StatusTableSeeder extends Seeder {
+class leadColumns extends Seeder {
 
     /**
      * Run the database seeds.
@@ -11,38 +11,38 @@ class StatusTableSeeder extends Seeder {
      */
     public function run() {
         DB::table('task_statuses')->insert([
-            'title' => 'TODO',
-            'description' => 'You can do what you want to do with this column',
+            'title' => 'Unassigned',
+            'description' => 'Description 1',
             'icon' => 'fa-bars',
             'is_active' => 1,
-            'task_type' => 1,
+             'task_type' => 2,
                 ]
         );
 
         DB::table('task_statuses')->insert([
-            'title' => 'Blocked',
-            'description' => 'You can do what you want to do with this column',
+            'title' => 'Partner Leads',
+            'description' => 'Description 2',
             'icon' => 'fa-lightbulb',
             'is_active' => 1,
-            'task_type' => 1,
+             'task_type' => 2,
                 ]
         );
 
         DB::table('task_statuses')->insert([
-            'title' => 'In Progress',
-            'description' => 'You can do what you want to do with this column',
+            'title' => 'Responsible Assigned',
+            'description' => 'Description 3',
             'icon' => 'fa-spinner',
             'is_active' => 1,
-            'task_type' => 1,
+            'task_type' => 2,
                 ]
         );
 
         DB::table('task_statuses')->insert([
-            'title' => 'Done',
-            'description' => 'You can do what you want to do with this column',
+            'title' => 'Waiting For Details',
+            'description' => 'Description 4',
             'icon' => 'fa-check',
             'is_active' => 1,
-            'task_type' => 1,
+             'task_type' => 2,
                 ]
         );
     }

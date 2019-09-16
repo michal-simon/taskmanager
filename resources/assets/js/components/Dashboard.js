@@ -4,11 +4,11 @@ import {Link} from 'react-router'
 import Loader from './Loader'
 import Story from './Story'
 import AddStory from './forms/addStory';
-import Header from './common/Header'
 
 class Dashboard extends Component{
     constructor(props, context) {
         super(props, context);
+
         this.state = {
             open: false,
             show: true,
@@ -20,7 +20,7 @@ class Dashboard extends Component{
             loadingStory:true,
         };
 
-        this.handleClick = this.handleClick.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.project_id = this.props.project_id
         this.updateTasks = this.updateTasks.bind(this);
         this.addProject = this.addProject.bind(this);
@@ -33,32 +33,34 @@ class Dashboard extends Component{
 
     getTasks() {
 
-        axios.get(`/api/tasks/getTasksForProject/${this.project_id}`)
-        .then((r)=> {
-            this.setState({
-                tasks: r.data,
-                err:''
-            })
-        })
-        .then(()=>{
-            this.setState({
-                loading:false
-            })
-        })
-        .catch((e)=>{
-            if (!e.response){
+        const url = this.props.task_type == 2 ? '/api/leads' : `/api/tasks/getTasksForProject/${this.project_id}`
+
+        axios.get(url)
+            .then((r)=> {
                 this.setState({
-                    loading:true,
-                    err: e
+                    tasks: r.data,
+                    err:''
                 })
-            }
-            else {
+            })
+            .then(()=>{
                 this.setState({
-                    loading:false,
-                    err: e
+                    loading:false
                 })
-            }
-        })
+            })
+            .catch((e)=>{
+                if (!e.response){
+                    this.setState({
+                        loading:true,
+                        err: e
+                    })
+                }
+                else {
+                    this.setState({
+                        loading:false,
+                        err: e
+                    })
+                }
+            })
     }
 
     getStoryDetails() {
@@ -77,15 +79,15 @@ class Dashboard extends Component{
             })
             .catch((e)=>{
                 this.setState({
-                loadingStory:false,
-                err2: e
+                    loadingStory:false,
+                    err2: e
+                })
             })
-        })
     }
 
     story() {
         const test = this.state.stories.length ?  this.state.stories.filter(i=>i.id===parseInt(this.project_id)) : ''
-        
+
         if(test.length) {
             return <Story storyName={test} storyType={this.project_id} tasks={this.state.tasks} loading={this.state.loading}/>
         }
@@ -112,80 +114,88 @@ class Dashboard extends Component{
         });
     }
 
-    handleClick(project_id) {
+    handleChange(event) {
+        const project_id = event.target.value
+        const url = this.props.task_type == 1 ? `?project_id=${project_id}` : `/leads?project_id=${project_id}`;
 
-        this.setState({
-            open: false,
-            show: true,
-            tasks:[],
-            stories:[],
-            err:'',
-            err2:'',
-            loading:true,
-            loadingStory:true,
-        })
-
-        this.project_id = project_id
-        this.getStoryDetails();
-        this.getTasks();
+        window.location.href = url
     }
 
-    render() {
+    getStories() {
+
         let {stories,loadingStory} = this.state;
+
         let storyTable;
 
         if(!loadingStory) {
             storyTable = stories.map((story,index)=>{
 
-                const activeClass = story.id === parseInt(this.project_id) ? 'active' : ''
-
-                return(
-                    <li key={index}>
-                        <a onClick={() => this.handleClick(story.id)} className={activeClass}>
-                        <i className="fas fa-list-alt"></i>
-                        <span className="menu-text">{story.title}</span>
-                        </a>
-                    </li>
+                return (
+                    <option value={story.id}>{story.title}</option>
                 )
+
+                // const activeClass = story.id === parseInt(this.project_id) ? 'active' : ''
+                //
+                // return(
+                //     <li key={index}>
+                //         <a onClick={() => this.handleClick(story.id)} className={activeClass}>
+                //             <i className="fas fa-list-alt"></i>
+                //             <span className="menu-text">{story.title}</span>
+                //         </a>
+                //     </li>
+                // )
             })
-           
+
         } else {
-            storyTable = <li>
-                <div className="loader">
-                <Loader/>
-                </div>
-            </li>
+            storyTable = <option>Select Project</option>
         }
 
-            return (
-                <div>
-                    <div className="side">
-                        <span className="logo">Hampton's</span>
+        return storyTable
 
-                        <ul className="side-menu">
-                            {storyTable}
-                        </ul>
+    }
 
-                        <div className="otherMenu">
-                            <AddStory addProject={this.addProject} />
-                        </div>
-                    </div>
+    render() {
 
-                    <div className="con">
-                        <aside>
-                            <Story 
-                                tasks={this.state.tasks}
-                                action={this.updateTasks}
-                                storyName={this.state.stories.filter(i=>i.id===parseInt(this.project_id))} 
-                                storyType={this.project_id} tasks={this.state.tasks} 
-                                loading={this.state.loading}/>
-                        </aside>
+        let storyTable
 
-                    </div>
-                </div>
-                
+        const divStyle = this.props.task_type == 2 ? {
+            left: 0,
+            width: '100%',
+        } : {};
+
+        const body = document.body;
+        body.classList.add("open");
+
+        if(this.props.task_type != 2) {
+
+            storyTable = (
+
+               <select className="form-control"  onChange={this.handleChange} value={this.props.project_id}>
+                        {this.getStories()}
+
+               </select>
             )
+        }
+        return (
+
+            <div id="board" className="board">
+
+                {storyTable}
+
+                <div style={divStyle}>
+                    <aside>
+                        <Story
+                            tasks={this.state.tasks}
+                            action={this.updateTasks}
+                            storyName={this.state.stories.filter(i=>i.id===parseInt(this.project_id))}
+                            storyType={this.project_id} tasks={this.state.tasks}
+                            loading={this.state.loading}
+                            task_type={this.props.task_type}
+                        />
+                    </aside>
+                </div>
+            </div>
+        )
     }
 }
-
 export default Dashboard

@@ -4,8 +4,9 @@ namespace App\Repositories\Interfaces;
 use App\Task;
 use App\Project;
 use Illuminate\Support\Collection;
+use App\Repositories\Base\BaseRepositoryInterface;
 
-interface TaskRepositoryInterface
+interface TaskRepositoryInterface extends BaseRepositoryInterface
 {
     public function createTask(array $data) : Task;
     public function findTaskById(int $id) : Task;
