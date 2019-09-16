@@ -8,11 +8,7 @@
 
 namespace App;
 
-use App\Customer;
-use App\Province;
 use Illuminate\Database\Eloquent\Model;
-use App\City;
-use App\Country;
 
 /**
  * Description of Address
@@ -39,34 +35,5 @@ class Address extends Model {
         'status',
         'phone'
     ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-//    protected $hidden = [];
-//    protected $dates = ['deleted_at'];
-//
-//    public function customer() {
-//        return $this->belongsTo(Customer::class);
-//    }
-//
-//    public function country() {
-//        return $this->belongsTo(Country::class);
-//    }
-//
-//    public function province() {
-//        return $this->belongsTo(Province::class);
-//    }
-//
-//    /**
-//     * @deprecated
-//     *
-//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-//     */
-//    public function city() {
-//        return $this->belongsTo(City::class, 'city');
-//    }
 
 }

@@ -3,16 +3,6 @@
 namespace App\Repositories;
 
 use App\Address;
-//use App\Shop\Addresses\Exceptions\CreateAddressErrorException;
-//use App\Shop\Addresses\Exceptions\AddressNotFoundException;
-//use App\Shop\Addresses\Repositories\Interfaces\AddressRepositoryInterface;
-//use App\Shop\Addresses\Transformations\AddressTransformable;
-use App\City;
-use App\Country;
-use App\Customer;
-use App\Province;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use App\Repositories\Base\BaseRepository;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
@@ -68,5 +58,4 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
     public function findAddressById(int $id): Address {
         return $this->findOneOrFail($id);
     }
-
 }
