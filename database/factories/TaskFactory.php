@@ -20,5 +20,6 @@ $factory->define(Task::class, function (Faker $faker) {
         'contributors' => 101,
         'task_color' => 'colorBlue',
         'due_date' => $faker->dateTime(),
+        'task_type' => 2
     ];
 });

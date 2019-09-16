@@ -17,9 +17,22 @@ use Illuminate\Support\Collection;
  */
 interface AddressRepositoryInterface extends BaseRepositoryInterface {
 
+    /**
+     * 
+     * @param array $update
+     */
     public function updateAddress(array $update): bool;
 
+    /**
+     * 
+     */
     public function deleteAddress();
 
+    /**
+     * 
+     * @param string $order
+     * @param string $sort
+     * @param array $columns
+     */
     public function listAddress(string $order = 'id', string $sort = 'desc', array $columns = ['*']): Collection;
 }

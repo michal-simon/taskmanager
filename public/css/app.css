@@ -257,6 +257,7 @@ input::placeholder {
   display: inline-table;
   -webkit-box-shadow: 0 3px 5px #bababa7d;
           box-shadow: 0 3px 5px #bababa7d;
+  min-height: 400px !important;
 }
 
 .mcell-title {

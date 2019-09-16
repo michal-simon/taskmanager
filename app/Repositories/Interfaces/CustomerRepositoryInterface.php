@@ -18,14 +18,34 @@ use Illuminate\Support\Collection as Support;
  */
 interface CustomerRepositoryInterface extends BaseRepositoryInterface {
 
+    /**
+     * 
+     * @param string $order
+     * @param string $sort
+     * @param array $columns
+     */
     public function listCustomers(string $order = 'id', string $sort = 'desc', array $columns = ['*']): Support;
 
+    /**
+     * 
+     * @param array $params
+     */
     public function createCustomer(array $params): Customer;
 
+    /**
+     * 
+     * @param array $params
+     */
     public function updateCustomer(array $params): bool;
 
+    /**
+     * 
+     * @param int $id
+     */
     public function findCustomerById(int $id): Customer;
 
+    /**
+     * 
+     */
     public function deleteCustomer(): bool;
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Transformations;
 
 use App\Customer;

@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TaskTest extends TestCase {
-    
+
     use DatabaseTransactions;
 
     private $user;
@@ -63,7 +63,7 @@ class TaskTest extends TestCase {
 
     /** @test */
     public function it_can_create_a_task() {
-        
+
         $data = [
             'title' => 'unit-test',
             'content' => 'new task',

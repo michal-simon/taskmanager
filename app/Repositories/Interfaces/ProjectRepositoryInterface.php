@@ -3,8 +3,9 @@ namespace App\Repositories\Interfaces;
 
 use App\Project;
 use Illuminate\Support\Collection;
+use App\Repositories\Base\BaseRepositoryInterface;
 
-interface ProjectRepositoryInterface
+interface ProjectRepositoryInterface extends BaseRepositoryInterface
 {
     public function createProject(array $data): Project;
     public function findProjectById(int $id) : Project;

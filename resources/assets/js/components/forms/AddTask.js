@@ -96,6 +96,7 @@ class AddModal extends React.Component {
     }
 
     handleClick(event) {
+
         axios.post('/api/tasks', {
             title: this.state.title,
             content: this.state.content,
@@ -104,7 +105,8 @@ class AddModal extends React.Component {
             due_date: this.state.due_date,
             task_color: this.state.task_color,
             project_id: parseInt(this.state.project_id),
-            created_by: this.state.created_by
+            created_by: this.state.created_by,
+            task_type: this.props.task_type
         })
             .then((response) => {
                 if (response.data.message)

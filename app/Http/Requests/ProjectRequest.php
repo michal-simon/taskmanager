@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProjectRequest extends FormRequest
-{
+class ProjectRequest extends FormRequest {
+
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -21,12 +20,12 @@ class ProjectRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-          'title' => 'required',
-          'description' => 'required',
-          'created_by' => 'required',
+            'title' => 'string|required',
+            'description' => 'string|required',
+            'created_by' => 'string|required',
+            'customer_id' => 'numeric|nullable',
         ];
     }
 
@@ -35,12 +34,12 @@ class ProjectRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
-    {
+    public function messages() {
         return [
             'title.required' => 'Title is required!',
             'description.required' => 'Description is required!',
             'created_by.required' => 'Created by is required!'
         ];
     }
+
 }

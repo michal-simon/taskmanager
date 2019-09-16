@@ -15,6 +15,8 @@ use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\CommentRepository;
 use App\Repositories\Interfaces\FileRepositoryInterface;
 use App\Repositories\FileRepository;
+use App\Repositories\Interfaces\RoleRepositoryInterface;
+use App\Repositories\RoleRepository;
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\CustomerRepository;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
@@ -67,6 +69,10 @@ class RepositoryServiceProvider extends ServiceProvider {
         
         $this->app->bind(
                 AddressRepositoryInterface::class, AddressRepository::class
+        );
+        
+        $this->app->bind(
+                RoleRepositoryInterface::class, RoleRepository::class
         );
     }
 

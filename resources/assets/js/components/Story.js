@@ -19,20 +19,21 @@ export default class Story extends Component{
     }
 
     getColumns() {
-        axios.get(`/api/status`)
+        axios.get(`/api/status/${this.props.task_type}`)
             .then((r)=> {
                 this.setState({
                     columns: r.data,
                 })
             })
             .catch((e)=>{
+                alert(e)
                console.error(e)
             })
     }
 
     buildColumn(column) {
         return (
-            <div className={`col-sm mcell mcolor${column.id}`}>
+            <div data-status={column.id} className={`col-sm mcell mcolor${column.id}`}>
                 <div className="mcell-title story">
                     <b className={`fas ${column.icon}`}/>{column.title}
                      <Tooltips 
@@ -41,11 +42,13 @@ export default class Story extends Component{
                         content={column.description}
                         action={this.props.action}
                         placement="top" 
-                        storyType={this.props.storyType}/>
+                        storyType={this.props.storyType}
+                        task_type={this.props.task_type}
+                     />
                 </div>
                 <Task 
                     action={this.props.action}
-                    tasks={this.props.tasks} 
+                    tasks={this.props.tasks}
                     loading={this.props.loading} 
                     filter={column.id}
                 />
