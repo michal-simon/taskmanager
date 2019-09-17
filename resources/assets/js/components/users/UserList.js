@@ -31,9 +31,6 @@ export default class DataTable extends Component {
   }
 
   addUserToState(users) {
-
-    console.log('users', users)
-
     this.setState(prevState => {
       let entities = Object.assign({}, prevState.entities);  // creating copy of state variable jasper
       entities.data = users;                     // update the name property, assign a new value
@@ -110,7 +107,6 @@ export default class DataTable extends Component {
     if (this.state.entities.data && this.state.entities.data.length) {
       return this.state.entities.data.map(user => {
 
-
         const columnList = Object.keys(user).map(key => {
 
           if(key === 'profile_photo') {
@@ -119,7 +115,6 @@ export default class DataTable extends Component {
 
           return <td key={key}>{user[key]}</td>
         })
-
 
         return <tr key={ user.id }>
 

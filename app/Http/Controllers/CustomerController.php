@@ -57,9 +57,12 @@ class CustomerController extends Controller {
                     return $this->transformCustomer($customer);
                 })->all();
 
-        $paginatedResults = $this->customerRepo->paginateArrayResults($customers, $recordsPerPage);
-
-        return $paginatedResults->toJson();
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->customerRepo->paginateArrayResults($customers, $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
+        
+        return collect($customers)->toJson();
     }
 
     /**

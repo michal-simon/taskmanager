@@ -11,36 +11,43 @@ export default class Invoice extends Component {
             customers: [],
             invoices: [],
             entities: {
-                meta: {
-                    current_page: 1,
-                    from: 1,
-                    last_page: 1,
-                    per_page: 5,
-                    to: 1,
-                    total: 1,
-                },
+                current_page: 1,
+                from: 1,
+                last_page: 1,
+                per_page: 5,
+                to: 1,
+                total: 1
             },
             first_page: 1,
             current_page: 1,
             sorted_column: [],
             data: [],
-            columns: ['Customer', 'Due Date', 'Total', 'Status', 'Payment Type'],
             offset: 4,
             order: 'asc',
+            columns: ['Customer', 'Due Date', 'Total', 'Status', 'Payment Type']
         }
 
         this.updateInvoice = this.updateInvoice.bind(this);
     }
 
     updateInvoice(invoices) {
-        this.setState({invoices: invoices})
+        this.setState(prevState => {
+            let entities = Object.assign({}, prevState.entities);  // creating copy of state variable jasper
+            entities.data = invoices;                     // update the name property, assign a new value
+            return { entities };                                 // return new object jasper object
+        })
     }
 
     fetchEntities() {
-        axios.get(`/api/invoice`).then(response => {
-            //this.state.columns = Object.keys(response.data[0])
-            this.setState({ invoices: response.data })
-        })
+
+        let fetchUrl = `/api/invoice/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`;
+        axios.get(fetchUrl)
+            .then(response => {
+                this.setState({ entities: response.data })
+            })
+            .catch(e => {
+                console.error(e);
+            });
     }
 
     changePage(pageNumber) {
@@ -52,16 +59,16 @@ export default class Invoice extends Component {
     }
 
     pagesNumbers() {
-        if (!this.state.entities.meta.to) {
+        if (!this.state.entities.to) {
             return [];
         }
-        let from = this.state.entities.meta.current_page - this.state.offset;
+        let from = this.state.entities.current_page - this.state.offset;
         if (from < 1) {
             from = 1;
         }
         let to = from + (this.state.offset * 2);
-        if (to >= this.state.entities.meta.last_page) {
-            to = this.state.entities.meta.last_page;
+        if (to >= this.state.entities.last_page) {
+            to = this.state.entities.last_page;
         }
         let pagesArray = [];
         for (let page = from; page <= to; page++) {
@@ -71,7 +78,7 @@ export default class Invoice extends Component {
     }
 
     componentDidMount() {
-        this.setState({ current_page: this.state.entities.meta.current_page }, () => {this.fetchEntities()});
+        this.setState({ current_page: this.state.entities.current_page }, () => {this.fetchEntities()});
     }
 
     tableHeads() {
@@ -85,18 +92,15 @@ export default class Invoice extends Component {
         return this.state.columns.map(column => {
             return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
                 { this.columnHead(column) }
-                {icon}
-                { column === this.state.sorted_column && icon }
+                { icon }
             </th>
         });
     }
 
-
     userList() {
 
-        if (this.state.invoices && this.state.invoices.length) {
-
-            return this.state.invoices.map(user => {
+        if (this.state.entities.data && this.state.entities.data.length) {
+            return this.state.entities.data.map(user => {
 
                 return (
                     <tr>
@@ -132,17 +136,20 @@ export default class Invoice extends Component {
 
     pageList() {
         return this.pagesNumbers().map(page => {
-            return <li className={ page === this.state.entities.meta.current_page ? 'page-item active' : 'page-item' } key={page}>
+            return <li className={ page === this.state.entities.current_page ? 'page-item active' : 'page-item' } key={page}>
                 <button className="page-link" onClick={() => this.changePage(page)}>{page}</button>
             </li>
         })
     }
 
     deleteCustomer(id) {
+
+        const self = this;
+
         axios.delete(`/api/customers/${id}`).then(data => {
-            const index = this.state.invoices.findIndex(invoice => invoice.id === id);
-            const invoices = this.state.invoices.splice(index, 1);
-            this.setState({ invoice: invoices });
+            const index = self.state.entities.data.findIndex(user => user.id === id);
+            const users = self.state.entities.data.splice(index, 1);
+            self.updateInvoice(users)
         })
     }
 
@@ -154,7 +161,7 @@ export default class Invoice extends Component {
                 <EditInvoice
                     add={false}
                     action={this.updateInvoice}
-                    invoices={this.state.invoices}
+                    invoices={this.state.entities.data}
                 />
 
                 <Table striped bordered hover responsive>
@@ -168,13 +175,13 @@ export default class Invoice extends Component {
 
                     </tbody>
                 </Table>
-                { (this.state.invoices && this.state.invoices.length > 0) &&
+                { (this.state.entities.data && this.state.entities.data.length > 0) &&
                 <nav>
                     <ul className="pagination">
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={ 1 === this.state.entities.meta.current_page }
-                                    onClick={() => this.changePage(this.state.entities.meta.current_page - 1)}
+                                    disabled={ 1 === this.state.entities.current_page }
+                                    onClick={() => this.changePage(this.state.entities.current_page - 1)}
                             >
                                 Previous
                             </button>
@@ -182,13 +189,13 @@ export default class Invoice extends Component {
                         { this.pageList() }
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={this.state.entities.meta.last_page === this.state.entities.meta.current_page}
-                                    onClick={() => this.changePage(this.state.entities.meta.current_page + 1)}
+                                    disabled={this.state.entities.last_page === this.state.entities.current_page}
+                                    onClick={() => this.changePage(this.state.entities.current_page + 1)}
                             >
                                 Next
                             </button>
                         </li>
-                        <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.invoices.length } of { this.state.entities.meta.total } entries.</i></span>
+                        <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.entities.data.length } of { this.state.entities.total } entries.</i></span>
                     </ul>
                 </nav>
                 }

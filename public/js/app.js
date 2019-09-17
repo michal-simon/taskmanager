@@ -95419,9 +95419,6 @@ var DataTable = function (_Component) {
   _createClass(DataTable, [{
     key: 'addUserToState',
     value: function addUserToState(users) {
-
-      console.log('users', users);
-
       this.setState(function (prevState) {
         var entities = Object.assign({}, prevState.entities); // creating copy of state variable jasper
         entities.data = users; // update the name property, assign a new value
@@ -96338,22 +96335,20 @@ var Invoice = function (_Component) {
             customers: [],
             invoices: [],
             entities: {
-                meta: {
-                    current_page: 1,
-                    from: 1,
-                    last_page: 1,
-                    per_page: 5,
-                    to: 1,
-                    total: 1
-                }
+                current_page: 1,
+                from: 1,
+                last_page: 1,
+                per_page: 5,
+                to: 1,
+                total: 1
             },
             first_page: 1,
             current_page: 1,
             sorted_column: [],
             data: [],
-            columns: ['Customer', 'Due Date', 'Total', 'Status', 'Payment Type'],
             offset: 4,
-            order: 'asc'
+            order: 'asc',
+            columns: ['Customer', 'Due Date', 'Total', 'Status', 'Payment Type']
         };
 
         _this.updateInvoice = _this.updateInvoice.bind(_this);
@@ -96363,16 +96358,22 @@ var Invoice = function (_Component) {
     _createClass(Invoice, [{
         key: 'updateInvoice',
         value: function updateInvoice(invoices) {
-            this.setState({ invoices: invoices });
+            this.setState(function (prevState) {
+                var entities = Object.assign({}, prevState.entities); // creating copy of state variable jasper
+                entities.data = invoices; // update the name property, assign a new value
+                return { entities: entities }; // return new object jasper object
+            });
         }
     }, {
         key: 'fetchEntities',
         value: function fetchEntities() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/invoice').then(function (response) {
-                //this.state.columns = Object.keys(response.data[0])
-                _this2.setState({ invoices: response.data });
+            var fetchUrl = '/api/invoice/?page=' + this.state.current_page + '&column=' + this.state.sorted_column + '&order=' + this.state.order + '&per_page=' + this.state.entities.per_page;
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(fetchUrl).then(function (response) {
+                _this2.setState({ entities: response.data });
+            }).catch(function (e) {
+                console.error(e);
             });
         }
     }, {
@@ -96392,16 +96393,16 @@ var Invoice = function (_Component) {
     }, {
         key: 'pagesNumbers',
         value: function pagesNumbers() {
-            if (!this.state.entities.meta.to) {
+            if (!this.state.entities.to) {
                 return [];
             }
-            var from = this.state.entities.meta.current_page - this.state.offset;
+            var from = this.state.entities.current_page - this.state.offset;
             if (from < 1) {
                 from = 1;
             }
             var to = from + this.state.offset * 2;
-            if (to >= this.state.entities.meta.last_page) {
-                to = this.state.entities.meta.last_page;
+            if (to >= this.state.entities.last_page) {
+                to = this.state.entities.last_page;
             }
             var pagesArray = [];
             for (var page = from; page <= to; page++) {
@@ -96414,7 +96415,7 @@ var Invoice = function (_Component) {
         value: function componentDidMount() {
             var _this4 = this;
 
-            this.setState({ current_page: this.state.entities.meta.current_page }, function () {
+            this.setState({ current_page: this.state.entities.current_page }, function () {
                 _this4.fetchEntities();
             });
         }
@@ -96436,8 +96437,7 @@ var Invoice = function (_Component) {
                             return _this5.sortByColumn(column);
                         } },
                     _this5.columnHead(column),
-                    icon,
-                    column === _this5.state.sorted_column && icon
+                    icon
                 );
             });
         }
@@ -96446,9 +96446,8 @@ var Invoice = function (_Component) {
         value: function userList() {
             var _this6 = this;
 
-            if (this.state.invoices && this.state.invoices.length) {
-
-                return this.state.invoices.map(function (user) {
+            if (this.state.entities.data && this.state.entities.data.length) {
+                return this.state.entities.data.map(function (user) {
 
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'tr',
@@ -96527,7 +96526,7 @@ var Invoice = function (_Component) {
             return this.pagesNumbers().map(function (page) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'li',
-                    { className: page === _this8.state.entities.meta.current_page ? 'page-item active' : 'page-item', key: page },
+                    { className: page === _this8.state.entities.current_page ? 'page-item active' : 'page-item', key: page },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'button',
                         { className: 'page-link', onClick: function onClick() {
@@ -96541,20 +96540,21 @@ var Invoice = function (_Component) {
     }, {
         key: 'deleteCustomer',
         value: function deleteCustomer(id) {
-            var _this9 = this;
+
+            var self = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete('/api/customers/' + id).then(function (data) {
-                var index = _this9.state.invoices.findIndex(function (invoice) {
-                    return invoice.id === id;
+                var index = self.state.entities.data.findIndex(function (user) {
+                    return user.id === id;
                 });
-                var invoices = _this9.state.invoices.splice(index, 1);
-                _this9.setState({ invoice: invoices });
+                var users = self.state.entities.data.splice(index, 1);
+                self.updateInvoice(users);
             });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this10 = this;
+            var _this9 = this;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -96562,7 +96562,7 @@ var Invoice = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__EditInvoice__["a" /* default */], {
                     add: false,
                     action: this.updateInvoice,
-                    invoices: this.state.invoices
+                    invoices: this.state.entities.data
                 }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_4_reactstrap__["n" /* Table */],
@@ -96587,7 +96587,7 @@ var Invoice = function (_Component) {
                         this.userList()
                     )
                 ),
-                this.state.invoices && this.state.invoices.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                this.state.entities.data && this.state.entities.data.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'nav',
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -96599,9 +96599,9 @@ var Invoice = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'button',
                                 { className: 'page-link',
-                                    disabled: 1 === this.state.entities.meta.current_page,
+                                    disabled: 1 === this.state.entities.current_page,
                                     onClick: function onClick() {
-                                        return _this10.changePage(_this10.state.entities.meta.current_page - 1);
+                                        return _this9.changePage(_this9.state.entities.current_page - 1);
                                     }
                                 },
                                 'Previous'
@@ -96614,9 +96614,9 @@ var Invoice = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'button',
                                 { className: 'page-link',
-                                    disabled: this.state.entities.meta.last_page === this.state.entities.meta.current_page,
+                                    disabled: this.state.entities.last_page === this.state.entities.current_page,
                                     onClick: function onClick() {
-                                        return _this10.changePage(_this10.state.entities.meta.current_page + 1);
+                                        return _this9.changePage(_this9.state.entities.current_page + 1);
                                     }
                                 },
                                 'Next'
@@ -96630,9 +96630,9 @@ var Invoice = function (_Component) {
                                 'i',
                                 null,
                                 'Displaying ',
-                                this.state.invoices.length,
+                                this.state.entities.data.length,
                                 ' of ',
-                                this.state.entities.meta.total,
+                                this.state.entities.total,
                                 ' entries.'
                             )
                         )

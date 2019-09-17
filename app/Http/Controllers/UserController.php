@@ -18,14 +18,18 @@ class UserController extends Controller {
     }
 
     public function index(Request $request) {
-       $orderBy = !$request->column ? 'first_name' : $request->column;
+        $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
         $users = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
-        $paginatedResults = $this->userRepository->paginateArrayResults($users->toArray(), $recordsPerPage);
-        
-        return $paginatedResults->toJson();
+
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->userRepository->paginateArrayResults($users->toArray(), $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
+
+        return collect($users)->toJson();
     }
 
     public function dashboard() {
@@ -34,7 +38,7 @@ class UserController extends Controller {
     }
 
     public function store(UserRequest $request) {
-        
+
         $validatedData = $request->validated();
 
         $user = $this->userRepository->createUser([
@@ -63,7 +67,7 @@ class UserController extends Controller {
         $userRepo->deleteUser();
         return response()->json('User deleted!');
     }
-    
+
     /**
      * @param UpdateUserRequest $request
      * @param $id

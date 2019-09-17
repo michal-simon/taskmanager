@@ -13,7 +13,7 @@ use App\Invoice;
 class InvoiceController extends Controller {
 
     use InvoiceTransformable;
-    
+
     private $invoiceLineRepository;
 
     public function __construct(InvoiceRepositoryInterface $invoiceRepository, InvoiceLineRepositoryInterface $invoiceLineRepository) {
@@ -32,12 +32,14 @@ class InvoiceController extends Controller {
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
         $list = $this->invoiceRepository->listInvoices($orderBy, $orderDir, ['*']);
-       
+
         $invoices = $list->map(function (Invoice $invoice) {
                     return $this->transformInvoice($invoice);
                 })->all();
 
-        return collect($invoices)->toJson();
+        $paginatedResults = $this->invoiceRepository->paginateArrayResults($invoices, $recordsPerPage);
+
+        return $paginatedResults->toJson();
     }
 
     /**
@@ -54,13 +56,15 @@ class InvoiceController extends Controller {
         } else {
             $invoice = $this->invoiceRepository->createInvoice($request->all());
         }
-        
+
         $arrLines = json_decode($request->data, true);
 
-        foreach ($arrLines as $arrLine) {
-            $this->invoiceLineRepository->createInvoiceLine($invoice, $arrLine);
+        if (is_array($arrLines) && !empty($arrLines)) {
+            foreach ($arrLines as $arrLine) {
+                $this->invoiceLineRepository->createInvoiceLine($invoice, $arrLine);
+            }
         }
-
+        
         $invoice = $this->transformInvoice($invoice);
         return $invoice->toJson();
     }
