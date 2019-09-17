@@ -98376,7 +98376,7 @@ var Customers = function (_Component) {
                 current_page: 1,
                 from: 1,
                 last_page: 1,
-                per_page: 1,
+                per_page: 5,
                 to: 1,
                 total: 1
             },
@@ -98469,7 +98469,7 @@ var Customers = function (_Component) {
                             return _this5.sortByColumn(column);
                         } },
                     _this5.columnHead(column),
-                    column === _this5.state.sorted_column && icon
+                    icon
                 );
             });
         }

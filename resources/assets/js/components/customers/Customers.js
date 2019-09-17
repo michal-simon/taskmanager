@@ -15,7 +15,7 @@ export default class Customers extends Component {
                     current_page: 1,
                     from: 1,
                     last_page: 1,
-                    per_page: 1,
+                    per_page: 5,
                     to: 1,
                     total: 1,
             },
@@ -84,7 +84,7 @@ export default class Customers extends Component {
         return this.state.columns.map(column => {
             return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
                 { this.columnHead(column) }
-                { column === this.state.sorted_column && icon }
+                { icon }
             </th>
         });
     }
