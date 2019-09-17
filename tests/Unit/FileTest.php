@@ -3,6 +3,8 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use App\User;
+use App\Task;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\File;
@@ -11,7 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FileTest extends TestCase {
-    
+
     use DatabaseTransactions;
 
     private $user;
@@ -20,8 +22,8 @@ class FileTest extends TestCase {
     public function setUp() {
         parent::setUp();
         $this->beginDatabaseTransaction();
-        $this->user = \App\User::where('is_active', 1)->first();
-        $this->task = \App\Task::where('is_completed', 0)->first();
+        $this->user = factory(User::class)->create();
+        $this->task = factory(Task::class)->create();
     }
 
     /** @test */

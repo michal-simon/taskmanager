@@ -12,17 +12,16 @@ use App\Repositories\InvoiceLineRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-
 class InvoiceLineTest extends TestCase {
-    
+
     use DatabaseTransactions;
 
     private $invoice;
-    
+
     public function setUp() {
         parent::setUp();
         $this->beginDatabaseTransaction();
-        $this->invoice = Invoice::first();
+        $this->invoice = factory(Invoice::class)->create();
     }
 
     /** @test */
@@ -33,7 +32,6 @@ class InvoiceLineTest extends TestCase {
         $this->assertTrue($deleted);
     }
 
-   
     /** @test */
     public function it_can_show_the_invoice_line() {
         $invoiceLine = factory(InvoiceLine::class)->create();
@@ -45,17 +43,17 @@ class InvoiceLineTest extends TestCase {
 
     /** @test */
     public function it_can_create_a_invoice_line() {
-        
+
         $data = [
             'invoice_id' => $this->invoice->id,
             'quantity' => 20,
             'description' => 'Test',
             'unit_price' => 20,
         ];
-        
+
         $invoiceRepo = new InvoiceRepository(new Invoice);
         $invoice = $invoiceRepo->findInvoiceById($this->invoice->id);
-        
+
 
         $invoiceLineRepo = new InvoiceLineRepository(new InvoiceLine);
         $invoiceLine = $invoiceLineRepo->createInvoiceLine($invoice, $data);
@@ -66,4 +64,5 @@ class InvoiceLineTest extends TestCase {
     public function tearDown() {
         parent::tearDown();
     }
+
 }

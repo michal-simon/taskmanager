@@ -11,7 +11,6 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Invoice;
 use App\Customer;
-use App\Repositories\CustomerRepository;
 use App\Repositories\InvoiceRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -29,7 +28,7 @@ class InvoiceTest extends TestCase {
      public function setUp() {
         parent::setUp();
         $this->beginDatabaseTransaction();
-        $this->customer = Customer::first();
+        $this->customer = factory(Customer::class)->create();
     }
     
      /** @test */
