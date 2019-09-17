@@ -145,6 +145,7 @@ class Dashboard extends Component{
 
         const body = document.body;
         body.classList.add("open");
+        document.getElementsByClassName("navbar-toggler")[0].style.display = 'block'
 
         if(this.props.task_type != 2) {
 

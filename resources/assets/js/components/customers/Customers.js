@@ -12,14 +12,12 @@ export default class Customers extends Component {
         this.state = {
             customers: [],
             entities: {
-                meta: {
                     current_page: 1,
                     from: 1,
                     last_page: 1,
-                    per_page: 5,
+                    per_page: 1,
                     to: 1,
                     total: 1,
-                },
             },
             first_page: 1,
             current_page: 1,
@@ -38,9 +36,9 @@ export default class Customers extends Component {
     }
 
     fetchEntities() {
-        axios.get(`/api/customers`).then(response => {
-            this.state.columns = Object.keys(response.data[0])
-            this.setState({ customers: response.data })
+        axios.get(`/api/customers/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`).then(response => {
+            this.state.columns = Object.keys(response.data.data[0])
+            this.setState({ entities: response.data });
         })
     }
 
@@ -53,16 +51,16 @@ export default class Customers extends Component {
     }
 
     pagesNumbers() {
-        if (!this.state.entities.meta.to) {
+        if (!this.state.entities.to) {
             return [];
         }
-        let from = this.state.entities.meta.current_page - this.state.offset;
+        let from = this.state.entities.current_page - this.state.offset;
         if (from < 1) {
             from = 1;
         }
         let to = from + (this.state.offset * 2);
-        if (to >= this.state.entities.meta.last_page) {
-            to = this.state.entities.meta.last_page;
+        if (to >= this.state.entities.last_page) {
+            to = this.state.entities.last_page;
         }
         let pagesArray = [];
         for (let page = from; page <= to; page++) {
@@ -72,7 +70,7 @@ export default class Customers extends Component {
     }
 
     componentDidMount() {
-        this.setState({ current_page: this.state.entities.meta.current_page }, () => {this.fetchEntities()});
+        this.setState({ current_page: this.state.entities.current_page }, () => {this.fetchEntities()});
     }
 
     tableHeads() {
@@ -93,8 +91,8 @@ export default class Customers extends Component {
 
 
     userList() {
-        if (this.state.customers && this.state.customers.length) {
-            return this.state.customers.map(user => {
+        if (this.state.entities.data && this.state.entities.data.length) {
+            return this.state.entities.data.map(user => {
 
 
                 const test = Object.keys(user).map((index, element) => {
@@ -146,7 +144,7 @@ export default class Customers extends Component {
 
     pageList() {
         return this.pagesNumbers().map(page => {
-            return <li className={ page === this.state.entities.meta.current_page ? 'page-item active' : 'page-item' } key={page}>
+            return <li className={ page === this.state.entities.current_page ? 'page-item active' : 'page-item' } key={page}>
                 <button className="page-link" onClick={() => this.changePage(page)}>{page}</button>
             </li>
         })
@@ -198,6 +196,10 @@ export default class Customers extends Component {
     }
 
     render() {
+
+
+        console.log('page', this.state.entities)
+
         return (
             <div className="data-table">
 
@@ -214,13 +216,13 @@ export default class Customers extends Component {
 
                     </tbody>
                 </Table>
-                { (this.state.customers && this.state.customers.length > 0) &&
+                { (this.state.entities.data && this.state.entities.data.length > 0) &&
                 <nav>
                     <ul className="pagination">
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={ 1 === this.state.entities.meta.current_page }
-                                    onClick={() => this.changePage(this.state.entities.meta.current_page - 1)}
+                                    disabled={ 1 === this.state.entities.current_page }
+                                    onClick={() => this.changePage(this.state.entities.current_page - 1)}
                             >
                                 Previous
                             </button>
@@ -228,13 +230,13 @@ export default class Customers extends Component {
                         { this.pageList() }
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={this.state.entities.meta.last_page === this.state.entities.meta.current_page}
-                                    onClick={() => this.changePage(this.state.entities.meta.current_page + 1)}
+                                    disabled={this.state.entities.last_page === this.state.entities.current_page}
+                                    onClick={() => this.changePage(this.state.entities.current_page + 1)}
                             >
                                 Next
                             </button>
                         </li>
-                        <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.customers.length } of { this.state.entities.meta.total } entries.</i></span>
+                        <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.entities.data.length } of { this.state.entities.total } entries.</i></span>
                     </ul>
                 </nav>
                 }

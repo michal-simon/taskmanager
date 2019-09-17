@@ -43,3 +43,4 @@ switch(true) {
         ReactDOM.render(<Dashboard task_type="1" project_id={project_id}/>, document.getElementById('app'));
         break;
 }
+

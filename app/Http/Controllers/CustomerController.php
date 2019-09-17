@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Customer;
 use App\Repositories\CustomerRepository;
 use App\Repositories\AddressRepository;
@@ -40,9 +41,14 @@ class CustomerController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $list = $this->customerRepo->listCustomers('created_at', 'desc');
-        
+    public function index(Request $request) {
+
+        $orderBy = !$request->column ? 'first_name' : $request->column;
+        $orderDir = !$request->order ? 'asc' : $request->order;
+        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
+
+        $list = $this->customerRepo->listCustomers($orderBy, $orderDir);
+
         if (request()->has('q')) {
             $list = $this->customerRepo->searchCustomer(request()->input('q'));
         }
@@ -51,7 +57,9 @@ class CustomerController extends Controller {
                     return $this->transformCustomer($customer);
                 })->all();
 
-        return collect($customers)->toJson();
+        $paginatedResults = $this->customerRepo->paginateArrayResults($customers, $recordsPerPage);
+
+        return $paginatedResults->toJson();
     }
 
     /**
@@ -140,12 +148,12 @@ class CustomerController extends Controller {
 
         $customer = $this->customerRepo->findCustomerById($id);
         $address = $customer->addresses;
-        
-         if (!empty($address)) {
+
+        if (!empty($address)) {
             $addRessRepo = new AddressRepository($address[0]);
             $addRessRepo->deleteAddress();
         }
-        
+
         $customerRepo = new CustomerRepository($customer);
         $customerRepo->deleteCustomer();
 
