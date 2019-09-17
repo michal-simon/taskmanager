@@ -57,7 +57,7 @@
                         </li>
 
                         <li>
-                            <a href="/invoices?view"> <i class="menu-icon fa fa-bar-chart"></i>Invoices </a>
+                            <a href="/invoices?view"> <i class="menu-icon fa fa-glass"></i>Invoices </a>
                         </li>
                         
                         <li>
