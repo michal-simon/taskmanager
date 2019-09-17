@@ -38,7 +38,6 @@ export default class Invoice extends Component {
 
     fetchEntities() {
         axios.get(`/api/invoice`).then(response => {
-            console.log('keys', Object.keys(response.data[0]))
             //this.state.columns = Object.keys(response.data[0])
             this.setState({ invoices: response.data })
         })
@@ -94,7 +93,9 @@ export default class Invoice extends Component {
 
 
     userList() {
+
         if (this.state.invoices && this.state.invoices.length) {
+
             return this.state.invoices.map(user => {
 
                 return (
@@ -104,7 +105,12 @@ export default class Invoice extends Component {
                         <td>{user.total}</td>
                         <td>{user.invoice_status}</td>
                         <td>Credit</td>
-                        <td><EditInvoice add={true} invoice_id={user.id} /></td>
+                        <td><EditInvoice
+                            add={true}
+                            invoice_id={user.id}
+                            action={this.updateInvoice}
+                            invoices={this.state.invoices}
+                        /></td>
                     </tr>
                 )
 
@@ -145,7 +151,11 @@ export default class Invoice extends Component {
         return (
             <div className="data-table">
 
-                <EditInvoice add={false} />
+                <EditInvoice
+                    add={false}
+                    action={this.updateInvoice}
+                    invoices={this.state.invoices}
+                />
 
                 <Table striped bordered hover responsive>
                     <thead>

@@ -105,7 +105,7 @@ class EditInvoice extends Component {
 
         axios.get(`/api/invoice/${this.props.invoice_id}`)
             .then((r)=> {
-                this.setState({existingLines: r.data.lines, invoice_status: r.data.invoice.invoice_status})
+                this.setState({existingLines: r.data.lines, due_date: r.data.invoice.due_date, invoice_status: r.data.invoice.invoice_status})
             })
             .catch((e)=>{
               alert(e)
@@ -145,7 +145,6 @@ class EditInvoice extends Component {
             ))
         }
 
-
         return (
 
             <div>
@@ -162,7 +161,7 @@ class EditInvoice extends Component {
 
                             <FormGroup>
                                 <Label for="due_date">Due Date(*):</Label>
-                                <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''} type="date" name="due_date" onChange={this.handleInput.bind(this)}/>
+                                <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''} value={this.state.due_date} type="date" name="due_date" onChange={this.handleInput.bind(this)}/>
                                 {this.renderErrorFor('due_date')}
                             </FormGroup>
 
@@ -201,7 +200,6 @@ class EditInvoice extends Component {
 
     updateData(data) {
         this.setState({data: data})
-        console.log('data', this.state.data)
     }
 
     setTotal(total) {
@@ -209,6 +207,7 @@ class EditInvoice extends Component {
     }
 
     saveData() {
+
         const data = {
             invoice_id: this.props.invoice_id,
             due_date: this.state.due_date,
@@ -220,9 +219,9 @@ class EditInvoice extends Component {
 
         axios.post('/api/invoice', data)
             .then((response) => {
-                // this.setState({
-                //     editMode: false
-                // });
+                const firstInvoice = response.data
+                this.props.invoices.push(firstInvoice)
+                this.props.action(this.props.invoices)
             })
             .catch((error) => {
                 alert(error)

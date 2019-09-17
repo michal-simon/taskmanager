@@ -97084,7 +97084,6 @@ var Invoice = function (_Component) {
             var _this2 = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/invoice').then(function (response) {
-                console.log('keys', Object.keys(response.data[0]));
                 //this.state.columns = Object.keys(response.data[0])
                 _this2.setState({ invoices: response.data });
             });
@@ -97158,7 +97157,10 @@ var Invoice = function (_Component) {
     }, {
         key: 'userList',
         value: function userList() {
+            var _this6 = this;
+
             if (this.state.invoices && this.state.invoices.length) {
+
                 return this.state.invoices.map(function (user) {
 
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -97192,7 +97194,12 @@ var Invoice = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'td',
                             null,
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__EditInvoice__["a" /* default */], { add: true, invoice_id: user.id })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__EditInvoice__["a" /* default */], {
+                                add: true,
+                                invoice_id: user.id,
+                                action: _this6.updateInvoice,
+                                invoices: _this6.state.invoices
+                            })
                         )
                     );
                 });
@@ -97211,33 +97218,33 @@ var Invoice = function (_Component) {
     }, {
         key: 'sortByColumn',
         value: function sortByColumn(column) {
-            var _this6 = this;
+            var _this7 = this;
 
             if (column === this.state.sorted_column) {
                 this.state.order === 'asc' ? this.setState({ order: 'desc', current_page: this.state.first_page }, function () {
-                    _this6.fetchEntities();
+                    _this7.fetchEntities();
                 }) : this.setState({ order: 'asc' }, function () {
-                    _this6.fetchEntities();
+                    _this7.fetchEntities();
                 });
             } else {
                 this.setState({ sorted_column: column, order: 'asc', current_page: this.state.first_page }, function () {
-                    _this6.fetchEntities();
+                    _this7.fetchEntities();
                 });
             }
         }
     }, {
         key: 'pageList',
         value: function pageList() {
-            var _this7 = this;
+            var _this8 = this;
 
             return this.pagesNumbers().map(function (page) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'li',
-                    { className: page === _this7.state.entities.meta.current_page ? 'page-item active' : 'page-item', key: page },
+                    { className: page === _this8.state.entities.meta.current_page ? 'page-item active' : 'page-item', key: page },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'button',
                         { className: 'page-link', onClick: function onClick() {
-                                return _this7.changePage(page);
+                                return _this8.changePage(page);
                             } },
                         page
                     )
@@ -97247,25 +97254,29 @@ var Invoice = function (_Component) {
     }, {
         key: 'deleteCustomer',
         value: function deleteCustomer(id) {
-            var _this8 = this;
+            var _this9 = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete('/api/customers/' + id).then(function (data) {
-                var index = _this8.state.invoices.findIndex(function (invoice) {
+                var index = _this9.state.invoices.findIndex(function (invoice) {
                     return invoice.id === id;
                 });
-                var invoices = _this8.state.invoices.splice(index, 1);
-                _this8.setState({ invoice: invoices });
+                var invoices = _this9.state.invoices.splice(index, 1);
+                _this9.setState({ invoice: invoices });
             });
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this9 = this;
+            var _this10 = this;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'data-table' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__EditInvoice__["a" /* default */], { add: false }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__EditInvoice__["a" /* default */], {
+                    add: false,
+                    action: this.updateInvoice,
+                    invoices: this.state.invoices
+                }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_4_reactstrap__["n" /* Table */],
                     { striped: true, bordered: true, hover: true, responsive: true },
@@ -97303,7 +97314,7 @@ var Invoice = function (_Component) {
                                 { className: 'page-link',
                                     disabled: 1 === this.state.entities.meta.current_page,
                                     onClick: function onClick() {
-                                        return _this9.changePage(_this9.state.entities.meta.current_page - 1);
+                                        return _this10.changePage(_this10.state.entities.meta.current_page - 1);
                                     }
                                 },
                                 'Previous'
@@ -97318,7 +97329,7 @@ var Invoice = function (_Component) {
                                 { className: 'page-link',
                                     disabled: this.state.entities.meta.last_page === this.state.entities.meta.current_page,
                                     onClick: function onClick() {
-                                        return _this9.changePage(_this9.state.entities.meta.current_page + 1);
+                                        return _this10.changePage(_this10.state.entities.meta.current_page + 1);
                                     }
                                 },
                                 'Next'
@@ -97500,7 +97511,7 @@ var EditInvoice = function (_Component) {
             }
 
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/invoice/' + this.props.invoice_id).then(function (r) {
-                _this3.setState({ existingLines: r.data.lines, invoice_status: r.data.invoice.invoice_status });
+                _this3.setState({ existingLines: r.data.lines, due_date: r.data.invoice.due_date, invoice_status: r.data.invoice.invoice_status });
             }).catch(function (e) {
                 alert(e);
             });
@@ -97598,7 +97609,7 @@ var EditInvoice = function (_Component) {
                                     { 'for': 'due_date' },
                                     'Due Date(*):'
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_reactstrap__["g" /* Input */], { className: this.hasErrorFor('due_date') ? 'is-invalid' : '', type: 'date', name: 'due_date', onChange: this.handleInput.bind(this) }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_reactstrap__["g" /* Input */], { className: this.hasErrorFor('due_date') ? 'is-invalid' : '', value: this.state.due_date, type: 'date', name: 'due_date', onChange: this.handleInput.bind(this) }),
                                 this.renderErrorFor('due_date')
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -97659,7 +97670,6 @@ var EditInvoice = function (_Component) {
         key: 'updateData',
         value: function updateData(data) {
             this.setState({ data: data });
-            console.log('data', this.state.data);
         }
     }, {
         key: 'setTotal',
@@ -97669,6 +97679,8 @@ var EditInvoice = function (_Component) {
     }, {
         key: 'saveData',
         value: function saveData() {
+            var _this6 = this;
+
             var data = {
                 invoice_id: this.props.invoice_id,
                 due_date: this.state.due_date,
@@ -97679,9 +97691,9 @@ var EditInvoice = function (_Component) {
             };
 
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/invoice', data).then(function (response) {
-                // this.setState({
-                //     editMode: false
-                // });
+                var firstInvoice = response.data;
+                _this6.props.invoices.push(firstInvoice);
+                _this6.props.action(_this6.props.invoices);
             }).catch(function (error) {
                 alert(error);
             });
