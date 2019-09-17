@@ -7,9 +7,13 @@ use App\Repositories\Interfaces\InvoiceRepositoryInterface;
 use App\Repositories\InvoiceRepository;
 use App\Repositories\InvoiceLineRepository;
 use App\Repositories\Interfaces\InvoiceLineRepositoryInterface;
+use App\Transformations\InvoiceTransformable;
+use App\Invoice;
 
 class InvoiceController extends Controller {
 
+    use InvoiceTransformable;
+    
     private $invoiceLineRepository;
 
     public function __construct(InvoiceRepositoryInterface $invoiceRepository, InvoiceLineRepositoryInterface $invoiceLineRepository) {
@@ -27,8 +31,13 @@ class InvoiceController extends Controller {
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
-        $users = $this->invoiceRepository->listInvoices($orderBy, $orderDir, ['*']);
-        return $users->toJson();
+        $list = $this->invoiceRepository->listInvoices($orderBy, $orderDir, ['*']);
+       
+        $invoices = $list->map(function (Invoice $invoice) {
+                    return $this->transformInvoice($invoice);
+                })->all();
+
+        return collect($invoices)->toJson();
     }
 
     /**

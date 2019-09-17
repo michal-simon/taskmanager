@@ -24,7 +24,7 @@ export default class Invoice extends Component {
             current_page: 1,
             sorted_column: [],
             data: [],
-            columns: ['Customer', 'Due Date', 'Total', 'Payment Type'],
+            columns: ['Customer', 'Due Date', 'Total', 'Status', 'Payment Type'],
             offset: 4,
             order: 'asc',
         }
@@ -99,21 +99,12 @@ export default class Invoice extends Component {
 
                 return (
                     <tr>
-                        <td>{user.customer_id}</td>
+                        <td>{user.first_name + ' ' + user.last_name}</td>
                         <td>{user.due_date}</td>
                         <td>{user.total}</td>
+                        <td>{user.invoice_status}</td>
                         <td>Credit</td>
                         <td><EditInvoice add={true} invoice_id={user.id} /></td>
-
-                        {/*<td>*/}
-                            {/*<EditCustomer*/}
-                            {/*    id={user.id}*/}
-                            {/*    action={this.updateInvoice()}*/}
-                            {/*    invoices={this.state.invoices}*/}
-                            {/*/>*/}
-                            {/*<button className="btn btn-sm btn-outline-secondary" onClick={() => this.deleteInvoice(user.id)}>Delete Customer</button>*/}
-
-                        {/*</td>*/}
                     </tr>
                 )
 
