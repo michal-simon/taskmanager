@@ -164,8 +164,13 @@ export default class DataTable extends Component {
     }
 
   render() {
+
+    const divStyle = {
+      margin: '10px'
+    };
+
     return (
-      <div className="data-table">
+      <div className="data-table" style={divStyle}>
 
         <AddUser users={this.state.data} action={this.addUserToState} />
         <Table striped bordered hover responsive>

@@ -3,7 +3,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
 import AddCustomer from './AddCustomer';
 import EditCustomer from './EditCustomer';
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 
 
 export default class Customers extends Component {
@@ -122,7 +122,7 @@ export default class Customers extends Component {
                                 action={this.updateCustomers}
                                 customers={this.state.customers}
                             />
-                            <button className="btn btn-sm btn-outline-secondary" onClick={() => this.deleteCustomer(user.id)}>Delete Customer</button>
+                            <Button color="danger" onClick={() => this.deleteCustomer(user.id)}>Delete Customer</Button>
 
                         </td>
                     </tr>

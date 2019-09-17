@@ -1,10 +1,6 @@
 import React,{Component} from 'react'
 import axios from 'axios'
-import {Link} from 'react-router'
-import Loader from './Loader'
 import Story from './Story'
-import AddStory from './forms/addStory';
-import Header from './common/Header'
 
 class Dashboard extends Component{
     constructor(props, context) {
@@ -21,7 +17,7 @@ class Dashboard extends Component{
             loadingStory:true,
         };
 
-        this.handleClick = this.handleClick.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.project_id = this.props.project_id
         this.updateTasks = this.updateTasks.bind(this);
         this.addProject = this.addProject.bind(this);
@@ -70,11 +66,7 @@ class Dashboard extends Component{
             .then((r)=> {
                 this.setState({
                     stories: r.data,
-                    err2:''
-                })
-            })
-            .then(()=>{
-                this.setState({
+                    err2:'',
                     loadingStory:false
                 })
             })
@@ -115,8 +107,8 @@ class Dashboard extends Component{
         });
     }
 
-    handleClick(project_id) {
-
+    handleChange(event) {
+        const project_id = event.target.value
         const url = this.props.task_type == 1 ? `?project_id=${project_id}` : `/leads?project_id=${project_id}`;
 
         window.location.href = url
@@ -131,24 +123,11 @@ class Dashboard extends Component{
         if(!loadingStory) {
             storyTable = stories.map((story,index)=>{
 
-                const activeClass = story.id === parseInt(this.project_id) ? 'active' : ''
-
-                return(
-                    <li key={index}>
-                        <a onClick={() => this.handleClick(story.id)} className={activeClass}>
-                            <i className="fas fa-list-alt"></i>
-                            <span className="menu-text">{story.title}</span>
-                        </a>
-                    </li>
+                return (
+                    <option value={story.id}>{story.title}</option>
                 )
             })
 
-        } else {
-            storyTable = <li>
-                <div className="loader">
-                    <Loader/>
-                </div>
-            </li>
         }
 
         return storyTable
@@ -164,26 +143,27 @@ class Dashboard extends Component{
             width: '100%',
         } : {};
 
+        const body = document.body;
+        body.classList.add("open");
+
         if(this.props.task_type != 2) {
 
             storyTable = (
 
-                <div className="side">
-                    <span className="logo">Hampton's</span>
-                    <ul className="side-menu">
-                        {this.getStories()}
-                    </ul>
-                    <div className="otherMenu">
-                        <AddStory addProject={this.addProject} />
-                    </div>
-                </div>
+                <select className="form-control"  onChange={this.handleChange} value={this.props.project_id}>
+                    <option>Choose Project</option>
+                    {this.getStories()}
 
+                </select>
             )
         }
         return (
-            <div>
+
+            <div id="board" className="board">
+
                 {storyTable}
-                <div className="con" style={divStyle}>
+
+                <div style={divStyle}>
                     <aside>
                         <Story
                             tasks={this.state.tasks}
