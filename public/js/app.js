@@ -11633,14 +11633,14 @@ module.exports = checkPropTypes;
 /* unused harmony export MemoryRouter */
 /* unused harmony export Prompt */
 /* unused harmony export Redirect */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Route; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Router; });
+/* unused harmony export Route */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Router; });
 /* unused harmony export StaticRouter */
 /* unused harmony export Switch */
 /* unused harmony export generatePath */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return matchPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return matchPath; });
 /* unused harmony export withRouter */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return context; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return context; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mini_create_react_context__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_esm_inheritsLoose__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(1);
@@ -55195,11 +55195,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Dashboard__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_users_UserList__ = __webpack_require__(241);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_customers_Customers__ = __webpack_require__(255);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_router__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__routes__ = __webpack_require__(244);
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_invoice_Invoice__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_customers_Customers__ = __webpack_require__(255);
 
 
 
@@ -55231,11 +55228,14 @@ switch (true) {
     case window.location.href.indexOf("users?view") >= 0:
         __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_users_UserList__["a" /* default */], null), document.getElementById('app'));
         break;
+    case window.location.pathname.indexOf("invoice") >= 0:
+        var invoice_id = getUrlParameter('invoice_id');
+        invoice_id = invoice_id ? invoice_id : '';
+        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_invoice_Invoice__["a" /* default */], { invoice_id: invoice_id }), document.getElementById('app'));
+        break;
 
     case window.location.href.indexOf("customers?view") >= 0:
-
-        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_customers_Customers__["a" /* default */], null), document.getElementById('app'));
-
+        __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_customers_Customers__["a" /* default */], null), document.getElementById('app'));
         break;
 
     default:
@@ -96911,59 +96911,7 @@ var AddUser = function (_React$Component) {
 /* harmony default export */ __webpack_exports__["a"] = (AddUser);
 
 /***/ }),
-/* 244 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Dashboard__ = __webpack_require__(18);
-
-
-
-//import About from './components/about';
-var IndexPage = function IndexPage() {
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        null,
-        'Welcome to Scrum Master',
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'a',
-            { href: '/story/1' },
-            'Homepage'
-        )
-    );
-};
-var NotFoundPage = function NotFoundPage() {
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'h2',
-            null,
-            'Not Found'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'a',
-            { href: '/story/1' },
-            'Homepage'
-        )
-    );
-};
-
-/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_1_react_router__["a" /* Route */],
-    null,
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router__["a" /* Route */], { path: '/dashboard', component: __WEBPACK_IMPORTED_MODULE_2__components_Dashboard__["a" /* default */] }),
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router__["a" /* Route */], { path: '*', exact: true, component: NotFoundPage })
-));
-
-/***/ }),
+/* 244 */,
 /* 245 */
 /***/ (function(module, exports) {
 
@@ -97026,7 +96974,7 @@ function (_React$Component) {
   var _proto = BrowserRouter.prototype;
 
   _proto.render = function render() {
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["b" /* Router */], {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["a" /* Router */], {
       history: this.history,
       children: this.props.children
     });
@@ -97073,7 +97021,7 @@ function (_React$Component) {
   var _proto = HashRouter.prototype;
 
   _proto.render = function render() {
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["b" /* Router */], {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["a" /* Router */], {
       history: this.history,
       children: this.props.children
     });
@@ -97143,7 +97091,7 @@ function (_React$Component) {
         rest = Object(__WEBPACK_IMPORTED_MODULE_7__babel_runtime_helpers_esm_objectWithoutPropertiesLoose__["a" /* default */])(_this$props, ["innerRef", "replace", "to"]); // eslint-disable-line no-unused-vars
 
 
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* __RouterContext */].Consumer, null, function (context) {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["b" /* __RouterContext */].Consumer, null, function (context) {
       !context ?  true ? Object(__WEBPACK_IMPORTED_MODULE_8_tiny_invariant__["a" /* default */])(false, "You should not use <Link> outside a <Router>") : invariant(false) : void 0;
       var location = typeof to === "string" ? Object(__WEBPACK_IMPORTED_MODULE_3_history__["c" /* createLocation */])(to, null, null, context.location) : to;
       var href = location ? context.history.createHref(location) : "";
@@ -97206,10 +97154,10 @@ function NavLink(_ref) {
   var path = typeof to === "object" ? to.pathname : to; // Regex taken from: https://github.com/pillarjs/path-to-regexp/blob/master/index.js#L202
 
   var escapedPath = path && path.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
-  return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* __RouterContext */].Consumer, null, function (context) {
+  return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router__["b" /* __RouterContext */].Consumer, null, function (context) {
     !context ?  true ? Object(__WEBPACK_IMPORTED_MODULE_8_tiny_invariant__["a" /* default */])(false, "You should not use <NavLink> outside a <Router>") : invariant(false) : void 0;
     var pathToMatch = locationProp ? locationProp.pathname : context.location.pathname;
-    var match = escapedPath ? Object(__WEBPACK_IMPORTED_MODULE_2_react_router__["d" /* matchPath */])(pathToMatch, {
+    var match = escapedPath ? Object(__WEBPACK_IMPORTED_MODULE_2_react_router__["c" /* matchPath */])(pathToMatch, {
       path: escapedPath,
       exact: exact,
       strict: strict
@@ -97247,11 +97195,1154 @@ if (true) {
 /***/ }),
 /* 248 */,
 /* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
+/* 250 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(247);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EditInvoice__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_reactstrap__ = __webpack_require__(5);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+var Invoice = function (_Component) {
+    _inherits(Invoice, _Component);
+
+    function Invoice(props) {
+        _classCallCheck(this, Invoice);
+
+        var _this = _possibleConstructorReturn(this, (Invoice.__proto__ || Object.getPrototypeOf(Invoice)).call(this, props));
+
+        _this.state = {
+            customers: [],
+            invoices: [],
+            entities: {
+                meta: {
+                    current_page: 1,
+                    from: 1,
+                    last_page: 1,
+                    per_page: 5,
+                    to: 1,
+                    total: 1
+                }
+            },
+            first_page: 1,
+            current_page: 1,
+            sorted_column: [],
+            data: [],
+            columns: ['Customer', 'Due Date', 'Total', 'Status', 'Payment Type'],
+            offset: 4,
+            order: 'asc'
+        };
+
+        _this.updateInvoice = _this.updateInvoice.bind(_this);
+        return _this;
+    }
+
+    _createClass(Invoice, [{
+        key: 'updateInvoice',
+        value: function updateInvoice(invoices) {
+            this.setState({ invoices: invoices });
+        }
+    }, {
+        key: 'fetchEntities',
+        value: function fetchEntities() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/invoice').then(function (response) {
+                //this.state.columns = Object.keys(response.data[0])
+                _this2.setState({ invoices: response.data });
+            });
+        }
+    }, {
+        key: 'changePage',
+        value: function changePage(pageNumber) {
+            var _this3 = this;
+
+            this.setState({ current_page: pageNumber }, function () {
+                _this3.fetchEntities();
+            });
+        }
+    }, {
+        key: 'columnHead',
+        value: function columnHead(value) {
+            return value.split('_').join(' ').toUpperCase();
+        }
+    }, {
+        key: 'pagesNumbers',
+        value: function pagesNumbers() {
+            if (!this.state.entities.meta.to) {
+                return [];
+            }
+            var from = this.state.entities.meta.current_page - this.state.offset;
+            if (from < 1) {
+                from = 1;
+            }
+            var to = from + this.state.offset * 2;
+            if (to >= this.state.entities.meta.last_page) {
+                to = this.state.entities.meta.last_page;
+            }
+            var pagesArray = [];
+            for (var page = from; page <= to; page++) {
+                pagesArray.push(page);
+            }
+            return pagesArray;
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this4 = this;
+
+            this.setState({ current_page: this.state.entities.meta.current_page }, function () {
+                _this4.fetchEntities();
+            });
+        }
+    }, {
+        key: 'tableHeads',
+        value: function tableHeads() {
+            var _this5 = this;
+
+            var icon = void 0;
+            if (this.state.order === 'asc') {
+                icon = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-arrow-up' });
+            } else {
+                icon = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-arrow-down' });
+            }
+            return this.state.columns.map(function (column) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'th',
+                    { className: 'table-head', key: column, onClick: function onClick() {
+                            return _this5.sortByColumn(column);
+                        } },
+                    _this5.columnHead(column),
+                    icon,
+                    column === _this5.state.sorted_column && icon
+                );
+            });
+        }
+    }, {
+        key: 'userList',
+        value: function userList() {
+            var _this6 = this;
+
+            if (this.state.invoices && this.state.invoices.length) {
+
+                return this.state.invoices.map(function (user) {
+
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tr',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'td',
+                            null,
+                            user.first_name + ' ' + user.last_name
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'td',
+                            null,
+                            user.due_date
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'td',
+                            null,
+                            user.total
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'td',
+                            null,
+                            user.invoice_status
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'td',
+                            null,
+                            'Credit'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'td',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__EditInvoice__["a" /* default */], {
+                                add: true,
+                                invoice_id: user.id,
+                                action: _this6.updateInvoice,
+                                invoices: _this6.state.invoices
+                            })
+                        )
+                    );
+                });
+            } else {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'tr',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'td',
+                        { colSpan: this.state.columns.length, className: 'text-center' },
+                        'No Records Found.'
+                    )
+                );
+            }
+        }
+    }, {
+        key: 'sortByColumn',
+        value: function sortByColumn(column) {
+            var _this7 = this;
+
+            if (column === this.state.sorted_column) {
+                this.state.order === 'asc' ? this.setState({ order: 'desc', current_page: this.state.first_page }, function () {
+                    _this7.fetchEntities();
+                }) : this.setState({ order: 'asc' }, function () {
+                    _this7.fetchEntities();
+                });
+            } else {
+                this.setState({ sorted_column: column, order: 'asc', current_page: this.state.first_page }, function () {
+                    _this7.fetchEntities();
+                });
+            }
+        }
+    }, {
+        key: 'pageList',
+        value: function pageList() {
+            var _this8 = this;
+
+            return this.pagesNumbers().map(function (page) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'li',
+                    { className: page === _this8.state.entities.meta.current_page ? 'page-item active' : 'page-item', key: page },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { className: 'page-link', onClick: function onClick() {
+                                return _this8.changePage(page);
+                            } },
+                        page
+                    )
+                );
+            });
+        }
+    }, {
+        key: 'deleteCustomer',
+        value: function deleteCustomer(id) {
+            var _this9 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete('/api/customers/' + id).then(function (data) {
+                var index = _this9.state.invoices.findIndex(function (invoice) {
+                    return invoice.id === id;
+                });
+                var invoices = _this9.state.invoices.splice(index, 1);
+                _this9.setState({ invoice: invoices });
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this10 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'data-table' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__EditInvoice__["a" /* default */], {
+                    add: false,
+                    action: this.updateInvoice,
+                    invoices: this.state.invoices
+                }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["n" /* Table */],
+                    { striped: true, bordered: true, hover: true, responsive: true },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'thead',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'tr',
+                            null,
+                            this.tableHeads(),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'td',
+                                null,
+                                'Action'
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tbody',
+                        null,
+                        this.userList()
+                    )
+                ),
+                this.state.invoices && this.state.invoices.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'nav',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'ul',
+                        { className: 'pagination' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'li',
+                            { className: 'page-item' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'button',
+                                { className: 'page-link',
+                                    disabled: 1 === this.state.entities.meta.current_page,
+                                    onClick: function onClick() {
+                                        return _this10.changePage(_this10.state.entities.meta.current_page - 1);
+                                    }
+                                },
+                                'Previous'
+                            )
+                        ),
+                        this.pageList(),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'li',
+                            { className: 'page-item' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'button',
+                                { className: 'page-link',
+                                    disabled: this.state.entities.meta.last_page === this.state.entities.meta.current_page,
+                                    onClick: function onClick() {
+                                        return _this10.changePage(_this10.state.entities.meta.current_page + 1);
+                                    }
+                                },
+                                'Next'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            { style: { marginTop: '8px' } },
+                            ' \xA0 ',
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'i',
+                                null,
+                                'Displaying ',
+                                this.state.invoices.length,
+                                ' of ',
+                                this.state.entities.meta.total,
+                                ' entries.'
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Invoice;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Invoice);
+
+/***/ }),
+/* 251 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Address__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LineItemEditor__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_reactstrap__ = __webpack_require__(5);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+
+
+
+var LineItemModel = function () {
+    function LineItemModel(id, quantity, description, unit_price) {
+        _classCallCheck(this, LineItemModel);
+
+        this.id = id;
+        this.quantity = quantity;
+        this.description = description;
+        this.unit_price = unit_price;
+    }
+
+    _createClass(LineItemModel, [{
+        key: 'subTotal',
+        get: function get() {
+            return this.quantity * this.unit_price;
+        }
+    }]);
+
+    return LineItemModel;
+}();
+
+var EditInvoice = function (_Component) {
+    _inherits(EditInvoice, _Component);
+
+    function EditInvoice(props, context) {
+        _classCallCheck(this, EditInvoice);
+
+        var _this = _possibleConstructorReturn(this, (EditInvoice.__proto__ || Object.getPrototypeOf(EditInvoice)).call(this, props, context));
+
+        _this.state = {
+            due_date: '',
+            quantity: '',
+            lines: [],
+            address: {},
+            existingLines: [],
+            customerName: '',
+            customer_id: 1,
+            invoice_status: 1,
+            customers: [],
+            errors: []
+        };
+
+        _this.updateData = _this.updateData.bind(_this);
+        _this.saveData = _this.saveData.bind(_this);
+        _this.setTotal = _this.setTotal.bind(_this);
+        _this.toggle = _this.toggle.bind(_this);
+        _this.hasErrorFor = _this.hasErrorFor.bind(_this);
+        _this.renderErrorFor = _this.renderErrorFor.bind(_this);
+        _this.total = 0;
+        _this.changeStatus = _this.changeStatus.bind(_this);
+
+        return _this;
+    }
+
+    _createClass(EditInvoice, [{
+        key: 'renderErrorFor',
+        value: function renderErrorFor(field) {
+            if (this.hasErrorFor(field)) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'invalid-feedback' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'strong',
+                        null,
+                        this.state.errors[field][0]
+                    )
+                );
+            }
+        }
+    }, {
+        key: 'handleInput',
+        value: function handleInput(e) {
+
+            if (e.target.name == 'customer_id') {
+
+                var index = this.state.customers.findIndex(function (customer) {
+                    return customer.id == e.target.value;
+                });
+
+                var customer = this.state.customers[index];
+                this.state.customerName = customer.first_name + ' ' + customer.last_name;
+
+                if (customer.addresses) {
+                    var address = customer.addresses[0];
+
+                    var objAddress = {
+                        line1: address.address_1,
+                        town: address.address_2,
+                        county: address.city,
+                        country: 'United Kingdom'
+                    };
+
+                    this.setState({ address: objAddress });
+                }
+            }
+
+            this.setState(_defineProperty({}, e.target.name, e.target.value));
+        }
+    }, {
+        key: 'hasErrorFor',
+        value: function hasErrorFor(field) {
+            return !!this.state.errors[field];
+        }
+    }, {
+        key: 'loadCustomers',
+        value: function loadCustomers() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/customers/').then(function (r) {
+
+                _this2.setState({ customers: r.data });
+            }).catch(function (e) {
+                alert(e);
+            });
+        }
+    }, {
+        key: 'loadInvoice',
+        value: function loadInvoice() {
+            var _this3 = this;
+
+            if (!this.props.add) {
+                return false;
+            }
+
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/invoice/' + this.props.invoice_id).then(function (r) {
+                _this3.setState({ existingLines: r.data.lines, due_date: r.data.invoice.due_date, invoice_status: r.data.invoice.invoice_status });
+            }).catch(function (e) {
+                alert(e);
+            });
+        }
+    }, {
+        key: 'changeStatus',
+        value: function changeStatus(status) {
+            var _this4 = this;
+
+            if (!this.props.invoice_id) {
+
+                return false;
+            }
+
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.put('/api/invoice/' + this.props.invoice_id, {
+                invoice_status: status
+            }).then(function (response) {
+                _this4.setState({ invoice_status: status });
+            }).catch(function (error) {
+
+                alert('bad');
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this5 = this;
+
+            var changeStatusButton = this.state.invoice_status == 1 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_4_reactstrap__["a" /* Button */],
+                { color: 'primary', onClick: function onClick() {
+                        return _this5.changeStatus(2).bind(_this5);
+                    } },
+                'Send'
+            ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_4_reactstrap__["a" /* Button */],
+                { color: 'primary', onClick: function onClick() {
+                        return _this5.changeStatus(3).bind(_this5);
+                    } },
+                'Paid'
+            );
+
+            var customerContent = void 0;
+
+            if (!this.state.customers.length) {
+                customerContent = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'option',
+                    { value: '' },
+                    'Loading...'
+                );
+            } else {
+                customerContent = this.state.customers.map(function (customer, index) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'option',
+                        { key: index, value: customer.id },
+                        customer.first_name + " " + customer.last_name
+                    );
+                });
+            }
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["a" /* Button */],
+                    { color: 'secondary', onClick: this.toggle },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-plus-circle' }),
+                    'Edit'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["i" /* Modal */],
+                    { isOpen: this.state.modal, toggle: this.toggle, className: this.props.className, size: 'lg' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_4_reactstrap__["l" /* ModalHeader */],
+                        { toggle: this.toggle },
+                        'Invoice'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_4_reactstrap__["j" /* ModalBody */],
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'h2',
+                                null,
+                                this.state.customerName
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Address__["a" /* default */], { address: this.state.address }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_4_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["h" /* Label */],
+                                    { 'for': 'due_date' },
+                                    'Due Date(*):'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_reactstrap__["g" /* Input */], { className: this.hasErrorFor('due_date') ? 'is-invalid' : '', value: this.state.due_date, type: 'date', name: 'due_date', onChange: this.handleInput.bind(this) }),
+                                this.renderErrorFor('due_date')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_4_reactstrap__["f" /* FormGroup */],
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["h" /* Label */],
+                                    { 'for': 'customer' },
+                                    'Customer(*):'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_4_reactstrap__["g" /* Input */],
+                                    { className: this.hasErrorFor('customer') ? 'is-invalid' : '', type: 'select', name: 'customer_id', onChange: this.handleInput.bind(this) },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'option',
+                                        null,
+                                        'Choose A customer'
+                                    ),
+                                    customerContent
+                                ),
+                                this.renderErrorFor('customer')
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__LineItemEditor__["a" /* default */], { lineItemModel: this.state.existingLines, update: this.updateData, setTotal: this.setTotal }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_4_reactstrap__["a" /* Button */],
+                                { color: 'success', onClick: this.saveData },
+                                'Save'
+                            ),
+                            changeStatusButton,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null)
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_4_reactstrap__["k" /* ModalFooter */],
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_4_reactstrap__["a" /* Button */],
+                            { color: 'secondary', onClick: this.toggle },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-times-circle' }),
+                            ' Close'
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'toggle',
+        value: function toggle() {
+            this.setState({
+                modal: !this.state.modal
+            });
+
+            this.loadInvoice();
+            this.loadCustomers();
+        }
+    }, {
+        key: 'updateData',
+        value: function updateData(data) {
+            this.setState({ data: data });
+        }
+    }, {
+        key: 'setTotal',
+        value: function setTotal(total) {
+            this.total = total;
+        }
+    }, {
+        key: 'saveData',
+        value: function saveData() {
+            var _this6 = this;
+
+            var data = {
+                invoice_id: this.props.invoice_id,
+                due_date: this.state.due_date,
+                customer_id: this.state.customer_id,
+                data: JSON.stringify(this.state.data),
+                total: this.total,
+                payment_type: 1
+            };
+
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/invoice', data).then(function (response) {
+                var firstInvoice = response.data;
+                var allInvoices = _this6.props.invoices;
+                allInvoices.push(firstInvoice);
+                _this6.props.action(allInvoices);
+            }).catch(function (error) {
+                alert(error);
+            });
+        }
+    }]);
+
+    return EditInvoice;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (EditInvoice);
+
+/***/ }),
+/* 252 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var _class = function (_Component) {
+    _inherits(_class, _Component);
+
+    function _class() {
+        _classCallCheck(this, _class);
+
+        return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+    }
+
+    _createClass(_class, [{
+        key: 'render',
+        value: function render() {
+            var address = this.props.address;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'pv5 f6' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'p',
+                    { className: 'mv0' },
+                    address.line1
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'p',
+                    { className: 'mv0' },
+                    address.town
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'p',
+                    { className: 'mv0' },
+                    address.county
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'p',
+                    { className: 'mv0' },
+                    address.country
+                )
+            );
+        }
+    }]);
+
+    return _class;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (_class);
+
+/***/ }),
+/* 253 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LineItem__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_reactstrap__ = __webpack_require__(5);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var LineItemEditor = function (_Component) {
+    _inherits(LineItemEditor, _Component);
+
+    function LineItemEditor(props) {
+        _classCallCheck(this, LineItemEditor);
+
+        var _this = _possibleConstructorReturn(this, (LineItemEditor.__proto__ || Object.getPrototypeOf(LineItemEditor)).call(this, props));
+
+        _this.state = {
+            rowData: []
+        };
+        _this.handleRowChange = _this.handleRowChange.bind(_this);
+        _this.handleRowDelete = _this.handleRowDelete.bind(_this);
+        _this.handleRowAdd = _this.handleRowAdd.bind(_this);
+        _this.getTotal = _this.getTotal.bind(_this);
+        return _this;
+    }
+
+    _createClass(LineItemEditor, [{
+        key: 'buildExistingLine',
+        value: function buildExistingLine(lineItem, index) {
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__LineItem__["a" /* default */], { key: index, id: index, lineItemData: {
+                    'quantity': lineItem.quantity,
+                    'description': lineItem.description,
+                    'unit_price': lineItem.unit_price,
+                    'line_id': lineItem.id,
+                    'change_existing': true
+                }, canUpdate: false });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var lineItemRows = this.state.rowData.map(function (lineItem, index) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__LineItem__["a" /* default */], { key: index, id: index, lineItemData: _this2.state.rowData[index], onChange: _this2.handleRowChange, onDelete: _this2.handleRowDelete });
+            });
+
+            var self = this;
+
+            var items = this.props.lineItemModel.map(function (item, index) {
+                return self.buildExistingLine(item, index);
+            });
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'table',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'thead',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tr',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Quantity'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Description'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Unit Price'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Total'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', null)
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'tbody',
+                    null,
+                    items,
+                    lineItemRows,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tr',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('td', null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('td', null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('td', null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('td', null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'td',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_2_reactstrap__["a" /* Button */],
+                                { color: 'success', onClick: this.handleRowAdd, className: 'f6 link dim ph3 pv1 mb2 dib white bg-dark-green bn' },
+                                'Add'
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'tfoot',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tr',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Grand total:'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            this.getTotal()
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', null)
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'getTotal',
+        value: function getTotal() {
+            var grandTotal = 0;
+            var rowTotals = this.state.rowData.map(function (row) {
+                return row.quantity * row.unit_price;
+            });
+            if (rowTotals.length > 0) {
+                grandTotal = rowTotals.reduce(function (acc, val) {
+                    return acc + val;
+                });
+            }
+
+            this.props.setTotal(grandTotal);
+            return grandTotal;
+        }
+    }, {
+        key: 'handleRowChange',
+        value: function handleRowChange(row, data) {
+            var rowDataCopy = this.state.rowData.slice(0);
+            rowDataCopy[row] = data;
+            this.setState({ rowData: rowDataCopy });
+            this.props.update(rowDataCopy);
+        }
+    }, {
+        key: 'handleRowDelete',
+        value: function handleRowDelete(row) {
+            var rowDataCopy = this.state.rowData.slice(0);
+            rowDataCopy.splice(row, 1);
+            this.setState({ rowData: rowDataCopy });
+            this.props.update(rowDataCopy);
+        }
+    }, {
+        key: 'handleRowAdd',
+        value: function handleRowAdd() {
+            var rowDataCopy = this.state.rowData.slice(0);
+            rowDataCopy.push({ quantity: 0, description: '', unit_price: 0 });
+            this.setState({ rowData: rowDataCopy });
+            this.props.update(rowDataCopy);
+        }
+    }]);
+
+    return LineItemEditor;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (LineItemEditor);
+
+/***/ }),
+/* 254 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_reactstrap__ = __webpack_require__(5);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var LineItem = function (_Component) {
+    _inherits(LineItem, _Component);
+
+    function LineItem(props) {
+        _classCallCheck(this, LineItem);
+
+        var _this = _possibleConstructorReturn(this, (LineItem.__proto__ || Object.getPrototypeOf(LineItem)).call(this, props));
+
+        _this.state = Object.assign({}, props.lineItemData);
+
+        _this.handleQuantityChange = _this.handleQuantityChange.bind(_this);
+        _this.handleDescriptionChange = _this.handleDescriptionChange.bind(_this);
+        _this.handlePriceChange = _this.handlePriceChange.bind(_this);
+        _this.handleDeleteClick = _this.handleDeleteClick.bind(_this);
+        _this.pushToCaller = _this.pushToCaller.bind(_this);
+        _this.deleteFromDatabase = _this.deleteFromDatabase.bind(_this);
+        return _this;
+    }
+
+    _createClass(LineItem, [{
+        key: "updateLine",
+        value: function updateLine(e) {
+            var parent = e.target.parentNode.parentNode;
+            var lineId = e.target.parentNode.parentNode.getAttribute('data-id');
+
+            if (!lineId) {
+                return false;
+            }
+
+            var inputs = parent.querySelectorAll('input'),
+                i = void 0;
+
+            var obj = {};
+
+            for (i = 0; i < inputs.length; ++i) {
+
+                obj[inputs[i].getAttribute("name")] = inputs[i].value;
+            }
+
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.put("/api/invoice/line/" + lineId, obj).then(function (response) {}).catch(function (error) {
+                alert(error);
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            var line_id = this.props.lineItemData.line_id;
+
+
+            var button = this.props.canUpdate ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_2_reactstrap__["a" /* Button */],
+                { color: "danger", onClick: this.handleDeleteClick },
+                "Delete"
+            ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_2_reactstrap__["a" /* Button */],
+                { color: "danger", onClick: function onClick() {
+                        return _this2.deleteFromDatabase(line_id);
+                    }, className: "f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn" },
+                "Delete"
+            );
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "tr",
+                { "data-id": line_id, key: line_id },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "td",
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { name: "quantity", "data-line": line_id, type: "text", value: this.state.quantity, onChange: this.handleQuantityChange, className: "pa2 mr2 f6 form-control" })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "td",
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { name: "description", "data-line": line_id, type: "text", value: this.state.description, onChange: this.handleDescriptionChange, className: "pa2 mr2 f6 form-control" })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "td",
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { name: "unit_price", "data-line": line_id, type: "text", "data-column": "5", value: this.state.unit_price, onChange: this.handlePriceChange, className: "pa2 mr2 f6 form-control" })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "td",
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "p",
+                        { className: "pa2 mr2 f6" },
+                        this.state.quantity * this.state.unit_price
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "td",
+                    null,
+                    button,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2_reactstrap__["a" /* Button */],
+                        { color: "primary", onClick: this.updateLine },
+                        "Update"
+                    )
+                )
+            );
+        }
+    }, {
+        key: "handleQuantityChange",
+        value: function handleQuantityChange(e) {
+
+            if (this.isExistingLine(e)) {
+                this.setState({ quantity: e.target.value });
+                return false;
+            }
+
+            this.setState({ quantity: e.target.value }, this.pushToCaller);
+        }
+    }, {
+        key: "handleDescriptionChange",
+        value: function handleDescriptionChange(e) {
+
+            if (this.isExistingLine(e)) {
+                this.setState({ description: e.target.value });
+                return false;
+            }
+
+            this.setState({ description: e.target.value }, this.pushToCaller);
+        }
+    }, {
+        key: "isExistingLine",
+        value: function isExistingLine(e) {
+            var lineId = e.target.parentNode.parentNode.getAttribute('data-id');
+
+            if (lineId) {
+                return true;
+            }
+
+            return false;
+        }
+    }, {
+        key: "handlePriceChange",
+        value: function handlePriceChange(e) {
+
+            if (this.isExistingLine(e)) {
+                this.setState({ unit_price: e.target.value });
+                return false;
+            }
+
+            this.setState({ unit_price: e.target.value }, this.pushToCaller);
+        }
+    }, {
+        key: "pushToCaller",
+        value: function pushToCaller() {
+            this.props.onChange(this.props.id, {
+                quantity: parseInt(this.state.quantity, 10),
+                description: this.state.description,
+                unit_price: parseFloat(this.state.unit_price)
+            });
+        }
+    }, {
+        key: "deleteFromDatabase",
+        value: function deleteFromDatabase(line_id) {
+
+            var self = this;
+
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.delete('/api/invoice/line/' + line_id).then(function (response) {
+                document.querySelector("tbody tr[data-id='" + line_id + "']").remove();
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: "handleDeleteClick",
+        value: function handleDeleteClick() {
+            this.props.onDelete(this.props.id);
+        }
+    }]);
+
+    return LineItem;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (LineItem);
+
+/***/ }),
 /* 255 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

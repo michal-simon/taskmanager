@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Customer;
 use App\Repositories\CustomerRepository;
 use App\Repositories\AddressRepository;
@@ -43,7 +42,7 @@ class CustomerController extends Controller {
      */
     public function index() {
         $list = $this->customerRepo->listCustomers('created_at', 'desc');
-
+        
         if (request()->has('q')) {
             $list = $this->customerRepo->searchCustomer(request()->input('q'));
         }
