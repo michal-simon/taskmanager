@@ -95395,14 +95395,12 @@ var DataTable = function (_Component) {
 
     _this.state = {
       entities: {
-        meta: {
-          current_page: 1,
-          from: 1,
-          last_page: 1,
-          per_page: 5,
-          to: 1,
-          total: 1
-        }
+        current_page: 1,
+        from: 1,
+        last_page: 1,
+        per_page: 5,
+        to: 1,
+        total: 1
       },
       first_page: 1,
       current_page: 1,
@@ -95421,17 +95419,24 @@ var DataTable = function (_Component) {
   _createClass(DataTable, [{
     key: 'addUserToState',
     value: function addUserToState(users) {
-      this.setState({ data: users });
+
+      console.log('users', users);
+
+      this.setState(function (prevState) {
+        var entities = Object.assign({}, prevState.entities); // creating copy of state variable jasper
+        entities.data = users; // update the name property, assign a new value
+        return { entities: entities }; // return new object jasper object
+      });
     }
   }, {
     key: 'fetchEntities',
     value: function fetchEntities() {
       var _this2 = this;
 
-      var fetchUrl = '/api/users/?page=' + this.state.current_page + '&column=' + this.state.sorted_column + '&order=' + this.state.order + '&per_page=' + this.state.entities.meta.per_page;
+      var fetchUrl = '/api/users/?page=' + this.state.current_page + '&column=' + this.state.sorted_column + '&order=' + this.state.order + '&per_page=' + this.state.entities.per_page;
       __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(fetchUrl).then(function (response) {
-        _this2.state.columns = Object.keys(response.data[0]);
-        _this2.setState({ data: response.data });
+        _this2.state.columns = Object.keys(response.data.data[0]);
+        _this2.setState({ entities: response.data });
       }).catch(function (e) {
         console.error(e);
       });
@@ -95453,21 +95458,21 @@ var DataTable = function (_Component) {
   }, {
     key: 'updateUserState',
     value: function updateUserState(user) {
-      this.setState({ data: user });
+      this.addUserToState(user);
     }
   }, {
     key: 'pagesNumbers',
     value: function pagesNumbers() {
-      if (!this.state.entities.meta.to) {
+      if (!this.state.entities.to) {
         return [];
       }
-      var from = this.state.entities.meta.current_page - this.state.offset;
+      var from = this.state.entities.current_page - this.state.offset;
       if (from < 1) {
         from = 1;
       }
       var to = from + this.state.offset * 2;
-      if (to >= this.state.entities.meta.last_page) {
-        to = this.state.entities.meta.last_page;
+      if (to >= this.state.entities.last_page) {
+        to = this.state.entities.last_page;
       }
       var pagesArray = [];
       for (var page = from; page <= to; page++) {
@@ -95480,7 +95485,7 @@ var DataTable = function (_Component) {
     value: function componentDidMount() {
       var _this4 = this;
 
-      this.setState({ current_page: this.state.entities.meta.current_page }, function () {
+      this.setState({ current_page: this.state.entities.current_page }, function () {
         _this4.fetchEntities();
       });
     }
@@ -95502,7 +95507,7 @@ var DataTable = function (_Component) {
               return _this5.sortByColumn(column);
             } },
           _this5.columnHead(column),
-          column === _this5.state.sorted_column && icon
+          icon
         );
       });
     }
@@ -95511,8 +95516,8 @@ var DataTable = function (_Component) {
     value: function userList() {
       var _this6 = this;
 
-      if (this.state.data && this.state.data.length) {
-        return this.state.data.map(function (user) {
+      if (this.state.entities.data && this.state.entities.data.length) {
+        return this.state.entities.data.map(function (user) {
 
           var columnList = Object.keys(user).map(function (key) {
 
@@ -95541,7 +95546,7 @@ var DataTable = function (_Component) {
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { id: 'delete', className: 'fas fa-times', onClick: function onClick() {
                   return _this6.deleteUser(user.id);
                 } }),
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__EditUser__["a" /* default */], { user: user, users: _this6.state.data, action: _this6.updateUserState })
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__EditUser__["a" /* default */], { user: user, users: _this6.state.entities.data, action: _this6.updateUserState })
             )
           );
         });
@@ -95582,7 +95587,7 @@ var DataTable = function (_Component) {
       return this.pagesNumbers().map(function (page) {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'li',
-          { className: page === _this8.state.entities.meta.current_page ? 'page-item active' : 'page-item', key: page },
+          { className: page === _this8.state.entities.current_page ? 'page-item active' : 'page-item', key: page },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
             { className: 'page-link', onClick: function onClick() {
@@ -95600,10 +95605,11 @@ var DataTable = function (_Component) {
       var self = this;
 
       __WEBPACK_IMPORTED_MODULE_1_axios___default.a.delete('/api/users/' + id).then(function (response) {
-        var filteredArray = self.state.data.filter(function (item) {
-          return item.id !== id;
+        var index = self.state.entities.data.findIndex(function (user) {
+          return user.id === id;
         });
-        self.setState({ data: filteredArray });
+        var users = self.state.entities.data.splice(index, 1);
+        self.addUserToState(users);
       }).catch(function (error) {
         console.log(error);
       });
@@ -95620,7 +95626,7 @@ var DataTable = function (_Component) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'data-table', style: divStyle },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__forms_AddUser__["a" /* default */], { users: this.state.data, action: this.addUserToState }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__forms_AddUser__["a" /* default */], { users: this.state.entities.data, action: this.addUserToState }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4_reactstrap__["n" /* Table */],
           { striped: true, bordered: true, hover: true, responsive: true },
@@ -95644,7 +95650,7 @@ var DataTable = function (_Component) {
             this.userList()
           )
         ),
-        this.state.data && this.state.data.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        this.state.entities.data && this.state.entities.data.length > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'nav',
           null,
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -95656,9 +95662,9 @@ var DataTable = function (_Component) {
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'button',
                 { className: 'page-link',
-                  disabled: 1 === this.state.entities.meta.current_page,
+                  disabled: 1 === this.state.entities.current_page,
                   onClick: function onClick() {
-                    return _this9.changePage(_this9.state.entities.meta.current_page - 1);
+                    return _this9.changePage(_this9.state.entities.current_page - 1);
                   }
                 },
                 'Previous'
@@ -95671,9 +95677,9 @@ var DataTable = function (_Component) {
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'button',
                 { className: 'page-link',
-                  disabled: this.state.entities.meta.last_page === this.state.entities.meta.current_page,
+                  disabled: this.state.entities.last_page === this.state.entities.current_page,
                   onClick: function onClick() {
-                    return _this9.changePage(_this9.state.entities.meta.current_page + 1);
+                    return _this9.changePage(_this9.state.entities.current_page + 1);
                   }
                 },
                 'Next'
@@ -95687,9 +95693,9 @@ var DataTable = function (_Component) {
                 'i',
                 null,
                 'Displaying ',
-                this.state.data.length,
+                this.state.entities.data.length,
                 ' of ',
-                this.state.entities.meta.total,
+                this.state.entities.total,
                 ' entries.'
               )
             )
@@ -98396,7 +98402,11 @@ var Customers = function (_Component) {
     _createClass(Customers, [{
         key: 'updateCustomers',
         value: function updateCustomers(customers) {
-            this.setState({ customers: customers });
+            this.setState(function (prevState) {
+                var entities = Object.assign({}, prevState.entities); // creating copy of state variable jasper
+                entities.data = customers; // update the name property, assign a new value
+                return { entities: entities }; // return new object jasper object
+            });
         }
     }, {
         key: 'fetchEntities',
@@ -98575,11 +98585,11 @@ var Customers = function (_Component) {
             var _this9 = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.delete('/api/customers/' + id).then(function (data) {
-                var index = _this9.state.customers.findIndex(function (customer) {
+                var index = _this9.state.entities.data.findIndex(function (customer) {
                     return customer.id === id;
                 });
-                var customers = _this9.state.customers.splice(index, 1);
-                _this9.setState({ customer: customers });
+                var customers = _this9.state.entities.data.splice(index, 1);
+                _this9.updateCustomers(customers);
             });
         }
     }, {
@@ -98645,12 +98655,10 @@ var Customers = function (_Component) {
         value: function render() {
             var _this10 = this;
 
-            console.log('page', this.state.entities);
-
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'data-table' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__AddCustomer__["a" /* default */], { action: this.updateCustomers, customers: this.state.customers }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__AddCustomer__["a" /* default */], { action: this.updateCustomers, customers: this.state.entities.data }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_5_reactstrap__["n" /* Table */],
                     { striped: true, bordered: true, hover: true, responsive: true },

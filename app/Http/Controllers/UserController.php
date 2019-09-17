@@ -18,12 +18,14 @@ class UserController extends Controller {
     }
 
     public function index(Request $request) {
-        $orderBy = !$request->column ? 'first_name' : $request->column;
+       $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
         $users = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
-        return $users->toJson();
+        $paginatedResults = $this->userRepository->paginateArrayResults($users->toArray(), $recordsPerPage);
+        
+        return $paginatedResults->toJson();
     }
 
     public function dashboard() {

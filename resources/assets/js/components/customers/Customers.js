@@ -32,13 +32,17 @@ export default class Customers extends Component {
     }
 
     updateCustomers(customers) {
-        this.setState({customers: customers})
+        this.setState(prevState => {
+            let entities = Object.assign({}, prevState.entities);  // creating copy of state variable jasper
+            entities.data = customers;                     // update the name property, assign a new value
+            return { entities };                                 // return new object jasper object
+        })
     }
 
     fetchEntities() {
         axios.get(`/api/customers/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`).then(response => {
             this.state.columns = Object.keys(response.data.data[0])
-            this.setState({ entities: response.data });
+            this.setState({ entities: response.data })
         })
     }
 
@@ -152,9 +156,9 @@ export default class Customers extends Component {
 
     deleteCustomer(id) {
         axios.delete(`/api/customers/${id}`).then(data => {
-            const index = this.state.customers.findIndex(customer => customer.id === id);
-            const customers = this.state.customers.splice(index, 1);
-            this.setState({ customer: customers });
+            const index = this.state.entities.data.findIndex(customer => customer.id === id);
+            const customers = this.state.entities.data.splice(index, 1);
+            this.updateCustomers(customers)
         })
     }
 
@@ -197,13 +201,10 @@ export default class Customers extends Component {
 
     render() {
 
-
-        console.log('page', this.state.entities)
-
         return (
             <div className="data-table">
 
-                <AddCustomer action={this.updateCustomers} customers={this.state.customers} />
+                <AddCustomer action={this.updateCustomers} customers={this.state.entities.data} />
 
                 <Table striped bordered hover responsive>
                     <thead>
