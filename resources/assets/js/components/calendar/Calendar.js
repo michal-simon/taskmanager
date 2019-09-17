@@ -38,6 +38,8 @@ const RowContainer = styled.div`
 const Calendar = props => {
     const { year, month, events } = props;
 
+    console.log('events second', events)
+
     const weeks = [];
     const firstDayInMonth = new Date(year, month - 1, 1),
         lastDayInMonth = new Date(year, month, 0),
@@ -70,14 +72,16 @@ const Calendar = props => {
             </Header>
             <RowContainer>
                 {weeks.map((dates, i) => (
+
                     <CalendarWeekRow
                         year={year}
                         month={month}
                         dates={dates}
+                        action={props.action}
                         events={events.filter(
                             event =>
-                                event.beginDate <= dates[dates.length - 1] &&
-                                event.endDate >= dates[0]
+                                new Date(Date.parse(event.beginDate)) <= dates[dates.length - 1] &&
+                                new Date(Date.parse(event.endDate)) >= dates[0]
                         )}
                         key={i}
                     />
@@ -85,14 +89,6 @@ const Calendar = props => {
             </RowContainer>
         </Container>
     );
-};
-Calendar.propTypes = {
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
-    events: PropTypes.arrayOf(PropTypes.object),
-};
-Calendar.defaultProps = {
-    events: [],
 };
 
 export default Calendar;

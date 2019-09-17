@@ -21,6 +21,8 @@ use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\CustomerRepository;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
 use App\Repositories\AddressRepository;
+use App\Repositories\Interfaces\EventRepositoryInterface;
+use App\Repositories\EventRepository;
 
 class RepositoryServiceProvider extends ServiceProvider {
 
@@ -73,6 +75,10 @@ class RepositoryServiceProvider extends ServiceProvider {
         
         $this->app->bind(
                 RoleRepositoryInterface::class, RoleRepository::class
+        );
+        
+         $this->app->bind(
+                EventRepositoryInterface::class, EventRepository::class
         );
     }
 

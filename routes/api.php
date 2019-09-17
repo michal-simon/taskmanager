@@ -33,5 +33,15 @@ Route::get('customers/{customer_id}', 'CustomerController@show');
 Route::put('customers/{customer_id}', 'CustomerController@update');
 Route::post('customers', 'CustomerController@store');
 Route::delete('customers/{customer_id}', 'CustomerController@destroy');
+Route::get('events', 'EventController@index');
+Route::delete('events/{event_id}', 'EventController@destroy');
+Route::put('events/{event_id}', 'EventController@update');
+Route::get('events/{event_id}', 'EventController@show');
+Route::post('events', 'EventController@store');
+
+
+
+
+
 
 

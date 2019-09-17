@@ -25,23 +25,26 @@ const getUrlParameter = function getUrlParameter(sParam) {
 
 const project_id = getUrlParameter('project_id')
 
-ReactDOM.render(<Calendar />, document.getElementById('app'));
+switch(true) {
+    case window.location.pathname.indexOf("leads") >= 0:
+        ReactDOM.render(<Dashboard task_type="2"/>, document.getElementById('app'));
+        break;
 
-// switch(true) {
-//     case window.location.pathname.indexOf("leads") >= 0:
-//         ReactDOM.render(<Dashboard task_type="2"/>, document.getElementById('app'));
-//         break;
-//     case window.location.href.indexOf("users?view") >= 0:
-//         ReactDOM.render(<UserList/>, document.getElementById('app'));
-//         break;
-//
-//         case window.location.href.indexOf("customers?view") >= 0:
-//
-//             ReactDOM.render(<Customers/>, document.getElementById('app'));
-//
-//         break;
-//
-//     default:
-//         ReactDOM.render(<Dashboard task_type="1" project_id={project_id}/>, document.getElementById('app'));
-//         break;
-// }
+    case window.location.href.indexOf("calendar?view") >= 0:
+        ReactDOM.render(<Calendar />, document.getElementById('app'));
+        break;
+
+    case window.location.href.indexOf("users?view") >= 0:
+        ReactDOM.render(<UserList/>, document.getElementById('app'));
+        break;
+
+        case window.location.href.indexOf("customers?view") >= 0:
+
+            ReactDOM.render(<Customers/>, document.getElementById('app'));
+
+        break;
+
+    default:
+        ReactDOM.render(<Dashboard task_type="1" project_id={project_id}/>, document.getElementById('app'));
+        break;
+}

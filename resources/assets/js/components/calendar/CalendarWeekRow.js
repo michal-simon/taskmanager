@@ -21,50 +21,60 @@ const DayHeader = styled.span`
   font-weight: ${props => (props.dimmed ? 'normal' : 'bold')};
 `;
 
-const CalendarWeekRow = props => {
-    const { year, month, dates, events } = props;
+class CalendarWeekRow extends React.Component {
 
-    return (
-        <Row>
-            {dates.map(date => (
-                <DayHeader
-                    dimmed={date.getFullYear() !== year || date.getMonth() !== month - 1}
-                    key={date}
-                >
-                    {date.getDate()}
-                </DayHeader>
-            ))}
-            {events.map(event => {
-                const col =
-                    dates.findIndex(
-                        date => date.valueOf() === event.beginDate.valueOf()
-                    ) + 1 || 1,
-                    colSpan =
-                        (dates.findIndex(
-                            date => date.valueOf() === event.endDate.valueOf()
-                        ) + 1 || 7) -
-                        col +
-                        1;
+    constructor(props) {
+        super(props);
+        this.showEvent = this.showEvent.bind(this);
+    }
 
-                return (
-                    <CalendarEvent
-                        title={event.title}
-                        col={col}
-                        colSpan={colSpan}
-                        key={event.id}
-                        onClick={() => alert(`${event.title} Clicked!`)}
-                    />
-                );
-            })}
-        </Row>
-    );
-};
-CalendarWeekRow.propTypes = {
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
-};
-CalendarWeekRow.defaultProps = {
-    events: [],
-};
+    showEvent() {
 
+        alert('Mike')
+    }
+
+    render() {
+        const { year, month, dates, events } = this.props;
+
+        return (
+            <Row>
+                {dates.map(date => (
+                    <DayHeader
+                        dimmed={date.getFullYear() !== year || date.getMonth() !== month - 1}
+                        key={date}
+                    >
+                        {date.getDate()}
+                    </DayHeader>
+                ))}
+                {events.map(event => {
+
+                    const beginDate = new Date(Date.parse(event.beginDate))
+                    const endDate = new Date(Date.parse(event.endDate))
+
+                    const col =
+                        dates.findIndex(
+                            date => date.valueOf() === beginDate.valueOf()
+                        ) + 1 || 1,
+                        colSpan =
+                            (dates.findIndex(
+                                date => date.valueOf() === endDate.valueOf()
+                            ) + 1 || 7) -
+                            col +
+                            1;
+
+                    return (
+                        <CalendarEvent
+                            events={this.props.events}
+                            event={event}
+                            col={col}
+                            colSpan={colSpan}
+                            action={this.props.action}
+                            key={event.id}
+                        />
+                    );
+                })}
+            </Row>
+        );
+    }
+}
 export default CalendarWeekRow;

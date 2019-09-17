@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Event;
 
 class User extends Authenticatable
 {
@@ -36,4 +37,8 @@ class User extends Authenticatable
         'updated_at',
         'is_active'
     ];
+    
+     public function events() {
+        return $this->belongsTo(Event::class);
+    }
 }

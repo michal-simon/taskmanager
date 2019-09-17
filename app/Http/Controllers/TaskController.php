@@ -15,6 +15,11 @@ class TaskController extends Controller {
     private $taskRepository;
     private $projectRepository;
 
+    /**
+     * 
+     * @param TaskRepositoryInterface $taskRepository
+     * @param ProjectRepositoryInterface $projectRepository
+     */
     public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository) {
         $this->taskRepository = $taskRepository;
         $this->projectRepository = $projectRepository;

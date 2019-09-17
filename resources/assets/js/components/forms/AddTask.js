@@ -45,10 +45,6 @@ class AddModal extends React.Component {
         }
     }
 
-    handleChange(event) {
-        this.setState({name: event.target.value});
-    }
-
     handleInput(e) {
         this.setState({
             [e.target.name]: e.target.value

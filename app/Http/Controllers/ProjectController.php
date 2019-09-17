@@ -11,6 +11,10 @@ class ProjectController extends Controller {
 
     private $projectRepository;
 
+    /**
+     * 
+     * @param ProjectRepositoryInterface $projectRepository
+     */
     public function __construct(ProjectRepositoryInterface $projectRepository) {
         $this->projectRepository = $projectRepository;
     }

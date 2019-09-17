@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Calendar from './Calendar';
+import CreateEvent from './CreateEvent';
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -46,20 +48,18 @@ class Calendars extends React.Component {
       this.setState({month: month})
    }
 
-   getEvents() {
-      const newEvents = [];
-      for (let i = 0; i < 5; i++) {
-         const beginDay = Math.floor(Math.random() * 28),
-             endDay = Math.min(beginDay + Math.floor(Math.random() * 8), 28);
-         newEvents.push({
-            id: i + 1,
-            title: `Event ${i + 1}`,
-            beginDate: new Date(this.state.year, this.state.month - 1, beginDay),
-            endDate: new Date(this.state.year, this.state.month - 1, endDay),
-         });
-      }
+   componentDidMount() {
 
-      this.setEvents(newEvents);
+      axios.get('/api/events')
+          .then((r)=> {
+             this.setState({
+                events: r.data,
+             })
+          })
+
+          .catch((e)=>{
+            alert(e)
+          })
    }
 
    /**
@@ -77,7 +77,6 @@ class Calendars extends React.Component {
          prevMonth = 12;
       }
       this.setMonth(prevMonth);
-      this.setEvents([])
    };
 
    loadNextMonth() {
@@ -87,22 +86,26 @@ class Calendars extends React.Component {
          nextMonth = 1;
       }
       this.setMonth(nextMonth);
-      this.setEvents([])
    };
 
    render() {
 
-      if(!this.state.events.length) {
-         this.getEvents()
-      }
-
       return (
           <Container>
+             <CreateEvent
+                 action={this.setEvents}
+                 events={this.state.events}
+             />
              <Controls>
                 <Button onClick={this.loadPrevMonth}>&laquo; Prev Month</Button>
                 <Button onClick={this.loadNextMonth}>Next Month &raquo;</Button>
              </Controls>
-             <Calendar year={this.state.year} month={this.state.month} events={this.state.events} />
+             <Calendar
+                 year={this.state.year}
+                 month={this.state.month}
+                 events={this.state.events}
+                 action={this.setEvents}
+             />
           </Container>
       )
    }
