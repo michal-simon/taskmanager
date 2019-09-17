@@ -22,7 +22,8 @@ class EditInvoice extends Component {
         super(props, context);
 
         this.state = {
-            due_date: null,
+            due_date: '',
+            quantity: '',
             lines: [],
             address: {},
             existingLines: [],
@@ -220,8 +221,11 @@ class EditInvoice extends Component {
         axios.post('/api/invoice', data)
             .then((response) => {
                 const firstInvoice = response.data
-                this.props.invoices.push(firstInvoice)
-                this.props.action(this.props.invoices)
+                const allInvoices = this.props.invoices
+                allInvoices.push(firstInvoice)
+                this.props.action(allInvoices)
+
+                alert('good')
             })
             .catch((error) => {
                 alert(error)

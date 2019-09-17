@@ -97417,7 +97417,8 @@ var EditInvoice = function (_Component) {
         var _this = _possibleConstructorReturn(this, (EditInvoice.__proto__ || Object.getPrototypeOf(EditInvoice)).call(this, props, context));
 
         _this.state = {
-            due_date: null,
+            due_date: '',
+            quantity: '',
             lines: [],
             address: {},
             existingLines: [],
@@ -97692,8 +97693,11 @@ var EditInvoice = function (_Component) {
 
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post('/api/invoice', data).then(function (response) {
                 var firstInvoice = response.data;
-                _this6.props.invoices.push(firstInvoice);
-                _this6.props.action(_this6.props.invoices);
+                var allInvoices = _this6.props.invoices;
+                allInvoices.push(firstInvoice);
+                _this6.props.action(allInvoices);
+
+                alert('good');
             }).catch(function (error) {
                 alert(error);
             });
@@ -98019,9 +98023,7 @@ var LineItem = function (_Component) {
                 obj[inputs[i].getAttribute("name")] = inputs[i].value;
             }
 
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.put("/api/invoice/line/" + lineId, obj).then(function (response) {
-                alert('good');
-            }).catch(function (error) {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.put("/api/invoice/line/" + lineId, obj).then(function (response) {}).catch(function (error) {
                 alert(error);
             });
         }

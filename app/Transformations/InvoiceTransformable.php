@@ -12,7 +12,7 @@ trait InvoiceTransformable
         $prop = new Invoice;
         
         $customer = (new CustomerRepository(new Customer))->findCustomerById($invoice->customer_id);
-
+        
         switch($invoice->invoice_status) {
             case 1:
                 $status = 'Draft';
@@ -22,6 +22,10 @@ trait InvoiceTransformable
                 break;
             case 3:
                 $status = 'Paid';
+                break;
+            
+            default:
+                $status = 'Draft';
                 break;
         }
         

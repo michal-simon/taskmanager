@@ -54,13 +54,14 @@ class InvoiceController extends Controller {
         } else {
             $invoice = $this->invoiceRepository->createInvoice($request->all());
         }
-
+        
         $arrLines = json_decode($request->data, true);
 
         foreach ($arrLines as $arrLine) {
             $this->invoiceLineRepository->createInvoiceLine($invoice, $arrLine);
         }
 
+        $invoice = $this->transformInvoice($invoice);
         return $invoice->toJson();
     }
 

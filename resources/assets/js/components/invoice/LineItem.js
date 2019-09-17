@@ -35,7 +35,6 @@ class LineItem extends Component {
 
         axios.put(`/api/invoice/line/${lineId}`, obj)
             .then((response) => {
-               alert('good')
             })
             .catch((error) => {
                 alert(error)
