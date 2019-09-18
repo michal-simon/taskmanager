@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import moment from 'moment'
-import ModalExampleDimmer from './Modal'
 import axios from 'axios'
 import $ from 'jquery'
 import 'jquery-ui-dist/jquery-ui';
 import './dragdrop';
 import Loader from './Loader';
 import ViewTask from './forms/viewTask';
+import Tooltips from "./Tooltip";
 
 class Task extends Component {
 
@@ -39,32 +39,20 @@ class Task extends Component {
                     const id = $(ui.draggable).attr('id')
                     const status = $(this).data('status')
 
-                    let index = self.props.tasks.findIndex(task => task.id == id)
-                    const currentObject = self.props.tasks[index]
-
                     axios.put(`/api/tasks/status/${id}`, {
                         task_status: status
                     })
                         .then((response) => {
-                            // currentObject.task_status = status
-                            // console.log('all tasks', self.props.tasks)
-                            // self.props.action(self.props.tasks)
                         })
                         .catch((error) => {
                             alert(error)
                         });
-
-
-                    // alert($(this).data('status'))
-                    //
-                    // alert($(this).find("li").attr('id'))
                 }
             });
         }, 3000);
     }
 
     api(id) {
-
         const self = this;
 
         axios.delete('/api/tasks/' + id)
@@ -100,6 +88,7 @@ class Task extends Component {
                        
                     <span className="task-name">
                         <ViewTask
+                            task_type={this.props.task_type}
                             allTasks={this.props.tasks}
                             action={this.props.action}
                             task={i}
@@ -110,11 +99,9 @@ class Task extends Component {
                                 <div>
                                     <span className="task-due">{moment(i.dueDate).format("DD.MM.YYYY")}</span>
                                     <span className="task-contributors">
-                        {/* <img alt={i.contributors[0].name + ' '+i.contributors[0].lastName } title={i.contributors[0].name + ' '+i.contributors[0].lastName } src={'/assets/img/' + i.contributors[0].profilePhoto}/> */}
                     </span>
                                 </div>
                                 <div className={i.color}/>
-                                {/* <ModalExampleDimmer propContent={i} classType="btnDashboard"/> */}
                             </div>
                         )
                     })

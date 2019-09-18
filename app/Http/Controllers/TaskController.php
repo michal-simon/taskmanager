@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
-use App\Http\Requests\TaskRequest;
+use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\TaskRepository;
@@ -30,9 +30,11 @@ class TaskController extends Controller {
      *
      * @return Response
      */
-    public function store(TaskRequest $request) {
+    public function store(CreateTaskRequest $request) {
         $validatedData = $request->validated();
         $task = $this->taskRepository->createTask([
+            'customer_id' => $validatedData['customer_id'],
+            'rating' => $validatedData['rating'],
             'task_type' => $validatedData['task_type'],
             'title' => $validatedData['title'],
             'content' => $validatedData['content'],

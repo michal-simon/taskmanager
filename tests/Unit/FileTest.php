@@ -11,8 +11,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FileTest extends TestCase {
-    
-    use DatabaseTransactions;
+
+    use DatabaseTransactions,
+        WithFaker;
 
     private $user;
     private $task;
@@ -56,7 +57,7 @@ class FileTest extends TestCase {
         $data = [
             'task_id' => $this->task->id,
             'user_id' => $this->user->id,
-            'filename' => 'unittest.png',
+            'filename' => $this->faker->word,
         ];
 
         $fileRepo = new FileRepository(new File);

@@ -12,7 +12,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ProjectTest extends TestCase {
     
-    use DatabaseTransactions;
+    use DatabaseTransactions,
+            WithFaker;
 
     public function setUp() {
         parent::setUp();
@@ -40,7 +41,7 @@ class ProjectTest extends TestCase {
     /** @test */
     public function it_can_update_the_project() {
         $project = factory(Project::class)->create();
-        $title = 'unit-test';
+        $title = $this->faker->word;
         $data = ['title' => $title];
         $projectRepo = new ProjectRepository($project);
         $updated = $projectRepo->updateProject($data);
@@ -61,9 +62,9 @@ class ProjectTest extends TestCase {
     /** @test */
     public function it_can_create_a_project() {
         $data = [
-            'title' => 'unit-test',
-            'description' => 'test description',
-            'created_by' => 'mike',
+            'title' => $this->faker->word,
+            'description' => $this->faker->sentence,
+            'created_by' => $this->faker->firstName,
             'is_completed' => 0,
         ];
 

@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskRequest extends FormRequest
-{
+class UpdateTaskRequest extends FormRequest {
+
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -21,9 +20,10 @@ class UpdateTaskRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
+            'rating' => 'nullable|numeric',
+            'customer_id' => 'nullable|numeric',
             'title' => 'required',
             'content' => 'required',
             'contributors' => 'required|numeric',
@@ -36,8 +36,7 @@ class UpdateTaskRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
-    {
+    public function messages() {
         return [
             'title.required' => 'Title is required!',
             'content.required' => 'Content is required!',
@@ -45,4 +44,5 @@ class UpdateTaskRequest extends FormRequest
             'due_date.required' => 'Due date is required!',
         ];
     }
+
 }

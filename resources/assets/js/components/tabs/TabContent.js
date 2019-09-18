@@ -4,6 +4,7 @@ import Comments from '../comments/Comments';
 import FileUploads from '../attachments/FileUploads';
 import EditTask from '../forms/EditTask';
 import ViewTask from "../forms/ViewTask";
+import Tooltips from "../Tooltip";
 
 export default class TabContent extends Component {
     render() {
@@ -12,6 +13,7 @@ export default class TabContent extends Component {
                 <TabList>
                     <div label="Task" className="tab-content">
                         <EditTask
+                            task_type={this.props.task_type}
                             allTasks={this.props.allTasks}
                             action={this.props.action}
                             task={this.props.task} user_id={101}

@@ -16,7 +16,9 @@ class Task extends Model
         'due_date', 
         'task_status', 
         'created_by',
-        'task_type'
+        'task_type',
+        'customer_id',
+        'rating'
     ];
     
     public function projects() {

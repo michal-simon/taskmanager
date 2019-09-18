@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label} from 'reactstrap';
 import moment from 'moment'
 import axios from 'axios'
+import AddLead from './AddLead'
 
 class AddModal extends React.Component {
     constructor(props) {
@@ -9,6 +10,8 @@ class AddModal extends React.Component {
         this.state = {
             modal: false,
             title: '',
+            rating: '',
+            customer_id: null,
             content: '',
             contributors: '',
             created_by: '5af1921c0fe5703dd4a463ec',
@@ -24,10 +27,10 @@ class AddModal extends React.Component {
         this.toggle = this.toggle.bind(this);
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
+        this.handleInput = this.handleInput.bind(this)
     }
 
     componentDidMount() {
-        moment.locale('tr');
         this.changeColumnTitle()
     }
 
@@ -92,8 +95,9 @@ class AddModal extends React.Component {
     }
 
     handleClick(event) {
-
         axios.post('/api/tasks', {
+            rating: this.state.rating,
+            customer_id: this.state.customer_id,
             title: this.state.title,
             content: this.state.content,
             task_status: parseInt(this.props.status),
@@ -129,9 +133,17 @@ class AddModal extends React.Component {
             });
     }
 
-    render() {
-        const users = this.state;
+    getFormForLead() {
+        return (
+            <React.Fragment>
+                <AddLead updateValue={this.handleInput} />
+            </React.Fragment>
+        )
+    }
 
+    render() {
+
+        const leadForm = this.props.task_type == 2 ? this.getFormForLead() : ''
         let userContent;
 
         if (!this.state.users.length) {
@@ -186,6 +198,8 @@ class AddModal extends React.Component {
                             </Input>
                             {this.renderErrorFor('task_color')}
                         </FormGroup>
+
+                        {leadForm}
 
                         <hr/>
                         <i className="fas fa-calendar-alt"></i> Created Date: {moment().format('L, h:mm:ss')} <br/>

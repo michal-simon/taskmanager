@@ -12,7 +12,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TaskTest extends TestCase {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions,
+            WithFaker;
 
     private $user;
 
@@ -43,7 +44,7 @@ class TaskTest extends TestCase {
     /** @test */
     public function it_can_update_the_task() {
         $task = factory(Task::class)->create();
-        $title = 'unit-test';
+        $title = $this->faker->word;
         $data = ['title' => $title];
         $taskRepo = new TaskRepository($task);
         $updated = $taskRepo->updateTask($data);
@@ -65,12 +66,12 @@ class TaskTest extends TestCase {
     public function it_can_create_a_task() {
 
         $data = [
-            'title' => 'unit-test',
-            'content' => 'new task',
+            'title' => $this->faker->word,
+            'content' => $this->faker->sentence,
             'is_completed' => 0,
             'contributors' => $this->user->id,
             'task_color' => 'colorBlue',
-            'due_date' => date('Y-m-d H:i:s'),
+            'due_date' => $this->faker->dateTime,
         ];
 
         $taskRepo = new TaskRepository(new Task);

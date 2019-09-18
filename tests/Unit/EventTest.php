@@ -8,11 +8,13 @@ use App\Repositories\EventRepository;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Transformations\EventTransformable;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class EventUnitTest extends TestCase {
 
     use DatabaseTransactions,
-        EventTransformable;
+        EventTransformable,
+        WithFaker;
 
     public function setUp() {
         parent::setUp();
@@ -48,9 +50,10 @@ class EventUnitTest extends TestCase {
     /** @test */
     public function it_can_find_a_event() {
         $data = [
-            'title' => 'Test Event',
-            'location' => 'Test Location',
+            'title' => $this->faker->sentence,
+            'location' => $this->faker->sentence,
         ];
+        
         $event = new EventRepository(new Event);
         $created = $event->createEvent($data);
         $found = $event->findEventById($created->id);
@@ -64,7 +67,7 @@ class EventUnitTest extends TestCase {
         $cust = factory(Event::class)->create();
         $event = new EventRepository($cust);
         $update = [
-            'location' => 'Tamara',
+            'location' => $this->faker->sentence,
         ];
         $updated = $event->updateEvent($update);
         $this->assertTrue($updated);
@@ -75,12 +78,13 @@ class EventUnitTest extends TestCase {
     /** @test */
     public function it_can_create_a_event() {
         $data = [
-            'title' => 'Alexandra',
-            'location' => 'Hampton',
-            'beginDate' => date('Y-m-d H:i:s'),
-            'endDate' => date('Y-m-d H:i:s'),
+            'title' => $this->faker->sentence,
+            'location' => $this->faker->sentence,
+            'beginDate' => $this->faker->dateTime(),
+            'endDate' => $this->faker->dateTime(),
             'customer_id' => 1
         ];
+        
         $event = new EventRepository(new Event);
         $created = $event->createEvent($data);
         $this->assertInstanceOf(Event::class, $created);

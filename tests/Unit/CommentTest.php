@@ -10,14 +10,14 @@ use App\Repositories\CommentRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-
 class CommentTest extends TestCase {
-    
-    use DatabaseTransactions;
+
+    use DatabaseTransactions,
+        WithFaker;
 
     private $user;
     private $task;
-    
+
     public function setUp() {
         parent::setUp();
         $this->beginDatabaseTransaction();
@@ -47,7 +47,7 @@ class CommentTest extends TestCase {
     public function it_can_update_the_comment() {
         $comment = factory(Comment::class)->create();
         $data = [
-            'comment' => 'unit-test'
+            'comment' => $this->faker->sentence
         ];
 
         $commentRepo = new CommentRepository($comment);
@@ -71,7 +71,7 @@ class CommentTest extends TestCase {
         $data = [
             'task_id' => $this->task->id,
             'user_id' => $this->user->id,
-            'comment' => 'unit-test',
+            'comment' => $this->faker->sentence,
         ];
 
         $commentRepo = new CommentRepository(new Comment);
@@ -99,4 +99,5 @@ class CommentTest extends TestCase {
     public function tearDown() {
         parent::tearDown();
     }
+
 }

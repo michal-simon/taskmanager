@@ -12,7 +12,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions,
+        WithFaker;
 
     public function setUp() {
         parent::setUp();
@@ -40,7 +41,7 @@ class UserTest extends TestCase {
     /** @test */
     public function it_can_update_the_user() {
         $user = factory(User::class)->create();
-        $data = ['first_name' => 'Unittest'];
+        $data = ['first_name' => $this->faker->firstName];
         $userRepo = new UserRepository($user);
         $updated = $userRepo->updateUser($data);
         $found = $userRepo->findUserById($user->id);
@@ -60,13 +61,13 @@ class UserTest extends TestCase {
     /** @test */
     public function it_can_create_a_user() {
         $data = [
-            'first_name' => 'Michael',
-            'last_name' => 'Hampton',
-            'email' => 'michaelhamptondesign@yahoo.com',
-            'username' => 'unit.test',
-            'password' => 'dfdfdddf',
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->email,
+            'username' => $this->faker->userName,
+            'password' => $this->faker->password,
             'is_active' => 1,
-            'profile_photo' => 'test',
+            'profile_photo' => $this->faker->word,
         ];
 
         $userRepo = new UserRepository(new User);

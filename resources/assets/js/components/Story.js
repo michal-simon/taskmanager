@@ -46,7 +46,8 @@ export default class Story extends Component{
                         task_type={this.props.task_type}
                      />
                 </div>
-                <Task 
+                <Task
+                    task_type={this.props.task_type}
                     action={this.props.action}
                     tasks={this.props.tasks}
                     loading={this.props.loading} 

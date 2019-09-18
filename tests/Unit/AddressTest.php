@@ -6,10 +6,12 @@ use App\Address;
 use App\Repositories\AddressRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class AddressUnitTest extends TestCase {
-    
-    use DatabaseTransactions;
+
+    use DatabaseTransactions,
+        WithFaker;
 
     public function setUp() {
         parent::setUp();
@@ -29,12 +31,13 @@ class AddressUnitTest extends TestCase {
     public function it_can_update_the_address() {
         $address = factory(Address::class)->create();
         $data = [
-            'alias' => 'Mr',
-            'address_1' => 'test address',
+            'alias' => $this->faker->title('Male'),
+            'address_1' => $this->faker->address,
             'address_2' => null,
-            'zip' => 'BH25 5PH',
+            'zip' => $this->faker->postcode,
             'status' => 1
         ];
+        
         $addressRepo = new AddressRepository($address);
         $updated = $addressRepo->updateAddress($data);
         $address = $addressRepo->findAddressById($address->id);

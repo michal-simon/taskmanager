@@ -4,6 +4,7 @@ import {
     CardTitle, CardHeader, Label, Input, Button, FormGroup, Row, Col
 } from 'reactstrap';
 import axios from "axios";
+import AddLead from "./AddLead";
 
 class EditTask extends Component {
 
@@ -14,6 +15,8 @@ class EditTask extends Component {
             description: this.props.task.content,
             due_date: this.props.task.due_date,
             contributors: this.props.task.contributors,
+            rating: this.props.task.rating,
+            customer_id: this.props.task.customer_id,
             editMode: false,
             err: '',
             users: []
@@ -65,6 +68,8 @@ class EditTask extends Component {
         const currentObject = this.props.allTasks[index]
 
         axios.put(`/api/tasks/${this.props.task.id}`, {
+            customer_id: this.state.customers,
+            rating: this.state.rating,
             title: this.state.title,
             content: this.state.description,
             contributors: this.state.contributors,
@@ -111,7 +116,6 @@ class EditTask extends Component {
     }
 
     handleChange(e) {
-
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -123,8 +127,24 @@ class EditTask extends Component {
         });
     }
 
+    getFormForLead(readOnly = false) {
+
+        const objValues = {
+            rating: this.state.rating,
+            customer_id: this.state.customer_id
+        }
+
+        return (
+            <React.Fragment>
+                <AddLead
+                    readOnly={readOnly}
+                    updateValue={this.handleChange} task={objValues}
+                />
+            </React.Fragment>
+        )
+    }
+
     render() {
-        const task = this.props.task;
         let panelTitle = null;
         let userContent = null;
 
@@ -170,10 +190,10 @@ class EditTask extends Component {
             </div>
         );
 
-        const panelStyle = this.state.editMode ? 'primary' : 'default';
-
         let panelBody = null;
         if (this.state.editMode) {
+
+            const leadForm = this.props.task_type == 2 ? this.getFormForLead() : ''
 
             panelBody = (
                 <form>
@@ -192,20 +212,23 @@ class EditTask extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                        <div className="center-block">
                             <Input value={this.state.contributors} type="select"
                                    className="form-control select-index input-xs" name="contributors"
                                    onChange={this.handleChange}>
                                 {userContent}
                             </Input>
-                            <Button className="btn btn-primary btn-xs" onClick={this.handleSave}>Save</Button>
-                            <Button className="btn btn-default btn-xs" onClick={this.handleCancel}>Cancel</Button>
-                            <Button className="btn btn-danger btn-xs" onClick={this.handleDelete}>Delete</Button>
-                        </div>
                     </FormGroup>
+
+                    {leadForm}
+
+                    <Button className="btn btn-success btn-xs mr-3" onClick={this.handleSave}>Save</Button>
+                    <Button className="btn btn-info btn-xs mr-3" onClick={this.handleCancel}>Cancel</Button>
+                    <Button className="btn btn-danger btn-xs" onClick={this.handleDelete}>Delete</Button>
                 </form>
             );
         } else {
+            const leadForm = this.props.task_type == 2 ? this.getFormForLead(true) : ''
+
             panelBody = (
                 <form>
                     <FormGroup>
@@ -231,6 +254,8 @@ class EditTask extends Component {
                             {userContent}
                         </Input>
                     </FormGroup>
+
+                    {leadForm}
                 </form>
             );
         }

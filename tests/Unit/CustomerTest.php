@@ -8,11 +8,13 @@ use App\Repositories\CustomerRepository;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Transformations\CustomerTransformable;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class CustomerUnitTest extends TestCase {
 
     use DatabaseTransactions,
-        CustomerTransformable;
+        CustomerTransformable,
+            WithFaker;
 
     public function setUp() {
         parent::setUp();
@@ -48,8 +50,8 @@ class CustomerUnitTest extends TestCase {
     /** @test */
     public function it_can_find_a_customer() {
         $data = [
-            'first_name' => 'Michael',
-            'email' => 'michaelhamptondesigntest@yahoo.com',
+            'first_name' => $this->faker->firstName,
+            'email' => $this->faker->email,
         ];
         $customer = new CustomerRepository(new Customer);
         $created = $customer->createCustomer($data);
@@ -64,7 +66,7 @@ class CustomerUnitTest extends TestCase {
         $cust = factory(Customer::class)->create();
         $customer = new CustomerRepository($cust);
         $update = [
-            'first_name' => 'Tamara',
+            'first_name' => $this->faker->firstName,
         ];
         $updated = $customer->updateCustomer($update);
         $this->assertTrue($updated);
@@ -75,9 +77,9 @@ class CustomerUnitTest extends TestCase {
     /** @test */
     public function it_can_create_a_customer() {
         $data = [
-            'first_name' => 'Alexandra',
-            'last_name' => 'Hampton',
-            'email' => 'alexandra.hamptontest@yahoo.com',
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->email,
         ];
         $customer = new CustomerRepository(new Customer);
         $created = $customer->createCustomer($data);

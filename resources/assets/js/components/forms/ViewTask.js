@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import TabContent from '../tabs/TabContent';
+import Tooltips from "../Tooltip";
 
 class ViewTask extends React.Component {
     constructor(props) {
@@ -31,6 +32,7 @@ class ViewTask extends React.Component {
 
                     <ModalBody>
                         <TabContent
+                            task_type={this.props.task_type}
                             allTasks={this.props.allTasks}
                             action={this.props.action}
                             task={this.props.task}
