@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Task;
+use App\User;
 use App\Repositories\TaskRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -20,7 +21,7 @@ class TaskTest extends TestCase {
     public function setUp() {
         parent::setUp();
         $this->beginDatabaseTransaction();
-        $this->user = \App\User::where('is_active', 1)->first();
+        $this->user = factory(User::class)->create();
     }
 
     /** @test */

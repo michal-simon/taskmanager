@@ -41,9 +41,13 @@ class CustomerController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-       
-        if (request()->has('search_term')) {            
+    public function index(Request $request) {
+
+        $orderBy = !$request->column ? 'first_name' : $request->column;
+        $orderDir = !$request->order ? 'asc' : $request->order;
+        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
+
+        if (request()->has('search_term')) {
             $list = $this->customerRepo->searchCustomer(request()->input('search_term'));
         } else {
             $list = $this->customerRepo->listCustomers('created_at', 'desc');
@@ -52,6 +56,11 @@ class CustomerController extends Controller {
         $customers = $list->map(function (Customer $customer) {
                     return $this->transformCustomer($customer);
                 })->all();
+
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->customerRepo->paginateArrayResults($customers, $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
 
         return collect($customers)->toJson();
     }
@@ -142,12 +151,12 @@ class CustomerController extends Controller {
 
         $customer = $this->customerRepo->findCustomerById($id);
         $address = $customer->addresses;
-        
-         if (!empty($address)) {
+
+        if (!empty($address)) {
             $addRessRepo = new AddressRepository($address[0]);
             $addRessRepo->deleteAddress();
         }
-        
+
         $customerRepo = new CustomerRepository($customer);
         $customerRepo->deleteCustomer();
 

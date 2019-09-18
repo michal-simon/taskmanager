@@ -27,12 +27,13 @@ class UserController extends Controller {
         } else {
             $users = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
         }
-        
-        echo '<pre>';
-        print_r($users);
-        die;
-        
-        return $users->toJson();
+
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->userRepository->paginateArrayResults($users->toArray(), $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
+
+        return collect($users)->toJson();
     }
 
     public function dashboard() {
@@ -41,7 +42,7 @@ class UserController extends Controller {
     }
 
     public function store(UserRequest $request) {
-        
+
         $validatedData = $request->validated();
 
         $user = $this->userRepository->createUser([
@@ -70,7 +71,7 @@ class UserController extends Controller {
         $userRepo->deleteUser();
         return response()->json('User deleted!');
     }
-    
+
     /**
      * @param UpdateUserRequest $request
      * @param $id

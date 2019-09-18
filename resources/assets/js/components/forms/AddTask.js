@@ -156,7 +156,8 @@ class AddModal extends React.Component {
 
         return (
             <div>
-                <i className="fas fa-plus-circle customAddTask" onClick={this.toggle}></i>
+                <button className="btn btn-light btn-icon text-muted customAddTask"
+                        title="Add task" onClick={this.toggle}><i className="fa fa-plus-circle"></i></button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Create a New Task to {this.changeColumnTitle(this.props.status)}

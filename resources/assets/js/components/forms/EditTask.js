@@ -63,7 +63,6 @@ class EditTask extends Component {
     }
 
     handleSave() {
-
         let index = this.props.allTasks.findIndex(task => task.id == this.props.task.id)
         const currentObject = this.props.allTasks[index]
 

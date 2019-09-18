@@ -10,14 +10,12 @@ export default class DataTable extends Component {
 
     this.state = {
       entities: {
-        meta: {
-          current_page: 1,
-          from: 1,
-          last_page: 1,
-          per_page: 5,
-          to: 1,
-          total: 1,
-        },
+        current_page: 1,
+        from: 1,
+        last_page: 1,
+        per_page: 5,
+        to: 1,
+        total: 1,
       },
       first_page: 1,
       current_page: 1,
@@ -33,16 +31,20 @@ export default class DataTable extends Component {
   }
 
   addUserToState(users) {
-    this.setState({data: users})
+    this.setState(prevState => {
+      let entities = Object.assign({}, prevState.entities);  // creating copy of state variable jasper
+      entities.data = users;                     // update the name property, assign a new value
+      return { entities };                                 // return new object jasper object
+    })
   }
 
   fetchEntities() {
 
-    let fetchUrl = `/api/users/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.meta.per_page}`;
+    let fetchUrl = `/api/users/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`;
     axios.get(fetchUrl)
       .then(response => {
-          this.state.columns = Object.keys(response.data[0])
-          this.setState({ data: response.data });
+        this.state.columns = Object.keys(response.data.data[0])
+        this.setState({ entities: response.data })
       })
       .catch(e => {
         console.error(e);
@@ -58,20 +60,20 @@ export default class DataTable extends Component {
   }
 
   updateUserState(user) {
-    this.setState({data: user})
+    this.addUserToState(user)
   }
 
   pagesNumbers() {
-    if (!this.state.entities.meta.to) {
+    if (!this.state.entities.to) {
       return [];
     }
-    let from = this.state.entities.meta.current_page - this.state.offset;
+    let from = this.state.entities.current_page - this.state.offset;
     if (from < 1) {
       from = 1;
     }
     let to = from + (this.state.offset * 2);
-    if (to >= this.state.entities.meta.last_page) {
-      to = this.state.entities.meta.last_page;
+    if (to >= this.state.entities.last_page) {
+      to = this.state.entities.last_page;
     }
     let pagesArray = [];
     for (let page = from; page <= to; page++) {
@@ -81,7 +83,7 @@ export default class DataTable extends Component {
   }
 
   componentDidMount() {
-    this.setState({ current_page: this.state.entities.meta.current_page }, () => {this.fetchEntities()});
+    this.setState({ current_page: this.state.entities.current_page }, () => {this.fetchEntities()});
   }
 
   tableHeads() {
@@ -95,16 +97,15 @@ export default class DataTable extends Component {
     return this.state.columns.map(column => {
       return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
         { this.columnHead(column) }
-        { column === this.state.sorted_column && icon }
+        { icon }
       </th>
     });
   }
 
   userList() {
 
-    if (this.state.data && this.state.data.length) {
-      return this.state.data.map(user => {
-
+    if (this.state.entities.data && this.state.entities.data.length) {
+      return this.state.entities.data.map(user => {
 
         const columnList = Object.keys(user).map(key => {
 
@@ -115,14 +116,13 @@ export default class DataTable extends Component {
           return <td key={key}>{user[key]}</td>
         })
 
-
         return <tr key={ user.id }>
 
           {columnList}
 
           <td>
             <i id="delete" className="fas fa-times" onClick={() => this.deleteUser(user.id)}></i>
-            <EditUser user={user} users={this.state.data} action={this.updateUserState} />
+            <EditUser user={user} users={this.state.entities.data} action={this.updateUserState} />
           </td>
         </tr>
       })
@@ -143,7 +143,7 @@ export default class DataTable extends Component {
 
   pageList() {
     return this.pagesNumbers().map(page => {
-      return <li className={ page === this.state.entities.meta.current_page ? 'page-item active' : 'page-item' } key={page}>
+      return <li className={ page === this.state.entities.current_page ? 'page-item active' : 'page-item' } key={page}>
         <button className="page-link" onClick={() => this.changePage(page)}>{page}</button>
       </li>
     })
@@ -155,8 +155,9 @@ export default class DataTable extends Component {
 
        axios.delete('/api/users/' + id)
        .then(function (response) {
-            let filteredArray = self.state.data.filter(item => item.id !== id)
-            self.setState({data: filteredArray})
+         const index = self.state.entities.data.findIndex(user => user.id === id);
+         const users = self.state.entities.data.splice(index, 1);
+         self.addUserToState(users)
         })
         .catch(function (error) {
             console.log(error);
@@ -164,10 +165,15 @@ export default class DataTable extends Component {
     }
 
   render() {
-    return (
-      <div className="data-table">
 
-        <AddUser users={this.state.data} action={this.addUserToState} />
+    const divStyle = {
+      margin: '10px'
+    };
+
+    return (
+      <div className="data-table" style={divStyle}>
+
+        <AddUser users={this.state.entities.data} action={this.addUserToState} />
         <Table striped bordered hover responsive>
           <thead>
             <tr>
@@ -177,29 +183,29 @@ export default class DataTable extends Component {
           </thead>
           <tbody>{ this.userList() }</tbody>
         </Table>
-        { (this.state.data && this.state.data.length > 0) &&
-          <nav>
-            <ul className="pagination">
-              <li className="page-item">
-                <button className="page-link"
-                  disabled={ 1 === this.state.entities.meta.current_page }
-                  onClick={() => this.changePage(this.state.entities.meta.current_page - 1)}
-                >
-                  Previous
-                </button>
-              </li>
-              { this.pageList() }
-              <li className="page-item">
-                <button className="page-link"
-                  disabled={this.state.entities.meta.last_page === this.state.entities.meta.current_page}
-                  onClick={() => this.changePage(this.state.entities.meta.current_page + 1)}
-                >
-                  Next
-                </button>
-              </li>
-              <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.data.length } of { this.state.entities.meta.total } entries.</i></span>
-            </ul>
-          </nav>
+        { (this.state.entities.data && this.state.entities.data.length > 0) &&
+        <nav>
+          <ul className="pagination">
+            <li className="page-item">
+              <button className="page-link"
+                      disabled={ 1 === this.state.entities.current_page }
+                      onClick={() => this.changePage(this.state.entities.current_page - 1)}
+              >
+                Previous
+              </button>
+            </li>
+            { this.pageList() }
+            <li className="page-item">
+              <button className="page-link"
+                      disabled={this.state.entities.last_page === this.state.entities.current_page}
+                      onClick={() => this.changePage(this.state.entities.current_page + 1)}
+              >
+                Next
+              </button>
+            </li>
+            <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.entities.data.length } of { this.state.entities.total } entries.</i></span>
+          </ul>
+        </nav>
         }
       </div>
     );

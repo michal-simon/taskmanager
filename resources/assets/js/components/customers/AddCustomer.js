@@ -117,7 +117,7 @@ class AddCustomer extends React.Component {
         
         return (
             <div>
-                <Button color="secondary" onClick={this.toggle}><i className="fas fa-plus-circle"/> Add Customer</Button>
+                <Button color="success" onClick={this.toggle}>Add Customer</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Add Customer

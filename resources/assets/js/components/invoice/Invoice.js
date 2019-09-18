@@ -1,49 +1,53 @@
 import React,{Component} from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
-import AddCustomer from './AddCustomer';
-import EditCustomer from './EditCustomer';
-import { Table, Button } from 'reactstrap';
+import EditInvoice from './EditInvoice';
+import { Table } from 'reactstrap';
 
-
-export default class Customers extends Component {
+export default class Invoice extends Component {
     constructor(props) {
         super(props);
         this.state = {
             customers: [],
+            invoices: [],
             entities: {
-                    current_page: 1,
-                    from: 1,
-                    last_page: 1,
-                    per_page: 5,
-                    to: 1,
-                    total: 1,
+                current_page: 1,
+                from: 1,
+                last_page: 1,
+                per_page: 5,
+                to: 1,
+                total: 1
             },
             first_page: 1,
             current_page: 1,
             sorted_column: [],
             data: [],
-            columns: [],
             offset: 4,
             order: 'asc',
+            columns: ['Customer', 'Due Date', 'Total', 'Status', 'Payment Type']
         }
 
-        this.updateCustomers = this.updateCustomers.bind(this);
+        this.updateInvoice = this.updateInvoice.bind(this);
     }
 
-    updateCustomers(customers) {
+    updateInvoice(invoices) {
         this.setState(prevState => {
             let entities = Object.assign({}, prevState.entities);  // creating copy of state variable jasper
-            entities.data = customers;                     // update the name property, assign a new value
+            entities.data = invoices;                     // update the name property, assign a new value
             return { entities };                                 // return new object jasper object
         })
     }
 
     fetchEntities() {
-        axios.get(`/api/customers/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`).then(response => {
-            this.state.columns = Object.keys(response.data.data[0])
-            this.setState({ entities: response.data })
-        })
+
+        let fetchUrl = `/api/invoice/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`;
+        axios.get(fetchUrl)
+            .then(response => {
+                this.setState({ entities: response.data })
+            })
+            .catch(e => {
+                console.error(e);
+            });
     }
 
     changePage(pageNumber) {
@@ -93,40 +97,24 @@ export default class Customers extends Component {
         });
     }
 
-
     userList() {
+
         if (this.state.entities.data && this.state.entities.data.length) {
             return this.state.entities.data.map(user => {
 
-
-                const test = Object.keys(user).map((index, element) => {
-
-                   if(typeof user[index] === 'object') {
-                      return (
-                          <td>
-                              {this.displayCustomerAddress(user[index])}
-                              {this.displayCustomerPhone(user[index])}
-                          </td>
-                      )
-                    } else {
-                       return (
-                           <td>{user[index]}</td>
-                       )
-                   }
-                })
-
                 return (
                     <tr>
-                        {test}
-                        <td>
-                            <EditCustomer
-                                id={user.id}
-                                action={this.updateCustomers}
-                                customers={this.state.customers}
-                            />
-                            <Button color="danger" onClick={() => this.deleteCustomer(user.id)}>Delete Customer</Button>
-
-                        </td>
+                        <td>{user.first_name + ' ' + user.last_name}</td>
+                        <td>{user.due_date}</td>
+                        <td>{user.total}</td>
+                        <td>{user.invoice_status}</td>
+                        <td>Credit</td>
+                        <td><EditInvoice
+                            add={true}
+                            invoice_id={user.id}
+                            action={this.updateInvoice}
+                            invoices={this.state.invoices}
+                        /></td>
                     </tr>
                 )
 
@@ -155,62 +143,32 @@ export default class Customers extends Component {
     }
 
     deleteCustomer(id) {
+
+        const self = this;
+
         axios.delete(`/api/customers/${id}`).then(data => {
-            const index = this.state.entities.data.findIndex(customer => customer.id === id);
-            const customers = this.state.entities.data.splice(index, 1);
-            this.updateCustomers(customers)
+            const index = self.state.entities.data.findIndex(user => user.id === id);
+            const users = self.state.entities.data.splice(index, 1);
+            self.updateInvoice(users)
         })
     }
 
-    displayCustomerAddress(address) {
-
-        if(!address) {
-            return (<p>&nbsp</p>)
-        }
-        
-        const addresses = address.map(function(address){
-            return(
-                <p key={address.id}>
-                    {address.address_1}<br />
-                    {address.address_2}<br />
-                    {address.zip}<br />
-                    {address.city}
-                </p>
-            )
-        })
-
-        return (
-            <td>{addresses}</td>
-        )
-    }
-
-    displayCustomerPhone(address) {
-
-        if(!address) {
-            return (<span>&nbsp</span>)
-        }
-
-        const phone = address.map(function(address){
-            return(<span>{address.phone}</span>)
-        })
-
-        return (
-            <td>{phone}</td>
-        )
-    }
 
     render() {
-
         return (
             <div className="data-table">
 
-                <AddCustomer action={this.updateCustomers} customers={this.state.entities.data} />
+                <EditInvoice
+                    add={false}
+                    action={this.updateInvoice}
+                    invoices={this.state.entities.data}
+                />
 
                 <Table striped bordered hover responsive>
                     <thead>
                     <tr>
                         { this.tableHeads() }
-                    <td>Action</td>
+                        <td>Action</td>
                     </tr>
                     </thead>
                     <tbody>{ this.userList() }

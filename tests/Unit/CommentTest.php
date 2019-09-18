@@ -6,6 +6,8 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Comment;
+use App\User;
+use App\Task;
 use App\Repositories\CommentRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -21,8 +23,8 @@ class CommentTest extends TestCase {
     public function setUp() {
         parent::setUp();
         $this->beginDatabaseTransaction();
-        $this->user = \App\User::where('is_active', 1)->first();
-        $this->task = \App\Task::where('is_completed', 0)->first();
+        $this->user = factory(User::class)->create();
+        $this->task = factory(Task::class)->create();
     }
 
     /** @test */
