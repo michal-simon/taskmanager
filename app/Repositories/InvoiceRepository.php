@@ -78,4 +78,15 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
         return $this->update($data);
     }
 
+    /**
+     * @param string $text
+     * @return mixed
+     */
+    public function searchInvoice(string $text = null): Collection {
+        if (is_null($text)) {
+            return $this->all();
+        }
+        return $this->model->searchInvoice($text)->get();
+    }
+
 }

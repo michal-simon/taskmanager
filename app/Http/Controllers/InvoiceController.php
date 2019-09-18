@@ -31,15 +31,22 @@ class InvoiceController extends Controller {
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
-        $list = $this->invoiceRepository->listInvoices($orderBy, $orderDir, ['*']);
+        if (request()->has('search_term')) {
+            $list = $this->invoiceRepository->searchInvoice(request()->input('search_term'));
+        } else {
+            $list = $this->invoiceRepository->listInvoices($orderBy, $orderDir, ['*']);
+        }
 
         $invoices = $list->map(function (Invoice $invoice) {
                     return $this->transformInvoice($invoice);
                 })->all();
 
-        $paginatedResults = $this->invoiceRepository->paginateArrayResults($invoices, $recordsPerPage);
-
-        return $paginatedResults->toJson();
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->invoiceRepository->paginateArrayResults($invoices, $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
+        
+        return collect($invoices)->toJson();
     }
 
     /**
@@ -64,7 +71,7 @@ class InvoiceController extends Controller {
                 $this->invoiceLineRepository->createInvoiceLine($invoice, $arrLine);
             }
         }
-        
+
         $invoice = $this->transformInvoice($invoice);
         return $invoice->toJson();
     }
