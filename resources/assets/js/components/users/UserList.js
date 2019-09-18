@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import EditUser from './EditUser'
-import AddUser from '../forms/AddUser'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter,Input,FormGroup,Label, Table } from 'reactstrap';
+import AddUser from './AddUser'
+import {Button, Input, Table} from 'reactstrap';
 
 export default class DataTable extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      query: '',
+      message: '',
+      loading: false,
       entities: {
         current_page: 1,
         from: 1,
@@ -26,8 +29,11 @@ export default class DataTable extends Component {
       order: 'asc',
     };
 
+    this.cancel = '';
+
     this.updateUserState = this.updateUserState.bind(this);
     this.addUserToState = this.addUserToState.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this)
   }
 
   addUserToState(users) {
@@ -40,16 +46,44 @@ export default class DataTable extends Component {
 
   fetchEntities() {
 
-    let fetchUrl = `/api/users/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`;
-    axios.get(fetchUrl)
+    let fetchUrl = `/api/users/?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`;
+
+    if( this.cancel ) {
+      this.cancel.cancel();
+    }
+
+    this.cancel = axios.CancelToken.source();
+
+    axios.get(fetchUrl, {
+      cancelToken: this.cancel.token
+    })
       .then(response => {
         this.state.columns = Object.keys(response.data.data[0])
-        this.setState({ entities: response.data })
+        this.setState({ entities: response.data, loading: false })
       })
       .catch(e => {
-        console.error(e);
+        if ( axios.isCancel(error) || error ) {
+          this.setState({
+            loading: false,
+            message: 'Failed to fetch the data. Please check network'
+          })
+        }
       });
   }
+
+  handleSearchChange( event ) {
+
+    const query = event.target.value;
+
+    if(query.length < 3 && query.length > 0) {
+      this.setState( { query, loading: false, message: '' })
+      return false
+    }
+
+      this.setState( { query, loading: true, message: '' }, () => {
+        this.fetchEntities();
+      } );
+  };
 
   changePage(pageNumber) {
     this.setState({ current_page: pageNumber }, () => {this.fetchEntities()});
@@ -110,7 +144,7 @@ export default class DataTable extends Component {
         const columnList = Object.keys(user).map(key => {
 
           if(key === 'profile_photo') {
-            return <td>&nbsp;</td>
+            return <td key={key}>&nbsp;</td>
           }
 
           return <td key={key}>{user[key]}</td>
@@ -121,7 +155,7 @@ export default class DataTable extends Component {
           {columnList}
 
           <td>
-            <i id="delete" className="fas fa-times" onClick={() => this.deleteUser(user.id)}></i>
+            <Button color="danger" onClick={() => this.deleteUser(user.id)}>Delete</Button>
             <EditUser user={user} users={this.state.entities.data} action={this.updateUserState} />
           </td>
         </tr>
@@ -166,22 +200,42 @@ export default class DataTable extends Component {
 
   render() {
 
-    const divStyle = {
-      margin: '10px'
-    };
+    const { query, loading, message } = this.state;
+    const loader = loading ? <h2>Loading...</h2> : ''
 
     return (
-      <div className="data-table" style={divStyle}>
+      <div className="data-table m-md-3 m-0">
 
         <AddUser users={this.state.entities.data} action={this.addUserToState} />
-        <Table striped bordered hover responsive>
+
+        <div className="col-8 col-lg-6">
+
+          <Input
+              type="text"
+              name="query"
+              value={ query }
+              id="search-input"
+              placeholder="Search..."
+              onChange={this.handleSearchChange}
+          />
+
+          {/*	Error Message*/}
+          {message && <p className="message">{ message }</p>}
+
+          {/*	Loader*/}
+          {loader}
+        </div>
+
+        <Table className="mt-4" striped bordered hover responsive>
           <thead>
             <tr>
               { this.tableHeads() }
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>{ this.userList() }</tbody>
+          <tbody>
+          { this.userList() }
+          </tbody>
         </Table>
         { (this.state.entities.data && this.state.entities.data.length > 0) &&
         <nav>

@@ -8,8 +8,11 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
+use App\Transformations\UserTransformable;
 
 class UserController extends Controller {
+    
+    use UserTransformable;
 
     private $userRepository;
 
@@ -23,13 +26,17 @@ class UserController extends Controller {
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
         
         if (request()->has('search_term')) {  
-            $users = $this->userRepository->searchUser(request()->input('search_term'));
+            $list = $this->userRepository->searchUser(request()->input('search_term'));
         } else {
-            $users = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
+            $list = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
         }
+        
+        $users = $list->map(function (User $user) {
+                    return $this->transformUser($user);
+                })->all();
 
         if ($recordsPerPage > 0) {
-            $paginatedResults = $this->userRepository->paginateArrayResults($users->toArray(), $recordsPerPage);
+            $paginatedResults = $this->userRepository->paginateArrayResults($users, $recordsPerPage);
             return $paginatedResults->toJson();
         }
 

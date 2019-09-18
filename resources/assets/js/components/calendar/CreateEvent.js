@@ -143,7 +143,7 @@ class CreateEvent extends React.Component {
 
         return (
             <React.Fragment>
-                <i className="fas fa-plus-circle" onClick={this.toggle}></i>
+                <Button color="success" onClick={this.toggle}>Add Event</Button>
 
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>

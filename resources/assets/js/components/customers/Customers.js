@@ -3,14 +3,16 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
 import AddCustomer from './AddCustomer';
 import EditCustomer from './EditCustomer';
-import { Table, Button } from 'reactstrap';
+import { Table, Button, Input } from 'reactstrap';
 
 
 export default class Customers extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            customers: [],
+            query: '',
+            loading: false,
+            message: '',
             entities: {
                     current_page: 1,
                     from: 1,
@@ -28,7 +30,10 @@ export default class Customers extends Component {
             order: 'asc',
         }
 
-        this.updateCustomers = this.updateCustomers.bind(this);
+        this.cancel = '';
+
+        this.updateCustomers = this.updateCustomers.bind(this)
+        this.handleSearchChange = this.handleSearchChange.bind(this)
     }
 
     updateCustomers(customers) {
@@ -40,11 +45,43 @@ export default class Customers extends Component {
     }
 
     fetchEntities() {
-        axios.get(`/api/customers/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`).then(response => {
-            this.state.columns = Object.keys(response.data.data[0])
-            this.setState({ entities: response.data })
+
+        if( this.cancel ) {
+            this.cancel.cancel();
+        }
+
+        this.cancel = axios.CancelToken.source();
+        const searchUrl = `/api/customers/?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`
+
+        axios.get(searchUrl, {
+            cancelToken: this.cancel.token
         })
+            .then(response => {
+            this.state.columns = Object.keys(response.data.data[0])
+            this.setState({ entities: response.data, loading: false })
+        }).catch( error => {
+                if ( axios.isCancel(error) || error ) {
+                    this.setState({
+                        loading: false,
+                        message: 'Failed to fetch the data. Please check network'
+                    })
+                }
+            } )
     }
+
+    handleSearchChange( event ) {
+
+        const query = event.target.value;
+
+        if(query.length < 3 && query.length > 0) {
+            this.setState( { query, loading: false, message: '' })
+            return false
+        }
+
+        this.setState( { query, loading: true, message: '' }, () => {
+            this.fetchEntities();
+        } );
+    };
 
     changePage(pageNumber) {
         this.setState({ current_page: pageNumber }, () => {this.fetchEntities()});
@@ -101,12 +138,12 @@ export default class Customers extends Component {
 
                 const test = Object.keys(user).map((index, element) => {
 
-                   if(typeof user[index] === 'object') {
+                   if(index === 'address') {
                       return (
-                          <td>
+                          <React.Fragment>
                               {this.displayCustomerAddress(user[index])}
-                              {this.displayCustomerPhone(user[index])}
-                          </td>
+                              {/*{this.displayCustomerPhone(user[index])}*/}
+                          </React.Fragment>
                       )
                     } else {
                        return (
@@ -124,7 +161,7 @@ export default class Customers extends Component {
                                 action={this.updateCustomers}
                                 customers={this.state.customers}
                             />
-                            <Button color="danger" onClick={() => this.deleteCustomer(user.id)}>Delete Customer</Button>
+                            <Button color="danger" onClick={() => this.deleteCustomer(user.id)}>Delete</Button>
 
                         </td>
                     </tr>
@@ -168,16 +205,14 @@ export default class Customers extends Component {
             return (<p>&nbsp</p>)
         }
         
-        const addresses = address.map(function(address){
             return(
-                <p key={address.id}>
+                <React.Fragment>
                     {address.address_1}<br />
                     {address.address_2}<br />
                     {address.zip}<br />
                     {address.city}
-                </p>
+                </React.Fragment>
             )
-        })
 
         return (
             <td>{addresses}</td>
@@ -201,12 +236,33 @@ export default class Customers extends Component {
 
     render() {
 
+        const { query, loading, message } = this.state;
+        const loader = loading ? <h2>Loading...</h2> : ''
+
         return (
-            <div className="data-table">
+            <div className="data-table m-md-3 m-0">
 
                 <AddCustomer action={this.updateCustomers} customers={this.state.entities.data} />
 
-                <Table striped bordered hover responsive>
+                <div className="col-8 col-lg-6">
+
+                    <Input
+                        type="text"
+                        name="query"
+                        value={ query }
+                        id="search-input"
+                        placeholder="Search..."
+                        onChange={this.handleSearchChange}
+                    />
+
+                    {/*	Error Message*/}
+                    {message && <p className="message">{ message }</p>}
+
+                    {/*	Loader*/}
+                    {loader}
+                </div>
+
+                <Table className="mt-4" striped bordered hover responsive>
                     <thead>
                     <tr>
                         { this.tableHeads() }

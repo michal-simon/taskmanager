@@ -92,7 +92,7 @@ class EditCustomer extends React.Component {
 
         return (
             <div>
-                <Button color="primary" onClick={this.toggle}>Edit Customer</Button>
+                <Button color="primary" onClick={this.toggle}>Edit</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Edit Customer

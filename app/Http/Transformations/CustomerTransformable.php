@@ -12,8 +12,12 @@ trait CustomerTransformable {
         $prop->first_name = $customer->first_name;
         $prop->last_name = $customer->last_name;
         $prop->email = $customer->email;
-        $prop->status = (int) $customer->status;
-        $prop->addresses = $customer->addresses;
+
+        if (!empty($customer->addresses[0])) {
+            $prop->address = $customer->addresses[0];
+            $prop->phone = $customer->addresses[0]->phone;
+        }
+
         return $prop;
     }
 

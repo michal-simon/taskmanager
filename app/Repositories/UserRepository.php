@@ -101,9 +101,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function searchUser(string $text = null) : Collection
     {
         if (is_null($text)) {
-            return $this->all();
+            return $this->getActiveUsers();
         }
-        return $this->model->searchUser($text)->get();
+        return User::where('is_active', 1)->search($text)->get();
     }
 
 }

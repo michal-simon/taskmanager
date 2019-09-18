@@ -114,8 +114,8 @@ class EditUser extends React.Component {
         }
 
         return (
-            <div>
-                <a onClick={this.toggle}>Edit</a>
+            <React.Fragment>
+                <Button color="success" onClick={this.toggle}>Update</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         <i className="fas fa-user-circle"></i> Add User
@@ -173,7 +173,7 @@ class EditUser extends React.Component {
                         <Button color="secondary" onClick={this.toggle}><i className="fas fa-times-circle"></i> Close</Button>
                     </ModalFooter>
                 </Modal>
-            </div>
+            </React.Fragment>
         );
     }
 }

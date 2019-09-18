@@ -116,7 +116,7 @@ class AddCustomer extends React.Component {
         const { submitSuccess, loading } = this.state;
         
         return (
-            <div>
+            <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Add Customer</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
@@ -197,7 +197,7 @@ class AddCustomer extends React.Component {
                         }
                     </ModalFooter>
                 </Modal>
-            </div>
+            </React.Fragment>
         );
     }
 }

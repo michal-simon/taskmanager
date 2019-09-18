@@ -119,8 +119,8 @@ class AddUser extends React.Component {
         }
 
         return (
-          <div>
-            <i className="fas fa-user-plus" onClick={this.toggle}></i>
+            <React.Fragment>
+                <Button color="success" onClick={this.toggle}>Add User</Button>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
               <ModalHeader toggle={this.toggle}>
               <i className="fas fa-user-circle"></i> Add User
@@ -178,7 +178,7 @@ class AddUser extends React.Component {
                 <Button color="secondary" onClick={this.toggle}><i className="fas fa-times-circle"></i> Close</Button>
               </ModalFooter>
             </Modal>
-          </div>
+            </React.Fragment>
         );
     }
 }

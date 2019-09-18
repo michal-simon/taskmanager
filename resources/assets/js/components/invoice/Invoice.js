@@ -2,12 +2,16 @@ import React,{Component} from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
 import EditInvoice from './EditInvoice';
-import { Table } from 'reactstrap';
+import {Input, Label, Table} from 'reactstrap';
+import Loader from "../Loader";
 
 export default class Invoice extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            query: '',
+            message: '',
+            loading: false,
             customers: [],
             invoices: [],
             entities: {
@@ -27,7 +31,10 @@ export default class Invoice extends Component {
             columns: ['Customer', 'Due Date', 'Total', 'Status', 'Payment Type']
         }
 
+        this.cancel = '';
+
         this.updateInvoice = this.updateInvoice.bind(this);
+        this.handleSearchChange = this.handleSearchChange.bind(this)
     }
 
     updateInvoice(invoices) {
@@ -40,15 +47,44 @@ export default class Invoice extends Component {
 
     fetchEntities() {
 
-        let fetchUrl = `/api/invoice/?page=${this.state.current_page}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`;
-        axios.get(fetchUrl)
+        const fetchUrl = `/api/invoice/?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`;
+
+        if( this.cancel ) {
+            this.cancel.cancel();
+        }
+
+        this.cancel = axios.CancelToken.source();
+
+        axios.get(fetchUrl, {
+            cancelToken: this.cancel.token
+        })
             .then(response => {
-                this.setState({ entities: response.data })
+                this.setState({ entities: response.data, loading: false })
             })
             .catch(e => {
-                console.error(e);
+                if ( axios.isCancel(error) || error ) {
+                    this.setState({
+                        loading: false,
+                        message: 'Failed to fetch the data. Please check network'
+                    })
+                }
             });
     }
+
+    handleSearchChange( event ) {
+
+        const query = event.target.value;
+
+        if(query.length < 3 && query.length > 0) {
+            this.setState( { query, loading: false, message: '' })
+            return false
+        }
+
+        this.setState( { query, loading: true, message: '' }, () => {
+            this.fetchEntities();
+        } );
+        //}
+    };
 
     changePage(pageNumber) {
         this.setState({ current_page: pageNumber }, () => {this.fetchEntities()});
@@ -155,8 +191,12 @@ export default class Invoice extends Component {
 
 
     render() {
+
+        const { query, loading, message } = this.state;
+        const loader = loading ? <h2>Loading...</h2> : ''
+
         return (
-            <div className="data-table">
+            <div className="data-table m-md-3 m-0">
 
                 <EditInvoice
                     add={false}
@@ -164,7 +204,25 @@ export default class Invoice extends Component {
                     invoices={this.state.entities.data}
                 />
 
-                <Table striped bordered hover responsive>
+                <div className="col-8 col-lg-6">
+
+                <Input
+                    type="text"
+                    name="query"
+                    value={ query }
+                    id="search-input"
+                    placeholder="Search..."
+                    onChange={this.handleSearchChange}
+                />
+
+                {/*	Error Message*/}
+                {message && <p className="message">{ message }</p>}
+
+                {/*	Loader*/}
+                {loader}
+                </div>
+
+                <Table className="mt-4" striped bordered hover responsive>
                     <thead>
                     <tr>
                         { this.tableHeads() }

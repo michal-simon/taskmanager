@@ -146,10 +146,12 @@ class EditInvoice extends Component {
             ))
         }
 
+        const buttonText = !this.props.add ? 'Create Invoice' : 'Update'
+
         return (
 
-            <div>
-                <Button color="secondary" onClick={this.toggle}><i className="fas fa-plus-circle"/>Edit</Button>
+            <React.Fragment>
+                <Button color="success" onClick={this.toggle}>{buttonText}</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} size="lg">
                     <ModalHeader toggle={this.toggle}>
                        Invoice
@@ -186,7 +188,7 @@ class EditInvoice extends Component {
                         <Button color="secondary" onClick={this.toggle}><i className="fas fa-times-circle"></i> Close</Button>
                     </ModalFooter>
                 </Modal>
-            </div>
+            </React.Fragment>
         );
     }
 
