@@ -42,10 +42,11 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $list = $this->customerRepo->listCustomers('created_at', 'desc');
-
-        if (request()->has('q')) {
-            $list = $this->customerRepo->searchCustomer(request()->input('q'));
+       
+        if (request()->has('search_term')) {            
+            $list = $this->customerRepo->searchCustomer(request()->input('search_term'));
+        } else {
+            $list = $this->customerRepo->listCustomers('created_at', 'desc');
         }
 
         $customers = $list->map(function (Customer $customer) {

@@ -5,7 +5,8 @@ use App\Project;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 use App\Exceptions\CreateProjectErrorException;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as Support;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProjectRepository extends BaseRepository implements ProjectRepositoryInterface
 {
@@ -75,8 +76,20 @@ class ProjectRepository extends BaseRepository implements ProjectRepositoryInter
      *
      * @return Collection
      */
-    public function listProjects($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc') : Collection
+    public function listProjects($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc') : Support
     {
         return $this->all($columns, $orderBy, $sortBy);
+    }
+    
+    /**
+     * @param string $text
+     * @return mixed
+     */
+    public function searchProject(string $text = null) : Collection
+    {
+        if (is_null($text)) {
+            return $this->all();
+        }
+        return $this->model->searchProject($text)->get();
     }
 }

@@ -7,7 +7,8 @@ use App\Project;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 use App\Exceptions\CreateTaskErrorException;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as Support;
+use Illuminate\Database\Eloquent\Collection;
 
 class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
 
@@ -71,7 +72,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      *
      * @return Collection
      */
-    public function listTasks($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc'): Collection {
+    public function listTasks($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc'): Support {
         return $this->all($columns, $orderBy, $sortBy);
     }
 
@@ -97,6 +98,18 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
         return Task::where('task_type', 2)
                         ->where('is_completed', 0)
                         ->get();
+    }
+    
+    /**
+     * @param string $text
+     * @return mixed
+     */
+    public function searchTask(string $text = null) : Collection
+    {
+        if (is_null($text)) {
+            return $this->all();
+        }
+        return $this->model->searchTask($text)->get();
     }
 
 }

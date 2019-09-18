@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Event;
+use App\Traits\SearchableTrait;
 
-class User extends Authenticatable
-{
-    use Notifiable;
+class User extends Authenticatable {
+
+    use Notifiable,
+        SearchableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -16,13 +18,34 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 
-        'last_name', 
-        'profile_photo', 
+        'first_name',
+        'last_name',
+        'profile_photo',
         'username',
         'email',
         'password',
         'role_id'
+    ];
+    
+    /**
+     * Searchable rules.
+     *
+     * @var array
+     */
+    protected $searchable = [
+        /**
+         * Columns and their priority in search results.
+         * Columns with higher values are more important.
+         * Columns with equal values have equal importance.
+         *
+         * @var array
+         */
+        'columns' => [
+            'users.first_name' => 10,
+            'users.last_name' => 10,
+            'users.email' => 5,
+            'users.username' => 5,
+        ]
     ];
 
     /**
@@ -37,8 +60,18 @@ class User extends Authenticatable
         'updated_at',
         'is_active'
     ];
-    
-     public function events() {
+
+    public function events() {
         return $this->belongsTo(Event::class);
     }
+
+    /**
+     * @param $term
+     *
+     * @return mixed
+     */
+    public function searchUser($term) {
+        return self::search($term);
+    }
+
 }

@@ -21,8 +21,17 @@ class UserController extends Controller {
         $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
-
-        $users = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
+        
+        if (request()->has('search_term')) {  
+            $users = $this->userRepository->searchUser(request()->input('search_term'));
+        } else {
+            $users = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
+        }
+        
+        echo '<pre>';
+        print_r($users);
+        die;
+        
         return $users->toJson();
     }
 

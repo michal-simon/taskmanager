@@ -12,6 +12,8 @@ use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 use App\Customer;
 use Illuminate\Support\Collection as Support;
+use Illuminate\Database\Eloquent\Collection;
+
 
 /**
  * Description of CustomerRepository
@@ -61,7 +63,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      * @throws CreateCustomerInvalidArgumentException
      */
     public function createCustomer(array $params): Customer {
-       return $this->create($params);
+        return $this->create($params);
     }
 
     /**
@@ -86,4 +88,15 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
         return $this->model->update($params);
     }
 
+    /**
+     * @param string $text
+     * @return mixed
+     */
+    public function searchCustomer(string $text = null) : Collection
+    {
+        if (is_null($text)) {
+            return $this->all();
+        }
+        return $this->model->searchCustomer($text)->get();
+    }
 }

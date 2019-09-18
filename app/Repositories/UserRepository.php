@@ -5,7 +5,8 @@ use App\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 use App\Exceptions\CreateUserErrorException;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as Support;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -74,7 +75,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      *
      * @return Collection
      */
-    public function listUsers($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc') : Collection
+    public function listUsers($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc') : Support
     {
         return $this->all($columns, $orderBy, $sortBy);
     }
@@ -91,6 +92,18 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
          return User::where('is_active', 1)
                              ->orderBy($orderBy, $sortBy)
                             ->get();
+    }
+    
+    /**
+     * @param string $text
+     * @return mixed
+     */
+    public function searchUser(string $text = null) : Collection
+    {
+        if (is_null($text)) {
+            return $this->all();
+        }
+        return $this->model->searchUser($text)->get();
     }
 
 }
