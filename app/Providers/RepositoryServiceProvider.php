@@ -27,6 +27,8 @@ use App\Repositories\Interfaces\AddressRepositoryInterface;
 use App\Repositories\AddressRepository;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\EventRepository;
+use App\Repositories\Interfaces\PermissionRepositoryInterface;
+use App\Repositories\PermissionRepository;
 
 class RepositoryServiceProvider extends ServiceProvider {
 
@@ -91,6 +93,10 @@ class RepositoryServiceProvider extends ServiceProvider {
 
         $this->app->bind(
                 CustomerRepositoryInterface::class, CustomerRepository::class
+        );
+        
+        $this->app->bind(
+                PermissionRepositoryInterface::class, PermissionRepository::class
         );
     }
 

@@ -107,9 +107,12 @@ class CreateEvent extends React.Component {
             })
     }
 
-    toggle() {
+    componentDidMount() {
         this.getCustomers()
         this.getUsers()
+    }
+
+    toggle() {
         this.setState({
             modal: !this.state.modal
         });

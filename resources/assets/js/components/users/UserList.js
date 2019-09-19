@@ -19,6 +19,7 @@ export default class DataTable extends Component {
         per_page: 5,
         to: 1,
         total: 1,
+        data: []
       },
       first_page: 1,
       current_page: 1,
@@ -189,9 +190,10 @@ export default class DataTable extends Component {
 
        axios.delete('/api/users/' + id)
        .then(function (response) {
-         const index = self.state.entities.data.findIndex(user => user.id === id);
-         const users = self.state.entities.data.splice(index, 1);
-         self.addUserToState(users)
+           const arrUsers = [...self.state.entities.data];
+           const index = arrUsers.findIndex(user => user.id === id);
+           arrUsers.splice(index, 1);
+           self.addUserToState(arrUsers)
         })
         .catch(function (error) {
             console.log(error);
@@ -219,10 +221,8 @@ export default class DataTable extends Component {
               onChange={this.handleSearchChange}
           />
 
-          {/*	Error Message*/}
           {message && <p className="message">{ message }</p>}
 
-          {/*	Loader*/}
           {loader}
         </div>
 
@@ -257,7 +257,7 @@ export default class DataTable extends Component {
                 Next
               </button>
             </li>
-            <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.entities.data.length } of { this.state.entities.total } entries.</i></span>
+            <span> &nbsp; <i>Displaying { this.state.entities.data.length } of { this.state.entities.total } entries.</i></span>
           </ul>
         </nav>
         }

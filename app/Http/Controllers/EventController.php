@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Event;
-use App\Http\Requests\CreateEventRequest;
-use App\Http\Requests\UpdateEventRequest;
+use App\Requests\CreateEventRequest;
+use App\Requests\UpdateEventRequest;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\EventRepository;
 use App\Transformations\EventTransformable;

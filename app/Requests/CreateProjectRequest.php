@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTaskRequest extends FormRequest {
+class ProjectRequest extends FormRequest {
 
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,10 @@ class UpdateTaskRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'rating' => 'nullable|numeric',
-            'customer_id' => 'nullable|numeric',
-            'title' => 'required',
-            'content' => 'required',
-            'contributors' => 'required|numeric',
-            'due_date' => 'required',
+            'title' => 'string|required',
+            'description' => 'string|required',
+            'created_by' => 'string|required',
+            'customer_id' => 'numeric|nullable',
         ];
     }
 
@@ -39,9 +37,8 @@ class UpdateTaskRequest extends FormRequest {
     public function messages() {
         return [
             'title.required' => 'Title is required!',
-            'content.required' => 'Content is required!',
-            'contributors.required' => 'Contributors is required!',
-            'due_date.required' => 'Due date is required!',
+            'description.required' => 'Description is required!',
+            'created_by.required' => 'Created by is required!'
         ];
     }
 

@@ -192,13 +192,15 @@ class EditInvoice extends Component {
         );
     }
 
+    componentDidMount() {
+        this.loadInvoice()
+        this.loadCustomers()
+    }
+
     toggle() {
         this.setState({
             modal: !this.state.modal
         });
-
-        this.loadInvoice()
-        this.loadCustomers()
     }
 
     updateData(data) {

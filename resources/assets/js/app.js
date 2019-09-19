@@ -5,6 +5,7 @@ import UserList from './components/users/UserList'
 import Invoice from './components/invoice/Invoice'
 import Customers from './components/customers/Customers'
 import Calendar from './components/calendar/Calendars'
+import Roles from './components/roles/Roles'
 
 const getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),
@@ -30,6 +31,10 @@ switch(true) {
 
     case window.location.href.indexOf("calendar?view") >= 0:
         ReactDOM.render(<Calendar />, document.getElementById('app'));
+        break;
+
+    case window.location.href.indexOf("roles?view") >= 0:
+        ReactDOM.render(<Roles/>, document.getElementById('app'));
         break;
 
     case window.location.href.indexOf("users?view") >= 0:

@@ -1,26 +1,25 @@
-import React,{Component} from 'react'
-import { Link, RouteComponentProps } from 'react-router-dom';
-import axios from 'axios';
-import AddCustomer from './AddCustomer';
-import EditCustomer from './EditCustomer';
-import { Table, Button, Input } from 'reactstrap';
+import React, { Component } from 'react';
+import axios from 'axios'
+import EditRole from './EditRole'
+import AddRole from './AddRole'
+import {Button, Input, Table} from 'reactstrap';
 
-
-export default class Customers extends Component {
+export default class Roles extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             query: '',
-            loading: false,
             message: '',
+            loading: false,
             entities: {
-                    current_page: 1,
-                    from: 1,
-                    last_page: 1,
-                    per_page: 5,
-                    to: 1,
-                    total: 1,
-                    data: []
+                current_page: 1,
+                from: 1,
+                last_page: 1,
+                per_page: 5,
+                to: 1,
+                total: 1,
+                data: []
             },
             first_page: 1,
             current_page: 1,
@@ -29,45 +28,50 @@ export default class Customers extends Component {
             columns: [],
             offset: 4,
             order: 'asc',
-        }
+        };
 
         this.cancel = '';
 
-        this.updateCustomers = this.updateCustomers.bind(this)
+        this.updateUserState = this.updateUserState.bind(this);
+        this.addUserToState = this.addUserToState.bind(this);
         this.handleSearchChange = this.handleSearchChange.bind(this)
     }
 
-    updateCustomers(customers) {
+    addUserToState(users) {
         this.setState(prevState => {
             let entities = Object.assign({}, prevState.entities);  // creating copy of state variable jasper
-            entities.data = customers;                     // update the name property, assign a new value
+            entities.data = users;                     // update the name property, assign a new value
             return { entities };                                 // return new object jasper object
         })
     }
 
     fetchEntities() {
 
+        let fetchUrl = `/api/roles/?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`;
+
         if( this.cancel ) {
             this.cancel.cancel();
         }
 
         this.cancel = axios.CancelToken.source();
-        const searchUrl = `/api/customers/?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`
 
-        axios.get(searchUrl, {
+        axios.get(fetchUrl, {
             cancelToken: this.cancel.token
         })
             .then(response => {
-            this.state.columns = Object.keys(response.data.data[0])
-            this.setState({ entities: response.data, loading: false })
-        }).catch( error => {
-                if ( axios.isCancel(error) || error ) {
+                console.log('response', response.data)
+                this.state.columns = Object.keys(response.data.data[0])
+                this.setState({ entities: response.data, loading: false })
+            })
+            .catch(e => {
+                alert(e)
+                //if ( axios.isCancel(error) || error ) {
                     this.setState({
                         loading: false,
                         message: 'Failed to fetch the data. Please check network'
                     })
-                }
-            } )
+                //}
+            });
     }
 
     handleSearchChange( event ) {
@@ -90,6 +94,10 @@ export default class Customers extends Component {
 
     columnHead(value) {
         return value.split('_').join(' ').toUpperCase()
+    }
+
+    updateUserState(user) {
+        this.addUserToState(user)
     }
 
     pagesNumbers() {
@@ -131,42 +139,25 @@ export default class Customers extends Component {
         });
     }
 
-
     userList() {
+
         if (this.state.entities.data && this.state.entities.data.length) {
-            return this.state.entities.data.map(user => {
+            return this.state.entities.data.map(role => {
 
+                const columnList = Object.keys(role).map(key => {
 
-                const test = Object.keys(user).map((index, element) => {
-
-                   if(index === 'address') {
-                      return (
-                          <React.Fragment>
-                              {this.displayCustomerAddress(user[index])}
-                          </React.Fragment>
-                      )
-                    } else {
-                       return (
-                           <td>{user[index]}</td>
-                       )
-                   }
+                    return <td key={key}>{role[key]}</td>
                 })
 
-                return (
-                    <tr>
-                        {test}
-                        <td>
-                            <EditCustomer
-                                id={user.id}
-                                action={this.updateCustomers}
-                                customers={this.state.customers}
-                            />
-                            <Button color="danger" onClick={() => this.deleteCustomer(user.id)}>Delete</Button>
+                return <tr key={ role.id }>
 
-                        </td>
-                    </tr>
-                )
+                    {columnList}
 
+                    <td>
+                        <Button color="danger" onClick={() => this.deleteRole(role.id)}>Delete</Button>
+                        <EditRole role={role} roles={this.state.entities.data} action={this.updateUserState} />
+                    </td>
+                </tr>
             })
         } else {
             return <tr>
@@ -191,48 +182,20 @@ export default class Customers extends Component {
         })
     }
 
-    deleteCustomer(id) {
-        axios.delete(`/api/customers/${id}`).then(data => {
-            const arrCustomers = [...this.state.entities.data];
-            const index = arrCustomers.findIndex(customer => customer.id === id);
-            arrCustomers.splice(index, 1);
-            this.updateCustomers(arrCustomers)
-        })
-    }
+    deleteRole(id) {
 
-    displayCustomerAddress(address) {
+        const self = this;
 
-        if(!address) {
-            return (<p>&nbsp</p>)
-        }
-        
-            return(
-                <React.Fragment>
-                    {address.address_1}<br />
-                    {address.address_2}<br />
-                    {address.zip}<br />
-                    {address.city}
-                </React.Fragment>
-            )
-
-        return (
-            <td>{addresses}</td>
-        )
-    }
-
-    displayCustomerPhone(address) {
-
-        if(!address) {
-            return (<span>&nbsp</span>)
-        }
-
-        const phone = address.map(function(address){
-            return(<span>{address.phone}</span>)
-        })
-
-        return (
-            <td>{phone}</td>
-        )
+        axios.delete('/api/roles/' + id)
+            .then(function (response) {
+                const arrRoles = [...self.state.entities.data];
+                const index = arrRoles.findIndex(role => role.id === id);
+                arrRoles.splice(index, 1);
+                self.addUserToState(arrRoles)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     render() {
@@ -243,7 +206,7 @@ export default class Customers extends Component {
         return (
             <div className="data-table m-md-3 m-0">
 
-                <AddCustomer action={this.updateCustomers} customers={this.state.entities.data} />
+                <AddRole roles={this.state.entities.data} action={this.addUserToState} />
 
                 <div className="col-8 col-lg-6">
 
@@ -256,8 +219,10 @@ export default class Customers extends Component {
                         onChange={this.handleSearchChange}
                     />
 
+                    {/*	Error Message*/}
                     {message && <p className="message">{ message }</p>}
 
+                    {/*	Loader*/}
                     {loader}
                 </div>
 
@@ -265,11 +230,11 @@ export default class Customers extends Component {
                     <thead>
                     <tr>
                         { this.tableHeads() }
-                    <td>Action</td>
+                        <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody>{ this.userList() }
-
+                    <tbody>
+                    { this.userList() }
                     </tbody>
                 </Table>
                 { (this.state.entities.data && this.state.entities.data.length > 0) &&
@@ -292,7 +257,7 @@ export default class Customers extends Component {
                                 Next
                             </button>
                         </li>
-                        <span> &nbsp; <i>Displaying { this.state.entities.data.length } of { this.state.entities.total } entries.</i></span>
+                        <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.entities.data.length } of { this.state.entities.total } entries.</i></span>
                     </ul>
                 </nav>
                 }

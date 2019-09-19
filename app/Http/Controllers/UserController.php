@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use App\Http\Requests\UserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Requests\CreateUserRequest;
+use App\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
 use App\Transformations\UserTransformable;
 
@@ -48,7 +48,7 @@ class UserController extends Controller {
         return view('index');
     }
 
-    public function store(UserRequest $request) {
+    public function store(CreateUserRequest $request) {
 
         $validatedData = $request->validated();
 
@@ -62,8 +62,8 @@ class UserController extends Controller {
             'email' => $validatedData['email'],
             'password' => bcrypt($validatedData['password']),
         ]);
-
-        return $user->toJson();
+        
+        return $this->transformUser($user);
     }
 
     /**

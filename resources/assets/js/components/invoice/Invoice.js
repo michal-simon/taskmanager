@@ -20,7 +20,8 @@ export default class Invoice extends Component {
                 last_page: 1,
                 per_page: 5,
                 to: 1,
-                total: 1
+                total: 1,
+                data: []
             },
             first_page: 1,
             current_page: 1,

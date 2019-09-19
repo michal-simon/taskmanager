@@ -99,8 +99,11 @@ class AddUser extends React.Component {
         });
     }
 
-    toggle() {
+    componentDidMount() {
         this.getRoles();
+    }
+
+    toggle() {
         this.setState({
           modal: !this.state.modal
         });
@@ -139,7 +142,7 @@ class AddUser extends React.Component {
                   </FormGroup>
 
                   <FormGroup>
-                      <Label for="first_name">Name(*):</Label>
+                      <Label for="first_name">First Name(*):</Label>
                       <Input className={this.hasErrorFor('first_name') ? 'is-invalid' : ''} type="text" name="first_name" onChange={this.handleInput.bind(this)}/>
                       {this.renderErrorFor('first_name')}
                   </FormGroup>

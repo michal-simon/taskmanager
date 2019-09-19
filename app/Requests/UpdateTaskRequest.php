@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateEventRequest extends FormRequest {
+class UpdateTaskRequest extends FormRequest {
 
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +22,12 @@ class UpdateEventRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'customer_id' => 'required',
-            'beginDate' => 'required',
-            'endDate' => 'required',
-            'location' => 'string|required',
-            'title' => 'string|required',
+            'rating' => 'nullable|numeric',
+            'customer_id' => 'nullable|numeric',
+            'title' => 'required',
+            'content' => 'required',
+            'contributors' => 'required|numeric',
+            'due_date' => 'required',
         ];
     }
 
@@ -39,10 +39,9 @@ class UpdateEventRequest extends FormRequest {
     public function messages() {
         return [
             'title.required' => 'Title is required!',
-            'customer_id.required' => 'Customer is required!',
-            'location.required' => 'Location is required!',
-            'beginDate.required' => 'Start date is required!',
-            'endDate.required' => 'End date is required!',
+            'content.required' => 'Content is required!',
+            'contributors.required' => 'Contributors is required!',
+            'due_date.required' => 'Due date is required!',
         ];
     }
 

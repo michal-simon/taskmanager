@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\File;
-use App\Http\Requests\UploadRequest;
+use App\Requests\UploadRequest;
 use App\Repositories\Interfaces\FileRepositoryInterface;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\UserRepository;

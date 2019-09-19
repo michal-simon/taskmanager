@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Address;
 use App\Customer;
 use App\Repositories\CustomerRepository;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Transformations\CustomerTransformable;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Collection;
 
 class CustomerUnitTest extends TestCase {
 
@@ -28,7 +28,7 @@ class CustomerUnitTest extends TestCase {
         $customerFromDb = $repo->findCustomerById($customer->id);
         $cust = $this->transformCustomer($customer);
         //$this->assertInternalType('string', $customerFromDb->status);
-        $this->assertInternalType('int', $cust->status);
+        $this->assertInternalType('string', $cust->first_name);
     }
     
     /** @test */
@@ -94,6 +94,14 @@ class CustomerUnitTest extends TestCase {
         $this->expectException(\Illuminate\Database\QueryException::class);
         $task = new CustomerRepository(new Customer);
         $task->createCustomer([]);
+    }
+    
+    /** @test */
+    public function it_can_list_all_customers() {
+        factory(Customer::class, 5)->create();
+        $customerRepo = new CustomerRepository(new Customer);
+        $list = $customerRepo->listCustomers();
+        $this->assertInstanceOf(Collection::class, $list);
     }
 
     public function tearDown() {

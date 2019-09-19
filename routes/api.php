@@ -28,6 +28,10 @@ Route::put('tasks/{task_id}', 'TaskController@update');
 Route::get('leads', 'TaskController@getLeads');
 Route::put('tasks/status/{task_id}', 'TaskController@updateStatus');
 Route::get('roles', 'RoleController@index');
+Route::post('roles', 'RoleController@store');
+Route::delete('roles/{role_id}', 'RoleController@destroy');
+Route::get('roles/{role_id}', 'RoleController@edit');
+Route::put('roles/{role_id}', 'RoleController@update');
 Route::post('invoice', 'InvoiceController@store');
 Route::get('invoice', 'InvoiceController@index');
 Route::get('invoice/{invoice_id}', 'InvoiceController@show');
@@ -44,3 +48,7 @@ Route::delete('events/{event_id}', 'EventController@destroy');
 Route::put('events/{event_id}', 'EventController@update');
 Route::get('events/{event_id}', 'EventController@show');
 Route::post('events', 'EventController@store');
+Route::get('login', 'LoginController@showLogin');
+Route::post('login', 'LoginController@doLogin');
+Route::get('logout', 'LoginController@doLogout');
+

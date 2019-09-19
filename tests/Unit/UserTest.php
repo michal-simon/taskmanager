@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Collection;
@@ -90,6 +89,14 @@ class UserTest extends TestCase {
         $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
         $user = new UserRepository(new User);
         $user->findUserById(999);
+    }
+    
+     /** @test */
+    public function it_can_list_all_users() {
+        factory(User::class, 5)->create();
+        $userRepo = new UserRepository(new User);
+        $list = $userRepo->listUsers();
+        $this->assertInstanceOf(Collection::class, $list);
     }
 
     public function tearDown() {

@@ -13,13 +13,16 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\Event;
+use App\Customer;
 
 $factory->define(Event::class, function (Faker\Generator $faker) {
+    $customer = factory(Customer::class)->create();
+
     return [
         'title' => 'Test Event',
         'location' => 'Test Location',
         'beginDate' => $faker->dateTime()->format('Y-m-d H:i:s'),
         'endDate' => $faker->dateTime()->format('Y-m-d H:i:s'),
-        'customer_id' => 6
+        'customer_id' => $customer->id
     ];
 });

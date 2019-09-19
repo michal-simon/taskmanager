@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Project;
-use Illuminate\Http\Request;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
-use App\Http\Requests\ProjectRequest;
+use App\Requests\CreateProjectRequest;
 
 class ProjectController extends Controller {
 
@@ -30,7 +29,7 @@ class ProjectController extends Controller {
      *
      * @return Response
      */
-    public function store(ProjectRequest $request) {
+    public function store(CreateProjectRequest $request) {
 
         $validatedData = $request->validated();
         

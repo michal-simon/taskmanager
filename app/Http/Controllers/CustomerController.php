@@ -9,8 +9,8 @@ use App\Repositories\AddressRepository;
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
 use App\Transformations\CustomerTransformable;
-use App\Http\Requests\UpdateCustomerRequest;
-use App\Http\Requests\CreateCustomerRequest;
+use App\Requests\UpdateCustomerRequest;
+use App\Requests\CreateCustomerRequest;
 
 class CustomerController extends Controller {
 

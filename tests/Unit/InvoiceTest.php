@@ -13,6 +13,7 @@ use App\Invoice;
 use App\Customer;
 use App\Repositories\InvoiceRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Collection;
 
 /**
  * Description of InvoiceTest
@@ -91,5 +92,13 @@ class InvoiceTest extends TestCase {
         $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
         $invoice = new InvoiceRepository(new Invoice);
         $invoice->findInvoiceById(999);
+    }
+    
+     /** @test */
+    public function it_can_list_all_invoices() {
+        factory(Invoice::class, 5)->create();
+        $invoiceRepo = new InvoiceRepository(new Invoice);
+        $list = $invoiceRepo->listInvoices();
+        $this->assertInstanceOf(Collection::class, $list);
     }
 }

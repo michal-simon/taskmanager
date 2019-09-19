@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
-use App\Http\Requests\CommentRequest;
+use App\Requests\CommentRequest;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\UserRepository;

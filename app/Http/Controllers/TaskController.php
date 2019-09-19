@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
-use App\Http\Requests\CreateTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
+use App\Requests\CreateTaskRequest;
+use App\Requests\UpdateTaskRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;

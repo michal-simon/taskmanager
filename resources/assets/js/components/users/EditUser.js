@@ -66,9 +66,7 @@ class EditUser extends React.Component {
             role_id:this.state.user.role_id
         })
             .then((response)=> {
-                if(response.data.message)
-                    alert(response.data.message)
-                else{
+
                     this.toggle();
 
                     let index = this.props.users.findIndex(user => user.id == this.props.user.id)
@@ -85,7 +83,6 @@ class EditUser extends React.Component {
                         role_id: null,
                         loading:false
                     })
-                }
             })
             .catch((error)=> {
                 this.setState({
@@ -94,8 +91,11 @@ class EditUser extends React.Component {
             });
     }
 
-    toggle() {
+    componentDidMount() {
         this.getRoles();
+    }
+
+    toggle() {
         this.setState({
             modal: !this.state.modal
         });
@@ -118,7 +118,7 @@ class EditUser extends React.Component {
                 <Button color="success" onClick={this.toggle}>Update</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
-                        <i className="fas fa-user-circle"></i> Add User
+                        <i className="fas fa-user-circle"></i> Edit User
                     </ModalHeader>
                     <ModalBody>
                         <FormGroup>
@@ -169,8 +169,8 @@ class EditUser extends React.Component {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button color="primary" onClick={this.handleClick.bind(this)}><i className="fas fa-plus-circle"></i> Add</Button>
-                        <Button color="secondary" onClick={this.toggle}><i className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="primary" onClick={this.handleClick.bind(this)}>Update</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>
