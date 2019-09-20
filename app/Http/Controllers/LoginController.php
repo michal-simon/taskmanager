@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class ProjectController extends Controller {
+class LoginController extends Controller {
 
     public function doLogin() {
         // validate the info, create rules for the inputs

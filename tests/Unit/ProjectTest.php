@@ -15,7 +15,7 @@ class ProjectTest extends TestCase {
     use DatabaseTransactions,
             WithFaker;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
     }
@@ -90,7 +90,7 @@ class ProjectTest extends TestCase {
         $category->findProjectById(999);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 

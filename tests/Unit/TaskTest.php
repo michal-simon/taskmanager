@@ -18,7 +18,7 @@ class TaskTest extends TestCase {
 
     private $user;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
         $this->user = factory(User::class)->create();
@@ -97,7 +97,7 @@ class TaskTest extends TestCase {
         $task->findTaskById(999);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 

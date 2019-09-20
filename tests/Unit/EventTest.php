@@ -16,7 +16,7 @@ class EventUnitTest extends TestCase {
         EventTransformable,
         WithFaker;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
     }
@@ -100,7 +100,7 @@ class EventUnitTest extends TestCase {
         $task->createEvent([]);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 

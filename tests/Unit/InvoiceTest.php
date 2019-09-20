@@ -26,7 +26,7 @@ class InvoiceTest extends TestCase {
     
     private $customer;
     
-     public function setUp() {
+     public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
         $this->customer = factory(Customer::class)->create();

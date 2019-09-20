@@ -18,7 +18,7 @@ class InvoiceLineTest extends TestCase {
 
     private $invoice;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
         $this->invoice = factory(Invoice::class)->create();
@@ -61,7 +61,7 @@ class InvoiceLineTest extends TestCase {
         $this->assertEquals($data['quantity'], $invoiceLine->quantity);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 

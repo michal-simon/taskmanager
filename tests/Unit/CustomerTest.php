@@ -16,7 +16,7 @@ class CustomerUnitTest extends TestCase {
         CustomerTransformable,
             WithFaker;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
     }
@@ -104,7 +104,7 @@ class CustomerUnitTest extends TestCase {
         $this->assertInstanceOf(Collection::class, $list);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 

@@ -20,7 +20,7 @@ class FileTest extends TestCase {
     private $user;
     private $task;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
         $this->user = factory(User::class)->create();
@@ -84,7 +84,7 @@ class FileTest extends TestCase {
         $file->findFileById(999);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 

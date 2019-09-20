@@ -13,7 +13,7 @@ class AddressUnitTest extends TestCase {
     use DatabaseTransactions,
         WithFaker;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
     }
@@ -49,7 +49,7 @@ class AddressUnitTest extends TestCase {
         $this->assertEquals($data['status'], $address->status);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 

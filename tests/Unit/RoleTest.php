@@ -14,7 +14,7 @@ class RoleTest extends TestCase {
     use DatabaseTransactions,
         WithFaker;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
     }
@@ -70,7 +70,7 @@ class RoleTest extends TestCase {
         $this->assertEquals($data['name'], $role->name);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 }

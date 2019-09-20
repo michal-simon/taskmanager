@@ -63,7 +63,7 @@ class TaskController extends Controller {
         return response()->json('Task updated!');
     }
 
-    public function getTasksForProject($projectId) {
+    public function getTasksForProject($projectId) { 
         $objProject = $this->projectRepository->findProjectById($projectId);
         $task = $this->taskRepository->getTasksForProject($objProject);
         return $task->toJson();

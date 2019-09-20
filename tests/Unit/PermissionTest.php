@@ -18,7 +18,7 @@ class PermissionTest extends TestCase {
     use DatabaseTransactions,
         WithFaker;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
     }
@@ -86,7 +86,7 @@ class PermissionTest extends TestCase {
         $this->assertEquals($data['description'], $permission->description);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 

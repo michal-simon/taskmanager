@@ -14,7 +14,7 @@ class UserTest extends TestCase {
     use DatabaseTransactions,
         WithFaker;
 
-    public function setUp() {
+    public function setUp() : void {
         parent::setUp();
         $this->beginDatabaseTransaction();
     }
@@ -103,7 +103,7 @@ class UserTest extends TestCase {
         $this->assertInstanceOf(Collection::class, $list);
     }
 
-    public function tearDown() {
+    public function tearDown() : void {
         parent::tearDown();
     }
 
