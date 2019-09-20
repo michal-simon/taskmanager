@@ -14,6 +14,9 @@ const Label2 = styled.span`
   font-size: 0.8rem;
   line-height: 0.8rem;
   padding: 2px 6px;
+  padding: 10px;
+    background-color: #4fc3f7;
+    color: #FFF;
 `;
 Label2.defaultProps = {
     color: '#ddf',
@@ -266,11 +269,9 @@ class CalendarEvent extends React.Component {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button color="primary" onClick={this.handleClick.bind(this)}><i
-                            className="fas fa-plus-circle"></i> Update</Button>
+                        <Button color="primary" onClick={this.handleClick.bind(this)}>Update</Button>
                         <Button color="danger" onClick={() => this.deleteEvent(this.props.event.id)}>Delete</Button>
-                        <Button color="secondary" onClick={this.toggle}><i
-                            className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>

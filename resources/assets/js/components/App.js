@@ -1,26 +1,77 @@
-// resources/assets/js/components/App.js
-// https://blog.pusher.com/react-laravel-application/
-// https://code.tutsplus.com/tutorials/build-a-react-app-with-laravel-backend-part-2-react--cms-29443
-
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
-// import Header from './Header'
-// import NewProject from './NewProject'
-// import ProjectList from './ProjectList'
-// import SingleProject from './SingleProject'
-// import Pagination from './Pagination'
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import UserList from './users/UserList'
+import Dashboard from './Dashboard'
+import Calendar from './calendar/Calendars'
+import Roles from './roles/Roles'
+import Invoice from './invoice/Invoice'
+import Customers from './customers/Customers'
+import Login from './Login'
+import ReactDOM from "react-dom";
 
 class App extends Component {
+
+    constructor(props, context) {
+        super(props, context);
+
+        this.state = {
+            authenticated: false,
+        };
+
+        this.setAuthenticated = this.setAuthenticated.bind(this)
+    }
+
+    getQueryVariable(variable)
+    {
+        const query = window.location.search.substring(1);
+        const vars = query.split("&");
+        for (let i=0;i<vars.length;i++) {
+            const pair = vars[i].split("=");
+
+            if(pair[0] == variable){
+                return pair[1];
+            }
+        }
+        return false;
+    }
+
+
+    setAuthenticated() {
+        this.setState({authenticated: true})
+        window.sessionStorage.setItem("authenticated", true)
+    }
+
   render () {
-    alert('Mike')
+        
+        if(!this.state.authenticated && !window.sessionStorage.getItem("authenticated")) {
+           return <Login action={this.setAuthenticated}/>
+        }
+
+        const  projectId = this.getQueryVariable('project_id')
 
     return (
-        <div className="App">
-            <Dashboard/>
-        </div>
-    )
+        <main>
+            <BrowserRouter>
+          <Switch>
+              <Route path='/customers' component={Customers}/>
+                <Route path='/invoice' component={Invoice}/>
+                <Route path='/users' component={UserList}/>
+                <Route path='/calendar' component={Calendar}/>
+                  <Route path='/roles' component={Roles}/>
+                  <Route
+                      path='/leads'
+                      render={(props) => <Dashboard {...props} task_type={2} />}
+                  />
+
+              <Route
+                  path='/projects'
+                  render={(props) => <Dashboard {...props} task_type={1} project_id={projectId} />}
+              />
+          </Switch>
+            </BrowserRouter>
+        </main>
+    );
+
   }
 }
-
-ReactDOM.render(<App />, document.getElementById('app'))
+export default App
