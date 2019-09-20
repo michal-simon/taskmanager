@@ -26,6 +26,12 @@ class CalendarEvent extends React.Component {
 
         const attendees = this.props.event.attendees ?  this.props.event.attendees : []
 
+        let arrAttendees = []
+
+        attendees.map((attendee,index)=>{
+            arrAttendees.push(attendee.id)
+        })
+
         this.state = {
             modal: false,
             title: this.props.event.title,
@@ -36,9 +42,8 @@ class CalendarEvent extends React.Component {
             loading: false,
             customers: [],
             users: [],
-            selectedUsers: [],
             errors: [],
-            attendees: attendees
+            attendees: arrAttendees
         };
 
         this.hasErrorFor = this.hasErrorFor.bind(this)
@@ -77,7 +82,7 @@ class CalendarEvent extends React.Component {
 
         axios.put( `/api/events/${this.props.event.id}`, {
             customer_id: this.state.customer_id,
-            users: this.state.selectedUsers,
+            users: this.state.attendees,
             title: this.state.title,
             location: this.state.location,
             beginDate: this.state.beginDate,
@@ -162,17 +167,11 @@ class CalendarEvent extends React.Component {
     }
 
     handleMultiSelect(e) {
-        this.setState({selectedUsers: Array.from(e.target.selectedOptions, (item) => item.value)});
+        this.setState({attendees: Array.from(e.target.selectedOptions, (item) => item.value)});
     }
 
     render() {
         const { col, colSpan } = this.props;
-
-        let arrAttendees = []
-
-        this.state.attendees.map((attendee,index)=>{
-            arrAttendees.push(attendee.id)
-        })
 
         let customerList;
 
@@ -242,7 +241,7 @@ class CalendarEvent extends React.Component {
 
                         <FormGroup>
                             <Label for="users">Attendees</Label>
-                            <Input defaultValue={arrAttendees} onChange={this.handleMultiSelect} type="select" name="users" id="users" multiple>
+                            <Input defaultValue={this.state.attendees} onChange={this.handleMultiSelect} type="select" name="users" id="users" multiple>
                                 {userList}
                             </Input>
                             {this.renderErrorFor('users')}

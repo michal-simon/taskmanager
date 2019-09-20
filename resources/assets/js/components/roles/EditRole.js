@@ -50,11 +50,10 @@ class EditRole extends React.Component {
     }
 
     handleClick() {
-
         axios.put(`/api/roles/${this.state.role.id}`, {
             name:this.state.name,
             description:this.state.description,
-            permissions: this.state.selectedPermissions
+            permissions: this.state.attachedPermissions
         })
             .then((response)=> {
 

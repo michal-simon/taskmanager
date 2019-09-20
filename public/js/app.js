@@ -103296,6 +103296,12 @@ var CalendarEvent = function (_React$Component) {
 
         var attendees = _this.props.event.attendees ? _this.props.event.attendees : [];
 
+        var arrAttendees = [];
+
+        attendees.map(function (attendee, index) {
+            arrAttendees.push(attendee.id);
+        });
+
         _this.state = {
             modal: false,
             title: _this.props.event.title,
@@ -103306,9 +103312,8 @@ var CalendarEvent = function (_React$Component) {
             loading: false,
             customers: [],
             users: [],
-            selectedUsers: [],
             errors: [],
-            attendees: attendees
+            attendees: arrAttendees
         };
 
         _this.hasErrorFor = _this.hasErrorFor.bind(_this);
@@ -103354,7 +103359,7 @@ var CalendarEvent = function (_React$Component) {
 
             __WEBPACK_IMPORTED_MODULE_4_axios___default.a.put('/api/events/' + this.props.event.id, {
                 customer_id: this.state.customer_id,
-                users: this.state.selectedUsers,
+                users: this.state.attendees,
                 title: this.state.title,
                 location: this.state.location,
                 beginDate: this.state.beginDate,
@@ -103447,7 +103452,7 @@ var CalendarEvent = function (_React$Component) {
     }, {
         key: 'handleMultiSelect',
         value: function handleMultiSelect(e) {
-            this.setState({ selectedUsers: Array.from(e.target.selectedOptions, function (item) {
+            this.setState({ attendees: Array.from(e.target.selectedOptions, function (item) {
                     return item.value;
                 }) });
         }
@@ -103460,12 +103465,6 @@ var CalendarEvent = function (_React$Component) {
                 col = _props.col,
                 colSpan = _props.colSpan;
 
-
-            var arrAttendees = [];
-
-            this.state.attendees.map(function (attendee, index) {
-                arrAttendees.push(attendee.id);
-            });
 
             var customerList = void 0;
 
@@ -103587,7 +103586,7 @@ var CalendarEvent = function (_React$Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_3_reactstrap__["g" /* Input */],
-                                { defaultValue: arrAttendees, onChange: this.handleMultiSelect, type: 'select', name: 'users', id: 'users', multiple: true },
+                                { defaultValue: this.state.attendees, onChange: this.handleMultiSelect, type: 'select', name: 'users', id: 'users', multiple: true },
                                 userList
                             ),
                             this.renderErrorFor('users')
@@ -104496,7 +104495,7 @@ var EditRole = function (_React$Component) {
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put('/api/roles/' + this.state.role.id, {
                 name: this.state.name,
                 description: this.state.description,
-                permissions: this.state.selectedPermissions
+                permissions: this.state.attachedPermissions
             }).then(function (response) {
 
                 _this2.toggle();
