@@ -23,10 +23,14 @@ class UserTest extends TestCase {
     public function it_can_show_all_the_users() {
         $inserteduser = factory(User::class)->create();
         $userRepo = new UserRepository(new User);
-        $list = $userRepo->listUsers()->toArray();
+        $list = $userRepo->getActiveUsers()->toArray();
         $myLastElement = end($list);
+        
         // $this->assertInstanceOf(Collection::class, $list);
-        $this->assertEquals($inserteduser->toArray(), $myLastElement);
+        $this->assertEquals($myLastElement['first_name'], $inserteduser->first_name);
+        $this->assertEquals($myLastElement['last_name'], $inserteduser->last_name);
+        $this->assertEquals($myLastElement['email'], $inserteduser->email);
+        $this->assertEquals($myLastElement['username'], $inserteduser->username);
     }
 
     /** @test */

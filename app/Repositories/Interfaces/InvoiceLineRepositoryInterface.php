@@ -8,11 +8,35 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\InvoiceLine;
+use App\Invoice;
+
 /**
  * Description of InvoiceLineRepositoryInterface
  *
  * @author michael.hampton
  */
 interface InvoiceLineRepositoryInterface {
-    //put your code here
+    /**
+     * 
+     * @param array $params
+     */
+    public function createInvoiceLine(Invoice $invoice, array $params): InvoiceLine;
+
+    /**
+     * 
+     * @param array $params
+     */
+    public function updateLine(array $params): bool;
+
+    /**
+     * 
+     * @param int $id
+     */
+    public function findLineById(int $id): InvoiceLine;
+
+    /**
+     * 
+     */
+    public function deleteLine(): bool;
 }

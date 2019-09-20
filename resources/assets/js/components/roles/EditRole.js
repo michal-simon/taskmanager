@@ -32,7 +32,7 @@ class EditRole extends React.Component {
     }
 
     handleMultiSelect(e) {
-        this.setState({selectedPermissions: Array.from(e.target.selectedOptions, (item) => item.value)});
+        this.setState({attachedPermissions: Array.from(e.target.selectedOptions, (item) => item.value)});
     }
 
     hasErrorFor (field) {

@@ -3,10 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp2/htdocs/taskman/app/Http/Controllers/UserController.php</file>
-            <file>file:/C:/xampp2/htdocs/taskman/app/Transformations/InvoiceTransformable.php</file>
-            <file>file:/C:/xampp2/htdocs/taskman/app/Http/Controllers/InvoiceController.php</file>
-            <file>file:/C:/xampp2/htdocs/taskman/app/User.php</file>
+            <file>file:/C:/xampp2/htdocs/taskman/app/Http/Controllers/RoleController.php</file>
+            <file>file:/C:/xampp2/htdocs/taskman/tests/Unit/CustomerTest.php</file>
+            <file>file:/C:/xampp2/htdocs/taskman/tests/Unit/UserTest.php</file>
+            <file>file:/C:/xampp2/htdocs/taskman/database/factories/AddressModelFactory.php</file>
+            <file>file:/C:/xampp2/htdocs/taskman/app/Role.php</file>
+            <file>file:/C:/xampp2/htdocs/taskman/tests/Unit/InvoiceTest.php</file>
+            <file>file:/C:/xampp2/htdocs/taskman/database/factories/EventModelFactory.php</file>
+            <file>file:/C:/xampp2/htdocs/taskman/app/Repositories/RoleRepository.php</file>
         </group>
     </open-files>
 </project-private>
