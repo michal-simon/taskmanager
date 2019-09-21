@@ -3,13 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp2/htdocs/taskman/tests/Unit/FileTest.php</file>
-            <file>file:/C:/xampp2/htdocs/taskman/tests/Unit/UserTest.php</file>
-            <file>file:/C:/xampp2/htdocs/taskman/database/factories/AddressModelFactory.php</file>
-            <file>file:/C:/xampp2/htdocs/taskman/tests/Unit/CommentTest.php</file>
-            <file>file:/C:/xampp2/htdocs/taskman/database/factories/FileFactory.php</file>
-            <file>file:/C:/xampp2/htdocs/taskman/database/factories/CommentFactory.php</file>
-            <file>file:/C:/xampp2/htdocs/taskman/app/Transformations/UserTransformable.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/RoleController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/EventController.php</file>
         </group>
     </open-files>
 </project-private>

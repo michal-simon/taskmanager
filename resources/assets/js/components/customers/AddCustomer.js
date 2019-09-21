@@ -34,10 +34,6 @@ class AddCustomer extends React.Component {
         return !!this.state.errors[field]
     }
 
-    handleChange(event) {
-        this.setState({ name: event.target.value });
-    }
-
     handleInputChanges(e) {
         e.preventDefault();
         this.setState({

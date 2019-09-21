@@ -6,6 +6,7 @@ import Calendar from './calendar/Calendars'
 import Roles from './roles/Roles'
 import Invoice from './invoice/Invoice'
 import Customers from './customers/Customers'
+import ChatPage from './chat/ChatPage'
 import Login from './Login'
 import ReactDOM from "react-dom";
 
@@ -53,6 +54,7 @@ class App extends Component {
         <main>
             <BrowserRouter>
           <Switch>
+              <Route path='/chat' component={ChatPage}/>
               <Route path='/customers' component={Customers}/>
                 <Route path='/invoice' component={Invoice}/>
                 <Route path='/users' component={UserList}/>
