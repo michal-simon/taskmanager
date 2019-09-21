@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import axios from 'axios'
 import Story from './Story'
+import KanbanFilter from './KanbanFilter'
 
 class Dashboard extends Component{
     constructor(props, context) {
@@ -160,6 +161,9 @@ class Dashboard extends Component{
         }
         return (
 
+            <React.Fragment>
+            <KanbanFilter />
+
             <div id="board" className="board">
 
                 {storyTable}
@@ -177,6 +181,7 @@ class Dashboard extends Component{
                     </aside>
                 </div>
             </div>
+            </React.Fragment>
         )
     }
 }

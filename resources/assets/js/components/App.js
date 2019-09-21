@@ -42,7 +42,7 @@ class App extends Component {
     }
 
   render () {
-        
+
         if(!this.state.authenticated && !window.sessionStorage.getItem("authenticated")) {
            return <Login action={this.setAuthenticated}/>
         }
