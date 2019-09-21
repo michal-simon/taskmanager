@@ -17,7 +17,7 @@ class ChatInput extends Component {
         e.preventDefault();
 
         const messageObj = {
-            author: this.props.userID,
+            user_id: this.props.userID,
             message: this.state.message,
             when: new Date().valueOf(),
             customer_id: this.props.customer_id

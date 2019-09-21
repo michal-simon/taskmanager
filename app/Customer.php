@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\SearchableTrait;
+use App\Message;
 
 class Customer extends Model {
 
@@ -56,5 +57,12 @@ class Customer extends Model {
     public function searchCustomer($term)
     {
         return self::search($term);
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function messages() {
+        return $this->belongsToMany(Message::class);
     }
 }

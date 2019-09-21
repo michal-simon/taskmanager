@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Event;
 use App\Traits\SearchableTrait;
 use Laratrust\Traits\LaratrustUserTrait;
+use App\Message;
 
 class User extends Authenticatable {
 
@@ -28,7 +29,7 @@ class User extends Authenticatable {
         'password',
         'role_id'
     ];
-    
+
     /**
      * Searchable rules.
      *
@@ -65,6 +66,13 @@ class User extends Authenticatable {
 
     public function events() {
         return $this->belongsTo(Event::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function messages() {
+        return $this->belongsToMany(Message::class);
     }
 
     /**

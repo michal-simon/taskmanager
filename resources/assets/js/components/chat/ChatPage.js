@@ -13,7 +13,7 @@ class ChatPage extends Component {
         this.loadMessages = this.loadMessages.bind(this)
 
         this.state = {
-            userID: Math.round(Math.random() * 1000000).toString(),
+            userID: 56,
             friends: [],
             messages: [],
             customer_id: 0

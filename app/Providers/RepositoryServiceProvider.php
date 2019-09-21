@@ -29,6 +29,8 @@ use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\EventRepository;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
 use App\Repositories\PermissionRepository;
+use App\Repositories\Interfaces\MessageRepositoryInterface;
+use App\Repositories\MessageRepository;
 
 class RepositoryServiceProvider extends ServiceProvider {
 
@@ -97,6 +99,10 @@ class RepositoryServiceProvider extends ServiceProvider {
         
         $this->app->bind(
                 PermissionRepositoryInterface::class, PermissionRepository::class
+        );
+        
+         $this->app->bind(
+                MessageRepositoryInterface::class, MessageRepository::class
         );
     }
 

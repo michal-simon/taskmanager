@@ -11,4 +11,5 @@
 |
 */
 
+Route::get('dashboard', 'DashboardController@index');
 Route::view('/{path?}', 'app');
