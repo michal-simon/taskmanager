@@ -185,8 +185,8 @@ class AddCustomer extends React.Component {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button color="primary" onClick={this.handleClick.bind(this)}><i className="fas fa-plus-circle"></i> Add</Button>
-                        <Button color="secondary" onClick={this.toggle}><i className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="success" onClick={this.handleClick.bind(this)}>Add</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                                 
                         {loading &&
                             <span className="fa fa-circle-o-notch fa-spin" />

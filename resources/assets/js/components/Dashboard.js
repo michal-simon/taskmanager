@@ -15,18 +15,20 @@ class Dashboard extends Component{
             err:'',
             err2:'',
             loading:true,
-            loadingStory:true,
+            loadingStory:true
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.project_id = this.props.project_id
         this.updateTasks = this.updateTasks.bind(this);
         this.addProject = this.addProject.bind(this);
+        this.resetFilters = this.resetFilters.bind(this)
+        this.cachedTasks= []
     }
 
     componentDidMount() {
-        this.getStoryDetails();
-        this.getTasks();
+        this.getStoryDetails()
+        this.getTasks()
     }
 
     getTasks() {
@@ -37,27 +39,16 @@ class Dashboard extends Component{
             .then((r)=> {
                 this.setState({
                     tasks: r.data,
-                    err:''
-                })
-            })
-            .then(()=>{
-                this.setState({
+                    err:'',
                     loading:false
                 })
+                this.cachedTasks = r.data
             })
             .catch((e)=>{
-                if (!e.response){
-                    this.setState({
-                        loading:true,
-                        err: e
-                    })
-                }
-                else {
                     this.setState({
                         loading:false,
                         err: e
                     })
-                }
             })
     }
 
@@ -90,11 +81,14 @@ class Dashboard extends Component{
     }
 
     updateTasks(tasks) {
-
-        console.log('all tasks', tasks)
-
         this.setState({
             tasks: tasks,
+        })
+    }
+
+    resetFilters() {
+        this.setState({
+            tasks: this.cachedTasks,
         })
     }
 
@@ -128,11 +122,9 @@ class Dashboard extends Component{
                     <option value={story.id}>{story.title}</option>
                 )
             })
-
         }
 
         return storyTable
-
     }
 
     render() {
@@ -162,7 +154,11 @@ class Dashboard extends Component{
         return (
 
             <React.Fragment>
-            <KanbanFilter />
+            <KanbanFilter
+                reset={this.resetFilters}
+                action={this.updateTasks}
+                task_type={this.props.task_type}
+            />
 
             <div id="board" className="board">
 

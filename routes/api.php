@@ -15,6 +15,7 @@ Route::post('tasks', 'TaskController@store');
 Route::get('tasks/getTasksForProject/{project_id}', 'TaskController@getTasksForProject');
 //Route::put('tasks/{task}', 'TaskController@markAsCompleted');
 Route::delete('tasks/{task}', 'TaskController@destroy');
+Route::post('tasks/filterTasks/{task_type}', 'TaskController@filterTasks');
 Route::delete('users/{user_id}', 'UserController@destroy');
 Route::post('users', 'UserController@store');
 Route::get('status/{task_type}', 'TaskStatusController@index');

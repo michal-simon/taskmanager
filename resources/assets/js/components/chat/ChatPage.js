@@ -63,8 +63,6 @@ class ChatPage extends Component {
             .catch((e)=>{
                 alert(e)
             })
-
-        console.log('sendMessage 22', message);
     }
 
     render() {

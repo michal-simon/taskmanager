@@ -81,7 +81,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @param Project $objProject
      * @return type
      */
-    public function getTasksForProject(Project $objProject) {
+    public function getTasksForProject(Project $objProject): Support {
 
         return Task::join('project_task', 'tasks.id', '=', 'project_task.task_id')
                         ->select('tasks.id as id', 'tasks.*')
@@ -94,22 +94,48 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * 
      * @return type
      */
-    public function getLeads() {
+    public function getLeads(): Support {
         return Task::where('task_type', 2)
                         ->where('is_completed', 0)
                         ->get();
     }
-    
+
     /**
      * @param string $text
      * @return mixed
      */
-    public function searchTask(string $text = null) : Collection
-    {
+    public function searchTask(string $text = null): Collection {
         if (is_null($text)) {
             return $this->all();
         }
         return $this->model->searchTask($text)->get();
+    }
+
+    /**
+     * 
+     * @param array $arrFilters
+     * @param type $task_type
+     * @param Project $objProject
+     * @return Support
+     */
+    public function filterTasks(array $arrFilters, $task_type, Project $objProject = null): Support {
+
+        if ($task_type === 1) {
+            $query = Task::join('project_task', 'tasks.id', '=', 'project_task.task_id')
+                    ->select('tasks.id as id', 'tasks.*')
+                    ->where('project_id', $objProject->id)
+                    ->where('is_completed', 0);
+        } else {
+            $query = Task::where('is_completed', 0)
+                    ->where('task_type', 2);
+        }
+
+
+        foreach ($arrFilters as $arrFilter) {
+            $query->where($arrFilter['column'], '=', $arrFilter['value']);
+        }
+
+        return $query->get();
     }
 
 }

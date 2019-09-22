@@ -9,6 +9,10 @@ use App\Requests\UpdateTaskRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
+use App\Repositories\CustomerRepository;
+use App\Repositories\UserRepository;
+use App\User;
+use App\Customer;
 
 class TaskController extends Controller {
 
@@ -108,6 +112,18 @@ class TaskController extends Controller {
         $task = $this->taskRepository->findTaskById($id);
         $taskRepo = new TaskRepository($task);
         $taskRepo->updateTask(['task_status' => $request->task_status]);
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @param int $task_type
+     */
+    public function filterTasks(Request $request, int $task_type) {
+        
+        $tasks = $this->taskRepository->filterTasks($request->all(), $task_type);
+  
+        return $tasks->toJson();
     }
 
 }
