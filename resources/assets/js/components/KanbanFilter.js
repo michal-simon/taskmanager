@@ -16,6 +16,11 @@ export default class KanbanFilter extends Component {
         this.resetFilters = this.resetFilters.bind(this)
     }
 
+    componentDidMount () {
+        this.getCustomers()
+        this.getUsers()
+    }
+
     handleChange (event) {
         const column = event.target.id
         const value = event.target.value
@@ -46,11 +51,6 @@ export default class KanbanFilter extends Component {
             .catch((error) => {
                 alert(error)
             })
-    }
-
-    componentDidMount () {
-        this.getCustomers()
-        this.getUsers()
     }
 
     getUsers () {

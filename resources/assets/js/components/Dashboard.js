@@ -109,7 +109,7 @@ class Dashboard extends Component {
         if (!loadingStory) {
             storyTable = stories.map((story, index) => {
                 return (
-                    <option value={story.id}>{story.title}</option>
+                    <option key={story.id} value={story.id}>{story.title}</option>
                 )
             })
         }
@@ -152,7 +152,7 @@ class Dashboard extends Component {
                                 tasks={this.state.tasks}
                                 action={this.updateTasks}
                                 storyName={this.state.stories.filter(i => i.id === parseInt(this.project_id))}
-                                storyType={this.project_id} tasks={this.state.tasks}
+                                storyType={this.project_id}
                                 loading={this.state.loading}
                                 task_type={this.props.task_type}
                             />

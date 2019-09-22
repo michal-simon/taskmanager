@@ -162,10 +162,8 @@ class AddStory extends React.Component {
                         </FormGroup>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.handleClick.bind(this)}><i
-                            className="fas fa-plus-circle"></i> Add</Button>
-                        <Button color="secondary" onClick={this.toggle}><i
-                            className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="primary" onClick={this.handleClick.bind(this)}>Add</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </div>

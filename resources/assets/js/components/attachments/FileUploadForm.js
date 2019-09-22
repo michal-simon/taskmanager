@@ -39,8 +39,7 @@ class FileUpload extends Component {
                 err[x] = files[x].type + ' is not a supported format\n'
             }
         }
-        for (var z = 0; z < err.length; z++) {// if message not same old that mean has error
-            // discard selected file
+        for (var z = 0; z < err.length; z++) {
             toast.error(err[z])
             event.target.value = null
         }
@@ -105,7 +104,7 @@ class FileUpload extends Component {
                             <span className="btn btn-default btn-file img-select-btn">
                                 <span>Browse</span>
                                 <input type="file" multiple name="img-file-input"
-                                    onChange={this.onChangeHandler.bind(this)}></input>
+                                    onChange={this.onChangeHandler.bind(this)} />
                             </span>
 
                             <button type="button" className="btn btn-success btn-block col-4 pull-right"
@@ -119,7 +118,7 @@ class FileUpload extends Component {
                                 value={this.state.loaded}>{Math.round(this.state.loaded, 2)}%</Progress>
                         </div>
 
-                        <hr className="mt-2 mb-5"></hr>
+                        <hr className="mt-2 mb-5" />
                     </div>
                 </div>
             </div>

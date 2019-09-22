@@ -91,11 +91,11 @@ class EditTask extends Component {
     }
 
     handleCancel () {
-        this.state.contributors = this.oldUser
-        this.state.title = this.oldTitle
-        this.state.due_date = this.oldDueDate
-        this.state.description = this.oldDescription
         this.setState({
+            contributors: this.oldUser,
+            title: this.oldTitle,
+            due_date: this.oldDueDate,
+            description: this.oldDescription,
             editMode: false
         })
     }
@@ -232,7 +232,6 @@ class EditTask extends Component {
                         <Label>User</Label>
                         <Input disabled value={this.state.contributors} type="select"
                             className="form-control select-index input-xs" name="contributors"
-                            value={this.state.contributors}
                             onChange={this.handleDoubleClick}>
                             {userContent}
                         </Input>

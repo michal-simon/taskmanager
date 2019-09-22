@@ -30,6 +30,11 @@ class EditInvoice extends Component {
         this.changeStatus = this.changeStatus.bind(this)
     }
 
+    componentDidMount () {
+        this.loadInvoice()
+        this.loadCustomers()
+    }
+
     renderErrorFor (field) {
         if (this.hasErrorFor(field)) {
             return (
@@ -44,7 +49,7 @@ class EditInvoice extends Component {
         if (e.target.name === 'customer_id') {
             const index = this.state.customers.findIndex(customer => customer.id === parseInt(e.target.value))
             const customer = this.state.customers[index]
-            this.state.customerName = customer.first_name + ' ' + customer.last_name
+            this.setState({ customerName: customer.first_name + ' ' + customer.last_name })
             if (customer.addresses) {
                 const address = customer.addresses[0]
                 const objAddress = {
@@ -107,6 +112,42 @@ class EditInvoice extends Component {
             })
     }
 
+    toggle () {
+        this.setState({
+            modal: !this.state.modal
+        })
+    }
+
+    updateData (data) {
+        this.setState({ data: data })
+    }
+
+    setTotal (total) {
+        this.total = total
+    }
+
+    saveData () {
+        const data = {
+            invoice_id: this.props.invoice_id,
+            due_date: this.state.due_date,
+            customer_id: this.state.customer_id,
+            data: JSON.stringify(this.state.data),
+            total: this.total,
+            payment_type: 1
+        }
+
+        axios.post('/api/invoice', data)
+            .then((response) => {
+                const firstInvoice = response.data
+                const allInvoices = this.props.invoices
+                allInvoices.push(firstInvoice)
+                this.props.action(allInvoices)
+            })
+            .catch((error) => {
+                alert(error)
+            })
+    }
+
     render () {
         const changeStatusButton = this.state.invoice_status === 1
             ? <Button color="primary" onClick={() => this.changeStatus(2).bind(this)}>Send</Button>
@@ -152,7 +193,7 @@ class EditInvoice extends Component {
                             </FormGroup>
 
                             <LineItemEditor lineItemModel={this.state.existingLines} update={this.updateData}
-                                setTotal={this.setTotal}/>
+                                            setTotal={this.setTotal}/>
                             <Button color="success" onClick={this.saveData}>Save</Button>
                             {changeStatusButton}
                             <br/>
@@ -160,53 +201,11 @@ class EditInvoice extends Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="secondary" onClick={this.toggle}><i
-                            className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>
         )
-    }
-
-    componentDidMount () {
-        this.loadInvoice()
-        this.loadCustomers()
-    }
-
-    toggle () {
-        this.setState({
-            modal: !this.state.modal
-        })
-    }
-
-    updateData (data) {
-        this.setState({ data: data })
-    }
-
-    setTotal (total) {
-        this.total = total
-    }
-
-    saveData () {
-        const data = {
-            invoice_id: this.props.invoice_id,
-            due_date: this.state.due_date,
-            customer_id: this.state.customer_id,
-            data: JSON.stringify(this.state.data),
-            total: this.total,
-            payment_type: 1
-        }
-
-        axios.post('/api/invoice', data)
-            .then((response) => {
-                const firstInvoice = response.data
-                const allInvoices = this.props.invoices
-                allInvoices.push(firstInvoice)
-                this.props.action(allInvoices)
-            })
-            .catch((error) => {
-                alert(error)
-            })
     }
 }
 

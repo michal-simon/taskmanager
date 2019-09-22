@@ -46,7 +46,7 @@ class AddLead extends React.Component {
             })
     }
 
-    updateLeadValue(e) {
+    updateLeadValue (e) {
         this.setState({
             [e.target.name]: e.target.value
         })

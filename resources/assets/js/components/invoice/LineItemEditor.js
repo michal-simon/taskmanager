@@ -29,10 +29,41 @@ class LineItemEditor extends Component {
         )
     }
 
+    getTotal () {
+        let grandTotal = 0
+        const rowTotals = this.state.rowData.map(row => row.quantity * row.unit_price)
+        if (rowTotals.length > 0) {
+            grandTotal = rowTotals.reduce((acc, val) => acc + val)
+        }
+        this.props.setTotal(grandTotal)
+        return grandTotal
+    }
+
+    handleRowChange (row, data) {
+        const rowDataCopy = this.state.rowData.slice(0)
+        rowDataCopy[row] = data
+        this.setState({ rowData: rowDataCopy })
+        this.props.update(rowDataCopy)
+    }
+
+    handleRowDelete (row) {
+        const rowDataCopy = this.state.rowData.slice(0)
+        rowDataCopy.splice(row, 1)
+        this.setState({ rowData: rowDataCopy })
+        this.props.update(rowDataCopy)
+    }
+
+    handleRowAdd () {
+        const rowDataCopy = this.state.rowData.slice(0)
+        rowDataCopy.push({ quantity: 0, description: '', unit_price: 0 })
+        this.setState({ rowData: rowDataCopy })
+        this.props.update(rowDataCopy)
+    }
+
     render () {
         const lineItemRows = this.state.rowData.map((lineItem, index) =>
             <LineItem key={index} id={index} lineItemData={this.state.rowData[index]} onChange={this.handleRowChange}
-                onDelete={this.handleRowDelete}/>
+                      onDelete={this.handleRowDelete}/>
         )
         const self = this
         const items = this.props.lineItemModel.map(function (item, index) {
@@ -73,37 +104,6 @@ class LineItemEditor extends Component {
                 </tfoot>
             </table>
         )
-    }
-
-    getTotal () {
-        let grandTotal = 0
-        const rowTotals = this.state.rowData.map(row => row.quantity * row.unit_price)
-        if (rowTotals.length > 0) {
-            grandTotal = rowTotals.reduce((acc, val) => acc + val)
-        }
-        this.props.setTotal(grandTotal)
-        return grandTotal
-    }
-
-    handleRowChange (row, data) {
-        const rowDataCopy = this.state.rowData.slice(0)
-        rowDataCopy[row] = data
-        this.setState({ rowData: rowDataCopy })
-        this.props.update(rowDataCopy)
-    }
-
-    handleRowDelete (row) {
-        const rowDataCopy = this.state.rowData.slice(0)
-        rowDataCopy.splice(row, 1)
-        this.setState({ rowData: rowDataCopy })
-        this.props.update(rowDataCopy)
-    }
-
-    handleRowAdd () {
-        const rowDataCopy = this.state.rowData.slice(0)
-        rowDataCopy.push({ quantity: 0, description: '', unit_price: 0 })
-        this.setState({ rowData: rowDataCopy })
-        this.props.update(rowDataCopy)
     }
 }
 

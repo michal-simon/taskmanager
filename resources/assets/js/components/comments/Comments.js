@@ -12,21 +12,16 @@ export default class Comments extends Component {
             loading: false
         }
         this.addComment = this.addComment.bind(this)
-    }
-
-    /**
-     * Add new comment
-     * @param {Object} comment
-     */
-    addComment (comment) {
-        this.setState({
-            comments: [comment, ...this.state.comments]
-        })
+        this.loadComments = this.loadComments.bind(this)
     }
 
     componentDidMount () {
-        // loading
+        this.loadComments()
+    }
+
+    loadComments () {
         this.setState({ loading: true })
+
         // get all the comments
         axios.get(`/api/comments/${this.props.task.id}`)
             .then((r) => {
@@ -40,6 +35,16 @@ export default class Comments extends Component {
                     loading: false
                 })
             })
+    }
+
+    /**
+     * Add new comment
+     * @param {Object} comment
+     */
+    addComment (comment) {
+        this.setState({
+            comments: [comment, ...this.state.comments]
+        })
     }
 
     render () {
@@ -59,8 +64,8 @@ export default class Comments extends Component {
                                     task={this.props.task}
                                 />}
 
-                                <div className="clearfix"></div>
-                                <hr></hr>
+                                <div className="clearfix" />
+                                <hr />
                                 <ul className="media-list">
                                     {<CommentList
                                         loading={this.state.loading}

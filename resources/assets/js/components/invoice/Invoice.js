@@ -35,6 +35,11 @@ export default class Invoice extends Component {
         this.cancel = ''
         this.updateInvoice = this.updateInvoice.bind(this)
         this.handleSearchChange = this.handleSearchChange.bind(this)
+        this.setPage = this.setPage.bind(this)
+    }
+
+    componentDidMount () {
+        this.setPage()
     }
 
     updateInvoice (invoices) {
@@ -107,7 +112,7 @@ export default class Invoice extends Component {
         return pagesArray
     }
 
-    componentDidMount () {
+    setPage () {
         this.setState({ current_page: this.state.entities.current_page }, () => {
             this.fetchEntities()
         })
@@ -116,9 +121,9 @@ export default class Invoice extends Component {
     tableHeads () {
         let icon
         if (this.state.order === 'asc') {
-            icon = <i className="fas fa-arrow-up"></i>
+            icon = <i className="fas fa-arrow-up" />
         } else {
-            icon = <i className="fas fa-arrow-down"></i>
+            icon = <i className="fas fa-arrow-down" />
         }
         return this.state.columns.map(column => {
             return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
@@ -132,7 +137,7 @@ export default class Invoice extends Component {
         if (this.state.entities.data && this.state.entities.data.length) {
             return this.state.entities.data.map(user => {
                 return (
-                    <tr>
+                    <tr key={user.id}>
                         <td>{user.first_name + ' ' + user.last_name}</td>
                         <td>{user.due_date}</td>
                         <td>{user.total}</td>

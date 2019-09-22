@@ -7,9 +7,9 @@ export default function FileUpload (props) {
         <div className="col-lg-5 col-md-6 col-8">
             <a href="#" className="d-block">
                 <img className="img-fluid img-thumbnail" src="https://source.unsplash.com/pWkk7iiCoDM/400x300"
-                    alt=""></img>
+                    alt="" />
             </a>
-            {file.filename}<br></br>
+            {file.filename}<br />
             {`${file.user.first_name} ${file.user.last_name}`}
         </div>
     )

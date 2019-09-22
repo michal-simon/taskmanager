@@ -2,6 +2,7 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 
 class EditUser extends React.Component {
     constructor (props) {
@@ -18,27 +19,8 @@ class EditUser extends React.Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
     }
 
-    handleInput (e) {
-        this.setValues({ [e.target.name]: e.target.value })
-    }
-
-    setValues (values) {
-        this.setState({ user: { ...this.state.user, ...values } })
-        console.log(this.state.user)
-    }
-
-    hasErrorFor (field) {
-        return !!this.state.errors[field]
-    }
-
-    renderErrorFor (field) {
-        if (this.hasErrorFor(field)) {
-            return (
-                <span className='invalid-feedback'>
-                    <strong>{this.state.errors[field][0]}</strong>
-                </span>
-            )
-        }
+    componentDidMount () {
+        this.getRoles()
     }
 
     getRoles () {
@@ -86,8 +68,27 @@ class EditUser extends React.Component {
             })
     }
 
-    componentDidMount () {
-        this.getRoles()
+    renderErrorFor (field) {
+        if (this.hasErrorFor(field)) {
+            return (
+                <span className='invalid-feedback'>
+                    <strong>{this.state.errors[field][0]}</strong>
+                </span>
+            )
+        }
+    }
+
+    hasErrorFor (field) {
+        return !!this.state.errors[field]
+    }
+
+    setValues (values) {
+        this.setState({ user: { ...this.state.user, ...values } })
+        console.log(this.state.user)
+    }
+
+    handleInput (e) {
+        this.setValues({ [e.target.name]: e.target.value })
     }
 
     toggle () {
@@ -182,3 +183,9 @@ class EditUser extends React.Component {
 }
 
 export default EditUser
+
+EditUser.propTypes = {
+    user: PropTypes.object,
+    users: PropTypes.array,
+    action: PropTypes.func
+}

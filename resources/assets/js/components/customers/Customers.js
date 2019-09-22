@@ -33,6 +33,17 @@ export default class Customers extends Component {
         this.cancel = ''
         this.updateCustomers = this.updateCustomers.bind(this)
         this.handleSearchChange = this.handleSearchChange.bind(this)
+        this.setPage = this.setPage.bind(this)
+    }
+
+    componentDidMount () {
+        this.setPage()
+    }
+
+    setPage () {
+        this.setState({ current_page: this.state.entities.current_page }, () => {
+            this.fetchEntities()
+        })
     }
 
     updateCustomers (customers) {
@@ -53,8 +64,7 @@ export default class Customers extends Component {
             cancelToken: this.cancel.token
         })
             .then(response => {
-                this.state.columns = Object.keys(response.data.data[0])
-                this.setState({ entities: response.data, loading: false })
+                this.setState({ entities: response.data, loading: false, columns: Object.keys(response.data.data[0]) })
             }).catch(error => {
                 if (axios.isCancel(error) || error) {
                     this.setState(
@@ -107,18 +117,12 @@ export default class Customers extends Component {
         return pagesArray
     }
 
-    componentDidMount () {
-        this.setState({ current_page: this.state.entities.current_page }, () => {
-            this.fetchEntities()
-        })
-    }
-
     tableHeads () {
         let icon
         if (this.state.order === 'asc') {
-            icon = <i className="fas fa-arrow-up"></i>
+            icon = <i className="fas fa-arrow-up" />
         } else {
-            icon = <i className="fas fa-arrow-down"></i>
+            icon = <i className="fas fa-arrow-down" />
         }
         return this.state.columns.map(column => {
             return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
@@ -145,7 +149,7 @@ export default class Customers extends Component {
                     }
                 })
                 return (
-                    <tr>
+                    <tr key={user.id}>
                         {test}
                         <td>
                             <EditCustomer
@@ -217,7 +221,7 @@ export default class Customers extends Component {
             return (<span>&nbsp</span>)
         }
         const phone = address.map(function (address) {
-            return (<span>{address.phone}</span>)
+            return (<span key={address.id}>{address.phone}</span>)
         })
         return (
             <td>{phone}</td>

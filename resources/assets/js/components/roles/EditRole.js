@@ -138,8 +138,7 @@ class EditRole extends React.Component {
 
                     <ModalFooter>
                         <Button color="primary" onClick={this.handleClick.bind(this)}>Update</Button>
-                        <Button color="secondary" onClick={this.toggle}><i
-                            className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>

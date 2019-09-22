@@ -33,14 +33,11 @@ export default class Roles extends Component {
         this.updateUserState = this.updateUserState.bind(this)
         this.addUserToState = this.addUserToState.bind(this)
         this.handleSearchChange = this.handleSearchChange.bind(this)
+        this.setPageNumber = this.setPageNumber.bind(this)
     }
 
-    addUserToState (users) {
-        this.setState(prevState => {
-            const entities = Object.assign({}, prevState.entities)
-            entities.data = users
-            return { entities }
-        })
+    componentDidMount () {
+        this.setPageNumber()
     }
 
     fetchEntities () {
@@ -53,9 +50,7 @@ export default class Roles extends Component {
             cancelToken: this.cancel.token
         })
             .then(response => {
-                console.log('response', response.data)
-                this.state.columns = Object.keys(response.data.data[0])
-                this.setState({ entities: response.data, loading: false })
+                this.setState({ entities: response.data, loading: false, columns: Object.keys(response.data.data[0]) })
             })
             .catch(error => {
                 if (axios.isCancel(error) || error) {
@@ -111,18 +106,26 @@ export default class Roles extends Component {
         return pagesArray
     }
 
-    componentDidMount () {
+    setPageNumber () {
         this.setState({ current_page: this.state.entities.current_page }, () => {
             this.fetchEntities()
+        })
+    }
+
+    addUserToState (users) {
+        this.setState(prevState => {
+            const entities = Object.assign({}, prevState.entities)
+            entities.data = users
+            return { entities }
         })
     }
 
     tableHeads () {
         let icon
         if (this.state.order === 'asc') {
-            icon = <i className="fas fa-arrow-up"></i>
+            icon = <i className="fas fa-arrow-up" />
         } else {
-            icon = <i className="fas fa-arrow-down"></i>
+            icon = <i className="fas fa-arrow-down" />
         }
         return this.state.columns.map(column => {
             return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>

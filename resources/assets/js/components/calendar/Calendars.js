@@ -34,6 +34,11 @@ class Calendars extends React.Component {
         this.loadPrevMonth = this.loadPrevMonth.bind(this)
         this.loadNextMonth = this.loadNextMonth.bind(this)
         this.setEvents = this.setEvents.bind(this)
+        this.getEvents = this.getEvents.bind(this)
+    }
+
+    componentDidMount () {
+        this.getEvents()
     }
 
     setEvents (events) {
@@ -44,7 +49,7 @@ class Calendars extends React.Component {
         this.setState({ month: month })
     }
 
-    componentDidMount () {
+    getEvents () {
         axios.get('/api/events')
             .then((r) => {
                 this.setState({

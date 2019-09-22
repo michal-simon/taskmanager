@@ -195,18 +195,16 @@ class AddModal extends React.Component {
                         {leadForm}
 
                         <hr/>
-                        <i className="fas fa-calendar-alt"></i> Created Date: {moment().format('L, h:mm:ss')} <br/>
-                        <i className="fas fa-clock"></i> Due Date:
+                        <i className="fas fa-calendar-alt" /> Created Date: {moment().format('L, h:mm:ss')} <br/>
+                        <i className="fas fa-clock" />Due Date:
                         <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''} type="datetime-local"
                             name="due_date" id="due_date" onChange={this.handleInput.bind(this)}/>
                         {this.renderErrorFor('due_date')}
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button color="primary" onClick={this.handleClick.bind(this)}><i
-                            className="fas fa-plus-circle"></i> Add</Button>
-                        <Button color="secondary" onClick={this.toggle}><i
-                            className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="primary" onClick={this.handleClick.bind(this)}> Add</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </div>

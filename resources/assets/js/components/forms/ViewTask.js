@@ -39,8 +39,7 @@ class ViewTask extends React.Component {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button color="secondary" onClick={this.toggle}><i
-                            className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </div>

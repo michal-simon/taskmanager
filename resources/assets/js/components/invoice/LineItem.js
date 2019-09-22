@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Button } from 'reactstrap'
+import { Button, Input } from 'reactstrap'
 
 class LineItem extends Component {
     constructor (props) {
@@ -32,37 +32,6 @@ class LineItem extends Component {
             .catch((error) => {
                 alert(error)
             })
-    }
-
-    render () {
-        const { lineId } = this.props.lineItemData
-        const button = this.props.canUpdate ? <Button color="danger" onClick={this.handleDeleteClick}>Delete</Button>
-            : <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
-                className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
-        return (
-            <tr data-id={lineId} key={lineId}>
-                <td>
-                    <input name="quantity" data-line={lineId} type='text' value={this.state.quantity}
-                        onChange={this.handleQuantityChange} className='pa2 mr2 f6 form-control'></input>
-                </td>
-                <td>
-                    <input name="description" data-line={lineId} type='text' value={this.state.description}
-                        onChange={this.handleDescriptionChange} className='pa2 mr2 f6 form-control'></input>
-                </td>
-                <td>
-                    <input name="unit_price" data-line={lineId} type='text' data-column="5"
-                        value={this.state.unit_price} onChange={this.handlePriceChange}
-                        className='pa2 mr2 f6 form-control'></input>
-                </td>
-                <td>
-                    <p className='pa2 mr2 f6'>{this.state.quantity * this.state.unit_price}</p>
-                </td>
-                <td>
-                    {button}
-                    <Button color="primary" onClick={this.updateLine}>Update</Button>
-                </td>
-            </tr>
-        )
     }
 
     handleQuantityChange (e) {
@@ -118,6 +87,37 @@ class LineItem extends Component {
 
     handleDeleteClick () {
         this.props.onDelete(this.props.id)
+    }
+
+    render () {
+        const { lineId } = this.props.lineItemData
+        const button = this.props.canUpdate ? <Button color="danger" onClick={this.handleDeleteClick}>Delete</Button>
+            : <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
+                className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
+        return (
+            <tr data-id={lineId} key={lineId}>
+                <td>
+                    <Input name="quantity" data-line={lineId} type='text' value={this.state.quantity}
+                        onChange={this.handleQuantityChange} className='pa2 mr2 f6 form-control' />
+                </td>
+                <td>
+                    <Input name="description" data-line={lineId} type='text' value={this.state.description}
+                        onChange={this.handleDescriptionChange} className='pa2 mr2 f6 form-control' />
+                </td>
+                <td>
+                    <Input name="unit_price" data-line={lineId} type='text' data-column="5"
+                        value={this.state.unit_price} onChange={this.handlePriceChange}
+                        className='pa2 mr2 f6 form-control' />
+                </td>
+                <td>
+                    <p className='pa2 mr2 f6'>{this.state.quantity * this.state.unit_price}</p>
+                </td>
+                <td>
+                    {button}
+                    <Button color="primary" onClick={this.updateLine}>Update</Button>
+                </td>
+            </tr>
+        )
     }
 }
 

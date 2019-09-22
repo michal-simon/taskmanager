@@ -33,62 +33,11 @@ export default class DataTable extends Component {
         this.updateUserState = this.updateUserState.bind(this)
         this.addUserToState = this.addUserToState.bind(this)
         this.handleSearchChange = this.handleSearchChange.bind(this)
+        this.setPage = this.setPage.bind(this)
     }
 
-    addUserToState (users) {
-        this.setState(prevState => {
-            const entities = Object.assign({}, prevState.entities)
-            entities.data = users
-            return { entities }
-        })
-    }
-
-    fetchEntities () {
-        const fetchUrl = `/api/users/?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`
-        if (this.cancel) {
-            this.cancel.cancel()
-        }
-        this.cancel = axios.CancelToken.source()
-        axios.get(fetchUrl, {
-            cancelToken: this.cancel.token
-        })
-            .then(response => {
-                this.state.columns = Object.keys(response.data.data[0])
-                this.setState({ entities: response.data, loading: false })
-            })
-            .catch(error => {
-                if (axios.isCancel(error) || error) {
-                    this.setState({
-                        loading: false,
-                        message: 'Failed to fetch the data. Please check network'
-                    })
-                }
-            })
-    }
-
-    handleSearchChange (event) {
-        const query = event.target.value
-        if (query.length < 3 && query.length > 0) {
-            this.setState({ query, loading: false, message: '' })
-            return false
-        }
-        this.setState({ query, loading: true, message: '' }, () => {
-            this.fetchEntities()
-        })
-    }
-
-    changePage (pageNumber) {
-        this.setState({ current_page: pageNumber }, () => {
-            this.fetchEntities()
-        })
-    }
-
-    columnHead (value) {
-        return value.split('_').join(' ').toUpperCase()
-    }
-
-    updateUserState (user) {
-        this.addUserToState(user)
+    componentDidMount () {
+        this.setPage()
     }
 
     pagesNumbers () {
@@ -110,18 +59,73 @@ export default class DataTable extends Component {
         return pagesArray
     }
 
-    componentDidMount () {
+    setPage () {
         this.setState({ current_page: this.state.entities.current_page }, () => {
             this.fetchEntities()
+        })
+    }
+
+    updateUserState (user) {
+        this.addUserToState(user)
+    }
+
+    columnHead (value) {
+        return value.split('_').join(' ').toUpperCase()
+    }
+
+    changePage (pageNumber) {
+        this.setState({ current_page: pageNumber }, () => {
+            this.fetchEntities()
+        })
+    }
+
+    handleSearchChange (event) {
+        const query = event.target.value
+        if (query.length < 3 && query.length > 0) {
+            this.setState({ query, loading: false, message: '' })
+            return false
+        }
+        this.setState({ query, loading: true, message: '' }, () => {
+            this.fetchEntities()
+        })
+    }
+
+    fetchEntities () {
+        const fetchUrl = `/api/users/?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`
+        if (this.cancel) {
+            this.cancel.cancel()
+        }
+        this.cancel = axios.CancelToken.source()
+        axios.get(fetchUrl, {
+            cancelToken: this.cancel.token
+        })
+            .then(response => {
+                this.setState({ entities: response.data, loading: false, columns: Object.keys(response.data.data[0]) })
+            })
+            .catch(error => {
+                if (axios.isCancel(error) || error) {
+                    this.setState({
+                        loading: false,
+                        message: 'Failed to fetch the data. Please check network'
+                    })
+                }
+            })
+    }
+
+    addUserToState (users) {
+        this.setState(prevState => {
+            const entities = Object.assign({}, prevState.entities)
+            entities.data = users
+            return { entities }
         })
     }
 
     tableHeads () {
         let icon
         if (this.state.order === 'asc') {
-            icon = <i className="fas fa-arrow-up"></i>
+            icon = <i className="fas fa-arrow-up" />
         } else {
-            icon = <i className="fas fa-arrow-down"></i>
+            icon = <i className="fas fa-arrow-down" />
         }
         return this.state.columns.map(column => {
             return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>

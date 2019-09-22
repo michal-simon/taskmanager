@@ -50,6 +50,11 @@ class CalendarEvent extends React.Component {
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
+    componentDidMount () {
+        this.getCustomers()
+        this.getUsers()
+    }
+
     hasErrorFor (field) {
         return !!this.state.errors[field]
     }
@@ -95,11 +100,6 @@ class CalendarEvent extends React.Component {
             .catch((error) => {
                 alert(error)
             })
-    }
-
-    componentDidMount () {
-        this.getCustomers()
-        this.getUsers()
     }
 
     toggle () {
@@ -167,7 +167,7 @@ class CalendarEvent extends React.Component {
             customerList = this.state.customers.map((customer, index) => {
                 const selected = customer.id === this.state.customer_id ? 'selected' : ''
                 return <option selected={selected} key={index}
-                               value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
+                    value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
             })
         }
         let userList

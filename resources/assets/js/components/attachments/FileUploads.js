@@ -11,20 +11,16 @@ export default class FileUploads extends Component {
             files: [],
             loading: false
         }
-        this.addFile = this.addFile.bind(this)
-    }
 
-    /**
-     * Add new file
-     * @param {Object} file
-     */
-    addFile (file) {
-        this.setState({
-            files: [file, ...this.state.files]
-        })
+        this.addFile = this.addFile.bind(this)
+        this.getFiles = this.getFiles.bind(this)
     }
 
     componentDidMount () {
+       this.getFiles()
+    }
+
+    getFiles () {
         // loading
         this.setState({ loading: true })
         // get all the comments
@@ -40,6 +36,16 @@ export default class FileUploads extends Component {
                     loading: false
                 })
             })
+    }
+
+    /**
+     * Add new file
+     * @param {Object} file
+     */
+    addFile (file) {
+        this.setState({
+            files: [file, ...this.state.files]
+        })
     }
 
     render () {

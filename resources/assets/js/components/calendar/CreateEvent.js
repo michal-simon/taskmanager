@@ -26,6 +26,11 @@ class CreateEvent extends React.Component {
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
+    componentDidMount () {
+        this.getCustomers()
+        this.getUsers()
+    }
+
     hasErrorFor (field) {
         return !!this.state.errors[field]
     }
@@ -100,11 +105,6 @@ class CreateEvent extends React.Component {
             .catch((e) => {
                 console.error(e)
             })
-    }
-
-    componentDidMount () {
-        this.getCustomers()
-        this.getUsers()
     }
 
     toggle () {

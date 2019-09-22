@@ -24,14 +24,8 @@ class AddUser extends React.Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
     }
 
-    handleChange (event) {
-        this.setState({ name: event.target.value })
-    }
-
-    handleInput (e) {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
+    componentDidMount () {
+        this.getRoles()
     }
 
     hasErrorFor (field) {
@@ -93,8 +87,14 @@ class AddUser extends React.Component {
             })
     }
 
-    componentDidMount () {
-        this.getRoles()
+    handleInput (e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    handleChange (event) {
+        this.setState({ name: event.target.value })
     }
 
     toggle () {
@@ -117,7 +117,7 @@ class AddUser extends React.Component {
                 <Button color="success" onClick={this.toggle}>Add User</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
-                        <i className="fas fa-user-circle"></i> Add User
+                       Add User
                     </ModalHeader>
                     <ModalBody>
                         <FormGroup>
@@ -174,10 +174,8 @@ class AddUser extends React.Component {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button color="primary" onClick={this.handleClick.bind(this)}><i
-                            className="fas fa-plus-circle"></i> Add</Button>
-                        <Button color="secondary" onClick={this.toggle}><i
-                            className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="primary" onClick={this.handleClick.bind(this)}>Add</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>

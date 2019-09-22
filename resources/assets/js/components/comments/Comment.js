@@ -9,7 +9,7 @@ export default function Comment (props) {
     return (
         <li className="media">
             <a href="#" className="pull-left">
-                <img src={`/public/img/users/${user.id}.jpg`} alt="" className="img-circle"></img>
+                <img src={`/public/img/users/${user.id}.jpg`} alt="" className="img-circle" />
             </a>
 
             <div className="media-body">
