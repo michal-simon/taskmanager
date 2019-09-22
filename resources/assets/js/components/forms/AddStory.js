@@ -1,25 +1,25 @@
-import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter,Input,FormGroup,Label } from 'reactstrap';
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
 
 class AddStory extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor (props) {
+        super(props)
         this.state = {
             modal: false,
-            title:'',
+            title: '',
             description: '',
             customer_id: '',
-            created_by:'',
-            count:2,
+            created_by: '',
+            count: 2,
             errors: [],
             customers: []
-        };
-    
-        this.toggle = this.toggle.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.getStoryCount = this.getStoryCount.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        }
+        this.toggle = this.toggle.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.getStoryCount = this.getStoryCount.bind(this)
+        this.handleClick = this.handleClick.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
     }
@@ -28,14 +28,14 @@ class AddStory extends React.Component {
         return !!this.state.errors[field]
     }
 
-    handleChange(event) {
-        this.setState({ name: event.target.value });
+    handleChange (event) {
+        this.setState({ name: event.target.value })
     }
 
-    handleInput(e) {
+    handleInput (e) {
         this.setState({
             [e.target.name]: e.target.value
-        })          
+        })
     }
 
     renderErrorFor (field) {
@@ -49,64 +49,55 @@ class AddStory extends React.Component {
     }
 
     /** To be done */
-    getStoryCount() {
+    getStoryCount () {
         axios.get(`/story/count`)
-        .then((r)=> {
-            this.setState({
-                count: r.data.count,
-                err:''
+            .then((r) => {
+                this.setState({
+                    count: r.data.count,
+                    err: ''
+                })
             })
-        })
-        .catch((e)=>{
-            this.setState({
-                err: e
+            .catch((e) => {
+                this.setState({
+                    err: e
+                })
             })
-        })
     }
 
-    handleClick(event) {
-
-        //this.getStoryCount()
+    handleClick (event) {
         axios.post('/api/projects', {
-          title:this.state.title,
-          description:this.state.description,
-            customer_id:this.state.customer_id,
-          created_by:this.state.created_by,
-          storyId:this.state.count
+            title: this.state.title,
+            description: this.state.description,
+            customer_id: this.state.customer_id,
+            created_by: this.state.created_by,
+            storyId: this.state.count
         })
-        .then((response)=> {
-          if(response.data.error)
-              alert(response.data.error)
-          else{
-              this.toggle();
-
-              if(response.data) {
-                  this.props.addProject(response.data)
-              }
-
-              this.setState({
-                  title:null,
-                  description:null,
-                  customer_id: null,
-                  created_by:null,
-                  storyId:null,
-                  loading:false
-              })
-          }
-        })
-        .catch((error)=> {
-            this.setState({
-                errors: error.response.data.errors
+            .then((response) => {
+                this.toggle()
+                if (response.data) {
+                    this.props.addProject(response.data)
+                }
+                this.setState({
+                    title: null,
+                    description: null,
+                    customer_id: null,
+                    created_by: null,
+                    storyId: null,
+                    loading: false
+                })
             })
-        });
+            .catch((error) => {
+                this.setState({
+                    errors: error.response.data.errors
+                })
+            })
     }
 
-
-    getCustomers() {
+    getCustomers () {
         axios.get('/api/customers')
             .then((r) => {
                 this.setState({
-                    customers: r.data,
+                    customers: r.data
                 })
             })
             .catch((e) => {
@@ -114,70 +105,72 @@ class AddStory extends React.Component {
             })
     }
 
-    toggle() {
-        this.getCustomers();
+    toggle () {
+        this.getCustomers()
         this.setState({
-          modal: !this.state.modal
-        });
+            modal: !this.state.modal
+        })
     }
 
-  render() {
-      let customerList;
+    render () {
+        let customerList
+        if (!this.state.customers.length) {
+            customerList = <option value="">Loading...</option>
+        } else {
+            customerList = this.state.customers.map((customer, index) => (
+                <option key={index} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
+            ))
+        }
+        return (
+            <div>
+                <Button color="secondary" onClick={this.toggle}><i className="fas fa-plus-circle"/> Add Project</Button>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                    <ModalHeader toggle={this.toggle}>
+                        Add Story
+                    </ModalHeader>
 
-      if (!this.state.customers.length) {
-          customerList = <option value="">Loading...</option>
-      } else {
-          customerList = this.state.customers.map((customer, index) => (
-              <option key={index} value={customer.id}>{customer.first_name + " " + customer.last_name}</option>
-          ))
-      }
+                    <ModalBody>
+                        <FormGroup>
+                            <Label for="title">Story Title(*):</Label>
+                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
+                                name="title" onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('title')}
+                        </FormGroup>
 
+                        <FormGroup>
+                            <Label for="description">Description(*):</Label>
+                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="textarea"
+                                name="description" onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('description')}
+                        </FormGroup>
 
-    return (
-      <div>
-        <Button color="secondary" onClick={this.toggle}><i className="fas fa-plus-circle"/> Add Project</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>
-            Add Story
-          </ModalHeader>
-          
-          <ModalBody>
-              <FormGroup>
-                  <Label for="title">Story Title(*):</Label>
-                  <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text" name="title" onChange={this.handleInput.bind(this)}/>
-                  {this.renderErrorFor('title')}
-              </FormGroup>
+                        <FormGroup>
+                            <Label for="contributors">Customer:</Label>
+                            <Input className={this.hasErrorFor('customer_id') ? 'is-invalid' : ''} type="select"
+                                name="customer_id" id="customer_id" onChange={this.handleInput.bind(this)}>
+                                <option value="">Choose:</option>
+                                {customerList}
+                            </Input>
+                            {this.renderErrorFor('contributors')}
+                        </FormGroup>
 
-              <FormGroup>
-                  <Label for="description">Description(*):</Label>
-                  <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="textarea" name="description" onChange={this.handleInput.bind(this)}/>
-                  {this.renderErrorFor('description')}
-              </FormGroup>
-
-              <FormGroup>
-                  <Label for="contributors">Customer:</Label>
-                  <Input className={this.hasErrorFor('customer_id') ? 'is-invalid' : ''} type="select"
-                         name="customer_id" id="customer_id" onChange={this.handleInput.bind(this)}>
-                      <option value="">Choose:</option>
-                      {customerList}
-                  </Input>
-                  {this.renderErrorFor('contributors')}
-              </FormGroup>
-              
-              <FormGroup>
-                  <Label for="created_by">Created by(*):</Label>
-                  <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text" name="created_by" onChange={this.handleInput.bind(this)}/>
-                  {this.renderErrorFor('created_by')}
-              </FormGroup>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.handleClick.bind(this)}><i className="fas fa-plus-circle"></i> Add</Button>
-            <Button color="secondary" onClick={this.toggle}><i className="fas fa-times-circle"></i> Close</Button>
-          </ModalFooter>
-        </Modal>
-      </div>
-    );
-  }
+                        <FormGroup>
+                            <Label for="created_by">Created by(*):</Label>
+                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
+                                name="created_by" onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('created_by')}
+                        </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onClick={this.handleClick.bind(this)}><i
+                            className="fas fa-plus-circle"></i> Add</Button>
+                        <Button color="secondary" onClick={this.toggle}><i
+                            className="fas fa-times-circle"></i> Close</Button>
+                    </ModalFooter>
+                </Modal>
+            </div>
+        )
+    }
 }
 
-export default AddStory;
+export default AddStory

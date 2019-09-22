@@ -1,34 +1,30 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable no-unused-vars */
+import React, { Component } from 'react'
 
 export default class Tab extends Component {
-    
-    constructor(props) {
-        super(props);
+    constructor (props) {
+        super(props)
         this.onClick = this.onClick.bind(this)
     }
 
-    onClick() {
-        const { label, onClick } = this.props;
-        onClick(label);
+    onClick () {
+        const { label, onClick } = this.props
+        onClick(label)
     }
 
-    render() {
-        const { onClick, props: { activeTab, label }} = this;
-
-        let className = 'nav-item nav-link';
-
+    render () {
+        const { onClick, props: { activeTab, label } } = this
+        let className = 'nav-item nav-link'
         if (activeTab === label) {
-            className += ' active';
+            className += ' active'
         }
-
         return (
-        <a
-            className={className}
-            onClick={onClick}
-        >
-            {label}
-        </a>
-        );
+            <a
+                className={className}
+                onClick={onClick}
+            >
+                {label}
+            </a>
+        )
     }
 }

@@ -1,28 +1,28 @@
-import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter,Input,FormGroup,Label } from 'reactstrap';
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
 
 class AddRole extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor (props) {
+        super(props)
         this.state = {
             modal: false,
-            name:'',
-            description:'',
-            loading:false,
-            errors: [],
-        };
-
-        this.toggle = this.toggle.bind(this);
+            name: '',
+            description: '',
+            loading: false,
+            errors: []
+        }
+        this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
     }
 
-    handleChange(event) {
-        this.setState({ name: event.target.value });
+    handleChange (event) {
+        this.setState({ name: event.target.value })
     }
 
-    handleInput(e) {
+    handleInput (e) {
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -42,56 +42,55 @@ class AddRole extends React.Component {
         }
     }
 
-    handleClick() {
+    handleClick () {
         axios.post('/api/roles', {
-            name:this.state.name,
-            description:this.state.description
+            name: this.state.name,
+            description: this.state.description
         })
-            .then((response)=> {
-                    this.toggle();
-                    const newUser = response.data
-                    this.props.roles.push(newUser)
-                    this.props.action(this.props.roles)
-
-                    this.setState({
-                        name:null,
-                        description: null
-                    })
+            .then((response) => {
+                this.toggle()
+                const newUser = response.data
+                this.props.roles.push(newUser)
+                this.props.action(this.props.roles)
+                this.setState({
+                    name: null,
+                    description: null
+                })
             })
-            .catch((error)=> {
+            .catch((error) => {
                 alert(error)
                 this.setState({
                     errors: error.response.data.errors
                 })
-            });
+            })
     }
 
-    toggle() {
+    toggle () {
         this.setState({
             modal: !this.state.modal
-        });
+        })
     }
 
-    render() {
-
-
+    render () {
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Add Role</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
-                         Add Role
+                        Add Role
                     </ModalHeader>
                     <ModalBody>
                         <FormGroup>
                             <Label for="username">Name(*):</Label>
-                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
+                                onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="email">Description(*):</Label>
-                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text" name="description" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
+                                name="description" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('description')}
                         </FormGroup>
                     </ModalBody>
@@ -102,8 +101,8 @@ class AddRole extends React.Component {
                     </ModalFooter>
                 </Modal>
             </React.Fragment>
-        );
+        )
     }
 }
 
-export default AddRole;
+export default AddRole

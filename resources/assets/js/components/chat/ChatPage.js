@@ -1,93 +1,88 @@
-import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input, Card, Row, CardBody, Col, ListGroup } from 'reactstrap';
+/* eslint-disable no-unused-vars */
+import React, { Component } from 'react'
+import { Button, Form, FormGroup, Label, Input, Card, Row, CardBody, Col, ListGroup } from 'reactstrap'
 import Friend from './Friend'
 import ChatMessage from './ChatMessage'
 import ChatInput from './ChatInput'
-import axios from "axios";
+import axios from 'axios'
 
 class ChatPage extends Component {
-    constructor(props) {
-        super(props);
-
+    constructor (props) {
+        super(props)
         this.sendMessage = this.sendMessage.bind(this)
         this.loadMessages = this.loadMessages.bind(this)
-
         this.state = {
             userID: 56,
             friends: [],
             messages: [],
             customer_id: 0
-        };
+        }
     }
 
-    componentDidMount() {
-        this.getCustomers();
+    componentDidMount () {
+        this.getCustomers()
     }
 
-    loadMessages(customer_id) {
-
+    loadMessages (customer_id) {
         axios.get(`/api/messages/${customer_id}`)
-            .then((r)=> {
+            .then((r) => {
                 this.setState({
                     customer_id: customer_id,
-                    messages: r.data,
+                    messages: r.data
                 })
             })
-            .catch((e)=>{
+            .catch((e) => {
                 alert(e)
             })
     }
 
-    getCustomers() {
+    getCustomers () {
         axios.get(`/api/messages/customers`)
-            .then((r)=> {
+            .then((r) => {
                 this.setState({
-                    friends: r.data,
+                    friends: r.data
                 })
             })
-            .catch((e)=>{
-               alert(e)
+            .catch((e) => {
+                alert(e)
             })
     }
 
-    sendMessage(message) {
-
+    sendMessage (message) {
         axios.post(`/api/messages`, message)
-            .then((r)=> {
+            .then((r) => {
                 // for now this will let us know things work.  `console` will give us a
                 // warning though
                 this.setState(prevState => ({
                     messages: [...prevState.messages, message]
                 }))
             })
-            .catch((e)=>{
+            .catch((e) => {
                 alert(e)
             })
     }
 
-    formatDate(dateString) {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-        const d = new Date(dateString);
-        const dayName = days[d.getDay()];
+    formatDate (dateString) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ]
+        const d = new Date(dateString)
+        const dayName = days[d.getDay()]
         const monthName = monthNames[d.getMonth()]
         const hours = d.getHours()
         const minutes = d.getMinutes()
         const formattedDate = `${dayName} ${d.getDate()} ${monthName} ${d.getFullYear()} ${hours}:${minutes}`
-
         return formattedDate
     }
 
-    render() {
-
+    render () {
         const showMessageBox = this.state.messages.length ? true : false
-
         return (<Card className="grey lighten-3 chat-room">
             <CardBody>
                 <Row className="px-lg-2 px-2">
-                    <Col md="6" xl="4" className="px-0 mb-4 mb-md-0 scrollable-friends-list" style={{ borderRight: "1px solid #CCC" }}>
+                    <Col md="6" xl="4" className="px-0 mb-4 mb-md-0 scrollable-friends-list"
+                         style={{ borderRight: '1px solid #CCC' }}>
                         <h6 className="font-weight-bold mb-3 text-lg-left">Member</h6>
 
                         <div className="overflow-auto">
@@ -99,7 +94,7 @@ class ChatPage extends Component {
                                             selected_friend={this.state.customer_id}
                                             loadMessages={this.loadMessages}
                                             key={friend.name}
-                                            friend={friend} />
+                                            friend={friend}/>
                                     ))}
                                 </ListGroup>
                             </div>
@@ -124,10 +119,9 @@ class ChatPage extends Component {
                         <ChatInput
                             customer_id={this.state.customer_id}
                             display={showMessageBox}
-                            userID={ this.state.userID }
-                            sendMessage={ this.sendMessage }
+                            userID={this.state.userID}
+                            sendMessage={this.sendMessage}
                         />
-
 
                     </Col>
                 </Row>
@@ -136,4 +130,4 @@ class ChatPage extends Component {
     }
 }
 
-export default ChatPage;
+export default ChatPage

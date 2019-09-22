@@ -1,35 +1,32 @@
-import React, {Component} from 'react';
-import FileUploadForm from './FileUploadForm';
-import FileUploadList from './FileUploadList';
+/* eslint-disable no-unused-vars */
+import React, { Component } from 'react'
+import FileUploadForm from './FileUploadForm'
+import FileUploadList from './FileUploadList'
 import axios from 'axios'
 
 export default class FileUploads extends Component {
-
-    constructor(props) {
-        super(props);
-
+    constructor (props) {
+        super(props)
         this.state = {
             files: [],
             loading: false
-        };
-
-        this.addFile = this.addFile.bind(this);
+        }
+        this.addFile = this.addFile.bind(this)
     }
 
     /**
      * Add new file
      * @param {Object} file
      */
-    addFile(file) {
+    addFile (file) {
         this.setState({
             files: [file, ...this.state.files]
-        });
+        })
     }
 
-    componentDidMount() {
+    componentDidMount () {
         // loading
-        this.setState({loading: true});
-
+        this.setState({ loading: true })
         // get all the comments
         axios.get(`/api/uploads/${this.props.task.id}`)
             .then((r) => {
@@ -45,9 +42,8 @@ export default class FileUploads extends Component {
             })
     }
 
-    render() {
+    render () {
         return (
-
             <div className="col-12">
                 <h1 className="font-weight-light text-center text-lg-left mt-4 mb-0">Attachments</h1>
 
@@ -62,7 +58,6 @@ export default class FileUploads extends Component {
                     files={this.state.files}
                 />}
             </div>
-
-        );
+        )
     }
 }

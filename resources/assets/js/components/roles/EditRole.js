@@ -1,13 +1,14 @@
-import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter,Input,FormGroup,Label } from 'reactstrap';
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
 
 class EditRole extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor (props) {
+        super(props)
         this.state = {
             modal: false,
-            loading:false,
+            loading: false,
             errors: [],
             name: this.props.role.name,
             description: this.props.role.description,
@@ -15,24 +16,23 @@ class EditRole extends React.Component {
             attachedPermissions: [],
             selectedPermissions: [],
             role: []
-        };
-
-        this.toggle = this.toggle.bind(this);
+        }
+        this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.handleMultiSelect = this.handleMultiSelect.bind(this);
+        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
-    handleInput(e) {
+    handleInput (e) {
         this.setState({ [e.target.name]: e.target.value })
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.getRole()
     }
 
-    handleMultiSelect(e) {
-        this.setState({attachedPermissions: Array.from(e.target.selectedOptions, (item) => item.value)});
+    handleMultiSelect (e) {
+        this.setState({ attachedPermissions: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
     hasErrorFor (field) {
@@ -49,35 +49,32 @@ class EditRole extends React.Component {
         }
     }
 
-    handleClick() {
+    handleClick () {
         axios.put(`/api/roles/${this.state.role.id}`, {
-            name:this.state.name,
-            description:this.state.description,
+            name: this.state.name,
+            description: this.state.description,
             permissions: this.state.attachedPermissions
         })
-            .then((response)=> {
-
-                    this.toggle();
-
-                    let index = this.props.roles.findIndex(role => role.id == this.props.role.id)
-                    this.props.roles[index]['name'] = this.state.name;
-                    this.props.roles[index]['description'] = this.state.description;
-                    this.props.action(this.props.roles);
-
-                    this.setState({
-                        name:null,
-                        description: null,
-                        loading:false
-                    })
+            .then((response) => {
+                this.toggle()
+                const index = this.props.roles.findIndex(role => role.id === this.props.role.id)
+                this.props.roles[index].name = this.state.name
+                this.props.roles[index].description = this.state.description
+                this.props.action(this.props.roles)
+                this.setState({
+                    name: null,
+                    description: null,
+                    loading: false
+                })
             })
-            .catch((error)=> {
+            .catch((error) => {
                 this.setState({
                     errors: error.response.data.errors
                 })
-            });
+            })
     }
 
-    getRole() {
+    getRole () {
         axios.get(`/api/roles/${this.props.role.id}`)
             .then((r) => {
                 this.setState({
@@ -91,32 +88,25 @@ class EditRole extends React.Component {
             })
     }
 
-    toggle() {
+    toggle () {
         this.setState({
             modal: !this.state.modal
-        });
+        })
     }
 
-    render() {
-
+    render () {
         let permissionsList = null
-
         console.log('state', this.state)
-
         if (!this.state.permissions.length) {
             permissionsList = <option value="">Loading...</option>
         } else {
             permissionsList = this.state.permissions.map((permission, index) => {
-
                 const selected = this.state.attachedPermissions.indexOf(permission.id) > -1 ? 'selected' : ''
-
                 return (
                     <option selected={selected} key={index} value={permission.id}>{permission.name}</option>
                 )
-
             })
         }
-
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Update</Button>
@@ -127,13 +117,16 @@ class EditRole extends React.Component {
                     <ModalBody>
                         <FormGroup>
                             <Label for="name">Name(*):</Label>
-                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name" defaultValue={this.state.name} onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
+                                defaultValue={this.state.name} onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="email">Description(*):</Label>
-                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text" name="description" defaultValue={this.state.description} onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
+                                name="description" defaultValue={this.state.description}
+                                onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('description')}
                         </FormGroup>
 
@@ -145,12 +138,13 @@ class EditRole extends React.Component {
 
                     <ModalFooter>
                         <Button color="primary" onClick={this.handleClick.bind(this)}>Update</Button>
-                        <Button color="secondary" onClick={this.toggle}><i className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="secondary" onClick={this.toggle}><i
+                            className="fas fa-times-circle"></i> Close</Button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>
-        );
+        )
     }
 }
 
-export default EditRole;
+export default EditRole

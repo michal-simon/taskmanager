@@ -41,30 +41,36 @@
                 <div id="main-menu" class="main-menu collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="/users?view"> <i class="menu-icon fa fa-dashboard"></i>Employees </a>
+                            <a href="/users"> <i class="menu-icon fa fa-dashboard"></i>Employees </a>
                         </li>
+
+                         <li>
+                                                    <a href="/roles"> <i class="menu-icon fa fa-book"></i>Role </a>
+                                                </li>
 
                         <li>
                             <a href="/leads"> <i class="menu-icon fa fa-laptop"></i>Leads </a>
                         </li>
 
                         <li>
-                            <a href="/customers?view"> <i class="menu-icon fa fa-th"></i>Contacts </a>
+                            <a href="/customers"> <i class="menu-icon fa fa-th"></i>Contacts </a>
                         </li>
 
                         <li>
-                            <a href="/"> <i class="menu-icon fa fa-tasks"></i>Tasks </a>
+                            <a href="/projects"> <i class="menu-icon fa fa-tasks"></i>Tasks </a>
                         </li>
 
                         <li>
-                            <a href="/invoices?view"> <i class="menu-icon fa fa-glass"></i>Invoices </a>
+                            <a href="/invoice"> <i class="menu-icon fa fa-glass"></i>Invoices </a>
                         </li>
                         
                         <li>
-                            <a href="/calendar?view"> <i class="menu-icon fa fa-table"></i>Calendar </a>
+                            <a href="/calendar"> <i class="menu-icon fa fa-table"></i>Calendar </a>
                         </li>
 
-
+                          <li>
+                            <a href="/chat"> <i class="menu-icon fa fa-table"></i>Chat </a>
+                         </li>
                     </ul>
                 </div>
             </nav>

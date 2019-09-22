@@ -1,119 +1,105 @@
-import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input, Card, CardBody, CardTitle } from 'reactstrap';
-import axios from "axios";
+/* eslint-disable no-unused-vars */
+import React, { Component } from 'react'
+import { Button, Form, FormGroup, Label, Input, Card, CardBody, CardTitle } from 'reactstrap'
+import axios from 'axios'
 
 export default class KanbanFilter extends Component {
-    constructor(props) {
-        super(props);
-
+    constructor (props) {
+        super(props)
         this.state = {
             filters: [],
             customers: [],
             users: []
-        };
-
+        }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.resetFilters = this.resetFilters.bind(this)
     }
 
-    handleChange(event) {
-
+    handleChange (event) {
         const column = event.target.id
         const value = event.target.value
-
-        if(value === 'all') {
-            const updatedRowState = this.state.filters.filter(filter => filter.column !== column);
-
-            this.setState({filters: updatedRowState})
+        if (value === 'all') {
+            const updatedRowState = this.state.filters.filter(filter => filter.column !== column)
+            this.setState({ filters: updatedRowState })
             return true
         }
-
         this.setState(prevState => ({
-            filters: [...prevState.filters, {"column": column, "value": value}]
+            filters: [...prevState.filters, { column: column, value: value }]
         }))
-
         return true
     }
 
-    resetFilters() {
+    resetFilters () {
         console.log('props', this.props)
         this.props.reset()
     }
 
-
-    handleSubmit(event) {
-
+    handleSubmit (event) {
         event.preventDefault()
-
         console.log(this.state.filters)
-
-        axios.post( `/api/tasks/filterTasks/${this.props.task_type}`,
+        axios.post(`/api/tasks/filterTasks/${this.props.task_type}`,
             this.state.filters)
-            .then((response)=> {
+            .then((response) => {
                 this.props.action(response.data)
             })
-            .catch((error)=> {
+            .catch((error) => {
                 alert(error)
-            });
+            })
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.getCustomers()
         this.getUsers()
     }
 
-    getUsers() {
+    getUsers () {
         axios.get('api/users')
-            .then((r)=> {
+            .then((r) => {
                 this.setState({
                     users: r.data
                 })
             })
-            .catch((e)=>{
+            .catch((e) => {
                 this.setState({
-                    loading:false,
+                    loading: false,
                     err: e
                 })
             })
     }
 
-    getCustomers() {
+    getCustomers () {
         axios.get('/api/customers')
-            .then((r)=> {
+            .then((r) => {
                 this.setState({
-                    customers: r.data,
+                    customers: r.data
                 })
             })
-            .catch((e)=>{
+            .catch((e) => {
                 this.setState({
-                    loading:false,
+                    loading: false,
                     err: e
                 })
             })
     }
 
-    render() {
-
+    render () {
         let userContent = null
         let customerContent = null
-
         if (!this.state.customers.length) {
             customerContent = <option value="">Loading...</option>
         } else {
             customerContent = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.first_name + " " + customer.last_name}</option>
+                <option key={index} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
             ))
         }
-
         if (!this.state.users.length) {
             userContent = <option value="">Loading...</option>
         } else {
             userContent = this.state.users.map((user, index) => (
-                <option key={index} value={user.id}>{user.first_name + " " + user.last_name}</option>
+                <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
-
         return (
             <Card style={{ margin: '10px' }}>
                 <CardBody>
@@ -138,7 +124,6 @@ export default class KanbanFilter extends Component {
                     </Form>
                 </CardBody>
             </Card>
-
-        );
+        )
     }
 }

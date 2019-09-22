@@ -1,17 +1,15 @@
-import React, { Component } from "react";
-import {Card, CardBody} from "reactstrap";
+/* eslint-disable no-unused-vars */
+import React, { Component } from 'react'
+import { Card, CardBody } from 'reactstrap'
 
 class ChatMessage extends Component {
-
-    constructor(props) {
-        super(props);
+    constructor (props) {
+        super(props)
     }
 
-    render() {
+    render () {
         const { author, avatar, when, message } = this.props.message
-
         const formattedDate = this.props.formatDate(when)
-
         return (
             <li className="chat-message d-flex justify-content-between mb-4">
                 <img
@@ -27,10 +25,10 @@ class ChatMessage extends Component {
                         <div>
                             <strong className="primary-font">{author}</strong>
                             <small className="pull-right text-muted">
-                                <i className="fa fa-clock" /> {formattedDate}
+                                <i className="fa fa-clock"/> {formattedDate}
                             </small>
                         </div>
-                        <hr />
+                        <hr/>
                         <p className="mb-0">{message}</p>
                     </CardBody>
                 </Card>
@@ -39,4 +37,4 @@ class ChatMessage extends Component {
     }
 }
 
-export default ChatMessage;
+export default ChatMessage

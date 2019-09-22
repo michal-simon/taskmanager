@@ -1,13 +1,12 @@
-import React, {Component} from 'react';
-import TabList from './TabList';
-import Comments from '../comments/Comments';
-import FileUploads from '../attachments/FileUploads';
-import EditTask from '../forms/EditTask';
-import ViewTask from "../forms/ViewTask";
-import Tooltips from "../Tooltip";
+/* eslint-disable no-unused-vars */
+import React, { Component } from 'react'
+import TabList from './TabList'
+import Comments from '../comments/Comments'
+import FileUploads from '../attachments/FileUploads'
+import EditTask from '../forms/EditTask'
 
 export default class TabContent extends Component {
-    render() {
+    render () {
         return (
             <div className="container mt-5">
                 <TabList>
@@ -27,6 +26,6 @@ export default class TabContent extends Component {
                     </div>
                 </TabList>
             </div>
-        );
+        )
     }
 }

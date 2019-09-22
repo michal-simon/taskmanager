@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label} from 'reactstrap';
-import axios from "axios";
-
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import axios from 'axios'
 
 const Label2 = styled.span`
   display: flex;
@@ -17,21 +17,17 @@ const Label2 = styled.span`
   padding: 10px;
     background-color: #4fc3f7;
     color: #FFF;
-`;
+`
 Label2.defaultProps = {
-    color: '#ddf',
-};
+    color: '#ddf'
+}
 
 class CalendarEvent extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        const attendees = this.props.event.attendees ?  this.props.event.attendees : []
-
-        let arrAttendees = []
-
-        attendees.map((attendee,index)=>{
+    constructor (props) {
+        super(props)
+        const attendees = this.props.event.attendees ? this.props.event.attendees : []
+        const arrAttendees = []
+        attendees.map((attendee, index) => {
             arrAttendees.push(attendee.id)
         })
 
@@ -47,20 +43,18 @@ class CalendarEvent extends React.Component {
             users: [],
             errors: [],
             attendees: arrAttendees
-        };
-
+        }
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.toggle = this.toggle.bind(this);
-        this.handleMultiSelect = this.handleMultiSelect.bind(this);
-
+        this.toggle = this.toggle.bind(this)
+        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
-    hasErrorFor(field) {
+    hasErrorFor (field) {
         return !!this.state.errors[field]
     }
 
-    renderErrorFor(field) {
+    renderErrorFor (field) {
         if (this.hasErrorFor(field)) {
             return (
                 <span className='invalid-feedback'>
@@ -70,20 +64,14 @@ class CalendarEvent extends React.Component {
         }
     }
 
-    componentDidMount() {
-
-
-    }
-
-    handleInput(e) {
+    handleInput (e) {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
 
-    handleClick(event) {
-
-        axios.put( `/api/events/${this.props.event.id}`, {
+    handleClick (event) {
+        axios.put(`/api/events/${this.props.event.id}`, {
             customer_id: this.state.customer_id,
             users: this.state.attendees,
             title: this.state.title,
@@ -92,57 +80,52 @@ class CalendarEvent extends React.Component {
             endDate: this.state.endDate
         })
             .then((response) => {
-
-                this.toggle();
-                let index = this.props.events.findIndex(event => event.id == this.props.event.id)
-                const currentObject = this.props.events[index]
+                this.toggle()
+                const index = this.props.allEvents.findIndex(event => event.id === parseInt(this.props.event.id))
+                const currentObject = this.props.allEvents[index]
                 currentObject.title = this.state.title
                 currentObject.location = this.state.location
                 currentObject.beginDate = this.state.beginDate
                 currentObject.endDate = this.state.endDate
-
-                this.props.action(this.props.events)
-                    // const firstEvent = response.data
-                    // this.props.events.push(firstEvent)
-                    // this.props.action(this.props.events)
-
+                this.props.action(this.props.allEvents)
+                // const firstEvent = response.data
+                // this.props.events.push(firstEvent)
+                // this.props.action(this.props.events)
             })
             .catch((error) => {
-               alert(error)
-            });
+                alert(error)
+            })
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.getCustomers()
         this.getUsers()
     }
 
-    toggle() {
+    toggle () {
         this.setState({
             modal: !this.state.modal
-        });
+        })
     }
 
-    deleteEvent(id) {
-
-        const self = this;
+    deleteEvent (id) {
+        const self = this
 
         axios.delete('/api/events/' + id)
             .then(function (response) {
-                let filteredArray = self.props.events.filter(event => event.id !== id)
+                const filteredArray = self.props.allEvents.filter(event => event.id !== parseInt(id))
                 self.props.action(filteredArray)
             })
             .catch(function (error) {
-               alert(error)
-            });
+                alert(error)
+            })
     }
 
-    getCustomers() {
+    getCustomers () {
         axios.get('/api/customers')
             .then((r) => {
-                console.log('customers', r.data)
                 this.setState({
-                    customers: r.data,
+                    customers: r.data
                 })
             })
             .catch((e) => {
@@ -150,12 +133,11 @@ class CalendarEvent extends React.Component {
             })
     }
 
-    getUsers() {
+    getUsers () {
         axios.get('/api/users')
             .then((r) => {
-                console.log('users', r.data)
                 this.setState({
-                    users: r.data,
+                    users: r.data
                 })
             })
             .catch((e) => {
@@ -163,42 +145,41 @@ class CalendarEvent extends React.Component {
             })
     }
 
-    convertDate(inputFormat) {
-        function pad(s) { return (s < 10) ? '0' + s : s; }
-        var d = new Date(inputFormat);
-        return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/');
+    convertDate (inputFormat) {
+        function pad (s) {
+            return (s < 10) ? '0' + s : s
+        }
+        const d = new Date(inputFormat)
+        return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/')
     }
 
-    handleMultiSelect(e) {
-        this.setState({attendees: Array.from(e.target.selectedOptions, (item) => item.value)});
+    handleMultiSelect (e) {
+        this.setState({ attendees: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
-    render() {
-        const { col, colSpan } = this.props;
-
-        let customerList;
+    render () {
+        const { col, colSpan } = this.props
+        let customerList
 
         if (!this.state.customers.length) {
             customerList = <option value="">Loading...</option>
         } else {
-            customerList = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.first_name + " " + customer.last_name}</option>
-            ))
+            customerList = this.state.customers.map((customer, index) => {
+                const selected = customer.id === this.state.customer_id ? 'selected' : ''
+                return <option selected={selected} key={index}
+                               value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
+            })
         }
-
-        let userList;
-
+        let userList
         if (!this.state.users.length) {
             userList = <option value="">Loading...</option>
         } else {
             userList = this.state.users.map((user, index) => (
-                <option key={index} value={user.id}>{user.first_name + " " + user.last_name}</option>
+                <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
-
         const beginDate = this.convertDate(this.state.beginDate)
         const endDate = this.convertDate(this.state.endDate)
-
         return (
             <React.Fragment>
                 <Label2 col={col} colSpan={colSpan} onClick={this.toggle}>
@@ -214,28 +195,28 @@ class CalendarEvent extends React.Component {
                         <FormGroup>
                             <Label for="title">Title(*):</Label>
                             <Input className={this.hasErrorFor('title') ? 'is-invalid' : ''}
-                                   value={this.state.title}
-                                   type="text" name="title"
-                                   id="taskTitle" onChange={this.handleInput.bind(this)}/>
+                                value={this.state.title}
+                                type="text" name="title"
+                                id="taskTitle" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('title')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="location">Location:</Label>
                             <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="textarea"
-                                  value={this.state.location}
-                                   name="location"
-                                   id="location"
-                                   onChange={this.handleInput.bind(this)}/>
+                                value={this.state.location}
+                                name="location"
+                                id="location"
+                                onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('location')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="location">Customer:</Label>
                             <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="select"
-                                   name="customer_id"
-                                   id="customer_id"
-                                   onChange={this.handleInput.bind(this)}>
+                                name="customer_id"
+                                id="customer_id"
+                                onChange={this.handleInput.bind(this)}>
                                 <option>Select Customer</option>
                                 {customerList}
                             </Input>
@@ -244,7 +225,8 @@ class CalendarEvent extends React.Component {
 
                         <FormGroup>
                             <Label for="users">Attendees</Label>
-                            <Input defaultValue={this.state.attendees} onChange={this.handleMultiSelect} type="select" name="users" id="users" multiple>
+                            <Input defaultValue={this.state.attendees} onChange={this.handleMultiSelect} type="select"
+                                name="users" id="users" multiple>
                                 {userList}
                             </Input>
                             {this.renderErrorFor('users')}
@@ -252,16 +234,18 @@ class CalendarEvent extends React.Component {
 
                         <FormGroup>
                             <Label for="beginDate">Begin Date:</Label>
-                            <Input defaultValue={beginDate} className={this.hasErrorFor('beginDate') ? 'is-invalid' : ''} type="date"
-                                   name="beginDate" id="beginDate" onChange={this.handleInput.bind(this)} />
+                            <Input defaultValue={beginDate}
+                                className={this.hasErrorFor('beginDate') ? 'is-invalid' : ''} type="date"
+                                name="beginDate" id="beginDate" onChange={this.handleInput.bind(this)}/>
 
                             {this.renderErrorFor('beginDate')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="endDate">End Date:</Label>
-                            <Input defaultValue={endDate} className={this.hasErrorFor('endDate') ? 'is-invalid' : ''} type="date"
-                                   name="endDate" id="endDate" onChange={this.handleInput.bind(this)} />
+                            <Input defaultValue={endDate} className={this.hasErrorFor('endDate') ? 'is-invalid' : ''}
+                                type="date"
+                                name="endDate" id="endDate" onChange={this.handleInput.bind(this)}/>
 
                             {this.renderErrorFor('endDate')}
                         </FormGroup>
@@ -275,11 +259,8 @@ class CalendarEvent extends React.Component {
                     </ModalFooter>
                 </Modal>
             </React.Fragment>
-
-
-
-        );
+        )
     }
 }
 
-export default CalendarEvent;
+export default CalendarEvent

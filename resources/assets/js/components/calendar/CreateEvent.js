@@ -1,11 +1,11 @@
-import React from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label} from 'reactstrap';
-import axios from "axios";
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import axios from 'axios'
 
 class CreateEvent extends React.Component {
-
-    constructor(props) {
-        super(props);
+    constructor (props) {
+        super(props)
 
         this.state = {
             modal: false,
@@ -19,19 +19,18 @@ class CreateEvent extends React.Component {
             users: [],
             errors: [],
             selectedUsers: []
-        };
-
+        }
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.toggle = this.toggle.bind(this);
-        this.handleMultiSelect = this.handleMultiSelect.bind(this);
+        this.toggle = this.toggle.bind(this)
+        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
-    hasErrorFor(field) {
+    hasErrorFor (field) {
         return !!this.state.errors[field]
     }
 
-    renderErrorFor(field) {
+    renderErrorFor (field) {
         if (this.hasErrorFor(field)) {
             return (
                 <span className='invalid-feedback'>
@@ -41,16 +40,14 @@ class CreateEvent extends React.Component {
         }
     }
 
-    handleInput(e) {
+    handleInput (e) {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
 
-    handleClick(event) {
-
+    handleClick (event) {
         console.log('users', this.state.selectedUsers)
-
         axios.post('/api/events', {
             customer_id: this.state.customer_id,
             users: this.state.selectedUsers,
@@ -60,33 +57,31 @@ class CreateEvent extends React.Component {
             endDate: this.state.endDate
         })
             .then((response) => {
-
-                    this.toggle();
-                    this.setState({
-                        title: null,
-                        content: null,
-                        contributors: null,
-                        due_date: null,
-                        loading: false
-                    })
-
-                    const firstEvent = response.data
-                    this.props.events.push(firstEvent)
-                    this.props.action(this.props.events)
+                this.toggle()
+                this.setState({
+                    title: null,
+                    content: null,
+                    contributors: null,
+                    due_date: null,
+                    loading: false
+                })
+                const firstEvent = response.data
+                this.props.events.push(firstEvent)
+                this.props.action(this.props.events)
             })
             .catch((error) => {
                 this.setState({
                     errors: error.response.data.errors
                 })
-            });
+            })
     }
 
-    getCustomers() {
+    getCustomers () {
         axios.get('/api/customers')
             .then((r) => {
                 console.log('customers', r.data)
                 this.setState({
-                    customers: r.data,
+                    customers: r.data
                 })
             })
             .catch((e) => {
@@ -94,12 +89,12 @@ class CreateEvent extends React.Component {
             })
     }
 
-    getUsers() {
+    getUsers () {
         axios.get('/api/users')
             .then((r) => {
                 console.log('users', r.data)
                 this.setState({
-                    users: r.data,
+                    users: r.data
                 })
             })
             .catch((e) => {
@@ -107,43 +102,38 @@ class CreateEvent extends React.Component {
             })
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.getCustomers()
         this.getUsers()
     }
 
-    toggle() {
+    toggle () {
         this.setState({
             modal: !this.state.modal
-        });
+        })
     }
 
-    handleMultiSelect(e) {
-        this.setState({selectedUsers: Array.from(e.target.selectedOptions, (item) => item.value)});
+    handleMultiSelect (e) {
+        this.setState({ selectedUsers: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
-    render() {
-
-        let customerList;
-
+    render () {
+        let customerList
         if (!this.state.customers.length) {
             customerList = <option value="">Loading...</option>
         } else {
             customerList = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.first_name + " " + customer.last_name}</option>
+                <option key={index} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
             ))
         }
-
-        let userList;
-
+        let userList
         if (!this.state.users.length) {
             userList = <option value="">Loading...</option>
         } else {
             userList = this.state.users.map((user, index) => (
-                <option key={index} value={user.id}>{user.first_name + " " + user.last_name}</option>
+                <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
-
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Add Event</Button>
@@ -157,26 +147,26 @@ class CreateEvent extends React.Component {
                         <FormGroup>
                             <Label for="title">Title(*):</Label>
                             <Input className={this.hasErrorFor('title') ? 'is-invalid' : ''}
-                                   type="text" name="title"
-                                   id="taskTitle" onChange={this.handleInput.bind(this)}/>
+                                type="text" name="title"
+                                id="taskTitle" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('title')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="location">Location:</Label>
                             <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="text"
-                                   name="location"
-                                   id="location"
-                                   onChange={this.handleInput.bind(this)}/>
+                                name="location"
+                                id="location"
+                                onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('location')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="location">Customer:</Label>
                             <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="select"
-                                   name="customer_id"
-                                   id="customer_id"
-                                   onChange={this.handleInput.bind(this)}>
+                                name="customer_id"
+                                id="customer_id"
+                                onChange={this.handleInput.bind(this)}>
                                 <option>Select Customer</option>
                                 {customerList}
                             </Input>
@@ -194,7 +184,7 @@ class CreateEvent extends React.Component {
                         <FormGroup>
                             <Label for="beginDate">Begin Date:</Label>
                             <Input className={this.hasErrorFor('beginDate') ? 'is-invalid' : ''} type="date"
-                                   name="beginDate" id="beginDate" onChange={this.handleInput.bind(this)} />
+                                name="beginDate" id="beginDate" onChange={this.handleInput.bind(this)}/>
 
                             {this.renderErrorFor('beginDate')}
                         </FormGroup>
@@ -202,25 +192,20 @@ class CreateEvent extends React.Component {
                         <FormGroup>
                             <Label for="endDate">End Date:</Label>
                             <Input className={this.hasErrorFor('endDate') ? 'is-invalid' : ''} type="date"
-                                   name="endDate" id="endDate" onChange={this.handleInput.bind(this)} />
+                                name="endDate" id="endDate" onChange={this.handleInput.bind(this)}/>
 
                             {this.renderErrorFor('endDate')}
                         </FormGroup>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button color="primary" onClick={this.handleClick.bind(this)}><i
-                            className="fas fa-plus-circle"></i> Add</Button>
-                        <Button color="secondary" onClick={this.toggle}><i
-                            className="fas fa-times-circle"></i> Close</Button>
+                        <Button color="primary" onClick={this.handleClick.bind(this)}>Add</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
                     </ModalFooter>
                 </Modal>
             </React.Fragment>
-
-
-
-        );
+        )
     }
 }
 
-export default CreateEvent;
+export default CreateEvent

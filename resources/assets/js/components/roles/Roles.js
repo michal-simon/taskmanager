@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { Component } from 'react'
 import axios from 'axios'
 import EditRole from './EditRole'
 import AddRole from './AddRole'
-import {Button, Input, Table} from 'reactstrap';
+import { Button, Input, Table } from 'reactstrap'
 
 export default class Roles extends Component {
-    constructor(props) {
-        super(props);
-
+    constructor (props) {
+        super(props)
         this.state = {
             query: '',
             message: '',
@@ -27,34 +27,28 @@ export default class Roles extends Component {
             data: [],
             columns: [],
             offset: 4,
-            order: 'asc',
-        };
-
-        this.cancel = '';
-
-        this.updateUserState = this.updateUserState.bind(this);
-        this.addUserToState = this.addUserToState.bind(this);
+            order: 'asc'
+        }
+        this.cancel = ''
+        this.updateUserState = this.updateUserState.bind(this)
+        this.addUserToState = this.addUserToState.bind(this)
         this.handleSearchChange = this.handleSearchChange.bind(this)
     }
 
-    addUserToState(users) {
+    addUserToState (users) {
         this.setState(prevState => {
-            let entities = Object.assign({}, prevState.entities);  // creating copy of state variable jasper
-            entities.data = users;                     // update the name property, assign a new value
-            return { entities };                                 // return new object jasper object
+            const entities = Object.assign({}, prevState.entities)
+            entities.data = users
+            return { entities }
         })
     }
 
-    fetchEntities() {
-
-        let fetchUrl = `/api/roles/?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`;
-
-        if( this.cancel ) {
-            this.cancel.cancel();
+    fetchEntities () {
+        const fetchUrl = `/api/roles/?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`
+        if (this.cancel) {
+            this.cancel.cancel()
         }
-
-        this.cancel = axios.CancelToken.source();
-
+        this.cancel = axios.CancelToken.source()
         axios.get(fetchUrl, {
             cancelToken: this.cancel.token
         })
@@ -63,99 +57,94 @@ export default class Roles extends Component {
                 this.state.columns = Object.keys(response.data.data[0])
                 this.setState({ entities: response.data, loading: false })
             })
-            .catch(e => {
-                alert(e)
-                //if ( axios.isCancel(error) || error ) {
+            .catch(error => {
+                if (axios.isCancel(error) || error) {
                     this.setState({
                         loading: false,
                         message: 'Failed to fetch the data. Please check network'
                     })
-                //}
-            });
+                }
+            })
     }
 
-    handleSearchChange( event ) {
-
-        const query = event.target.value;
-
-        if(query.length < 3 && query.length > 0) {
-            this.setState( { query, loading: false, message: '' })
+    handleSearchChange (event) {
+        const query = event.target.value
+        if (query.length < 3 && query.length > 0) {
+            this.setState({ query, loading: false, message: '' })
             return false
         }
-
-        this.setState( { query, loading: true, message: '' }, () => {
-            this.fetchEntities();
-        } );
-    };
-
-    changePage(pageNumber) {
-        this.setState({ current_page: pageNumber }, () => {this.fetchEntities()});
+        this.setState({ query, loading: true, message: '' }, () => {
+            this.fetchEntities()
+        })
     }
 
-    columnHead(value) {
+    changePage (pageNumber) {
+        this.setState({ current_page: pageNumber }, () => {
+            this.fetchEntities()
+        })
+    }
+
+    columnHead (value) {
         return value.split('_').join(' ').toUpperCase()
     }
 
-    updateUserState(user) {
+    updateUserState (user) {
         this.addUserToState(user)
     }
 
-    pagesNumbers() {
+    pagesNumbers () {
         if (!this.state.entities.to) {
-            return [];
+            return []
         }
-        let from = this.state.entities.current_page - this.state.offset;
+        let from = this.state.entities.current_page - this.state.offset
         if (from < 1) {
-            from = 1;
+            from = 1
         }
-        let to = from + (this.state.offset * 2);
+        let to = from + (this.state.offset * 2)
         if (to >= this.state.entities.last_page) {
-            to = this.state.entities.last_page;
+            to = this.state.entities.last_page
         }
-        let pagesArray = [];
+        const pagesArray = []
         for (let page = from; page <= to; page++) {
-            pagesArray.push(page);
+            pagesArray.push(page)
         }
-        return pagesArray;
+        return pagesArray
     }
 
-    componentDidMount() {
-        this.setState({ current_page: this.state.entities.current_page }, () => {this.fetchEntities()});
+    componentDidMount () {
+        this.setState({ current_page: this.state.entities.current_page }, () => {
+            this.fetchEntities()
+        })
     }
 
-    tableHeads() {
-
-        let icon;
+    tableHeads () {
+        let icon
         if (this.state.order === 'asc') {
-            icon = <i className="fas fa-arrow-up"></i>;
+            icon = <i className="fas fa-arrow-up"></i>
         } else {
-            icon = <i className="fas fa-arrow-down"></i>;
+            icon = <i className="fas fa-arrow-down"></i>
         }
         return this.state.columns.map(column => {
             return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
-                { this.columnHead(column) }
-                { icon }
+                {this.columnHead(column)}
+                {icon}
             </th>
-        });
+        })
     }
 
-    userList() {
-
+    userList () {
         if (this.state.entities.data && this.state.entities.data.length) {
             return this.state.entities.data.map(role => {
-
                 const columnList = Object.keys(role).map(key => {
-
                     return <td key={key}>{role[key]}</td>
                 })
-
-                return <tr key={ role.id }>
+                return <tr key={role.id}>
 
                     {columnList}
 
                     <td>
                         <Button color="danger" onClick={() => this.deleteRole(role.id)}>Delete</Button>
-                        <EditRole role={role} roles={this.state.entities.data} action={this.updateUserState} />
+                        <EditRole role={role} roles={this.state.entities.data} action={this.updateUserState}/>
                     </td>
                 </tr>
             })
@@ -166,102 +155,104 @@ export default class Roles extends Component {
         }
     }
 
-    sortByColumn(column) {
+    sortByColumn (column) {
         if (column === this.state.sorted_column) {
-            this.state.order === 'asc' ? this.setState({ order: 'desc', current_page: this.state.first_page }, () => {this.fetchEntities()}) : this.setState({ order: 'asc' }, () => {this.fetchEntities()});
+            this.state.order === 'asc' ? this.setState({ order: 'desc', current_page: this.state.first_page }, () => {
+                this.fetchEntities()
+            }) : this.setState({ order: 'asc' }, () => {
+                this.fetchEntities()
+            })
         } else {
-            this.setState({ sorted_column: column, order: 'asc', current_page: this.state.first_page }, () => {this.fetchEntities()});
+            this.setState({ sorted_column: column, order: 'asc', current_page: this.state.first_page }, () => {
+                this.fetchEntities()
+            })
         }
     }
 
-    pageList() {
+    pageList () {
         return this.pagesNumbers().map(page => {
-            return <li className={ page === this.state.entities.current_page ? 'page-item active' : 'page-item' } key={page}>
+            return <li className={page === this.state.entities.current_page ? 'page-item active' : 'page-item'}
+                key={page}>
                 <button className="page-link" onClick={() => this.changePage(page)}>{page}</button>
             </li>
         })
     }
 
-    deleteRole(id) {
-
-        const self = this;
-
+    deleteRole (id) {
+        const self = this
         axios.delete('/api/roles/' + id)
             .then(function (response) {
-                const arrRoles = [...self.state.entities.data];
-                const index = arrRoles.findIndex(role => role.id === id);
-                arrRoles.splice(index, 1);
+                const arrRoles = [...self.state.entities.data]
+                const index = arrRoles.findIndex(role => role.id === id)
+                arrRoles.splice(index, 1)
                 self.addUserToState(arrRoles)
             })
             .catch(function (error) {
-                console.log(error);
-            });
+                console.log(error)
+            })
     }
 
-    render() {
-
-        const { query, loading, message } = this.state;
+    render () {
+        const { query, loading, message } = this.state
         const loader = loading ? <h2>Loading...</h2> : ''
-
         return (
             <div className="data-table m-md-3 m-0">
 
-                <AddRole roles={this.state.entities.data} action={this.addUserToState} />
+                <AddRole roles={this.state.entities.data} action={this.addUserToState}/>
 
                 <div className="col-8 col-lg-6">
 
                     <Input
                         type="text"
                         name="query"
-                        value={ query }
+                        value={query}
                         id="search-input"
                         placeholder="Search..."
                         onChange={this.handleSearchChange}
                     />
 
-                    {/*	Error Message*/}
-                    {message && <p className="message">{ message }</p>}
+                    {message && <p className="message">{message}</p>}
 
-                    {/*	Loader*/}
                     {loader}
                 </div>
 
                 <Table className="mt-4" striped bordered hover responsive>
                     <thead>
-                    <tr>
-                        { this.tableHeads() }
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            {this.tableHeads()}
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    { this.userList() }
+                        {this.userList()}
                     </tbody>
                 </Table>
-                { (this.state.entities.data && this.state.entities.data.length > 0) &&
+                {(this.state.entities.data && this.state.entities.data.length > 0) &&
                 <nav>
                     <ul className="pagination">
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={ 1 === this.state.entities.current_page }
-                                    onClick={() => this.changePage(this.state.entities.current_page - 1)}
+                                disabled={this.state.entities.current_page === 1}
+                                onClick={() => this.changePage(this.state.entities.current_page - 1)}
                             >
                                 Previous
                             </button>
                         </li>
-                        { this.pageList() }
+                        {this.pageList()}
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={this.state.entities.last_page === this.state.entities.current_page}
-                                    onClick={() => this.changePage(this.state.entities.current_page + 1)}
+                                disabled={this.state.entities.last_page === this.state.entities.current_page}
+                                onClick={() => this.changePage(this.state.entities.current_page + 1)}
                             >
                                 Next
                             </button>
                         </li>
-                        <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.entities.data.length } of { this.state.entities.total } entries.</i></span>
+                        <span style={{ marginTop: '8px' }}> &nbsp;
+                            <i>Displaying {this.state.entities.data.length} of {this.state.entities.total} entries.</i></span>
                     </ul>
                 </nav>
                 }
             </div>
-        );
+        )
     }
 }

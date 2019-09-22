@@ -1,6 +1,6 @@
+/* eslint-disable no-unused-vars */
 import axios from 'axios'
 import React, { Component } from 'react'
-import NewTask from './NewTask'
 
 class CompleteProject extends Component {
     constructor (props) {
@@ -9,7 +9,6 @@ class CompleteProject extends Component {
     }
 
     handleMarkProjectAsCompleted () {
-
         axios.put(`/api/projects/${this.props.projectId}`)
             .then(response => window.location.href = '/dashboard')
     }
@@ -26,4 +25,5 @@ class CompleteProject extends Component {
     }
 }
 
-    export default CompleteProject
+export default CompleteProject
+

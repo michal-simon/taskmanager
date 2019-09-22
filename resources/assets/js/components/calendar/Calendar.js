@@ -1,7 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import CalendarWeekRow from './CalendarWeekRow';
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
+import CalendarWeekRow from './CalendarWeekRow'
 
 const monthNames = [
     'January',
@@ -15,32 +16,26 @@ const monthNames = [
     'September',
     'October',
     'November',
-    'December',
-];
-
+    'December'
+]
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
+`
 const Header = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 0.5rem;
-`;
-
+`
 const RowContainer = styled.div`
   display: grid;
   grid-auto-rows: 1fr;
-`;
-
+`
 const Calendar = props => {
-    const { year, month, events } = props;
-
+    const { year, month, events } = props
     console.log('events second', events)
-
-    const weeks = [];
+    const weeks = []
     const firstDayInMonth = new Date(year, month - 1, 1),
         lastDayInMonth = new Date(year, month, 0),
         firstDayInCalendar = new Date(
@@ -52,17 +47,15 @@ const Calendar = props => {
             year,
             month - 1,
             lastDayInMonth.getDate() + 6 - lastDayInMonth.getDay()
-        );
-
-    let currentDate = firstDayInCalendar;
+        )
+    let currentDate = firstDayInCalendar
     while (currentDate <= lastDayInCalendar) {
         if (currentDate.getDay() === 0) {
-            weeks.push([]);
+            weeks.push([])
         }
-        weeks[weeks.length - 1].push(new Date(currentDate));
-        currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+        weeks[weeks.length - 1].push(new Date(currentDate))
+        currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1))
     }
-
     return (
         <Container>
             <Header>
@@ -72,12 +65,12 @@ const Calendar = props => {
             </Header>
             <RowContainer>
                 {weeks.map((dates, i) => (
-
                     <CalendarWeekRow
                         year={year}
                         month={month}
                         dates={dates}
                         action={props.action}
+                        allEvents={events}
                         events={events.filter(
                             event =>
                                 new Date(Date.parse(event.beginDate)) <= dates[dates.length - 1] &&
@@ -88,7 +81,6 @@ const Calendar = props => {
                 ))}
             </RowContainer>
         </Container>
-    );
-};
-
-export default Calendar;
+    )
+}
+export default Calendar

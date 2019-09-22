@@ -1,12 +1,13 @@
-import React from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label} from 'reactstrap';
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import moment from 'moment'
 import axios from 'axios'
 import AddLead from './AddLead'
 
 class AddModal extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor (props) {
+        super(props)
         this.state = {
             modal: false,
             title: '',
@@ -22,23 +23,22 @@ class AddModal extends React.Component {
             loading: false,
             users: [],
             errors: []
-        };
-
-        this.toggle = this.toggle.bind(this);
+        }
+        this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.handleInput = this.handleInput.bind(this)
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.changeColumnTitle()
     }
 
-    hasErrorFor(field) {
+    hasErrorFor (field) {
         return !!this.state.errors[field]
     }
 
-    renderErrorFor(field) {
+    renderErrorFor (field) {
         if (this.hasErrorFor(field)) {
             return (
                 <span className='invalid-feedback'>
@@ -48,13 +48,13 @@ class AddModal extends React.Component {
         }
     }
 
-    handleInput(e) {
+    handleInput (e) {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
 
-    getUsers() {
+    getUsers () {
         axios.get('/api/users')
             .then((r) => {
                 this.setState({
@@ -73,28 +73,28 @@ class AddModal extends React.Component {
             })
     }
 
-    toggle() {
-        this.getUsers();
+    toggle () {
+        this.getUsers()
         this.setState({
             modal: !this.state.modal
-        });
+        })
     }
 
-    changeColumnTitle(number) {
-        let newTitle;
-        if (number === 1)
-            newTitle = "Backlog"
-        else if (number === 2)
-            newTitle = "ToDo"
-        else if (number === 3)
-            newTitle = "In Progress"
-        else
-            newTitle = "Done"
-
-        return newTitle;
+    changeColumnTitle (number) {
+        let newTitle
+        if (number === 1) {
+            newTitle = 'Backlog'
+        } else if (number === 2) {
+            newTitle = 'ToDo'
+        } else if (number === 3) {
+            newTitle = 'In Progress'
+        } else {
+            newTitle = 'Done'
+        }
+        return newTitle
     }
 
-    handleClick(event) {
+    handleClick (event) {
         axios.post('/api/tasks', {
             rating: this.state.rating,
             customer_id: this.state.customer_id,
@@ -109,55 +109,47 @@ class AddModal extends React.Component {
             task_type: this.props.task_type
         })
             .then((response) => {
-                if (response.data.message)
-                    alert(response.data.message)
-                else {
-                    this.toggle();
-                    this.setState({
-                        title: null,
-                        content: null,
-                        contributors: null,
-                        due_date: null,
-                        loading: false
-                    })
-
-                    const firstTask = response.data
-                    this.props.tasks.push(firstTask)
-                    this.props.action(this.props.tasks)
-                }
+                this.toggle()
+                this.setState({
+                    title: null,
+                    content: null,
+                    contributors: null,
+                    due_date: null,
+                    loading: false
+                })
+                const firstTask = response.data
+                this.props.tasks.push(firstTask)
+                this.props.action(this.props.tasks)
             })
             .catch((error) => {
                 this.setState({
                     errors: error.response.data.errors
                 })
-            });
+            })
     }
 
-    getFormForLead() {
+    getFormForLead () {
         return (
             <React.Fragment>
-                <AddLead updateValue={this.handleInput} />
+                <AddLead updateValue={this.handleInput}/>
             </React.Fragment>
         )
     }
 
-    render() {
-
-        const leadForm = this.props.task_type == 2 ? this.getFormForLead() : ''
-        let userContent;
-
+    render () {
+        const leadForm = this.props.task_type === 2 ? this.getFormForLead() : ''
+        let userContent
         if (!this.state.users.length) {
             userContent = <option value="">Loading...</option>
         } else {
             userContent = this.state.users.map((user, index) => (
-                <option key={index} value={user.id}>{user.first_name + " " + user.last_name}</option>
+                <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
-
         return (
             <div>
-                <button className="btn btn-light btn-icon text-muted customAddTask"
-                        title="Add task" onClick={this.toggle}><i className="fa fa-plus-circle"></i></button>
+                <Button color="success" className="customAddTask"
+                    title="Add task" onClick={this.toggle}>+</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Create a New Task to {this.changeColumnTitle(this.props.status)}
@@ -167,21 +159,21 @@ class AddModal extends React.Component {
                         <FormGroup>
                             <Label for="title">Task Title(*):</Label>
                             <Input className={this.hasErrorFor('title') ? 'is-invalid' : ''} type="text" name="title"
-                                   id="taskTitle" onChange={this.handleInput.bind(this)}/>
+                                id="taskTitle" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('title')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="content">Task Details:</Label>
                             <Input className={this.hasErrorFor('content') ? 'is-invalid' : ''} type="textarea"
-                                   name="content" id="content" onChange={this.handleInput.bind(this)}/>
+                                name="content" id="content" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('content')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="contributors">Assign to:</Label>
                             <Input className={this.hasErrorFor('contributors') ? 'is-invalid' : ''} type="select"
-                                   name="contributors" id="contributors" onChange={this.handleInput.bind(this)}>
+                                name="contributors" id="contributors" onChange={this.handleInput.bind(this)}>
                                 <option value="">Choose:</option>
                                 {userContent}
                             </Input>
@@ -191,7 +183,7 @@ class AddModal extends React.Component {
                         <FormGroup>
                             <Label for="task_color">Task Color:</Label>
                             <Input className={this.hasErrorFor('task_color') ? 'is-invalid' : ''} type="select"
-                                   name="task_color" id="task_color" onChange={this.handleInput.bind(this)}>
+                                name="task_color" id="task_color" onChange={this.handleInput.bind(this)}>
                                 <option value="">Choose:</option>
                                 <option value="colorBlue">Red</option>
                                 <option value="colorGreen">Green</option>
@@ -206,7 +198,7 @@ class AddModal extends React.Component {
                         <i className="fas fa-calendar-alt"></i> Created Date: {moment().format('L, h:mm:ss')} <br/>
                         <i className="fas fa-clock"></i> Due Date:
                         <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''} type="datetime-local"
-                               name="due_date" id="due_date" onChange={this.handleInput.bind(this)}/>
+                            name="due_date" id="due_date" onChange={this.handleInput.bind(this)}/>
                         {this.renderErrorFor('due_date')}
                     </ModalBody>
 
@@ -218,8 +210,8 @@ class AddModal extends React.Component {
                     </ModalFooter>
                 </Modal>
             </div>
-        );
+        )
     }
 }
 
-export default AddModal;
+export default AddModal

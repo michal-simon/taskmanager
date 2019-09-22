@@ -14,6 +14,7 @@ trait EventTransformable {
 
         $prop->id = (int) $event->id;
         $prop->location = $event->location;
+        $prop->customer_id = $customer->id;
         $prop->first_name = $customer->first_name;
         $prop->last_name = $customer->last_name;
         $prop->title = $event->title;
