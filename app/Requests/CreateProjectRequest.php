@@ -25,7 +25,7 @@ class ProjectRequest extends FormRequest {
             'title' => 'string|required',
             'description' => 'string|required',
             'created_by' => 'string|required',
-            'customer_id' => 'numeric|nullable',
+            'customer_id' => 'numeric|required',
         ];
     }
 

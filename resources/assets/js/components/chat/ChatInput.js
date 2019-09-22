@@ -17,13 +17,15 @@ class ChatInput extends Component {
         e.preventDefault();
 
         const messageObj = {
+            author: 'Michael Hampton',
             user_id: this.props.userID,
             message: this.state.message,
-            when: new Date().valueOf(),
+            when: new Date(),
             customer_id: this.props.customer_id
         };
 
         this.props.sendMessage(messageObj)
+        this.setState({message: ''})
     }
 
     handleInputChanges(e) {

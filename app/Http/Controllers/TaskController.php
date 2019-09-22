@@ -36,8 +36,10 @@ class TaskController extends Controller {
      */
     public function store(CreateTaskRequest $request) {
         $validatedData = $request->validated();
+        $objProject = $this->projectRepository->findProjectById($validatedData['project_id']);
+
         $task = $this->taskRepository->createTask([
-            'customer_id' => $validatedData['customer_id'],
+            'customer_id' => empty($validatedData['customer_id']) ? $objProject->customer_id : $validatedData['customer_id'],
             'rating' => $validatedData['rating'],
             'task_type' => $validatedData['task_type'],
             'title' => $validatedData['title'],
@@ -49,7 +51,6 @@ class TaskController extends Controller {
             'created_by' => $validatedData['created_by'],
         ]);
         if ($validatedData['task_type'] == 1) {
-            $objProject = $this->projectRepository->findProjectById($validatedData['project_id']);
             $objProject->tasks()->attach($task);
         }
         return $task->toJson();
@@ -67,7 +68,7 @@ class TaskController extends Controller {
         return response()->json('Task updated!');
     }
 
-    public function getTasksForProject($projectId) { 
+    public function getTasksForProject($projectId) {
         $objProject = $this->projectRepository->findProjectById($projectId);
         $task = $this->taskRepository->getTasksForProject($objProject);
         return $task->toJson();
@@ -113,16 +114,16 @@ class TaskController extends Controller {
         $taskRepo = new TaskRepository($task);
         $taskRepo->updateTask(['task_status' => $request->task_status]);
     }
-    
+
     /**
      * 
      * @param Request $request
      * @param int $task_type
      */
     public function filterTasks(Request $request, int $task_type) {
-        
+
         $tasks = $this->taskRepository->filterTasks($request->all(), $task_type);
-  
+
         return $tasks->toJson();
     }
 

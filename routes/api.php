@@ -53,6 +53,6 @@ Route::get('login', 'LoginController@showLogin');
 Route::post('login', 'LoginController@doLogin');
 Route::get('logout', 'LoginController@doLogout');
 Route::get('messages/customers', 'MessageController@getCustomers');
-Route::get('messages', 'MessageController@index');
+Route::get('messages/{customer_id}', 'MessageController@index');
 Route::post('messages', 'MessageController@store');
 

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Task;
 use App\User;
+use App\Customer;
 use App\Repositories\TaskRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -14,14 +15,16 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class TaskTest extends TestCase {
 
     use DatabaseTransactions,
-            WithFaker;
+        WithFaker;
 
     private $user;
+    private $customer;
 
-    public function setUp() : void {
+    public function setUp(): void {
         parent::setUp();
         $this->beginDatabaseTransaction();
         $this->user = factory(User::class)->create();
+        $this->customer = factory(Customer::class)->create();
     }
 
     /** @test */
@@ -67,6 +70,7 @@ class TaskTest extends TestCase {
     public function it_can_create_a_task() {
 
         $data = [
+            'customer_id' => $this->customer->id,
             'title' => $this->faker->word,
             'content' => $this->faker->sentence,
             'is_completed' => 0,
@@ -97,7 +101,7 @@ class TaskTest extends TestCase {
         $task->findTaskById(999);
     }
 
-    public function tearDown() : void {
+    public function tearDown(): void {
         parent::tearDown();
     }
 

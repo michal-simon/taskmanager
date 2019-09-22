@@ -34,7 +34,7 @@ class Friend extends Component {
 
                 <div>
                     <p className="text-muted mb-0" style={{ fontSize: "0.75rem" }}>
-                        {when}
+                        {when ? this.props.formatDate(when) : ''}
                     </p>
                     {seen ? (
                         <span className="text-muted float-right">

@@ -4,16 +4,18 @@ namespace App\Transformations;
 
 use App\Customer;
 use App\Repositories\MessageRepository;
-use App\Repositories\UserRepository;
 use App\User;
 use App\Message;
 
 trait MessageUserTransformable {
 
-    protected function transformUser(Customer $customer) {
-
-        $currentUser = (new UserRepository(new User))->findUserById(56);
-
+    /**
+     * 
+     * @param Customer $customer
+     * @param User $currentUser
+     * @return Customer
+     */
+    protected function transformUser(Customer $customer, User $currentUser) {
 
         $message = (new MessageRepository(new Message))->getMessagesForCustomer($customer, $currentUser, true);
 

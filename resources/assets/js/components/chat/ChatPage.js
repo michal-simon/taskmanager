@@ -26,7 +26,7 @@ class ChatPage extends Component {
 
     loadMessages(customer_id) {
 
-        axios.get(`/api/messages`)
+        axios.get(`/api/messages/${customer_id}`)
             .then((r)=> {
                 this.setState({
                     customer_id: customer_id,
@@ -65,6 +65,21 @@ class ChatPage extends Component {
             })
     }
 
+    formatDate(dateString) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        const d = new Date(dateString);
+        const dayName = days[d.getDay()];
+        const monthName = monthNames[d.getMonth()]
+        const hours = d.getHours()
+        const minutes = d.getMinutes()
+        const formattedDate = `${dayName} ${d.getDate()} ${monthName} ${d.getFullYear()} ${hours}:${minutes}`
+
+        return formattedDate
+    }
+
     render() {
 
         const showMessageBox = this.state.messages.length ? true : false
@@ -72,7 +87,7 @@ class ChatPage extends Component {
         return (<Card className="grey lighten-3 chat-room">
             <CardBody>
                 <Row className="px-lg-2 px-2">
-                    <Col md="6" xl="4" className="px-0 mb-4 mb-md-0 scrollable-friends-list">
+                    <Col md="6" xl="4" className="px-0 mb-4 mb-md-0 scrollable-friends-list" style={{ borderRight: "1px solid #CCC" }}>
                         <h6 className="font-weight-bold mb-3 text-lg-left">Member</h6>
 
                         <div className="overflow-auto">
@@ -80,6 +95,7 @@ class ChatPage extends Component {
                                 <ListGroup className="friend-list">
                                     {this.state.friends.map(friend => (
                                         <Friend
+                                            formatDate={this.formatDate}
                                             selected_friend={this.state.customer_id}
                                             loadMessages={this.loadMessages}
                                             key={friend.name}
@@ -96,6 +112,7 @@ class ChatPage extends Component {
                                 <ListGroup className="list-unstyled pl-3 pr-3">
                                     {this.state.messages.map(message => (
                                         <ChatMessage
+                                            formatDate={this.formatDate}
                                             key={message.author + message.when}
                                             message={message}
                                         />

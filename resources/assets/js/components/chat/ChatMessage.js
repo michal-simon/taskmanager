@@ -10,6 +10,8 @@ class ChatMessage extends Component {
     render() {
         const { author, avatar, when, message } = this.props.message
 
+        const formattedDate = this.props.formatDate(when)
+
         return (
             <li className="chat-message d-flex justify-content-between mb-4">
                 <img
@@ -20,12 +22,12 @@ class ChatMessage extends Component {
                     className="mr-2 z-depth-1 rounded-circle"
                 />
 
-                <Card className="col-12">
+                <Card className="col-10">
                     <CardBody>
                         <div>
                             <strong className="primary-font">{author}</strong>
                             <small className="pull-right text-muted">
-                                <i className="far fa-clock" /> {when}
+                                <i className="fa fa-clock" /> {formattedDate}
                             </small>
                         </div>
                         <hr />

@@ -8,11 +8,14 @@ use App\Repositories\Interfaces\MessageRepositoryInterface;
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Transformations\MessageUserTransformable;
+use App\Transformations\MessageTransformable;
 use App\Customer;
+use App\Message;
 
 class MessageController extends Controller {
 
-    use MessageUserTransformable;
+    use MessageUserTransformable,
+        MessageTransformable;
 
     /**
      * @var MessageRepositoryInterface
@@ -44,30 +47,32 @@ class MessageController extends Controller {
     public function getCustomers() {
 
         $customerList = $this->customerRepo->listCustomers();
-        
-        $messages = $customers = $customerList->map(function (Customer $customer) {
-                    return $this->transformUser($customer);
+        $currentUser = $this->userRepo->findUserById(56);
+
+        $customers = $customerList->map(function (Customer $customer) use ($currentUser) {
+                    return $this->transformUser($customer, $currentUser);
+                })->all();
+
+        return response()->json($customers);
+    }
+
+    /**
+     * 
+     * @param int $customer_id
+     * @return type
+     */
+    public function index(int $customer_id) {
+
+        $currentUser = $this->userRepo->findUserById(56);
+        $customer = $this->customerRepo->findCustomerById($customer_id);
+        $messageList = $this->messageRepo->getMessagesForCustomer($customer, $currentUser);
+
+
+        $messages = $messageList->map(function (Message $message) use ($currentUser, $customer) {
+                    return $this->transformMessage($message, $currentUser, $customer);
                 })->all();
 
         return response()->json($messages);
-    }
-
-    public function index() {
-        $arrMessages[0] = [
-            'author' => "Brad Pitt",
-            'avatar' => "https://mdbootstrap.com/img/Photos/Avatars/avatar-6",
-            'when' => "12 mins ago",
-            'message' => 'Test Mike'
-        ];
-
-        $arrMessages[1] = [
-            'author' => "Jhoanna Hampton",
-            'avatar' => "https://mdbootstrap.com/img/Photos/Avatars/avatar-6",
-            'when' => "12 mins ago",
-            'message' => 'Test Jhoanna'
-        ];
-
-        return response()->json($arrMessages);
     }
 
     /**

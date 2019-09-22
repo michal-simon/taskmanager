@@ -1460,6 +1460,40 @@ $color_celeste_approx: #ccc;
 	border-color: transparent;
 }
 
+.chat-room {
+	.friend-list {
+		.list-group-item {
+			margin-bottom: 0;
+			border: 0;
+			border-bottom: 1px solid #CCC;
+			&:last-of-type {
+				border-bottom: 0;
+			}
+		}
+		.list-group-item.active {
+			background-color: #eeeeee;
+		}
+	}
+	.avatar {
+		height: 3rem;
+		width: 3rem;
+	}
+	.chat-message {
+		&:nth-of-type(even) {
+			flex-direction: row-reverse;
+		}
+	}
+	.scrollable-friends-list {
+		height: 570px;
+	}
+	.scrollable-chat {
+		height: 624px;
+		padding-bottom: 15px;
+		overflow-y: auto;
+		margin-bottom: 16px;
+	}
+}
+
 //.open aside.left-panel {
 //	width: 220px !important;
 //}

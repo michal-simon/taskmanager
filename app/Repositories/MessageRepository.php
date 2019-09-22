@@ -40,15 +40,25 @@ class MessageRepository extends BaseRepository implements MessageRepositoryInter
     public function createMessage(array $data): Message {
         return $this->create($data);
     }
+    
+     /**
+     * Delete a message
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function deleteMessage(): bool {
+        return $this->delete();
+    }
 
     /**
      * 
-     * @param \App\Repositories\Customer $customer
-     * @param \App\Repositories\User $user
+     * @param Customer $customer
+     * @param User $user
      * @param type $blLastOnly
      * @return type
      */
-    public function getMessagesForCustomer(Customer $customer, User $user = null, $blLastOnly = false) {
+    public function getMessagesForCustomer(Customer $customer, User $user, $blLastOnly = false) {
 
         $query = Message::where('customer_id', '=', $customer->id);
 

@@ -17,6 +17,7 @@ class Message extends Model {
         'customer_id',
         'user_id',
         'message',
+        'direction'
     ];
 
     /**

@@ -25,7 +25,6 @@ class RoleTest extends TestCase {
         $roleRepo = new RoleRepository(new Role);
         $roles = $roleRepo->listRoles();
         $this->assertInstanceOf(Collection::class, $roles);
-        $this->assertCount(6, $roles->all()); // +1 in the TestCase
     }
 
     /** @test */
