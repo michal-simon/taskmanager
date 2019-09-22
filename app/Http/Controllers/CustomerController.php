@@ -105,10 +105,6 @@ class CustomerController extends Controller {
 
         $list = $this->customerRepo->listCustomers('created_at', 'desc');
 
-        if (request()->has('q')) {
-            $list = $this->customerRepo->searchCustomer(request()->input('q'));
-        }
-
         $customers = $list->map(function (Customer $customer) {
                     return $this->transformCustomer($customer);
                 })->all();
@@ -135,8 +131,10 @@ class CustomerController extends Controller {
             'country_id' => 225,
             'status' => 1
         ]);
+        
+        $customerTransformed = $this->transformCustomer($customer);
 
-        return $customer->toJson();
+        return $customerTransformed->toJson();
     }
 
     /**
@@ -152,7 +150,7 @@ class CustomerController extends Controller {
         $customer = $this->customerRepo->findCustomerById($id);
         $address = $customer->addresses;
 
-        if (!empty($address)) {
+        if (!empty($address[0])) {
             $addRessRepo = new AddressRepository($address[0]);
             $addRessRepo->deleteAddress();
         }

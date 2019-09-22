@@ -36,10 +36,13 @@ class TaskController extends Controller {
      */
     public function store(CreateTaskRequest $request) {
         $validatedData = $request->validated();
-        $objProject = $this->projectRepository->findProjectById($validatedData['project_id']);
 
-        $task = $this->taskRepository->createTask([
-            'customer_id' => empty($validatedData['customer_id']) ? $objProject->customer_id : $validatedData['customer_id'],
+        if (!empty($validatedData['project_id'])) {
+            $objProject = $this->projectRepository->findProjectById($validatedData['project_id']);
+        }
+
+        $arrFormData = [
+            'customer_id' => empty($validatedData['customer_id']) && isset($objProject) ? $objProject->customer_id : $validatedData['customer_id'],
             'rating' => $validatedData['rating'],
             'task_type' => $validatedData['task_type'],
             'title' => $validatedData['title'],
@@ -49,10 +52,14 @@ class TaskController extends Controller {
             'due_date' => $validatedData['due_date'],
             'task_status' => $validatedData['task_status'],
             'created_by' => $validatedData['created_by'],
-        ]);
+        ];
+
+        $task = $this->taskRepository->createTask($arrFormData);
+
         if ($validatedData['task_type'] == 1) {
             $objProject->tasks()->attach($task);
         }
+
         return $task->toJson();
     }
 

@@ -32,12 +32,12 @@ class ProjectController extends Controller {
     public function store(CreateProjectRequest $request) {
 
         $validatedData = $request->validated();
-        
-        $project = Project::create([
-                    'title' => $validatedData['title'],
-                    'description' => $validatedData['description'],
-                    'created_by' => $validatedData['created_by'],
-                    'customer_id' => $validatedData['customer_id'],
+
+        $project = $this->projectRepository->create([
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'created_by' => $validatedData['created_by'],
+            'customer_id' => $validatedData['customer_id'],
         ]);
 
         return $project->toJson();
