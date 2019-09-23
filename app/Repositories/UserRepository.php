@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories;
 
 use App\User;
@@ -9,27 +10,25 @@ use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 
-class UserRepository extends BaseRepository implements UserRepositoryInterface
-{
+class UserRepository extends BaseRepository implements UserRepositoryInterface {
+
     /**
-    * UserRepository constructor.
-    *
-    * @param User $user
-    */
-    public function __construct(User $user)
-    {
+     * UserRepository constructor.
+     *
+     * @param User $user
+     */
+    public function __construct(User $user) {
         parent::__construct($user);
         $this->model = $user;
     }
 
     /**
-    * @param array $data
-    *
-    * @return User
-    * @throws CreateProjectErrorException
-    */
-    public function createUser(array $data) : User
-    {
+     * @param array $data
+     *
+     * @return User
+     * @throws CreateProjectErrorException
+     */
+    public function createUser(array $data): User {
         try {
             $data['password'] = Hash::make($data['password']);
             return $this->create($data);
@@ -44,8 +43,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      * @return User
      * @throws \Exception
      */
-    public function findUserById(int $id) : User
-    {
+    public function findUserById(int $id): User {
         return $this->findOneOrFail($id);
     }
 
@@ -56,8 +54,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      * @return bool
      * @throws \Exception
      */
-    public function updateUser(array $data) : bool
-    {
+    public function updateUser(array $data): bool {
         return $this->update($data);
     }
 
@@ -65,8 +62,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      * @return bool
      * @throws \Exception
      */
-    public function deleteUser() : bool
-    {
+    public function deleteUser(): bool {
         return $this->delete();
     }
 
@@ -77,11 +73,10 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      *
      * @return Collection
      */
-    public function listUsers($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc') : Support
-    {
+    public function listUsers($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc'): Support {
         return $this->all($columns, $orderBy, $sortBy);
     }
-    
+
     /**
      * 
      * @param type $columns
@@ -89,31 +84,34 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      * @param string $sortBy
      * @return type
      */
-    public function getActiveUsers($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc') : Collection {
-        
-         return User::where('is_active', 1)
-                             ->orderBy($orderBy, $sortBy)
-                            ->get();
+    public function getActiveUsers($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc'): Collection {
+
+        return User::where('is_active', 1)
+                        ->orderBy($orderBy, $sortBy)
+                        ->get();
     }
-    
+
     /**
      * @param string $text
      * @return mixed
      */
-    public function searchUser(string $text = null) : Collection
-    {
+    public function searchUser(string $text = null): Collection {
         if (is_null($text)) {
             return $this->getActiveUsers();
         }
         return User::where('is_active', 1)->search($text)->get();
     }
-    
-     /**
+
+    /**
      * @param array $roleIds
      */
-    public function syncRoles(array $roleIds)
-    {
-        $this->model->roles()->sync($roleIds);
+    public function syncRoles(array $roleIds) {     
+
+        foreach ($roleIds[0] as $roleId) {
+            $mappedObjects[] = $roleId;
+        }
+        
+        $this->model->roles()->sync($mappedObjects);
     }
 
 }

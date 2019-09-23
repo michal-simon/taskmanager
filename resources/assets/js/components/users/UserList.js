@@ -150,7 +150,7 @@ export default class DataTable extends Component {
 
                     <td>
                         <Button color="danger" onClick={() => this.deleteUser(user.id)}>Delete</Button>
-                        <EditUser user={user} users={this.state.entities.data} action={this.updateUserState}/>
+                        <EditUser user={user.id} users={this.state.entities.data} action={this.updateUserState}/>
                     </td>
                 </tr>
             })

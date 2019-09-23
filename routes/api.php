@@ -8,6 +8,7 @@ Route::get('projects', 'ProjectController@index');
 Route::get('projects', 'ProjectController@index');
 Route::post('projects', 'ProjectController@store');
 Route::get('users/dashboard', 'UserController@dashboard');
+Route::get('users/edit/{user_id}', 'UserController@edit');
 Route::get('customers/dashboard', 'CustomerController@dashboard');
 Route::get('projects/{id}', 'ProjectController@show');
 Route::put('projects/{project}', 'ProjectController@markAsCompleted');
