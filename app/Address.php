@@ -9,6 +9,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Description of Address
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  * @author michael.hampton
  */
 class Address extends Model {
+    
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
