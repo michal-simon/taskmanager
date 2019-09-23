@@ -59,7 +59,7 @@ class AddLead extends React.Component {
             customerList = <option value="">Loading...</option>
         } else {
             customerList = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
+                <option key={index} value={customer.id}>{customer.name}</option>
             ))
         }
         const customerId = typeof this.props.task !== 'undefined' ? this.props.task.customer_id : ''

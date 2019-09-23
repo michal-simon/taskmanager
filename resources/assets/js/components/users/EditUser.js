@@ -26,7 +26,7 @@ class EditUser extends React.Component {
     }
 
     getUser () {
-        axios.get(`/api/users/edit/${this.props.user}`)
+        axios.get(`/api/users/edit/${this.props.user_id}`)
             .then((r) => {
                 this.setState({
                     roles: r.data.roles,
@@ -50,10 +50,10 @@ class EditUser extends React.Component {
             role: this.state.selectedRoles
         })
             .then((response) => {
-                this.toggle()
-                const index = this.props.users.findIndex(user => user.id === this.props.user.id)
+                const index = this.props.users.findIndex(user => parseInt(user.id) === this.props.user_id)
                 this.props.users[index] = this.state.user
                 this.props.action(this.props.users)
+                this.toggle()
             })
             .catch((error) => {
                 this.setState({

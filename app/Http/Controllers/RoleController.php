@@ -48,7 +48,7 @@ class RoleController extends Controller {
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
-        if (request()->has('search_term')) {
+        if (request()->has('search_term') && !empty($request->search_term)) {
             $list = $this->roleRepo->searchRole(request()->input('search_term'));
         } else {
             $list = $this->roleRepo->listRoles($orderBy, $orderDir);

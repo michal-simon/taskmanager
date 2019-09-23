@@ -27,11 +27,12 @@ class InvoiceController extends Controller {
      * @return type
      */
     public function index(Request $request) {
+                
         $orderBy = !$request->column ? 'due_date' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
-        if (request()->has('search_term')) {
+        if (request()->has('search_term') && !empty($request->search_term)) {
             $list = $this->invoiceRepository->searchInvoice(request()->input('search_term'));
         } else {
             $list = $this->invoiceRepository->listInvoices($orderBy, $orderDir, ['*']);

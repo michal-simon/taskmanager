@@ -49,9 +49,10 @@ class EditInvoice extends Component {
         if (e.target.name === 'customer_id') {
             const index = this.state.customers.findIndex(customer => customer.id === parseInt(e.target.value))
             const customer = this.state.customers[index]
-            this.setState({ customerName: customer.first_name + ' ' + customer.last_name })
-            if (customer.addresses) {
-                const address = customer.addresses[0]
+            this.setState({ customerName: customer.name })
+
+            if (customer.address) {
+                const address = customer.address
                 const objAddress = {
                     line1: address.address_1,
                     town: address.address_2,
@@ -158,9 +159,10 @@ class EditInvoice extends Component {
             customerContent = <option value="">Loading...</option>
         } else {
             customerContent = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
+                <option key={index} value={customer.id}>{customer.name}</option>
             ))
         }
+
         const buttonText = !this.props.add ? 'Create Invoice' : 'Update'
         return (
             <React.Fragment>

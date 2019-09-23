@@ -4,9 +4,25 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Permission;
+use App\Traits\SearchableTrait;
 
 class Role extends Model {
 
+    use SearchableTrait;
+    
+      protected $searchable = [
+        /**
+         * Columns and their priority in search results.
+         * Columns with higher values are more important.
+         * Columns with equal values have equal importance.
+         *
+         * @var array
+         */
+        'columns' => [
+            'roles.name' => 10
+        ]
+    ];
+    
     protected $fillable = ['name', 'description'];
 
     /**
@@ -31,6 +47,15 @@ class Role extends Model {
 
     public function attachPermission(Permission $permission) {
         $this->permissions()->attach([$permission->id]);
+    }
+    
+    /**
+     * @param $term
+     *
+     * @return mixed
+     */
+    public function searchRole($term) {
+        return self::search($term);
     }
 
 }

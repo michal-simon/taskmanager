@@ -3,22 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/Tooltip.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/dragdrop.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/Story.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Requests/CreateProjectRequest.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/CompleteProject.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/InvoiceController.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/TaskController.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/CompleteTask.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/Login.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/Task.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/package.json</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/InvoiceRepository.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/Loader.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/Dashboard.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Transformations/EventTransformable.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Transformations/CustomerTransformable.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/routes/api.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/tests/Unit/CustomerTest.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/CustomerRepository.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/CustomerController.php</file>
         </group>
     </open-files>
 </project-private>
