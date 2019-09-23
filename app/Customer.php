@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\SearchableTrait;
 use App\Message;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model {
 
-    use SearchableTrait;
+    use SearchableTrait,
+        SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -56,15 +58,15 @@ class Customer extends Model {
      *
      * @return mixed
      */
-    public function searchCustomer($term)
-    {
+    public function searchCustomer($term) {
         return self::search($term);
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function messages() {
         return $this->belongsToMany(Message::class);
     }
+
 }

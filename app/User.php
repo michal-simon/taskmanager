@@ -8,12 +8,14 @@ use App\Event;
 use App\Traits\SearchableTrait;
 use Laratrust\Traits\LaratrustUserTrait;
 use App\Message;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable {
 
     use LaratrustUserTrait;
     use Notifiable,
-        SearchableTrait;
+        SearchableTrait,
+        SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
