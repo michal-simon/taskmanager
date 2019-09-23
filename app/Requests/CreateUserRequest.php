@@ -23,7 +23,7 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'role_id'          => 'nullable|numeric',
+            'role'          => 'nullable|array',
             'password'          => 'required|string',
             'username'          => 'required|string',
             'profile_photo'     => 'nullable|string',

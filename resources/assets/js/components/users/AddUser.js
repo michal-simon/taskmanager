@@ -17,11 +17,13 @@ class AddUser extends React.Component {
             password: '',
             loading: false,
             errors: [],
-            roles: []
+            roles: [],
+            selectedRoles: []
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
+        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
     componentDidMount () {
@@ -62,7 +64,7 @@ class AddUser extends React.Component {
             last_name: this.state.last_name,
             profile_photo: this.state.profile_photo,
             password: this.state.password,
-            role_id: this.state.role_id
+            role: this.state.selectedRoles
         })
             .then((response) => {
                 this.toggle()
@@ -101,6 +103,10 @@ class AddUser extends React.Component {
         this.setState({
             modal: !this.state.modal
         })
+    }
+
+    handleMultiSelect (e) {
+        this.setState({ selectedRoles: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
     render () {
@@ -163,13 +169,12 @@ class AddUser extends React.Component {
                         </FormGroup>
 
                         <FormGroup>
-                            <Label for="role_id">Role:</Label>
-                            <Input className={this.hasErrorFor('role_id') ? 'is-invalid' : ''} type="select"
-                                name="role_id" id="role_id" onChange={this.handleInput.bind(this)}>
-                                <option value="">Choose:</option>
+                            <Label for="users">Roles</Label>
+                            <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
+                                name="role" id="role" multiple>
                                 {roleList}
                             </Input>
-                            {this.renderErrorFor('role_id')}
+                            {this.renderErrorFor('users')}
                         </FormGroup>
                     </ModalBody>
 
