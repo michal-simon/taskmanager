@@ -163,6 +163,24 @@ class EditCustomer extends React.Component {
                                     placeholder="Enter customer's city"/>
                                 {this.renderErrorFor('city')}
                             </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="company_name"> Company Name </Label>
+                                <Input className={this.hasErrorFor('company_name') ? 'is-invalid' : ''} type="text" id="company_name"
+                                    defaultValue={this.state.customer.company_name}
+                                    onChange={this.handleInputChanges.bind(this)} name="company_name"
+                                    placeholder="Enter Company Name"/>
+                                {this.renderErrorFor('company_name')}
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="job_title"> Job Title </Label>
+                                <Input className={this.hasErrorFor('job_title') ? 'is-invalid' : ''} type="text" id="job_title"
+                                    defaultValue={this.state.customer.job_title}
+                                    onChange={this.handleInputChanges.bind(this)} name="job_title"
+                                    placeholder="Enter Job Title"/>
+                                {this.renderErrorFor('job_title')}
+                            </FormGroup>
                         </Form>
 
                     </ModalBody>

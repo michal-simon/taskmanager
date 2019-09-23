@@ -16,6 +16,8 @@ use App\Customer;
 
 $factory->define(Customer::class, function (Faker\Generator $faker) {
     return [
+        'company_name' => $faker->company,
+        'job_title' => $faker->jobTitle,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,

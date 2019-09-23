@@ -14,6 +14,8 @@ class AddCustomer extends React.Component {
             phone: '',
             address_1: '',
             address_2: '',
+            job_title: '',
+            company_name: '',
             zip: '',
             city: '',
             description: '',
@@ -62,6 +64,8 @@ class AddCustomer extends React.Component {
             address_2: this.state.address_2,
             zip: this.state.zip,
             city: this.state.city,
+            job_title: this.state.job_title,
+            company_name: this.state.company_name,
             description: this.state.description
         }
         this.setState({ submitSuccess: true, values: [...this.state.values, formData], loading: false })
@@ -80,6 +84,8 @@ class AddCustomer extends React.Component {
                     address_2: null,
                     zip: null,
                     city: null,
+                    job_title: null,
+                    company_name: null,
                     description: null
                 })
             })
@@ -183,6 +189,28 @@ class AddCustomer extends React.Component {
                                     onChange={this.handleInputChanges.bind(this)} name="city"
                                     placeholder="Enter customer's city"/>
                                 {this.renderErrorFor('city')}
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="company_name"> Company Name </Label>
+                                <Input className={this.hasErrorFor('company_name') ? 'is-invalid' : ''}
+                                    type="text"
+                                    id="company_name"
+                                    onChange={this.handleInputChanges.bind(this)}
+                                    name="company_name"
+                                    placeholder="Company Name"/>
+                                {this.renderErrorFor('company_name')}
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label htmlFor="job_title"> Job Title </Label>
+                                <Input className={this.hasErrorFor('job_title') ? 'is-invalid' : ''}
+                                    type="text"
+                                    id="job_title"
+                                    onChange={this.handleInputChanges.bind(this)}
+                                    name="job_title"
+                                    placeholder="Job Title"/>
+                                {this.renderErrorFor('job_title')}
                             </FormGroup>
                         </Form>
                     </ModalBody>

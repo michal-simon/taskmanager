@@ -127,6 +127,8 @@ class CustomerController extends Controller {
         $customer = $this->customerRepo->createCustomer($request->except('_token', '_method'));
 
         $customer->addresses()->create([
+            'company_name' => $request->company_name,
+            'job_title' => $request->job_title,
             'phone' => $request->phone,
             'address_1' => $request->address_1,
             'address_2' => $request->address_2,
@@ -136,7 +138,7 @@ class CustomerController extends Controller {
             'status' => 1
         ]);
 
-        return $customer->toJson();
+        return $this->transformCustomer($customer);
     }
 
     /**
