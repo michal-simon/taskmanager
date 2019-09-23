@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Story from './Story'
 import KanbanFilter from './KanbanFilter'
+import AddStory from './forms/AddStory'
 
 class Dashboard extends Component {
     constructor (props, context) {
@@ -127,11 +128,14 @@ class Dashboard extends Component {
         document.getElementsByClassName('navbar-toggler')[0].style.display = 'block'
         if (this.props.task_type !== 2) {
             storyTable = (
-                <select className="form-control" onChange={this.handleChange} value={this.props.project_id}>
-                    <option>Choose Project</option>
-                    {this.getStories()}
+                <React.Fragment>
+                    <AddStory addProject={this.addProject} />
 
-                </select>
+                    <select className="form-control" onChange={this.handleChange} value={this.props.project_id}>
+                        <option>Choose Project</option>
+                        {this.getStories()}
+                    </select>
+                </React.Fragment>
             )
         }
         return (
