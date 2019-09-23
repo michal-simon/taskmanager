@@ -14,9 +14,9 @@ class CustomerUnitTest extends TestCase {
 
     use DatabaseTransactions,
         CustomerTransformable,
-            WithFaker;
+        WithFaker;
 
-    public function setUp() : void {
+    public function setUp(): void {
         parent::setUp();
         $this->beginDatabaseTransaction();
     }
@@ -30,7 +30,7 @@ class CustomerUnitTest extends TestCase {
         //$this->assertInternalType('string', $customerFromDb->status);
         $this->assertInternalType('string', $cust->first_name);
     }
-    
+
     /** @test */
     public function it_can_delete_a_customer() {
         $customer = factory(Customer::class)->create();
@@ -80,6 +80,8 @@ class CustomerUnitTest extends TestCase {
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
+            'company_name' => $this->faker->company,
+            'job_title' => $this->faker->jobTitle,
         ];
         $customer = new CustomerRepository(new Customer);
         $created = $customer->createCustomer($data);
@@ -89,13 +91,13 @@ class CustomerUnitTest extends TestCase {
         $collection = collect($data)->except('password');
         $this->assertDatabaseHas('customers', $collection->all());
     }
-    
-     public function it_errors_creating_the_customer_when_required_fields_are_not_passed() {
+
+    public function it_errors_creating_the_customer_when_required_fields_are_not_passed() {
         $this->expectException(\Illuminate\Database\QueryException::class);
         $task = new CustomerRepository(new Customer);
         $task->createCustomer([]);
     }
-    
+
     /** @test */
     public function it_can_list_all_customers() {
         factory(Customer::class, 5)->create();
@@ -104,7 +106,7 @@ class CustomerUnitTest extends TestCase {
         $this->assertInstanceOf(Collection::class, $list);
     }
 
-    public function tearDown() : void {
+    public function tearDown(): void {
         parent::tearDown();
     }
 

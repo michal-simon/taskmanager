@@ -19,7 +19,9 @@ class Customer extends Model {
         'first_name',
         'last_name',
         'email',
-        'status'
+        'status',
+        'job_title',
+        'company_name'
     ];
 
     /**

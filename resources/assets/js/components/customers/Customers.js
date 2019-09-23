@@ -204,16 +204,14 @@ export default class Customers extends Component {
 
     displayCustomerAddress (address) {
         if (!address) {
-            return (<p>&nbsp</p>)
+            return ''
         }
-        return (
-            <React.Fragment>
-                {address.address_1}<br/>
-                {address.address_2}<br/>
-                {address.zip}<br/>
-                {address.city}
-            </React.Fragment>
-        )
+
+        if(address.address_2) {
+            return `${address.address_1}, ${address.address_2}, ${address.zip}, ${address.city}`
+        }
+
+        return `${address.address_1}, ${address.zip}, ${address.city}`
     }
 
     displayCustomerPhone (address) {
