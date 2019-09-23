@@ -27,7 +27,7 @@ export default class Login extends Component {
     }
 
     handleSubmit (event) {
-        this.props.action(true)
+        //this.props.action(true)
 
         // axios.get(`/api/login`)
         //     .then((r)=> {

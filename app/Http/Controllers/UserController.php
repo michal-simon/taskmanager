@@ -11,7 +11,7 @@ use App\Repositories\UserRepository;
 use App\Transformations\UserTransformable;
 
 class UserController extends Controller {
-    
+
     use UserTransformable;
 
     private $userRepository;
@@ -24,13 +24,13 @@ class UserController extends Controller {
         $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
-        
-        if (request()->has('search_term')) {  
+
+        if (request()->has('search_term')) {
             $list = $this->userRepository->searchUser(request()->input('search_term'));
         } else {
             $list = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
         }
-        
+
         $users = $list->map(function (User $user) {
                     return $this->transformUser($user);
                 })->all();
@@ -48,21 +48,23 @@ class UserController extends Controller {
         return view('index');
     }
 
+     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  CreateUserRequest $request
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function store(CreateUserRequest $request) {
 
         $validatedData = $request->validated();
+        $user = $this->userRepository->createUser($validatedData);
 
-        $user = $this->userRepository->createUser([
-            'role_id' => $validatedData['role_id'],
-            'first_name' => $validatedData['first_name'],
-            'last_name' => $validatedData['last_name'],
-            'profile_photo' => $validatedData['profile_photo'],
-            'username' => $validatedData['username'],
-            'is_active' => 1,
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-        ]);
-        
+        if ($request->has('role')) {
+            $userRepo = new UserRepository($user);
+            $userRepo->syncRoles([$request->input('role')]);
+        }
+
         return $this->transformUser($user);
     }
 

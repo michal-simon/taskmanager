@@ -7,6 +7,7 @@ use App\Repositories\Base\BaseRepository;
 use App\Exceptions\CreateUserErrorException;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -30,6 +31,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     public function createUser(array $data) : User
     {
         try {
+            $data['password'] = Hash::make($data['password']);
             return $this->create($data);
         } catch (QueryException $e) {
             throw new CreateUserErrorException($e);
@@ -104,6 +106,14 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             return $this->getActiveUsers();
         }
         return User::where('is_active', 1)->search($text)->get();
+    }
+    
+     /**
+     * @param array $roleIds
+     */
+    public function syncRoles(array $roleIds)
+    {
+        $this->model->roles()->sync($roleIds);
     }
 
 }
