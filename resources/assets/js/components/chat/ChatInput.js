@@ -14,7 +14,7 @@ class ChatInput extends Component {
     onSubmit (e) {
         e.preventDefault()
         const messageObj = {
-            author: 'Michael Hampton',
+            author: sessionStorage.getItem("username"),
             user_id: this.props.userID,
             message: this.state.message,
             when: new Date(),

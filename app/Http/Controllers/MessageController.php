@@ -47,7 +47,9 @@ class MessageController extends Controller {
     public function getCustomers() {
 
         $customerList = $this->customerRepo->listCustomers();
-        $currentUser = $this->userRepo->findUserById(56);
+        $user = auth()->guard('user')->user();
+
+        $currentUser = $this->userRepo->findUserById($user->id);
 
         $customers = $customerList->map(function (Customer $customer) use ($currentUser) {
                     return $this->transformUser($customer, $currentUser);
@@ -62,8 +64,8 @@ class MessageController extends Controller {
      * @return type
      */
     public function index(int $customer_id) {
-
-        $currentUser = $this->userRepo->findUserById(56);
+        $user = auth()->guard('user')->user();
+        $currentUser = $this->userRepo->findUserById($user->id);
         $customer = $this->customerRepo->findCustomerById($customer_id);
         $messageList = $this->messageRepo->getMessagesForCustomer($customer, $currentUser);
 

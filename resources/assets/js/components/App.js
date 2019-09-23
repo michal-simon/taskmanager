@@ -37,9 +37,11 @@ class App extends Component {
         return false
     }
 
-    setAuthenticated () {
+    setAuthenticated (objUser) {
         this.setState({ authenticated: true })
         window.sessionStorage.setItem('authenticated', true)
+        window.sessionStorage.setItem('username', objUser.username)
+        window.sessionStorage.setItem('user_id', objUser.user_id)
     }
 
     render () {

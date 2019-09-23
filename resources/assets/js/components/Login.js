@@ -6,12 +6,10 @@ import axios from 'axios'
 export default class Login extends Component {
     constructor (props) {
         super(props)
-
         this.state = {
             email: '',
             password: ''
         }
-
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
@@ -27,16 +25,22 @@ export default class Login extends Component {
     }
 
     handleSubmit (event) {
-        this.props.action(true)
 
-        // axios.get(`/api/login`)
-        //     .then((r)=> {
-        //
-        //     })
-        //     .catch((e)=>{
-        //        alert(e)
-        //     })
         event.preventDefault()
+
+        axios.post(`/api/login`, {email: this.state.email, password: this.state.password})
+            .then((r) => {
+
+                const userData = {
+                    username: r.data.username,
+                    user_id: r.data.id
+                }
+
+                this.props.action(userData)
+            })
+            .catch((e) => {
+                alert(e)
+            })
     }
 
     render () {
