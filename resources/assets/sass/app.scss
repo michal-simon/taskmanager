@@ -1494,6 +1494,12 @@ $color_celeste_approx: #ccc;
 	}
 }
 
+@media (min-width: 992px) {
+	.modal-lg {
+		max-width: 1064px !important;
+	}
+}
+
 //.open aside.left-panel {
 //	width: 220px !important;
 //}

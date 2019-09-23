@@ -50,16 +50,6 @@ class EditUser extends React.Component {
                 const index = this.props.users.findIndex(user => user.id === this.props.user.id)
                 this.props.users[index] = this.state.user
                 this.props.action(this.props.users)
-                this.setState({
-                    username: null,
-                    email: null,
-                    first_name: null,
-                    last_name: null,
-                    profile_photo: null,
-                    password: null,
-                    role_id: null,
-                    loading: false
-                })
             })
             .catch((error) => {
                 this.setState({
@@ -106,6 +96,7 @@ class EditUser extends React.Component {
                 <option key={index} value={role.id}>{role.name}</option>
             ))
         }
+
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Update</Button>

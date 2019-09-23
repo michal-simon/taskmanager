@@ -104,11 +104,7 @@ class CustomerController extends Controller {
         }
 
         $list = $this->customerRepo->listCustomers('created_at', 'desc');
-
-        if (request()->has('q')) {
-            $list = $this->customerRepo->searchCustomer(request()->input('q'));
-        }
-
+        
         $customers = $list->map(function (Customer $customer) {
                     return $this->transformCustomer($customer);
                 })->all();

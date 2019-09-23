@@ -152,6 +152,7 @@ class EditInvoice extends Component {
         const changeStatusButton = this.state.invoice_status === 1
             ? <Button color="primary" onClick={() => this.changeStatus(2).bind(this)}>Send</Button>
             : <Button color="primary" onClick={() => this.changeStatus(3).bind(this)}>Paid</Button>
+
         let customerContent
         if (!this.state.customers.length) {
             customerContent = <option value="">Loading...</option>

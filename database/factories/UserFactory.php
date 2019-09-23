@@ -21,7 +21,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'username' => $faker->unique()->userName,
         'password' => bcrypt($faker->password(6)),
         'is_active' => 1,
-        'profile_photo' => $faker->url(),
-        'role_id' => 0
+        'profile_photo' => $faker->url()
     ];
 });

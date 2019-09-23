@@ -31,6 +31,8 @@ use App\Repositories\Interfaces\PermissionRepositoryInterface;
 use App\Repositories\PermissionRepository;
 use App\Repositories\Interfaces\MessageRepositoryInterface;
 use App\Repositories\MessageRepository;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\ProductRepository;
 
 class RepositoryServiceProvider extends ServiceProvider {
 
@@ -96,13 +98,17 @@ class RepositoryServiceProvider extends ServiceProvider {
         $this->app->bind(
                 CustomerRepositoryInterface::class, CustomerRepository::class
         );
-        
+
         $this->app->bind(
                 PermissionRepositoryInterface::class, PermissionRepository::class
         );
-        
-         $this->app->bind(
+
+        $this->app->bind(
                 MessageRepositoryInterface::class, MessageRepository::class
+        );
+
+        $this->app->bind(
+                ProductRepositoryInterface::class, ProductRepository::class
         );
     }
 

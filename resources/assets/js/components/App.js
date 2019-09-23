@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import UserList from './users/UserList'
+import ProductList from './products/ProductList'
 import Dashboard from './Dashboard'
 import Calendar from './calendar/Calendars'
 import Roles from './roles/Roles'
@@ -52,6 +53,7 @@ class App extends Component {
             <main>
                 <BrowserRouter>
                     <Switch>
+                        <Route path='/products' component={ProductList}/>
                         <Route path='/chat' component={ChatPage}/>
                         <Route path='/customers' component={Customers}/>
                         <Route path='/invoice' component={Invoice}/>

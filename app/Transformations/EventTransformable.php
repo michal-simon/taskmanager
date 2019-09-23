@@ -8,6 +8,12 @@ use App\Repositories\CustomerRepository;
 
 trait EventTransformable {
 
+    /**
+     * Transform the event
+     *
+     * @param Event $event
+     * @return Event
+     */
     protected function transformEvent(Event $event) {
         $prop = new Event;
         $customer = (new CustomerRepository(new Customer))->findCustomerById($event->customer_id);

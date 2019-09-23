@@ -56,3 +56,8 @@ Route::get('messages/customers', 'MessageController@getCustomers');
 Route::get('messages/{customer_id}', 'MessageController@index');
 Route::post('messages', 'MessageController@store');
 
+Route::get('products', 'ProductController@index');
+Route::post('products', 'ProductController@store');
+Route::delete('products/{product_id}', 'ProductController@destroy');
+Route::put('products/{product_id}', 'ProductController@update');
+

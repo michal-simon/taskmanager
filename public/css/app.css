@@ -3497,3 +3497,9 @@ li .active:before {
   margin-bottom: 16px;
 }
 
+@media (min-width: 992px) {
+  .modal-lg {
+    max-width: 1064px !important;
+  }
+}
+

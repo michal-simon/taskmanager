@@ -7,6 +7,12 @@ use App\Customer;
 
 trait UserTransformable
 {
+    /**
+     * Transform the user
+     *
+     * @param User $user
+     * @return User
+     */
     protected function transformUser(User $user)
     {
         $prop = new User;

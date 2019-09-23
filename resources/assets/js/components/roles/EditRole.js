@@ -10,8 +10,8 @@ class EditRole extends React.Component {
             modal: false,
             loading: false,
             errors: [],
-            name: this.props.role.name,
-            description: this.props.role.description,
+            name: '',
+            description: '',
             permissions: [],
             attachedPermissions: [],
             selectedPermissions: [],
@@ -28,6 +28,12 @@ class EditRole extends React.Component {
     }
 
     componentDidMount () {
+
+        this.setState({
+            name: this.props.role.name,
+            description: this.props.role.description
+        })
+
         this.getRole()
     }
 
@@ -61,11 +67,6 @@ class EditRole extends React.Component {
                 this.props.roles[index].name = this.state.name
                 this.props.roles[index].description = this.state.description
                 this.props.action(this.props.roles)
-                this.setState({
-                    name: null,
-                    description: null,
-                    loading: false
-                })
             })
             .catch((error) => {
                 this.setState({

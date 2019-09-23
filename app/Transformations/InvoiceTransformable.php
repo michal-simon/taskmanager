@@ -8,6 +8,12 @@ use App\Customer;
 
 trait InvoiceTransformable {
 
+     /**
+     * Transform the invoice
+     *
+     * @param Invoice $invoice
+     * @return Invoice
+     */
     protected function transformInvoice(Invoice $invoice) {
         $prop = new Invoice;
 

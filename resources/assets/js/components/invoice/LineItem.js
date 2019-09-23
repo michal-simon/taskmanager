@@ -7,12 +7,26 @@ class LineItem extends Component {
     constructor (props) {
         super(props)
         this.state = Object.assign({}, props.lineItemData)
+        this.state.products = []
         this.handleQuantityChange = this.handleQuantityChange.bind(this)
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
         this.handlePriceChange = this.handlePriceChange.bind(this)
+        this.handleProductChange = this.handleProductChange.bind(this)
         this.handleDeleteClick = this.handleDeleteClick.bind(this)
         this.pushToCaller = this.pushToCaller.bind(this)
         this.deleteFromDatabase = this.deleteFromDatabase.bind(this)
+        this.loadProducts = this.loadProducts.bind(this)
+    }
+
+    componentDidMount () {
+        this.loadProducts()
+    }
+
+    loadProducts () {
+        axios.get('/api/products').then(data => {
+            this.setState({ products: data.data })
+            console.log('products', this.state.products)
+        })
     }
 
     updateLine (e) {
@@ -89,11 +103,25 @@ class LineItem extends Component {
         this.props.onDelete(this.props.id)
     }
 
+    handleProductChange(e) {
+        alert('here')
+    }
+
     render () {
         const { lineId } = this.props.lineItemData
         const button = this.props.canUpdate ? <Button color="danger" onClick={this.handleDeleteClick}>Delete</Button>
             : <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
                 className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
+
+        let productList = null
+        if (!this.state.products.length) {
+            productList = <option value="">Loading...</option>
+        } else {
+            productList = this.state.products.map((product, index) => (
+                <option key={index} value={product.id}>{product.name}</option>
+            ))
+        }
+
         return (
             <tr data-id={lineId} key={lineId}>
                 <td>
@@ -103,6 +131,13 @@ class LineItem extends Component {
                 <td>
                     <Input name="description" data-line={lineId} type='text' value={this.state.description}
                         onChange={this.handleDescriptionChange} className='pa2 mr2 f6 form-control' />
+                </td>
+
+                <td>
+                    <Input name="product" type='select' onChange={this.handleProductChange}>
+                        <option value="">Select Product</option>
+                        {productList}
+                    </Input>
                 </td>
                 <td>
                     <Input name="unit_price" data-line={lineId} type='text' data-column="5"

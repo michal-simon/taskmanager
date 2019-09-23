@@ -75,6 +75,7 @@ class LineItemEditor extends Component {
                     <tr>
                         <th>Quantity</th>
                         <th>Description</th>
+                        <th>Product</th>
                         <th>Unit Price</th>
                         <th>Total</th>
                         <th></th>
