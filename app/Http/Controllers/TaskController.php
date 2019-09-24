@@ -9,10 +9,8 @@ use App\Requests\UpdateTaskRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
-use App\Repositories\CustomerRepository;
-use App\Repositories\UserRepository;
-use App\User;
-use App\Customer;
+use App\Product;
+use App\Repositories\ProductRepository;
 
 class TaskController extends Controller {
 
@@ -35,26 +33,16 @@ class TaskController extends Controller {
      * @return Response
      */
     public function store(CreateTaskRequest $request) {
-        $validatedData = $request->validated();
+        
+        $validatedData = $request->except('project_id');
 
         if (!empty($validatedData['project_id'])) {
             $objProject = $this->projectRepository->findProjectById($validatedData['project_id']);
         }
+        
+        $validatedData['customer_id'] = empty($validatedData['customer_id']) && isset($objProject) ? $objProject->customer_id : $validatedData['customer_id'];
 
-        $arrFormData = [
-            'customer_id' => empty($validatedData['customer_id']) && isset($objProject) ? $objProject->customer_id : $validatedData['customer_id'],
-            'rating' => $validatedData['rating'],
-            'task_type' => $validatedData['task_type'],
-            'title' => $validatedData['title'],
-            'content' => $validatedData['content'],
-            'task_color' => $validatedData['task_color'],
-            'contributors' => $validatedData['contributors'],
-            'due_date' => $validatedData['due_date'],
-            'task_status' => $validatedData['task_status'],
-            'created_by' => $validatedData['created_by'],
-        ];
-
-        $task = $this->taskRepository->createTask($arrFormData);
+        $task = $this->taskRepository->createTask($validatedData);
 
         if ($validatedData['task_type'] == 1) {
             $objProject->tasks()->attach($task);
@@ -107,7 +95,12 @@ class TaskController extends Controller {
     }
 
     public function getLeads() {
-        $tasks = $this->taskRepository->getLeads();
+        $tasks = $this->taskRepository->getLeads(2);
+        return $tasks->toJson();
+    }
+
+    public function getDeals() {
+        $tasks = $this->taskRepository->getLeads(3);
         return $tasks->toJson();
     }
 
@@ -132,6 +125,42 @@ class TaskController extends Controller {
         $tasks = $this->taskRepository->filterTasks($request->all(), $task_type);
 
         return $tasks->toJson();
+    }
+
+    /**
+     * 
+     * @param int $task_id
+     * @param Request $request
+     */
+    public function addProducts(int $task_id, Request $request) {
+
+        $task = $this->taskRepository->findTaskById($task_id);
+
+        $taskRepo = new TaskRepository($task);
+
+        if ($request->has('products')) {
+            $taskRepo->syncProducts($request->input('products'));
+        }
+
+        return response()->json('added products to task successfully');
+    }
+
+    /**
+     * 
+     * @param int $task_id
+     * @return type
+     */
+    public function getProducts(int $task_id) {
+
+        $products = (new ProductRepository(new Product))->listProducts();
+        $task = $this->taskRepository->findTaskById($task_id);
+
+        $arrData = [
+            'products' => $products,
+            'selectedIds' => $task->products()->pluck('product_id')->all(),
+        ];
+
+        return response()->json($arrData);
     }
 
 }

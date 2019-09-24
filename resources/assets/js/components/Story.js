@@ -51,6 +51,7 @@ export default class Story extends Component {
 
                 <div className="task-body">
                     <Task
+                        task_type={this.props.task_type}
                         action={this.props.action}
                         tasks={this.props.tasks}
                         loading={this.props.loading}
