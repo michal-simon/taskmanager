@@ -110,7 +110,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
      * @return Collection
      */
     public function getProductsForTask(Task $objTask): Support {
-        return $this->all();
+        return $this->model->join('product_task', 'product_task.product_id', '=', 'products.id')
+                        ->select('products.*')
+                        ->where('product_task.task_id', $objTask->id)
+                        ->get();
     }
 
 }

@@ -45,7 +45,7 @@ class LineItem extends Component {
             .then((response) => {
             })
             .catch((error) => {
-                alert(error)
+                console.warn(error)
             })
     }
 
@@ -78,6 +78,7 @@ class LineItem extends Component {
             this.setState({ unit_price: e.target.value })
             return false
         }
+
         this.setState({ unit_price: e.target.value }, this.pushToCaller)
     }
 
@@ -88,6 +89,8 @@ class LineItem extends Component {
             unit_price: parseFloat(this.state.unit_price),
             product_id: parseInt(this.state.product_id)
         })
+
+        this.props.calculateTotal()
     }
 
     deleteFromDatabase (lineId) {
@@ -119,6 +122,8 @@ class LineItem extends Component {
         } else {
             this.setState({ unit_price: price, product_id: productId }, this.pushToCaller)
         }
+
+        this.props.calculateTotal()
     }
 
     buildProductOptions () {
@@ -126,13 +131,16 @@ class LineItem extends Component {
         if (!this.state.products.length) {
             productList = <option value="">Loading...</option>
         } else {
-            productList = this.state.products.map((product, index) => (
-                <option key={index} data-price={product.price} value={product.id}>{product.name}</option>
-            ))
+            productList = this.state.products.map((product, index) => {
+
+                const selected = this.state.product_id && this.state.product_id === product.id ? 'selected' : ''
+
+                return <option selected={selected} key={index} data-price={product.price} value={product.id}>{product.name}</option>
+            })
         }
 
         return (
-            <Input name="product" type='select' onChange={this.handleProductChange}>
+            <Input defaultValue={this.state.product_id} name="product" type='select' onChange={this.handleProductChange}>
                 <option value="">Select Product</option>
                 {productList}
             </Input>
@@ -141,9 +149,10 @@ class LineItem extends Component {
 
     render () {
         const { lineId } = this.props.lineItemData
-        const button = this.props.canUpdate ? <Button color="danger" onClick={this.handleDeleteClick}>Delete</Button>
+        const button = this.props.canUpdate ? <Button color="danger" onClick={(event) => {this.props.onDelete(lineId, event)}}>Delete</Button>
             : <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
                 className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
+        const updateButton = !this.props.canUpdate ? <Button color="primary" onClick={this.updateLine}>Update</Button> : ''
 
         return (
             <tr data-id={lineId} key={lineId}>
@@ -169,7 +178,7 @@ class LineItem extends Component {
                 </td>
                 <td>
                     {button}
-                    <Button color="primary" onClick={this.updateLine}>Update</Button>
+                    {updateButton}
                 </td>
             </tr>
         )

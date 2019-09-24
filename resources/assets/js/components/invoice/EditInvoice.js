@@ -31,8 +31,9 @@ class EditInvoice extends Component {
         this.buildCustomerOptions = this.buildCustomerOptions.bind(this)
         this.buildTaskOptions = this.buildTaskOptions.bind(this)
         this.handleTaskChange = this.handleTaskChange.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
         this.total = 0
-
+        this.hasTasks = false
     }
 
     componentDidMount () {
@@ -76,11 +77,27 @@ class EditInvoice extends Component {
     handleTaskChange (e) {
         axios.get(`/api/products/tasks/${e.target.value}`)
             .then((r) => {
-                console.log('lines', r.data)
-                //this.setState({ customers: r.data })
+
+                const arrLines = []
+
+                if(r.data && r.data.length) {
+                    r.data.map((product) => {
+                        const objLine = {
+                            quantity: 1,
+                            product_id: product.id,
+                            unit_price: product.price,
+                            description: product.name
+                        }
+
+                        arrLines.push(objLine)
+                    })
+                }
+
+                this.hasTasks = true
+                this.setState({ existingLines: arrLines, data: arrLines })
             })
             .catch((e) => {
-                    alert(e)
+                    console.warn(e)
                 }
             )
     }
@@ -95,7 +112,7 @@ class EditInvoice extends Component {
                 this.setState({ customers: r.data })
              })
              .catch((e) => {
-                alert(e)
+                console.warn(e)
             }
         )
     }
@@ -111,7 +128,7 @@ class EditInvoice extends Component {
                 this.setState({ tasks: r.data })
             })
             .catch((e) => {
-                alert(e)
+                console.warn(e)
             })
     }
 
@@ -130,7 +147,7 @@ class EditInvoice extends Component {
                 })
             })
             .catch((e) => {
-                alert(e)
+                console.warn(e)
             })
     }
 
@@ -155,8 +172,35 @@ class EditInvoice extends Component {
         })
     }
 
-    updateData (data) {
-        this.setState({ data: data })
+    updateData (rowData, row) {
+
+        if(!this.state.data || !this.state.data.length) {
+            this.setState({ data: rowData })
+            return
+        }
+
+        if(this.state.data && this.state.data[row]) {
+            this.state.data[row] = rowData;
+            return
+        }
+
+        this.setState(prevState => ({
+            data: [...prevState.data, rowData]
+        }))
+
+        return
+    }
+
+    handleDelete (row) {
+
+        if(!this.state.data || !this.state.data[row]) {
+
+            return false
+        }
+
+        const array = [...this.state.data]; // make a separate copy of the array
+        array.splice(row, 1);
+        this.setState({data: array});
     }
 
     setTotal (total) {
@@ -164,6 +208,7 @@ class EditInvoice extends Component {
     }
 
     saveData () {
+
         const data = {
             invoice_id: this.props.invoice_id,
             due_date: this.state.due_date,
@@ -181,7 +226,7 @@ class EditInvoice extends Component {
                 this.props.action(allInvoices)
             })
             .catch((error) => {
-                alert(error)
+                console.warn(error)
             })
     }
 
@@ -263,7 +308,7 @@ class EditInvoice extends Component {
 
                             {taskContent}
 
-                            <LineItemEditor lineItemModel={this.state.existingLines} update={this.updateData}
+                            <LineItemEditor hasTasks={this.hasTasks} lineItemModel={this.state.existingLines} delete={this.handleDelete} update={this.updateData}
                                             setTotal={this.setTotal}/>
                             <Button color="success" onClick={this.saveData}>Save</Button>
                             {changeStatusButton}
