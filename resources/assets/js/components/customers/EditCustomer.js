@@ -27,7 +27,6 @@ class EditCustomer extends React.Component {
             const customerData = { ...data.data, ...data.data.addresses[0] }
             delete customerData.addresses
             this.setState({ customer: customerData })
-            console.log('customer', this.state.customer)
         })
     }
 
