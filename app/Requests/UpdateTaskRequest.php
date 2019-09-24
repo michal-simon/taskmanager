@@ -22,6 +22,7 @@ class UpdateTaskRequest extends FormRequest {
      */
     public function rules() {
         return [
+            'valued_at' => 'nullable|string',
             'rating' => 'nullable|numeric',
             'customer_id' => 'nullable|numeric',
             'title' => 'required',

@@ -61,4 +61,6 @@ Route::get('products', 'ProductController@index');
 Route::post('products', 'ProductController@store');
 Route::delete('products/{product_id}', 'ProductController@destroy');
 Route::put('products/{product_id}', 'ProductController@update');
+Route::post('tasks/products/{task_id}', 'TaskController@addProducts');
+Route::get('tasks/products/{task_id}', 'TaskController@getProducts');
 

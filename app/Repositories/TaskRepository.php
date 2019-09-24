@@ -94,8 +94,8 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * 
      * @return type
      */
-    public function getLeads(): Support {
-        return Task::where('task_type', 2)
+    public function getLeads(int $task_type): Support {
+        return Task::where('task_type', $task_type)
                         ->where('is_completed', 0)
                         ->get();
     }
@@ -127,7 +127,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
                     ->where('is_completed', 0);
         } else {
             $query = Task::where('is_completed', 0)
-                    ->where('task_type', 2);
+                    ->where('task_type', $task_type);
         }
 
 
@@ -136,6 +136,16 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
         }
 
         return $query->get();
+    }
+    
+    /**
+     * Sync the categories
+     *
+     * @param array $params
+     */
+    public function syncProducts(array $params)
+    {
+        $this->model->products()->sync($params);
     }
 
 }

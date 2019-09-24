@@ -78,6 +78,17 @@ class AddLead extends React.Component {
                 </FormGroup>
 
                 <FormGroup>
+                    <Label for="valued_at">Value:</Label>
+                    <Input className={this.hasLeadErrorFor('valued_at') ? 'is-invalid' : ''} type="text"
+                           disabled={disabled}
+                           name="valued_at"
+                           id="valued_at"
+                           value={this.state.valued_at}
+                           onChange={this.updateLeadValue}/>
+                    {this.renderLeadErrorFor('updateValue')}
+                </FormGroup>
+
+                <FormGroup>
                     <Label for="location">Customer:</Label>
                     <Input className={this.hasLeadErrorFor('location') ? 'is-invalid' : ''} type="select"
                         disabled={disabled}

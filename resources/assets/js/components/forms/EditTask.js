@@ -16,6 +16,7 @@ class EditTask extends Component {
             due_date: this.props.task.due_date,
             contributors: this.props.task.contributors,
             rating: this.props.task.rating,
+            valued_at: this.props.valued_at,
             customer_id: this.props.task.customer_id,
             editMode: false,
             err: '',
@@ -68,6 +69,7 @@ class EditTask extends Component {
         axios.put(`/api/tasks/${this.props.task.id}`, {
             customer_id: this.state.customers,
             rating: this.state.rating,
+            valued_at: this.state.valued_at,
             title: this.state.title,
             content: this.state.description,
             contributors: this.state.contributors,
@@ -124,8 +126,10 @@ class EditTask extends Component {
     getFormForLead (readOnly = false) {
         const objValues = {
             rating: this.state.rating,
+            valued_at: this.state.valued_at,
             customer_id: this.state.customer_id
         }
+
         return (
             <React.Fragment>
                 <AddLead
@@ -178,7 +182,7 @@ class EditTask extends Component {
         )
         let panelBody = null
         if (this.state.editMode) {
-            const leadForm = this.props.task_type === 2 ? this.getFormForLead() : ''
+            const leadForm = parseInt(this.props.task_type) === 2 ? this.getFormForLead() : ''
             panelBody = (
                 <form>
                     <FormGroup>

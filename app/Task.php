@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Project;
 use App\Traits\SearchableTrait;
+use App\Product;
 
 class Task extends Model {
 
@@ -21,9 +22,10 @@ class Task extends Model {
         'created_by',
         'task_type',
         'customer_id',
-        'rating'
+        'rating',
+        'valued_at'
     ];
-    
+
     /**
      * Searchable rules.
      *
@@ -53,6 +55,10 @@ class Task extends Model {
      */
     public function searchTask($term) {
         return self::search($term);
+    }
+
+    public function products() {
+        return $this->belongsToMany(Product::class);
     }
 
 }

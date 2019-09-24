@@ -24,6 +24,7 @@ class AddUser extends React.Component {
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
+        this.getRoleList = this.getRoleList.bind(this)
     }
 
     componentDidMount () {
@@ -109,7 +110,7 @@ class AddUser extends React.Component {
         this.setState({ selectedRoles: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
-    render () {
+    getRoleList () {
         let roleList = null
         if (!this.state.roles.length) {
             roleList = <option value="">Loading...</option>
@@ -118,6 +119,13 @@ class AddUser extends React.Component {
                 <option key={index} value={role.id}>{role.name}</option>
             ))
         }
+
+        return roleList
+    }
+
+    render () {
+        const roleList = this.getRoleList()
+
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Add User</Button>
