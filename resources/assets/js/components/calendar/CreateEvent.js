@@ -24,6 +24,8 @@ class CreateEvent extends React.Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.toggle = this.toggle.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
+        this.getUserList = this.getUserList.bind(this)
+        this.getCustomerList = this.getCustomerList.bind(this)
     }
 
     componentDidMount () {
@@ -117,15 +119,7 @@ class CreateEvent extends React.Component {
         this.setState({ selectedUsers: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
-    render () {
-        let customerList
-        if (!this.state.customers.length) {
-            customerList = <option value="">Loading...</option>
-        } else {
-            customerList = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
-            ))
-        }
+    getUserList () {
         let userList
         if (!this.state.users.length) {
             userList = <option value="">Loading...</option>
@@ -134,6 +128,48 @@ class CreateEvent extends React.Component {
                 <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
+
+        return (
+            <FormGroup>
+                <Label for="users">Attendees</Label>
+                <Input onChange={this.handleMultiSelect} type="select" name="users" id="users" multiple>
+                    {userList}
+                </Input>
+                {this.renderErrorFor('users')}
+            </FormGroup>
+        )
+    }
+
+    getCustomerList () {
+        let customerList
+        if (!this.state.customers.length) {
+            customerList = <option value="">Loading...</option>
+        } else {
+            customerList = this.state.customers.map((customer, index) => (
+                <option key={index} value={customer.id}>{customer.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="location">Customer:</Label>
+                <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="select"
+                    name="customer_id"
+                    id="customer_id"
+                    onChange={this.handleInput.bind(this)}>
+                    <option>Select Customer</option>
+                    {customerList}
+                </Input>
+                {this.renderErrorFor('customer_id')}
+            </FormGroup>
+        )
+    }
+
+    render () {
+
+        const customerList = this.getCustomerList()
+        const userList = this.getUserList()
+
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Add Event</Button>
@@ -161,25 +197,9 @@ class CreateEvent extends React.Component {
                             {this.renderErrorFor('location')}
                         </FormGroup>
 
-                        <FormGroup>
-                            <Label for="location">Customer:</Label>
-                            <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="select"
-                                name="customer_id"
-                                id="customer_id"
-                                onChange={this.handleInput.bind(this)}>
-                                <option>Select Customer</option>
-                                {customerList}
-                            </Input>
-                            {this.renderErrorFor('customer_id')}
-                        </FormGroup>
+                        {customerList}
 
-                        <FormGroup>
-                            <Label for="users">Attendees</Label>
-                            <Input onChange={this.handleMultiSelect} type="select" name="users" id="users" multiple>
-                                {userList}
-                            </Input>
-                            {this.renderErrorFor('users')}
-                        </FormGroup>
+                        {userList}
 
                         <FormGroup>
                             <Label for="beginDate">Begin Date:</Label>

@@ -69,6 +69,9 @@ class FileUpload extends Component {
     }
 
     onClickHandler () {
+
+        alert(this.props.user_id)
+
         const data = new FormData()
         data.append('user_id', this.props.user_id)
         data.append('task_id', this.props.task.id)

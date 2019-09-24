@@ -1,14 +1,14 @@
 import axios from 'axios'
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form } from 'reactstrap'
-import axios from 'axios'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form, Row, Col } from 'reactstrap'
 
-class EditCustomer extends React.Component {
+class ViewCustomer extends React.Component {
     constructor (props) {
         super(props)
+        console.log('task', this.props.task)
         this.state = {
             modal: false,
-            id: this.props.id,
+            id: this.props.task.customer_id,
             customer: {},
             errors: []
         }
@@ -23,90 +23,60 @@ class EditCustomer extends React.Component {
     }
 
     render () {
+        alert(this.state.customer.first_name)
         return (
             <div>
+                <Form>
+                    <FormGroup>
+                        <Label column sm="4">First Name </Label>
+                        <span> {this.state.customer.first_name} </span>
+                    </FormGroup>
 
-                        <Form>
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2">First Name </Form.Label>
+                    <FormGroup>
+                        <Label column sm="4"> Last Name </Label>
+                        <span>{this.state.customer.last_name}</span>
+                    </FormGroup>
 
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.first_name} />
-                                </Col>
-                            </Form.Group>
+                    <FormGroup>
+                        <Label column sm="4"> Email </Label>
+                        <span>{this.state.customer.email}</span>
+                    </FormGroup>
 
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2"> Last Name </Form.Label>
+                    <FormGroup>
+                        <Label column sm="4"> Phone </Label>
+                        <span>{this.state.customer.phone} </span>
+                    </FormGroup>
 
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.last_name} />
-                                </Col>
-                            </Form.Group>
+                    <FormGroup>
+                        <Label column sm="4"> Address 1 </Label>
+                        <span>{this.state.customer.address_1} </span>
+                    </FormGroup>
 
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2"> Email </Form.Label>
+                    <FormGroup>
+                        <Label column sm="4"> Address 2 </Label>
+                        <span>{this.state.customer.address_2} </span>
+                    </FormGroup>
 
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.email} />
-                                </Col>
-                            </Form.Group>
+                    <FormGroup>
+                        <Label column sm="4"> Postcode </Label>
+                        <span>{this.state.customer.zip} </span>
+                    </FormGroup>
 
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2"> Phone </Form.Label>
+                    <FormGroup>
+                        <Label column sm="4"> City </Label>
+                        <span>{this.state.customer.city} </span>
+                    </FormGroup>
 
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.phone} />
-                                </Col>
-                            </Form.Group>
+                    <FormGroup>
+                        <Label column sm="4"> Company Name </Label>
+                        <span>{this.state.customer.company_name} </span>
+                    </FormGroup>
 
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2"> Address 1 </Form.Label>
-
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.address_1} />
-                                </Col>
-                            </Form.Group>
-
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2"> Address 2 </Form.Label>
-
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.address_2} />
-                                </Col>
-                            </Form.Group>
-
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2"> Postcode </Form.Label>
-
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.zip} />
-                                </Col>
-                            </Form.Group>
-
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2"> City </Form.Label>
-
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.city} />
-                                </Col>
-                            </Form.Group>
-
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2"> Company Name </Form.Label>
-
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.company_name} />
-                                </Col>
-                            </Form.Group>
-
-                            <Form.Group as={Row} controlId="formPlaintextEmail">
-                                <Form.Label column sm="2"> Job Title </Form.Label>
-
-                                <Col sm="10">
-                                    <Form.Control plaintext readOnly  defaultValue={this.state.customer.job_title} />
-                                </Col>
-                            </Form.Group>
-                        </Form>
+                    <FormGroup>
+                        <Label column sm="4"> Job Title </Label>
+                        <span>{this.state.customer.job_title} </span>
+                    </FormGroup>
+                </Form>
             </div>
         )
     }

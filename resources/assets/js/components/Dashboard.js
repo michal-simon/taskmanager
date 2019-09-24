@@ -32,7 +32,7 @@ class Dashboard extends Component {
     }
 
     getTasks () {
-        const url = this.props.task_type === 2 ? '/api/leads' : `/api/tasks/getTasksForProject/${this.project_id}`
+        const url = (this.props.task_type === 2) ? '/api/leads' : (this.props.task_type === 3) ? '/api/deals' : `/api/tasks/getTasksForProject/${this.project_id}`;
         axios.get(url)
             .then((r) => {
                 this.setState({

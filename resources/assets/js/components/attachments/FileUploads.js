@@ -55,7 +55,7 @@ export default class FileUploads extends Component {
 
                 {<FileUploadForm
                     addFile={this.addFile}
-                    user_id={101}
+                    user_id={this.props.user_id}
                     task={this.props.task}
                 />}
 

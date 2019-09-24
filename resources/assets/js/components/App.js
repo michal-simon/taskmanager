@@ -69,6 +69,10 @@ class App extends Component {
                             render={(props) => <Dashboard {...props} task_type={2} />}
                         />
                         <Route
+                            path='/deals'
+                            render={(props) => <Dashboard {...props} task_type={3} />}
+                        />
+                        <Route
                             path='/projects'
                             render={(props) => <Dashboard {...props} task_type={1} project_id={projectId} />}
                         />

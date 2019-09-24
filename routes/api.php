@@ -28,6 +28,7 @@ Route::get('uploads/{task_id}', 'UploadController@index');
 Route::get('comments/{task_id}', 'CommentController@index');
 Route::put('tasks/{task_id}', 'TaskController@update');
 Route::get('leads', 'TaskController@getLeads');
+Route::get('deals', 'TaskController@getDeals');
 Route::put('tasks/status/{task_id}', 'TaskController@updateStatus');
 Route::get('roles', 'RoleController@index');
 Route::post('roles', 'RoleController@store');

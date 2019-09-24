@@ -48,6 +48,8 @@ class CalendarEvent extends React.Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.toggle = this.toggle.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
+        this.getUserList = this.getUserList.bind(this)
+        this.getCustomerList = this.getCustomerList.bind(this)
     }
 
     componentDidMount () {
@@ -157,8 +159,7 @@ class CalendarEvent extends React.Component {
         this.setState({ attendees: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
-    render () {
-        const { col, colSpan } = this.props
+    getCustomerList () {
         let customerList
 
         if (!this.state.customers.length) {
@@ -166,10 +167,26 @@ class CalendarEvent extends React.Component {
         } else {
             customerList = this.state.customers.map((customer, index) => {
                 const selected = customer.id === this.state.customer_id ? 'selected' : ''
-                return <option selected={selected} key={index}
-                    value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
+                return <option selected={selected} key={index} value={customer.id}>{customer.name}</option>
             })
         }
+
+        return (
+            <FormGroup>
+                <Label for="customer_id">Customer:</Label>
+                <Input className={this.hasErrorFor('customer_id') ? 'is-invalid' : ''} type="select"
+                    name="customer_id"
+                    id="customer_id"
+                    onChange={this.handleInput.bind(this)}>
+                    <option>Select Customer</option>
+                    {customerList}
+                </Input>
+                {this.renderErrorFor('customer_id')}
+            </FormGroup>
+        )
+    }
+
+    getUserList () {
         let userList
         if (!this.state.users.length) {
             userList = <option value="">Loading...</option>
@@ -178,6 +195,24 @@ class CalendarEvent extends React.Component {
                 <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
+
+        return (
+            <FormGroup>
+                <Label for="users">Attendees</Label>
+                <Input defaultValue={this.state.attendees} onChange={this.handleMultiSelect} type="select"
+                    name="users" id="users" multiple>
+                    {userList}
+                </Input>
+                {this.renderErrorFor('users')}
+            </FormGroup>
+        )
+    }
+
+    render () {
+        const { col, colSpan } = this.props
+        const userList = this.getUserList()
+        const customerList = this.getCustomerList()
+
         const beginDate = this.convertDate(this.state.beginDate)
         const endDate = this.convertDate(this.state.endDate)
         return (
@@ -211,26 +246,9 @@ class CalendarEvent extends React.Component {
                             {this.renderErrorFor('location')}
                         </FormGroup>
 
-                        <FormGroup>
-                            <Label for="location">Customer:</Label>
-                            <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="select"
-                                name="customer_id"
-                                id="customer_id"
-                                onChange={this.handleInput.bind(this)}>
-                                <option>Select Customer</option>
-                                {customerList}
-                            </Input>
-                            {this.renderErrorFor('customer_id')}
-                        </FormGroup>
+                        {customerList}
 
-                        <FormGroup>
-                            <Label for="users">Attendees</Label>
-                            <Input defaultValue={this.state.attendees} onChange={this.handleMultiSelect} type="select"
-                                name="users" id="users" multiple>
-                                {userList}
-                            </Input>
-                            {this.renderErrorFor('users')}
-                        </FormGroup>
+                        {userList}
 
                         <FormGroup>
                             <Label for="beginDate">Begin Date:</Label>

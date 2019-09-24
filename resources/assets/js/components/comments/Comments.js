@@ -60,7 +60,7 @@ export default class Comments extends Component {
                             <div className="panel-body">
                                 {<CommentForm
                                     addComment={this.addComment}
-                                    user_id={101}
+                                    user_id={this.props.user_id}
                                     task={this.props.task}
                                 />}
 

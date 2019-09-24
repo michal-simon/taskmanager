@@ -28,7 +28,7 @@ class CustomerUnitTest extends TestCase {
         $customerFromDb = $repo->findCustomerById($customer->id);
         $cust = $this->transformCustomer($customer);
         //$this->assertInternalType('string', $customerFromDb->status);
-        $this->assertInternalType('string', $cust->first_name);
+        $this->assertInternalType('string', $cust->name);
     }
 
     /** @test */

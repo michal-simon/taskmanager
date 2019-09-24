@@ -139,7 +139,7 @@ class AddModal extends React.Component {
     }
 
     render () {
-        const leadForm = this.props.task_type === 2 ? this.getFormForLead() : ''
+        const leadForm = this.props.task_type === 2 || this.props.task_type === 3 ? this.getFormForLead() : ''
         let userContent
         if (!this.state.users.length) {
             userContent = <option value="">Loading...</option>

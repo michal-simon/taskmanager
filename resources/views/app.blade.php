@@ -52,6 +52,14 @@
                             <a href="/leads"> <i class="menu-icon fa fa-laptop"></i>Leads </a>
                         </li>
 
+                         <li>
+                                                    <a href="/deals"> <i class="menu-icon fa fa-laptop"></i>Deals </a>
+                                                </li>
+
+                                                 <li>
+                                                                            <a href="/products"> <i class="menu-icon fa fa-laptop"></i>Products </a>
+                                                                        </li>
+
                         <li>
                             <a href="/customers"> <i class="menu-icon fa fa-th"></i>Contacts </a>
                         </li>
