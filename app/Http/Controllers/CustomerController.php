@@ -131,7 +131,7 @@ class CustomerController extends Controller {
             'zip' => $request->zip,
             'city' => $request->city,
             'country_id' => 225,
-            'status' => 1
+            'status' => $request->customer_type
         ]);
         
         return $this->transformCustomer($customer);

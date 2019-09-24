@@ -23,6 +23,7 @@ export default class Customers extends Component {
     }
 
     userList () {
+
         if (this.state.customers && this.state.customers.length) {
             return this.state.customers.map(user => {
                 console.log('columns', Object.keys(user))
@@ -44,6 +45,7 @@ export default class Customers extends Component {
                         {test}
                         <td>
                             <EditCustomer
+                                customer_type={this.props.customer_type}
                                 id={user.id}
                                 action={this.updateCustomers}
                                 customers={this.state.customers}
@@ -100,7 +102,11 @@ export default class Customers extends Component {
         return (
             <div className="data-table m-md-3 m-0">
 
-                <AddCustomer action={this.updateCustomers} customers={this.state.customers}/>
+                <AddCustomer
+                    customer_type={this.props.customer_type}
+                    action={this.updateCustomers}
+                    customers={this.state.customers}
+                />
 
                 <DataTable
                     userList={this.userList}

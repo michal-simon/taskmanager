@@ -66,7 +66,8 @@ class AddCustomer extends React.Component {
             city: this.state.city,
             job_title: this.state.job_title,
             company_name: this.state.company_name,
-            description: this.state.description
+            description: this.state.description,
+            customer_type: this.props.customer_type
         }
         this.setState({ submitSuccess: true, values: [...this.state.values, formData], loading: false })
         axios.post('/api/customers', formData)
