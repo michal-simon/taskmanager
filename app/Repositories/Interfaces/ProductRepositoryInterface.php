@@ -6,6 +6,7 @@ use App\Repositories\Base\BaseRepositoryInterface;
 use App\Product;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
+use App\Task;
 
 interface ProductRepositoryInterface extends BaseRepositoryInterface {
 
@@ -52,4 +53,10 @@ interface ProductRepositoryInterface extends BaseRepositoryInterface {
      * @return mixed
      */
     public function searchProduct(string $text = null) : Collection;
+    
+    /**
+     * 
+     * @param \App\Repositories\Interfaces\Task $objTask
+     */
+    public function getProductsForTask(Task $objTask): Support;
 }

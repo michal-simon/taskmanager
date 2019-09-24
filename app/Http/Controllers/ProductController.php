@@ -9,6 +9,8 @@ use App\Requests\CreateProductRequest;
 use App\Requests\UpdateProductRequest;
 use App\Transformations\ProductTransformable;
 use Illuminate\Http\Request;
+use App\Repositories\TaskRepository;
+use App\Task;
 
 class ProductController extends Controller {
 
@@ -115,6 +117,24 @@ class ProductController extends Controller {
         $product = $this->productRepo->findProductById($id);
         $productRepo = new ProductRepository($product);
         $productRepo->deleteProduct();
+    }
+    
+    /**
+     * 
+     * @param int $task_id
+     * @return type
+     */
+    public function getProductsForTask(int $task_id) {
+        
+        $task = (new TaskRepository(new Task))->findTaskById($task_id);
+        
+        $list = $this->productRepo->getProductsForTask($task);
+
+        $products = $list->map(function (Product $product) {
+                    return $this->transformProduct($product);
+                })->all();
+
+        return collect($products)->toJson();
     }
 
 }

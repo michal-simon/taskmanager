@@ -95,7 +95,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @return type
      */
     public function getLeads(): Support {
-        return Task::where('task_type', 2)
+        return $this->model->where('task_type', 2)
                         ->where('is_completed', 0)
                         ->get();
     }
@@ -121,7 +121,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     public function filterTasks(array $arrFilters, $task_type, Project $objProject = null): Support {
 
         if ($task_type === 1) {
-            $query = Task::join('project_task', 'tasks.id', '=', 'project_task.task_id')
+            $query = $this->model->join('project_task', 'tasks.id', '=', 'project_task.task_id')
                     ->select('tasks.id as id', 'tasks.*')
                     ->where('project_id', $objProject->id)
                     ->where('is_completed', 0);
@@ -136,6 +136,14 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
         }
 
         return $query->get();
+    }
+
+    public function getTasksWithProducts(): Support {
+
+        return $this->model->join('product_task', 'product_task.task_id', '=', 'tasks.id')
+                        ->select('tasks.*')
+                        ->groupBy('tasks.id')
+                        ->get();
     }
 
 }
