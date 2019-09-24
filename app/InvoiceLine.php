@@ -27,7 +27,8 @@ class InvoiceLine extends Model {
         'description',
         'unit_price',
         'invoice_id',
-        'invoice_status'
+        'invoice_status',
+        'product_id'
     ];
 
 }

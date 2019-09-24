@@ -18,6 +18,7 @@ class EditInvoice extends Component {
             customer_id: 1,
             invoice_status: 1,
             customers: [],
+            tasks: [],
             errors: []
         }
         this.updateData = this.updateData.bind(this)
@@ -26,12 +27,18 @@ class EditInvoice extends Component {
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.total = 0
         this.changeStatus = this.changeStatus.bind(this)
+        this.buildCustomerOptions = this.buildCustomerOptions.bind(this)
+        this.buildTaskOptions = this.buildTaskOptions.bind(this)
+        this.handleTaskChange = this.handleTaskChange.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
+        this.total = 0
+        this.hasTasks = false
     }
 
     componentDidMount () {
         this.loadInvoice()
+        this.loadTasks()
         this.loadCustomers()
     }
 
@@ -67,6 +74,34 @@ class EditInvoice extends Component {
         })
     }
 
+    handleTaskChange (e) {
+        axios.get(`/api/products/tasks/${e.target.value}`)
+            .then((r) => {
+
+                const arrLines = []
+
+                if(r.data && r.data.length) {
+                    r.data.map((product) => {
+                        const objLine = {
+                            quantity: 1,
+                            product_id: product.id,
+                            unit_price: product.price,
+                            description: product.name
+                        }
+
+                        arrLines.push(objLine)
+                    })
+                }
+
+                this.hasTasks = true
+                this.setState({ existingLines: arrLines, data: arrLines })
+            })
+            .catch((e) => {
+                    console.warn(e)
+                }
+            )
+    }
+
     hasErrorFor (field) {
         return !!this.state.errors[field]
     }
@@ -75,16 +110,34 @@ class EditInvoice extends Component {
         axios.get('/api/customers/')
             .then((r) => {
                 this.setState({ customers: r.data })
+             })
+             .catch((e) => {
+                console.warn(e)
+            }
+        )
+    }
+
+    loadTasks () {
+
+        if (this.props.add) {
+            return false
+        }
+
+        axios.get('/api/tasks/products')
+            .then((r) => {
+                this.setState({ tasks: r.data })
             })
             .catch((e) => {
-                alert(e)
+                console.warn(e)
             })
     }
 
     loadInvoice () {
+
         if (!this.props.add) {
             return false
         }
+
         axios.get(`/api/invoice/${this.props.invoice_id}`)
             .then((r) => {
                 this.setState({
@@ -94,7 +147,7 @@ class EditInvoice extends Component {
                 })
             })
             .catch((e) => {
-                alert(e)
+                console.warn(e)
             })
     }
 
@@ -119,8 +172,35 @@ class EditInvoice extends Component {
         })
     }
 
-    updateData (data) {
-        this.setState({ data: data })
+    updateData (rowData, row) {
+
+        if(!this.state.data || !this.state.data.length) {
+            this.setState({ data: rowData })
+            return
+        }
+
+        if(this.state.data && this.state.data[row]) {
+            this.state.data[row] = rowData;
+            return
+        }
+
+        this.setState(prevState => ({
+            data: [...prevState.data, rowData]
+        }))
+
+        return
+    }
+
+    handleDelete (row) {
+
+        if(!this.state.data || !this.state.data[row]) {
+
+            return false
+        }
+
+        const array = [...this.state.data]; // make a separate copy of the array
+        array.splice(row, 1);
+        this.setState({data: array});
     }
 
     setTotal (total) {
@@ -128,6 +208,7 @@ class EditInvoice extends Component {
     }
 
     saveData () {
+
         const data = {
             invoice_id: this.props.invoice_id,
             due_date: this.state.due_date,
@@ -145,8 +226,44 @@ class EditInvoice extends Component {
                 this.props.action(allInvoices)
             })
             .catch((error) => {
-                alert(error)
+                console.warn(error)
             })
+    }
+
+    buildCustomerOptions () {
+        let customerContent
+        if (!this.state.customers.length) {
+            customerContent = <option value="">Loading...</option>
+            return customerContent
+        }
+
+        customerContent = this.state.customers.map((customer, index) => (
+            <option key={index} value={customer.id}>{customer.name}</option>
+        ))
+
+        return customerContent
+    }
+
+    buildTaskOptions () {
+
+        let taskContent
+        if (!this.state.tasks.length) {
+            taskContent = <option value="">Loading...</option>
+        } else {
+            taskContent = this.state.tasks.map((task, index) => (
+                <option key={index} value={task.id}>{task.title}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="task">Task:</Label>
+                <Input type="select" name="task" onChange={this.handleTaskChange.bind(this)}>
+                    <option>Select Task</option>
+                    {taskContent}
+                </Input>
+            </FormGroup>
+        )
     }
 
     render () {
@@ -154,16 +271,10 @@ class EditInvoice extends Component {
             ? <Button color="primary" onClick={() => this.changeStatus(2).bind(this)}>Send</Button>
             : <Button color="primary" onClick={() => this.changeStatus(3).bind(this)}>Paid</Button>
 
-        let customerContent
-        if (!this.state.customers.length) {
-            customerContent = <option value="">Loading...</option>
-        } else {
-            customerContent = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.name}</option>
-            ))
-        }
-
+        const customerContent = this.buildCustomerOptions()
+        const taskContent = !this.props.add ? this.buildTaskOptions() : ''
         const buttonText = !this.props.add ? 'Create Invoice' : 'Update'
+
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>{buttonText}</Button>
@@ -195,7 +306,9 @@ class EditInvoice extends Component {
                                 {this.renderErrorFor('customer')}
                             </FormGroup>
 
-                            <LineItemEditor lineItemModel={this.state.existingLines} update={this.updateData}
+                            {taskContent}
+
+                            <LineItemEditor hasTasks={this.hasTasks} lineItemModel={this.state.existingLines} delete={this.handleDelete} update={this.updateData}
                                             setTotal={this.setTotal}/>
                             <Button color="success" onClick={this.saveData}>Save</Button>
                             {changeStatusButton}

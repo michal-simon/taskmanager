@@ -64,4 +64,9 @@ interface TaskRepositoryInterface extends BaseRepositoryInterface
      * @param Project $objProject
      */
     public function getTasksForProject(Project $objProject) : Support;
+    
+    /**
+     * 
+     */
+    public function getTasksWithProducts(): Support;
 }

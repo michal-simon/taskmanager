@@ -5,6 +5,7 @@ import axios from 'axios'
 import PropTypes from 'prop-types'
 
 class EditUser extends React.Component {
+
     constructor (props) {
         super(props)
         this.state = {
@@ -15,6 +16,7 @@ class EditUser extends React.Component {
             roles: [],
             selectedRoles: []
         }
+
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)

@@ -126,6 +126,11 @@ class TaskController extends Controller {
 
         return $tasks->toJson();
     }
+    
+    public function getTasksWithProducts() {
+        $tasks = $this->taskRepository->getTasksWithProducts();
+        return $tasks->toJson();
+    }
 
     /**
      * 

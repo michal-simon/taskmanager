@@ -83,7 +83,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      */
     public function getTasksForProject(Project $objProject): Support {
 
-        return Task::join('project_task', 'tasks.id', '=', 'project_task.task_id')
+        return $this->model->join('project_task', 'tasks.id', '=', 'project_task.task_id')
                         ->select('tasks.id as id', 'tasks.*')
                         ->where('project_id', $objProject->id)
                         ->where('is_completed', 0)
@@ -95,7 +95,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @return type
      */
     public function getLeads(int $task_type): Support {
-        return Task::where('task_type', $task_type)
+        return $this->model->where('task_type', $task_type)
                         ->where('is_completed', 0)
                         ->get();
     }
@@ -121,7 +121,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     public function filterTasks(array $arrFilters, $task_type, Project $objProject = null): Support {
 
         if ($task_type === 1) {
-            $query = Task::join('project_task', 'tasks.id', '=', 'project_task.task_id')
+            $query = $this->model->join('project_task', 'tasks.id', '=', 'project_task.task_id')
                     ->select('tasks.id as id', 'tasks.*')
                     ->where('project_id', $objProject->id)
                     ->where('is_completed', 0);
@@ -137,15 +137,22 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
 
         return $query->get();
     }
-    
+
     /**
      * Sync the categories
      *
      * @param array $params
      */
-    public function syncProducts(array $params)
-    {
+    public function syncProducts(array $params) {
         $this->model->products()->sync($params);
+    }
+
+    public function getTasksWithProducts(): Support {
+
+        return $this->model->join('product_task', 'product_task.task_id', '=', 'tasks.id')
+                        ->select('tasks.*')
+                        ->groupBy('tasks.id')
+                        ->get();
     }
 
 }

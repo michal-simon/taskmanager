@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
+use App\Task;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface {
 
@@ -98,6 +99,21 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             return $this->all();
         }
         return $this->model->searchProduct($text)->get();
+    }
+    
+     /**
+     * List all the products
+     *
+     * @param string $order
+     * @param string $sort
+     * @param array $columns
+     * @return Collection
+     */
+    public function getProductsForTask(Task $objTask): Support {
+        return $this->model->join('product_task', 'product_task.product_id', '=', 'products.id')
+                        ->select('products.*')
+                        ->where('product_task.task_id', $objTask->id)
+                        ->get();
     }
 
 }

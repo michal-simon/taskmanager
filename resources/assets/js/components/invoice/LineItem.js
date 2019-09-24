@@ -16,6 +16,7 @@ class LineItem extends Component {
         this.pushToCaller = this.pushToCaller.bind(this)
         this.deleteFromDatabase = this.deleteFromDatabase.bind(this)
         this.loadProducts = this.loadProducts.bind(this)
+        this.buildProductOptions = this.buildProductOptions.bind(this)
     }
 
     componentDidMount () {
@@ -44,7 +45,7 @@ class LineItem extends Component {
             .then((response) => {
             })
             .catch((error) => {
-                alert(error)
+                console.warn(error)
             })
     }
 
@@ -77,6 +78,7 @@ class LineItem extends Component {
             this.setState({ unit_price: e.target.value })
             return false
         }
+
         this.setState({ unit_price: e.target.value }, this.pushToCaller)
     }
 
@@ -84,8 +86,11 @@ class LineItem extends Component {
         this.props.onChange(this.props.id, {
             quantity: parseInt(this.state.quantity, 10),
             description: this.state.description,
-            unit_price: parseFloat(this.state.unit_price)
+            unit_price: parseFloat(this.state.unit_price),
+            product_id: parseInt(this.state.product_id)
         })
+
+        this.props.calculateTotal()
     }
 
     deleteFromDatabase (lineId) {
@@ -104,23 +109,50 @@ class LineItem extends Component {
     }
 
     handleProductChange(e) {
-        alert('here')
+        const price = e.target[e.target.selectedIndex].getAttribute('data-price')
+        const productId = e.target.value
+        const priceField = e.target.parentNode.nextSibling.firstElementChild
+        priceField.value = price
+
+        const lineId = priceField.parentNode.parentNode.getAttribute('data-id')
+
+        if(lineId) {
+            this.setState({ unit_price: price, product_id: productId })
+            return false
+        } else {
+            this.setState({ unit_price: price, product_id: productId }, this.pushToCaller)
+        }
+
+        this.props.calculateTotal()
     }
 
-    render () {
-        const { lineId } = this.props.lineItemData
-        const button = this.props.canUpdate ? <Button color="danger" onClick={this.handleDeleteClick}>Delete</Button>
-            : <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
-                className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
-
+    buildProductOptions () {
         let productList = null
         if (!this.state.products.length) {
             productList = <option value="">Loading...</option>
         } else {
-            productList = this.state.products.map((product, index) => (
-                <option key={index} value={product.id}>{product.name}</option>
-            ))
+            productList = this.state.products.map((product, index) => {
+
+                const selected = this.state.product_id && this.state.product_id === product.id ? 'selected' : ''
+
+                return <option selected={selected} key={index} data-price={product.price} value={product.id}>{product.name}</option>
+            })
         }
+
+        return (
+            <Input defaultValue={this.state.product_id} name="product" type='select' onChange={this.handleProductChange}>
+                <option value="">Select Product</option>
+                {productList}
+            </Input>
+        )
+    }
+
+    render () {
+        const { lineId } = this.props.lineItemData
+        const button = this.props.canUpdate ? <Button color="danger" onClick={(event) => {this.props.onDelete(lineId, event)}}>Delete</Button>
+            : <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
+                className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
+        const updateButton = !this.props.canUpdate ? <Button color="primary" onClick={this.updateLine}>Update</Button> : ''
 
         return (
             <tr data-id={lineId} key={lineId}>
@@ -134,10 +166,7 @@ class LineItem extends Component {
                 </td>
 
                 <td>
-                    <Input name="product" type='select' onChange={this.handleProductChange}>
-                        <option value="">Select Product</option>
-                        {productList}
-                    </Input>
+                    {this.buildProductOptions()}
                 </td>
                 <td>
                     <Input name="unit_price" data-line={lineId} type='text' data-column="5"
@@ -149,7 +178,7 @@ class LineItem extends Component {
                 </td>
                 <td>
                     {button}
-                    <Button color="primary" onClick={this.updateLine}>Update</Button>
+                    {updateButton}
                 </td>
             </tr>
         )
