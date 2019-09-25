@@ -5,6 +5,7 @@ import EditUser from './EditUser'
 import AddUser from './AddUser'
 import { Button } from 'reactstrap'
 import DataTable from '../common/DataTable'
+import Avatar from '../common/Avatar'
 
 export default class UserList extends Component {
     constructor (props) {
@@ -19,9 +20,6 @@ export default class UserList extends Component {
     }
 
     addUserToState (users) {
-
-        console.log('users', users)
-
         this.setState({ users: users })
     }
 
@@ -29,8 +27,8 @@ export default class UserList extends Component {
         if (this.state.users && this.state.users.length) {
             return this.state.users.map(user => {
                 const columnList = Object.keys(user).map(key => {
-                    if (key === 'profile_photo') {
-                        return <td key={key}>&nbsp;</td>
+                    if (key === 'id') {
+                        return <td key={key}><Avatar name={user.first_name + ' ' + user.last_name}/></td>
                     }
                     return <td key={key}>{user[key]}</td>
                 })

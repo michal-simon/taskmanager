@@ -3503,3 +3503,63 @@ li .active:before {
   }
 }
 
+.avatar-circle {
+  width: 100px;
+  height: 100px;
+  background-color: #72d80c;
+  text-align: center;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+
+.avatar-circle .initials {
+  position: relative;
+  top: 25px;
+  font-size: 50px;
+  line-height: 50px;
+  color: #fff;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+}
+
+.avatar-circle-sm {
+  width: 50px;
+  height: 50px;
+  background-color: #72d80c;
+  text-align: center;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+
+.avatar-circle-sm .initials {
+  position: relative;
+  top: 12.5px;
+  font-size: 25px;
+  line-height: 25px;
+  color: #fff;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+}
+
+.avatar-circle-lg {
+  width: 250px;
+  height: 250px;
+  background-color: #72d80c;
+  text-align: center;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+
+.avatar-circle-lg .initials {
+  position: relative;
+  top: 62.5px;
+  font-size: 125px;
+  line-height: 125px;
+  color: #fff;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+}
+

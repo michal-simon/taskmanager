@@ -5,6 +5,7 @@ import AddCustomer from './AddCustomer'
 import EditCustomer from './EditCustomer'
 import { Button } from 'reactstrap'
 import DataTable from '../common/DataTable'
+import Avatar from '../common/Avatar'
 
 export default class Customers extends Component {
     constructor (props) {
@@ -15,43 +16,45 @@ export default class Customers extends Component {
         }
 
         this.updateCustomers = this.updateCustomers.bind(this)
-        this.userList = this.userList.bind(this)
+        this.customerList = this.customerList.bind(this)
     }
 
     updateCustomers (customers) {
         this.setState({ customers: customers })
     }
 
-    userList () {
+    customerList () {
 
         if (this.state.customers && this.state.customers.length) {
-            return this.state.customers.map(user => {
-                console.log('columns', Object.keys(user))
-                const test = Object.keys(user).map((index, element) => {
+            return this.state.customers.map(customer => {
+                console.log('columns', Object.keys(customer))
+                const test = Object.keys(customer).map((index, element) => {
                     if (index === 'address') {
                         return (
                             <React.Fragment>
-                                {this.displayCustomerAddress(user[index])}
+                                {this.displayCustomerAddress(customer[index])}
                             </React.Fragment>
                         )
+                    } else if(index === 'id') {
+                        return <td><Avatar name={customer.name}/></td>
                     } else {
                         return (
-                            <td>{user[index]}</td>
+                            <td>{customer[index]}</td>
                         )
                     }
                 })
                 return (
-                    <tr key={user.id}>
+                    <tr key={customer.id}>
                         {test}
                         <td>
                             <EditCustomer
                                 customer_type={this.props.customer_type}
-                                id={user.id}
+                                id={customer.id}
                                 action={this.updateCustomers}
                                 customers={this.state.customers}
                                 modal={true}
                             />
-                            <Button color="danger" onClick={() => this.deleteCustomer(user.id)}>Delete</Button>
+                            <Button color="danger" onClick={() => this.deleteCustomer(customer.id)}>Delete</Button>
 
                         </td>
                     </tr>
@@ -110,7 +113,7 @@ export default class Customers extends Component {
                 />
 
                 <DataTable
-                    userList={this.userList}
+                    userList={this.customerList}
                     fetchUrl={fetchUrl}
                     updateState={this.updateCustomers}
                 />
