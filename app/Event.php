@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\User;
+use App\Task;
 
 class Event extends Authenticatable {
 
@@ -28,6 +29,10 @@ class Event extends Authenticatable {
      */
     public function users() {
         return $this->belongsToMany(User::class);
+    }
+    
+     public function tasks() {
+        return $this->belongsToMany(Task::class);
     }
 
 }

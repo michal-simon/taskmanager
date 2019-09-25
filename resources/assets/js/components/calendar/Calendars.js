@@ -50,7 +50,10 @@ class Calendars extends React.Component {
     }
 
     getEvents () {
-        axios.get('/api/events')
+
+        const url = (this.props.user_id) ? `/api/events/users/${this.props.user_id}` : (this.props.task_id) ? `/api/events/tasks/${this.props.task_id}` : `/api/events`;
+
+        axios.get(url)
             .then((r) => {
                 this.setState({
                     events: r.data
@@ -93,6 +96,7 @@ class Calendars extends React.Component {
                 <CreateEvent
                     action={this.setEvents}
                     events={this.state.events}
+                    modal={true}
                 />
                 <Controls>
                     <Button onClick={this.loadPrevMonth}>&laquo; Prev Month</Button>

@@ -7,7 +7,7 @@ import 'jquery-ui-dist/jquery-ui'
 import './dragdrop'
 import Loader from './Loader'
 import ViewTask from './forms/viewTask'
-import Tooltips from './Tooltip'
+import Subtasks from './forms/Subtasks'
 
 class Task extends Component {
     constructor (props) {
@@ -87,14 +87,22 @@ class Task extends Component {
                                         action={this.props.action}
                                         task={i}
                                     />
-                                    <i id="delete" className="fas fa-times" onClick={() => this.api(i.id)}></i>
+                                    <i id="delete" className="fa fa-times" onClick={() => this.api(i.id)}></i>
                                 </span>
-                                <span className="task-details">{i.content}</span>
+
+                                <h5 className="m-3">{i.valued_at}</h5>
+                                <p className="mb-1">{i.content}</p>
+
+
                                 <div>
                                     <span className="task-due">{moment(i.dueDate).format('DD.MM.YYYY')}</span>
-                                    <span className="task-contributors"></span>
+                                    <span className="task-contributors">{i.name}</span>
                                 </div>
                                 <div className={i.color}/>
+
+                                <Subtasks task_id={i.id} task_type={this.props.task_type}
+                                          allTasks={this.props.tasks}
+                                          action={this.props.action} />
                             </div>
                         )
                     })

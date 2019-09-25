@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { Tooltip } from 'reactstrap'
 import AddTask from './forms/AddTask'
+import AddLeadForm from './forms/AddLeadForm'
 
 class Tooltips extends Component {
     constructor (props) {
@@ -20,6 +21,25 @@ class Tooltips extends Component {
     }
 
     render () {
+
+        const addButton = this.props.task_type === 3
+            ? <AddLeadForm
+                tasks={this.props.tasks}
+                storyType={this.props.storyType}
+                action={this.props.action}
+                customer_type={2}
+                status={this.props.id}
+                task_type={this.props.task_type}
+            />
+            : <AddTask
+            tasks={this.props.tasks}
+            storyType={this.props.storyType}
+            action={this.props.action}
+            status={this.props.id}
+            task_type={this.props.task_type}
+            modal={true}
+        />
+
         return (
             <span>
                 <i className="fa fa-question-circle" id={'Tooltip-' + this.props.id} data-toggle="tooltip"></i>
@@ -28,13 +48,7 @@ class Tooltips extends Component {
                       {this.props.content}
                 </Tooltip>
 
-                {<AddTask
-                    tasks={this.props.tasks}
-                    storyType={this.props.storyType}
-                    action={this.props.action}
-                    status={this.props.id}
-                    task_type={this.props.task_type}
-                />}
+                {addButton}
             </span>
         )
     }

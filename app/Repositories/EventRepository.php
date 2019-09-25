@@ -8,6 +8,7 @@ use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Collection;
 use App\Repositories\UserRepository;
 use App\User;
+use App\Task;
 
 class EventRepository extends BaseRepository implements EventRepositoryInterface {
 
@@ -81,13 +82,48 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
      * @param array $arrUsers
      */
     public function attachUsers(Event $objEvent, array $arrUsers) {
-        
+
         $objEvent->users()->detach();
-        
+
         foreach ($arrUsers as $userId) {
             $objUser = (new UserRepository(new User))->findUserById($userId);
             $objEvent->users()->attach($objUser);
         }
+    }
+
+    /**
+     * Sync the categories
+     *
+     * @param array $params
+     */
+    public function syncTask(int $task_id) {
+        $this->model->tasks()->sync($task_id);
+    }
+
+    /**
+     * 
+     * @param Task $objTask
+     * @return Collection
+     */
+    public function getEventsForTask(Task $objTask): Collection {
+
+        return $this->model->join('event_task', 'event_task.event_id', '=', 'events.id')
+                        ->select('events.*')
+                        ->where('event_task.task_id', $objTask->id)
+                        ->groupBy('events.id')
+                        ->get();
+    }
+
+    /**
+     * 
+     * @param User $objUser
+     * @return Collection
+     */
+    public function getEventsForUser(User $objUser): Collection {
+        return $this->model->join('event_user', 'event_user.event_id', '=', 'events.id')
+                        ->select('events.*')
+                        ->where('event_user.user_id', $objUser->id)
+                        ->get();
     }
 
 }

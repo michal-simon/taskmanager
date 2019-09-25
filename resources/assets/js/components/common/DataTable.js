@@ -116,9 +116,9 @@ export default class DataTable extends Component {
     tableHeads () {
         let icon
         if (this.state.order === 'asc') {
-            icon = <i className="fas fa-arrow-up" />
+            icon = <i className="fa fa-arrow-up" />
         } else {
-            icon = <i className="fas fa-arrow-down" />
+            icon = <i className="fa fa-arrow-down" />
         }
         return this.state.columns.map(column => {
             return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>

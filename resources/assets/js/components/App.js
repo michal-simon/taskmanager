@@ -11,7 +11,6 @@ import Invoice from './invoice/Invoice'
 import Customers from './customers/Customers'
 import ChatPage from './chat/ChatPage'
 import Login from './Login'
-import CustomerList from './common/CustomerList'
 
 class App extends Component {
     constructor (props, context) {
@@ -51,6 +50,8 @@ class App extends Component {
         }
 
         const projectId = this.getQueryVariable('project_id')
+        const taskId = this.getQueryVariable('task_id')
+        const userId = this.getQueryVariable('user_id')
 
         return (
             <main>
@@ -63,6 +64,16 @@ class App extends Component {
                         <Route path='/invoice' component={Invoice}/>
                         <Route path='/users' component={UserList}/>
                         <Route path='/calendar' component={Calendar}/>
+                        <Route
+                            path='/calendar-users'
+                            render={(props) => <Calendar {...props} user_id={userId} />}
+                        />
+
+                        <Route
+                            path='/calendar-tasks'
+                            render={(props) => <Calendar {...props} task_id={taskId} />}
+                        />
+
                         <Route path='/roles' component={Roles}/>
                         <Route
                             path='/leads'
@@ -72,6 +83,17 @@ class App extends Component {
                             path='/deals'
                             render={(props) => <Dashboard {...props} task_type={3} />}
                         />
+
+                        <Route
+                            path='/lead-subtasks'
+                            render={(props) => <Dashboard {...props} task_type={2} task_id={taskId} />}
+                        />
+
+                        <Route
+                            path='/deal-subtasks'
+                            render={(props) => <Dashboard {...props} task_type={2} task_id={taskId} />}
+                        />
+
                         <Route
                             path='/projects'
                             render={(props) => <Dashboard {...props} task_type={1} project_id={projectId} />}

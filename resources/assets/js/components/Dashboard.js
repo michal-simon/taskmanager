@@ -23,6 +23,7 @@ class Dashboard extends Component {
         this.updateTasks = this.updateTasks.bind(this)
         this.addProject = this.addProject.bind(this)
         this.resetFilters = this.resetFilters.bind(this)
+        this.getTaskUrl = this.getTaskUrl.bind(this)
         this.cachedTasks = []
     }
 
@@ -31,8 +32,25 @@ class Dashboard extends Component {
         this.getTasks()
     }
 
+    getTaskUrl () {
+        switch(true) {
+            case (typeof this.props.task_id !== 'undefined' && this.props.task_id !== null):
+                return `/api/tasks/subtasks/${this.props.task_id}`
+
+            case this.props.task_type === 2:
+                return '/api/leads'
+
+            case this.props.task_type === 3:
+                return '/api/deals'
+
+            default:
+                return `/api/tasks/getTasksForProject/${this.project_id}`
+        }
+    }
+
     getTasks () {
-        const url = (this.props.task_type === 2) ? '/api/leads' : (this.props.task_type === 3) ? '/api/deals' : `/api/tasks/getTasksForProject/${this.project_id}`;
+        const url = this.getTaskUrl()
+        
         axios.get(url)
             .then((r) => {
                 this.setState({
@@ -65,15 +83,6 @@ class Dashboard extends Component {
                     err2: e
                 })
             })
-    }
-
-    story () {
-        const test = this.state.stories.length ? this.state.stories.filter(i => i.id === parseInt(this.project_id)) : ''
-        if (test.length) {
-            return <Story storyName={test} storyType={this.project_id} tasks={this.state.tasks}
-                          loading={this.state.loading}/>
-        }
-        return null
     }
 
     updateTasks (tasks) {
@@ -119,14 +128,14 @@ class Dashboard extends Component {
 
     render () {
         let storyTable
-        const divStyle = this.props.task_type === 2 ? {
+        const divStyle = this.props.task_type === 2 || this.props.task_type === 3 ? {
             left: 0,
             width: '100%'
         } : {}
         const body = document.body
         body.classList.add('open')
         document.getElementsByClassName('navbar-toggler')[0].style.display = 'block'
-        if (this.props.task_type !== 2) {
+        if (this.props.task_type !== 2 && this.props.task_type !== 3) {
             storyTable = (
                 <React.Fragment>
                     <AddStory addProject={this.addProject} />

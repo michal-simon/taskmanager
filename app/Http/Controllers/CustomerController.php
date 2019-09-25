@@ -71,7 +71,7 @@ class CustomerController extends Controller {
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id) {
+    public function show(int $id) {        
         $customer = $this->customerRepo->findCustomerById($id);
         return collect($customer, $customer->addresses)->toJson();
     }

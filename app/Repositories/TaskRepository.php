@@ -87,6 +87,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
                         ->select('tasks.id as id', 'tasks.*')
                         ->where('project_id', $objProject->id)
                         ->where('is_completed', 0)
+                        ->where('parent_id', 0)
                         ->get();
     }
 
@@ -97,6 +98,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     public function getLeads(int $task_type): Support {
         return $this->model->where('task_type', $task_type)
                         ->where('is_completed', 0)
+                        ->where('parent_id', 0)
                         ->get();
     }
 
@@ -124,7 +126,8 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
             $query = $this->model->join('project_task', 'tasks.id', '=', 'project_task.task_id')
                     ->select('tasks.id as id', 'tasks.*')
                     ->where('project_id', $objProject->id)
-                    ->where('is_completed', 0);
+                    ->where('is_completed', 0)
+                    ->where('parent_id', 0);
         } else {
             $query = Task::where('is_completed', 0)
                     ->where('task_type', $task_type);
@@ -153,6 +156,10 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
                         ->select('tasks.*')
                         ->groupBy('tasks.id')
                         ->get();
+    }
+
+    public function getSubtasks(Task $objTask): Support {
+        return $this->model->where('parent_id', $objTask->id)->get();
     }
 
 }

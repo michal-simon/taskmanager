@@ -8,6 +8,10 @@ use App\Requests\UpdateEventRequest;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\EventRepository;
 use App\Transformations\EventTransformable;
+use App\Repositories\TaskRepository;
+use App\Task;
+use App\Repositories\UserRepository;
+use App\User;
 
 class EventController extends Controller {
 
@@ -62,6 +66,12 @@ class EventController extends Controller {
 
         $event = $this->eventRepository->createEvent($arrData);
         $this->eventRepository->attachUsers($event, $request->users);
+        
+        $eventRepo = new EventRepository($event);
+        
+         if ($request->has('task_id')) {
+             $eventRepo->syncTask($request->input('task_id'));
+        }
   
         return $event->toJson();
     }
@@ -98,9 +108,32 @@ class EventController extends Controller {
         ];
 
         $eventRepo = new EventRepository($event);
-        $eventResult = $eventRepo->updateEvent($arrData);
+        $eventRepo->updateEvent($arrData);
 
         $eventRepo->attachUsers($event, $request->users);
+    }
+    
+    /**
+     * 
+     * @param int $task_id
+     * @return type
+     */
+    public function getEventsForTask(int $task_id) {
+        
+        $objTask = (new TaskRepository(new Task))->findTaskById($task_id);
+        $events = $this->eventRepository->getEventsForTask($objTask);
+        return $events->toJson();
+    }
+    
+    /**
+     * 
+     * @param int $user_id
+     * @return type
+     */
+    public function getEventsForUser(int $user_id) {
+        $objTask = (new UserRepository(new User))->findUserById($user_id);
+        $events = $this->eventRepository->getEventsForUser($objTask);
+        return $events->toJson();
     }
 
 }

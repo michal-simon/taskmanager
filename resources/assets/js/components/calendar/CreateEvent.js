@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form } from 'reactstrap'
 import axios from 'axios'
 
 class CreateEvent extends React.Component {
@@ -12,7 +12,7 @@ class CreateEvent extends React.Component {
             title: '',
             beginDate: '',
             endDate: '',
-            customer_id: '',
+            customer_id: this.props.customer_id ? this.props.customer_id : '',
             location: '',
             loading: false,
             customers: [],
@@ -26,6 +26,7 @@ class CreateEvent extends React.Component {
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
         this.getUserList = this.getUserList.bind(this)
         this.getCustomerList = this.getCustomerList.bind(this)
+        this.buildForm = this.buildForm.bind(this)
     }
 
     componentDidMount () {
@@ -61,7 +62,8 @@ class CreateEvent extends React.Component {
             title: this.state.title,
             location: this.state.location,
             beginDate: this.state.beginDate,
-            endDate: this.state.endDate
+            endDate: this.state.endDate,
+            task_id: this.props.task_id ? this.props.task_id : 0
         })
             .then((response) => {
                 this.toggle()
@@ -72,9 +74,13 @@ class CreateEvent extends React.Component {
                     due_date: null,
                     loading: false
                 })
-                const firstEvent = response.data
-                this.props.events.push(firstEvent)
-                this.props.action(this.props.events)
+
+                if(this.props.action) {
+                    const firstEvent = response.data
+                    this.props.events.push(firstEvent)
+                    this.props.action(this.props.events)
+                }
+
             })
             .catch((error) => {
                 this.setState({
@@ -165,66 +171,88 @@ class CreateEvent extends React.Component {
         )
     }
 
-    render () {
+    buildForm () {
 
         const customerList = this.getCustomerList()
         const userList = this.getUserList()
 
         return (
-            <React.Fragment>
-                <Button color="success" onClick={this.toggle}>Add Event</Button>
+            <Form>
+                <FormGroup>
+                    <Label for="title">Title(*):</Label>
+                    <Input className={this.hasErrorFor('title') ? 'is-invalid' : ''}
+                        type="text" name="title"
+                        id="taskTitle" onChange={this.handleInput.bind(this)}/>
+                    {this.renderErrorFor('title')}
+                </FormGroup>
 
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                    <ModalHeader toggle={this.toggle}>
-                        Create a new event
-                    </ModalHeader>
+                <FormGroup>
+                    <Label for="location">Location:</Label>
+                    <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="text"
+                        name="location"
+                        id="location"
+                        onChange={this.handleInput.bind(this)}/>
+                    {this.renderErrorFor('location')}
+                </FormGroup>
 
-                    <ModalBody>
-                        <FormGroup>
-                            <Label for="title">Title(*):</Label>
-                            <Input className={this.hasErrorFor('title') ? 'is-invalid' : ''}
-                                type="text" name="title"
-                                id="taskTitle" onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('title')}
-                        </FormGroup>
+                {customerList}
 
-                        <FormGroup>
-                            <Label for="location">Location:</Label>
-                            <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="text"
-                                name="location"
-                                id="location"
-                                onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('location')}
-                        </FormGroup>
+                {userList}
 
-                        {customerList}
+                <FormGroup>
+                    <Label for="beginDate">Begin Date:</Label>
+                    <Input className={this.hasErrorFor('beginDate') ? 'is-invalid' : ''} type="date"
+                        name="beginDate" id="beginDate" onChange={this.handleInput.bind(this)}/>
 
-                        {userList}
+                    {this.renderErrorFor('beginDate')}
+                </FormGroup>
 
-                        <FormGroup>
-                            <Label for="beginDate">Begin Date:</Label>
-                            <Input className={this.hasErrorFor('beginDate') ? 'is-invalid' : ''} type="date"
-                                name="beginDate" id="beginDate" onChange={this.handleInput.bind(this)}/>
+                <FormGroup>
+                    <Label for="endDate">End Date:</Label>
+                    <Input className={this.hasErrorFor('endDate') ? 'is-invalid' : ''} type="date"
+                        name="endDate" id="endDate" onChange={this.handleInput.bind(this)}/>
 
-                            {this.renderErrorFor('beginDate')}
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label for="endDate">End Date:</Label>
-                            <Input className={this.hasErrorFor('endDate') ? 'is-invalid' : ''} type="date"
-                                name="endDate" id="endDate" onChange={this.handleInput.bind(this)}/>
-
-                            {this.renderErrorFor('endDate')}
-                        </FormGroup>
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <Button color="primary" onClick={this.handleClick.bind(this)}>Add</Button>
-                        <Button color="secondary" onClick={this.toggle}>Close</Button>
-                    </ModalFooter>
-                </Modal>
-            </React.Fragment>
+                    {this.renderErrorFor('endDate')}
+                </FormGroup>
+            </Form>
         )
+    }
+
+    render () {
+
+        const form = this.buildForm()
+        const saveButton = <Button color="primary" onClick={this.handleClick.bind(this)}>Add</Button>
+
+        if(this.props.modal) {
+            return (
+                <React.Fragment>
+                    <Button color="success" onClick={this.toggle}>Add Event</Button>
+
+                    <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                        <ModalHeader toggle={this.toggle}>
+                            Create a new event
+                        </ModalHeader>
+
+                        <ModalBody>
+                            {form}
+                        </ModalBody>
+
+                        <ModalFooter>
+                            {saveButton}
+                            <Button color="secondary" onClick={this.toggle}>Close</Button>
+                        </ModalFooter>
+                    </Modal>
+                </React.Fragment>
+            )
+        }
+
+        return (
+            <div>
+                {form}
+                {saveButton}
+            </div>
+        )
+
     }
 }
 

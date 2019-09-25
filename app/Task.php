@@ -23,7 +23,8 @@ class Task extends Model {
         'task_type',
         'customer_id',
         'rating',
-        'valued_at'
+        'valued_at',
+        'parent_id'
     ];
 
     /**
@@ -60,5 +61,4 @@ class Task extends Model {
     public function products() {
         return $this->belongsToMany(Product::class);
     }
-
 }

@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Task;
 use App\Requests\CreateTaskRequest;
+use App\Requests\CreateDealRequest;
 use App\Requests\UpdateTaskRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Product;
 use App\Repositories\ProductRepository;
+use App\Repositories\CustomerRepository;
+use App\Customer;
+use App\Transformations\TaskTransformable;
 
 class TaskController extends Controller {
+
+    use TaskTransformable;
 
     private $taskRepository;
     private $projectRepository;
@@ -33,13 +39,12 @@ class TaskController extends Controller {
      * @return Response
      */
     public function store(CreateTaskRequest $request) {
-        
         $validatedData = $request->except('project_id');
 
         if (!empty($validatedData['project_id'])) {
             $objProject = $this->projectRepository->findProjectById($validatedData['project_id']);
         }
-        
+
         $validatedData['customer_id'] = empty($validatedData['customer_id']) && isset($objProject) ? $objProject->customer_id : $validatedData['customer_id'];
 
         $task = $this->taskRepository->createTask($validatedData);
@@ -65,8 +70,13 @@ class TaskController extends Controller {
 
     public function getTasksForProject($projectId) {
         $objProject = $this->projectRepository->findProjectById($projectId);
-        $task = $this->taskRepository->getTasksForProject($objProject);
-        return $task->toJson();
+        $list = $this->taskRepository->getTasksForProject($objProject);
+
+        $tasks = $list->map(function (Task $task) {
+                    return $this->transformTask($task);
+                })->all();
+
+        return response()->json($tasks);
     }
 
     /**
@@ -95,13 +105,23 @@ class TaskController extends Controller {
     }
 
     public function getLeads() {
-        $tasks = $this->taskRepository->getLeads(2);
-        return $tasks->toJson();
+        $list = $this->taskRepository->getLeads(2);
+
+        $tasks = $list->map(function (Task $task) {
+                    return $this->transformTask($task);
+                })->all();
+
+        return response()->json($tasks);
     }
 
     public function getDeals() {
-        $tasks = $this->taskRepository->getLeads(3);
-        return $tasks->toJson();
+        $list = $this->taskRepository->getLeads(3);
+
+        $tasks = $list->map(function (Task $task) {
+                    return $this->transformTask($task);
+                })->all();
+
+        return response()->json($tasks);
     }
 
     /**
@@ -122,11 +142,15 @@ class TaskController extends Controller {
      */
     public function filterTasks(Request $request, int $task_type) {
 
-        $tasks = $this->taskRepository->filterTasks($request->all(), $task_type);
+        $list = $this->taskRepository->filterTasks($request->all(), $task_type);
 
-        return $tasks->toJson();
+        $tasks = $list->map(function (Task $task) {
+                    return $this->transformTask($task);
+                })->all();
+
+        return response()->json($tasks);
     }
-    
+
     public function getTasksWithProducts() {
         $tasks = $this->taskRepository->getTasksWithProducts();
         return $tasks->toJson();
@@ -166,6 +190,54 @@ class TaskController extends Controller {
         ];
 
         return response()->json($arrData);
+    }
+
+    public function createDeal(CreateDealRequest $request) {
+
+        $customer = (new CustomerRepository(new Customer))->createCustomer($request->except('_token', '_method', 'valued_at', 'title', 'description'));
+
+        $customer->addresses()->create([
+            'company_name' => $request->company_name,
+            'job_title' => $request->job_title,
+            'phone' => $request->phone,
+            'address_1' => $request->address_1,
+            'address_2' => $request->address_2,
+            'zip' => $request->zip,
+            'city' => $request->city,
+            'country_id' => 225,
+            'status' => 1
+        ]);
+
+        $task = $this->taskRepository->createTask(
+                [
+                    'title' => $request->title,
+                    'description' => $request->description,
+                    'customer_id' => $customer->id,
+                    'valued_at' => $request->valued_at,
+                    'contributors' => $request->contributors,
+                    'task_type' => $request->task_type,
+                    'task_status' => $request->task_status,
+                    'task_color' => 'colorBlue'
+                ]
+        );
+
+        return $task->toJson();
+    }
+
+    /**
+     * 
+     * @param int $parent_id
+     * @return type
+     */
+    public function getSubtasks(int $parent_id) {
+
+        $task = $this->taskRepository->findTaskById($parent_id);
+        $subtasks = $this->taskRepository->getSubtasks($task);
+
+        $tasks = $subtasks->map(function (Task $task) {
+                    return $this->transformTask($task);
+                })->all();
+        return response()->json($tasks);
     }
 
 }

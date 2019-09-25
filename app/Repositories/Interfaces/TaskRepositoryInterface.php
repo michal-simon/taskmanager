@@ -69,4 +69,7 @@ interface TaskRepositoryInterface extends BaseRepositoryInterface
      * 
      */
     public function getTasksWithProducts(): Support;
+    
+   
+    public function getSubtasks(Task $objTask) : Support;
 }

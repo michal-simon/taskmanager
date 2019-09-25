@@ -14,7 +14,8 @@ class ViewTask extends React.Component {
         this.toggle = this.toggle.bind(this)
     }
 
-    toggle () {
+    toggle (e) {
+        e.preventDefault()
         this.setState({
             modal: !this.state.modal
         })
@@ -23,7 +24,7 @@ class ViewTask extends React.Component {
     render () {
         return (
             <div>
-                <a href="#" onClick={this.toggle}>{this.props.task.title}</a>
+                <a href='#' onClick={this.toggle}><h4 className="mb-1">{this.props.task.title}</h4></a>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Add Story

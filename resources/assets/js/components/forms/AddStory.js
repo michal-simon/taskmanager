@@ -123,7 +123,7 @@ class AddStory extends React.Component {
         }
         return (
             <div>
-                <Button color="secondary" onClick={this.toggle}><i className="fas fa-plus-circle"/> Add Project</Button>
+                <Button color="secondary" onClick={this.toggle}><i className="fa fa-plus-circle"/> Add Project</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Add Story

@@ -5,7 +5,9 @@ import Comments from '../comments/Comments'
 import FileUploads from '../attachments/FileUploads'
 import EditTask from '../forms/EditTask'
 import ProductSelect from '../products/ProductSelect'
-import ViewCustomer from '../customers/ViewCustomer'
+import EditCustomer from '../customers/EditCustomer'
+import EventTab from './EventTab'
+import TaskTab from './TaskTab'
 
 export default class TabContent extends Component {
 
@@ -27,11 +29,29 @@ export default class TabContent extends Component {
                     </div>
 
                     <div label="Customer" className="tab-content">
-                        <ViewCustomer task={this.props.task}/>
+                        <EditCustomer
+                            id={this.props.task.customer_id}
+                            modal={false}
+                            task={this.props.task}
+                        />
                     </div>
 
                     <div label="Product" className="tab-content">
                         <ProductSelect task_id={this.props.task.id}/>
+                    </div>
+
+                    <div label="Event" className="tab-content">
+                        <EventTab
+                            customer_id={this.props.task.customer_id}
+                            task_id={this.props.task.id}
+                        />
+                    </div>
+
+                    <div label="Tasks" className="tab-content">
+                        <TaskTab
+                            task_id={this.props.task.id}
+                            task_type={this.props.task_type}
+                        />
                     </div>
 
                     <div label="Attachment" className="tab-content">

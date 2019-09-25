@@ -49,6 +49,7 @@ export default class Customers extends Component {
                                 id={user.id}
                                 action={this.updateCustomers}
                                 customers={this.state.customers}
+                                modal={true}
                             />
                             <Button color="danger" onClick={() => this.deleteCustomer(user.id)}>Delete</Button>
 
