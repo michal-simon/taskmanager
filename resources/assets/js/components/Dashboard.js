@@ -50,7 +50,7 @@ class Dashboard extends Component {
 
     getTasks () {
         const url = this.getTaskUrl()
-        
+
         axios.get(url)
             .then((r) => {
                 this.setState({
@@ -168,6 +168,7 @@ class Dashboard extends Component {
                                 storyType={this.project_id}
                                 loading={this.state.loading}
                                 task_type={this.props.task_type}
+                                project_id={this.props.project_id}
                             />
                         </aside>
                     </div>

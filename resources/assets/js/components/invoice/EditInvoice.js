@@ -19,7 +19,9 @@ class EditInvoice extends Component {
             invoice_status: 1,
             customers: [],
             tasks: [],
-            errors: []
+            errors: [],
+            total: 0,
+            data: []
         }
         this.updateData = this.updateData.bind(this)
         this.saveData = this.saveData.bind(this)
@@ -29,17 +31,20 @@ class EditInvoice extends Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.changeStatus = this.changeStatus.bind(this)
         this.buildCustomerOptions = this.buildCustomerOptions.bind(this)
-        this.buildTaskOptions = this.buildTaskOptions.bind(this)
         this.handleTaskChange = this.handleTaskChange.bind(this)
         this.handleDelete = this.handleDelete.bind(this)
+        this.buildForm = this.buildForm.bind(this)
         this.total = 0
         this.hasTasks = false
     }
 
     componentDidMount () {
         this.loadInvoice()
-        this.loadTasks()
         this.loadCustomers()
+
+        if(this.props.task_id) {
+            this.handleTaskChange()
+        }
     }
 
     renderErrorFor (field) {
@@ -75,12 +80,14 @@ class EditInvoice extends Component {
     }
 
     handleTaskChange (e) {
-        axios.get(`/api/products/tasks/${e.target.value}`)
+        axios.get(`/api/products/tasks/${46}`)
             .then((r) => {
 
                 const arrLines = []
+                let total = 0
 
                 if(r.data && r.data.length) {
+
                     r.data.map((product) => {
                         const objLine = {
                             quantity: 1,
@@ -89,12 +96,13 @@ class EditInvoice extends Component {
                             description: product.name
                         }
 
+                        total += parseFloat(product.price)
                         arrLines.push(objLine)
                     })
                 }
 
                 this.hasTasks = true
-                this.setState({ existingLines: arrLines, data: arrLines })
+                this.setState({ existingLines: arrLines, data: arrLines, total: total })
             })
             .catch((e) => {
                     console.warn(e)
@@ -115,21 +123,6 @@ class EditInvoice extends Component {
                 console.warn(e)
             }
         )
-    }
-
-    loadTasks () {
-
-        if (this.props.add) {
-            return false
-        }
-
-        axios.get('/api/tasks/products')
-            .then((r) => {
-                this.setState({ tasks: r.data })
-            })
-            .catch((e) => {
-                console.warn(e)
-            })
     }
 
     loadInvoice () {
@@ -174,10 +167,7 @@ class EditInvoice extends Component {
 
     updateData (rowData, row) {
 
-        if(!this.state.data || !this.state.data.length) {
-            this.setState({ data: rowData })
-            return
-        }
+        console.log('data 2', rowData)
 
         if(this.state.data && this.state.data[row]) {
             this.state.data[row] = rowData;
@@ -192,7 +182,6 @@ class EditInvoice extends Component {
     }
 
     handleDelete (row) {
-
         if(!this.state.data || !this.state.data[row]) {
 
             return false
@@ -200,7 +189,7 @@ class EditInvoice extends Component {
 
         const array = [...this.state.data]; // make a separate copy of the array
         array.splice(row, 1);
-        this.setState({data: array});
+        this.state.data = array;
     }
 
     setTotal (total) {
@@ -244,84 +233,78 @@ class EditInvoice extends Component {
         return customerContent
     }
 
-    buildTaskOptions () {
+    buildForm () {
 
-        let taskContent
-        if (!this.state.tasks.length) {
-            taskContent = <option value="">Loading...</option>
-        } else {
-            taskContent = this.state.tasks.map((task, index) => (
-                <option key={index} value={task.id}>{task.title}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="task">Task:</Label>
-                <Input type="select" name="task" onChange={this.handleTaskChange.bind(this)}>
-                    <option>Select Task</option>
-                    {taskContent}
-                </Input>
-            </FormGroup>
-        )
-    }
-
-    render () {
         const changeStatusButton = this.state.invoice_status === 1
             ? <Button color="primary" onClick={() => this.changeStatus(2).bind(this)}>Send</Button>
             : <Button color="primary" onClick={() => this.changeStatus(3).bind(this)}>Paid</Button>
 
         const customerContent = this.buildCustomerOptions()
-        const taskContent = !this.props.add ? this.buildTaskOptions() : ''
-        const buttonText = !this.props.add ? 'Create Invoice' : 'Update'
 
         return (
-            <React.Fragment>
-                <Button color="success" onClick={this.toggle}>{buttonText}</Button>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} size="lg">
-                    <ModalHeader toggle={this.toggle}>
-                        Invoice
-                    </ModalHeader>
+            <div>
+                <h2>{this.state.customerName}</h2>
+                <Address address={this.state.address}/>
 
-                    <ModalBody>
-                        <div>
-                            <h2>{this.state.customerName}</h2>
-                            <Address address={this.state.address}/>
+                <FormGroup>
+                    <Label for="due_date">Due Date(*):</Label>
+                    <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''}
+                           value={this.state.due_date} type="date" name="due_date"
+                           onChange={this.handleInput.bind(this)}/>
+                    {this.renderErrorFor('due_date')}
+                </FormGroup>
 
-                            <FormGroup>
-                                <Label for="due_date">Due Date(*):</Label>
-                                <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''}
-                                    value={this.state.due_date} type="date" name="due_date"
-                                    onChange={this.handleInput.bind(this)}/>
-                                {this.renderErrorFor('due_date')}
-                            </FormGroup>
+                <FormGroup>
+                    <Label for="customer">Customer(*):</Label>
+                    <Input className={this.hasErrorFor('customer') ? 'is-invalid' : ''} type="select"
+                           name="customer_id" onChange={this.handleInput.bind(this)}>
+                        <option>Choose A customer</option>
+                        {customerContent}
+                    </Input>
+                    {this.renderErrorFor('customer')}
+                </FormGroup>
 
-                            <FormGroup>
-                                <Label for="customer">Customer(*):</Label>
-                                <Input className={this.hasErrorFor('customer') ? 'is-invalid' : ''} type="select"
-                                    name="customer_id" onChange={this.handleInput.bind(this)}>
-                                    <option>Choose A customer</option>
-                                    {customerContent}
-                                </Input>
-                                {this.renderErrorFor('customer')}
-                            </FormGroup>
-
-                            {taskContent}
-
-                            <LineItemEditor hasTasks={this.hasTasks} lineItemModel={this.state.existingLines} delete={this.handleDelete} update={this.updateData}
-                                            setTotal={this.setTotal}/>
-                            <Button color="success" onClick={this.saveData}>Save</Button>
-                            {changeStatusButton}
-                            <br/>
-                            <br/>
-                        </div>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="secondary" onClick={this.toggle}>Close</Button>
-                    </ModalFooter>
-                </Modal>
-            </React.Fragment>
+                <LineItemEditor total={this.state.total} hasTasks={this.hasTasks} lineItemModel={this.state.existingLines} delete={this.handleDelete} update={this.updateData}
+                                setTotal={this.setTotal}/>
+                <Button color="success" onClick={this.saveData}>Save</Button>
+                {changeStatusButton}
+                <br/>
+                <br/>
+            </div>
         )
+    }
+
+    render () {
+
+        const buttonText = !this.props.add ? 'Create Invoice' : 'Update'
+        const form = this.buildForm()
+
+        if(this.props.modal) {
+            return (
+                <React.Fragment>
+                    <Button color="success" onClick={this.toggle}>{buttonText}</Button>
+                    <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} size="lg">
+                        <ModalHeader toggle={this.toggle}>
+                            Invoice
+                        </ModalHeader>
+
+                        <ModalBody>
+                            {form}
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="secondary" onClick={this.toggle}>Close</Button>
+                        </ModalFooter>
+                    </Modal>
+                </React.Fragment>
+            )
+        }
+
+        return (
+            <div>
+                {form}
+            </div>
+        )
+
     }
 }
 

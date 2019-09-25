@@ -8,6 +8,7 @@ import ProductSelect from '../products/ProductSelect'
 import EditCustomer from '../customers/EditCustomer'
 import EventTab from './EventTab'
 import TaskTab from './TaskTab'
+import EditInvoice from '../invoice/EditInvoice'
 
 export default class TabContent extends Component {
 
@@ -52,6 +53,10 @@ export default class TabContent extends Component {
                             task_id={this.props.task.id}
                             task_type={this.props.task_type}
                         />
+                    </div>
+
+                    <div label="Invoice" className="tab-content">
+                        <EditInvoice task_id={this.props.task.id} />
                     </div>
 
                     <div label="Attachment" className="tab-content">

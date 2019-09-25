@@ -27,7 +27,7 @@ export default class Story extends Component {
                 })
             })
             .catch((e) => {
-                alert(e)
+                console.warn(e)
                 console.error(e)
             })
     }
@@ -46,6 +46,7 @@ export default class Story extends Component {
                         placement="top"
                         storyType={this.props.storyType}
                         task_type={this.props.task_type}
+                        project_id={this.props.project_id}
                     />
                 </div>
 

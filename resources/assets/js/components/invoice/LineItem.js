@@ -17,6 +17,8 @@ class LineItem extends Component {
         this.deleteFromDatabase = this.deleteFromDatabase.bind(this)
         this.loadProducts = this.loadProducts.bind(this)
         this.buildProductOptions = this.buildProductOptions.bind(this)
+
+        this.index = 0
     }
 
     componentDidMount () {
@@ -54,6 +56,10 @@ class LineItem extends Component {
             this.setState({ quantity: e.target.value })
             return false
         }
+
+        const parent = e.target.parentNode.parentNode
+        this.index = [...parent.parentNode.children].indexOf(parent);
+
         this.setState({ quantity: e.target.value }, this.pushToCaller)
     }
 
@@ -62,6 +68,10 @@ class LineItem extends Component {
             this.setState({ description: e.target.value })
             return false
         }
+
+        const parent = e.target.parentNode.parentNode
+        this.index = [...parent.parentNode.children].indexOf(parent);
+
         this.setState({ description: e.target.value }, this.pushToCaller)
     }
 
@@ -79,22 +89,24 @@ class LineItem extends Component {
             return false
         }
 
+        const parent = e.target.parentNode.parentNode
+        this.index = [...parent.parentNode.children].indexOf(parent);
+
         this.setState({ unit_price: e.target.value }, this.pushToCaller)
     }
 
     pushToCaller () {
-        this.props.onChange(this.props.id, {
+        this.props.onChange(this.index, {
             quantity: parseInt(this.state.quantity, 10),
             description: this.state.description,
             unit_price: parseFloat(this.state.unit_price),
             product_id: parseInt(this.state.product_id)
         })
 
-        this.props.calculateTotal()
+        //this.props.calculateTotal()
     }
 
     deleteFromDatabase (lineId) {
-        const self = this
         axios.delete('/api/invoice/line/' + lineId)
             .then(function (response) {
                 document.querySelector('tbody tr[data-id=\'' + lineId + '\']').remove()
@@ -116,14 +128,15 @@ class LineItem extends Component {
 
         const lineId = priceField.parentNode.parentNode.getAttribute('data-id')
 
+        const parent = e.target.parentNode.parentNode
+        this.index = [...parent.parentNode.children].indexOf(parent);
+
         if(lineId) {
             this.setState({ unit_price: price, product_id: productId })
             return false
         } else {
             this.setState({ unit_price: price, product_id: productId }, this.pushToCaller)
         }
-
-        this.props.calculateTotal()
     }
 
     buildProductOptions () {
@@ -154,7 +167,7 @@ class LineItem extends Component {
                 className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
         const updateButton = !this.props.canUpdate ? <Button color="primary" onClick={this.updateLine}>Update</Button> : ''
 
-        return (
+        const lineForm = (
             <tr data-id={lineId} key={lineId}>
                 <td>
                     <Input name="quantity" data-line={lineId} type='text' value={this.state.quantity}
@@ -182,6 +195,9 @@ class LineItem extends Component {
                 </td>
             </tr>
         )
+
+        return lineForm
+
     }
 }
 

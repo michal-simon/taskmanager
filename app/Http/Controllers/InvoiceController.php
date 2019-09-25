@@ -56,7 +56,9 @@ class InvoiceController extends Controller {
      * @return type
      */
     public function store(Request $request) {
-
+        
+        $arrLines = json_decode($request->data, true);
+        
         if (!empty($request->invoice_id)) {
             $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
             $invoiceRepo = new InvoiceRepository($invoice);
@@ -64,8 +66,7 @@ class InvoiceController extends Controller {
         } else {
             $invoice = $this->invoiceRepository->createInvoice($request->all());
         }
-
-        $arrLines = json_decode($request->data, true);
+      
 
         if (is_array($arrLines) && !empty($arrLines)) {
             foreach ($arrLines as $arrLine) {

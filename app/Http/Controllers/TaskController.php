@@ -41,19 +41,19 @@ class TaskController extends Controller {
     public function store(CreateTaskRequest $request) {
         $validatedData = $request->except('project_id');
 
-        if (!empty($validatedData['project_id'])) {
-            $objProject = $this->projectRepository->findProjectById($validatedData['project_id']);
+        if (!empty($request->project_id)) {
+            $objProject = $this->projectRepository->findProjectById($request->project_id);
         }
 
         $validatedData['customer_id'] = empty($validatedData['customer_id']) && isset($objProject) ? $objProject->customer_id : $validatedData['customer_id'];
-
+        
         $task = $this->taskRepository->createTask($validatedData);
 
         if ($validatedData['task_type'] == 1) {
             $objProject->tasks()->attach($task);
         }
 
-        return $task->toJson();
+        return response()->json($this->transformTask($task));
     }
 
     /**

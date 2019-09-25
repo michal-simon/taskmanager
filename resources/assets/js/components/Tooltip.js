@@ -37,6 +37,7 @@ class Tooltips extends Component {
             action={this.props.action}
             status={this.props.id}
             task_type={this.props.task_type}
+            project_id={this.props.project_id}
             modal={true}
         />
 

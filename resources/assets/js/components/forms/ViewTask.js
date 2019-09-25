@@ -25,7 +25,7 @@ class ViewTask extends React.Component {
         return (
             <div>
                 <a href='#' onClick={this.toggle}><h4 className="mb-1">{this.props.task.title}</h4></a>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Add Story
                     </ModalHeader>

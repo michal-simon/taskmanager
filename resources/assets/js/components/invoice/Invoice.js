@@ -35,6 +35,7 @@ export default class Invoice extends Component {
                         <td>{user.invoice_status}</td>
                         <td>Credit</td>
                         <td><EditInvoice
+                            modal={true}
                             add={true}
                             invoice_id={user.id}
                             action={this.updateInvoice}
@@ -70,6 +71,7 @@ export default class Invoice extends Component {
                     add={false}
                     action={this.updateInvoice}
                     invoices={this.state.invoices}
+                    modal={true}
                 />
 
                 <DataTable

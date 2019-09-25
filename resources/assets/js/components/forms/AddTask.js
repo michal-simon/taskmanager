@@ -109,7 +109,7 @@ class AddModal extends React.Component {
             contributors: this.state.contributors,
             due_date: this.state.due_date,
             task_color: this.state.task_color,
-            project_id: parseInt(this.state.project_id),
+            project_id: parseInt(this.props.project_id),
             created_by: this.state.created_by,
             task_type: this.props.task_type,
             parent_id: this.props.task_id ? this.props.task_id : 0
