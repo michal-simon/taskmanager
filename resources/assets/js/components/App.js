@@ -58,7 +58,7 @@ class App extends Component {
             <main>
                 <BrowserRouter>
                     <Switch>
-                        <Route path='/' component={Dashboard}/>
+                        <Route exact path='/' component={Dashboard}/>
                         <Route path='/products' component={ProductList}/>
                         <Route path='/chat' component={ChatPage}/>
                         <Route path='/customers' render={(props) => <Customers {...props} customer_type={1} />}/>

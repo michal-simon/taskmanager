@@ -33,6 +33,16 @@ class TaskController extends Controller {
         $this->projectRepository = $projectRepository;
     }
 
+    public function index() {
+        $list = $this->taskRepository->listTasks();
+
+        $tasks = $list->map(function (Task $task) {
+                    return $this->transformTask($task);
+                })->all();
+
+        return response()->json($tasks);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -46,7 +56,7 @@ class TaskController extends Controller {
         }
 
         $validatedData['customer_id'] = empty($validatedData['customer_id']) && isset($objProject) ? $objProject->customer_id : $validatedData['customer_id'];
-        
+
         $task = $this->taskRepository->createTask($validatedData);
 
         if ($validatedData['task_type'] == 1) {

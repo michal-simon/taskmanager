@@ -67,6 +67,7 @@ Route::get('tasks/products/{task_id}', 'TaskController@getProducts');
 Route::get('tasks/products', 'TaskController@getTasksWithProducts');
 Route::get('products/tasks/{task_id}', 'ProductController@getProductsForTask');
 Route::post('tasks/deal', 'TaskController@createDeal');
+Route::get('tasks', 'TaskController@index');
 Route::get('tasks/subtasks/{task_id}', 'TaskController@getSubtasks');
 Route::get('events/tasks/{task_id}', 'EventController@getEventsForTask');
 Route::get('events/users/{user_id}', 'EventController@getEventsForUser');
