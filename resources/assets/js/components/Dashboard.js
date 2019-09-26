@@ -10,39 +10,16 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import React, { Component } from 'react'
-import ChartistGraph from 'react-chartist'
-import { Grid, Row, Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import { CardModule } from './common/Card.jsx'
 import ReactEcharts from 'echarts-for-react';
 import { StatsCard } from './common/StatsCard.jsx'
-import { Tasks } from './common/Tasks.jsx'
-import { Weather } from './common/Weather.jsx'
-import * as echarts from 'echarts/dist/echarts.js';
-
-import {
-    dataPie,
-    legendPie,
-    dataSales,
-    optionsSales,
-    responsiveSales,
-    legendSales,
-    dataBar,
-    optionsBar,
-    responsiveBar,
-    legendBar
-} from './common/Variables.jsx'
 
 class Dashboard extends Component {
 
     constructor(props) {
         super(props);
-        this.getInitialState = this.getInitialState.bind(this)
-        this.state = this.getInitialState();
         this.getOption = this.getOption.bind(this)
-    }
-
-    getInitialState ()  {
-        return this.getOption()
     }
 
     createLegend (json) {
@@ -54,6 +31,42 @@ class Dashboard extends Component {
             legend.push(json['names'][i])
         }
         return legend
+    }
+
+    getPieOptions () {
+        return {
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['Website','Personal Contact','Email','Other','Call']
+            },
+            series : [
+                {
+                    name: 'Sources',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {value:335, name:'Personal Contact'},
+                        {value:310, name:'Call'},
+                        {value:234, name:'Email'},
+                        {value:135, name:'Other'},
+                        {value:1548, name:'Website'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        }
     }
 
     getOption () {
@@ -106,6 +119,12 @@ class Dashboard extends Component {
     };
 
     render () {
+
+        let onEvents = {
+            'click': this.onChartClick,
+            'legendselectchanged': this.onChartLegendselectchanged
+        }
+
         return (
             <div className="content">
                 <div className="content-wrapper">
@@ -346,7 +365,29 @@ class Dashboard extends Component {
                             </Col>
 
                             <Col className="col-xl-4" lg={12}>
-                                <Weather />
+                                <CardModule
+                                    body={true}
+                                    header={
+                                        <React.Fragment>
+                                            <h4 className="card-title">Sources <span className="text-muted text-bold-400">This Month</span></h4>
+                                            <a className="heading-elements-toggle"><i className="ft-more-horizontal font-medium-3"></i></a>
+                                            <div className="heading-elements">
+                                                <ul className="list-inline mb-0">
+                                                    <li><a data-action="reload"><i className="ft-rotate-cw"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </React.Fragment>
+
+                                    }
+                                    content={
+                                        <ReactEcharts
+                                            option={this.getPieOptions()}
+                                            style={{height: 300}}
+                                            onChartReady={this.onChartReady}
+                                            onEvents={onEvents}
+                                        />
+                                    }
+                                />
                             </Col>
                         </Row>
 
