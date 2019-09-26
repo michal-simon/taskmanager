@@ -11,6 +11,7 @@ class EditInvoice extends Component {
         this.state = {
             due_date: '',
             quantity: '',
+            invoice_id: this.props.invoice_id,
             lines: [],
             address: {},
             existingLines: [],
@@ -80,7 +81,7 @@ class EditInvoice extends Component {
     }
 
     handleTaskChange (e) {
-        axios.get(`/api/products/tasks/${46}`)
+        axios.get(`/api/products/tasks/${this.props.task_id}`)
             .then((r) => {
 
                 const arrLines = []
@@ -127,17 +128,22 @@ class EditInvoice extends Component {
 
     loadInvoice () {
 
-        if (!this.props.add) {
-            return false
-        }
+        const url = this.props.task_id  ? `/api/invoice/task/${this.props.task_id}` : `/api/invoice/${this.state.invoice_id}`
 
-        axios.get(`/api/invoice/${this.props.invoice_id}`)
+        axios.get(url)
             .then((r) => {
-                this.setState({
-                    existingLines: r.data.lines,
-                    due_date: r.data.invoice.due_date,
-                    invoice_status: r.data.invoice.invoice_status
-                })
+                if(r.data.invoice) {
+                    this.setState({
+                        existingLines: r.data.lines,
+                        due_date: r.data.invoice.due_date,
+                        invoice_id: r.data.invoice.id,
+                        invoice_status: r.data.invoice.invoice_status
+                    })
+
+                    //this.hasTasks = false
+
+                }
+
             })
             .catch((e) => {
                 console.warn(e)
@@ -145,10 +151,10 @@ class EditInvoice extends Component {
     }
 
     changeStatus (status) {
-        if (!this.props.invoice_id) {
+        if (!this.state.invoice_id) {
             return false
         }
-        axios.put(`/api/invoice/${this.props.invoice_id}`, {
+        axios.put(`/api/invoice/${this.state.invoice_id}`, {
             invoice_status: status
         })
             .then((response) => {
@@ -199,7 +205,8 @@ class EditInvoice extends Component {
     saveData () {
 
         const data = {
-            invoice_id: this.props.invoice_id,
+            invoice_id: this.state.invoice_id,
+            task_id: this.props.task_id,
             due_date: this.state.due_date,
             customer_id: this.state.customer_id,
             data: JSON.stringify(this.state.data),

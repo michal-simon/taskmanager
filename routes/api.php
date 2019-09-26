@@ -37,6 +37,7 @@ Route::get('roles/{role_id}', 'RoleController@edit');
 Route::put('roles/{role_id}', 'RoleController@update');
 Route::post('invoice', 'InvoiceController@store');
 Route::get('invoice', 'InvoiceController@index');
+Route::get('invoice/task/{task_id}', 'InvoiceController@getInvoiceLinesForTask');
 Route::get('invoice/{invoice_id}', 'InvoiceController@show');
 Route::delete('invoice/line/{line_id}', 'InvoiceController@destroyLine');
 Route::put('invoice/line/{line_id}', 'InvoiceController@updateLine');

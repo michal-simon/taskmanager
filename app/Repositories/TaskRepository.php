@@ -142,7 +142,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     }
 
     /**
-     * Sync the categories
+     * Sync the products
      *
      * @param array $params
      */

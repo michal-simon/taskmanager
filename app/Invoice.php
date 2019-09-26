@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\SearchableTrait;
+use App\Task;
 
 class Invoice extends Model {
 
@@ -64,6 +65,10 @@ class Invoice extends Model {
      */
     public function searchInvoice($term) {
         return self::search($term);
+    }
+
+    public function tasks() {
+        return $this->belongsToMany(Task::class);
     }
 
 }

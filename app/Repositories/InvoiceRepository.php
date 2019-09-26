@@ -6,6 +6,7 @@ use App\Invoice;
 use App\Repositories\Interfaces\InvoiceRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Collection;
+use App\Task;
 
 class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInterface {
 
@@ -44,18 +45,6 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
     }
 
     /**
-     * 
-     * @param int $customerId
-     * @return type
-     */
-    public function getInvoiceLinesByInvoiceId(int $invoiceId) {
-        return Invoice::join('invoice_lines', 'invoice_lines.invoice_id', '=', 'invoices.id')
-                        ->select('invoice_lines.*')
-                        ->where('invoices.id', $invoiceId)
-                        ->get();
-    }
-
-    /**
      * List all the invoices
      *
      * @param string $order
@@ -87,6 +76,28 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
             return $this->all();
         }
         return $this->model->searchInvoice($text)->get();
+    }
+
+    /**
+     * Sync the tasks
+     *
+     * @param array $params
+     */
+    public function syncTasks(int $task_id) {
+        $this->model->tasks()->sync($task_id);
+    }
+
+    /**
+     * 
+     * @param int $customerId
+     * @return type
+     */
+    public function getInvoiceForTask(Task $objTask): Collection {
+
+        return $this->model->join('invoice_task', 'invoice_task.invoice_id', '=', 'invoices.id')
+                        ->select('invoices.*')
+                        ->where('invoice_task.task_id', $objTask->id)
+                        ->get();
     }
 
 }

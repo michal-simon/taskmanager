@@ -10,6 +10,8 @@ namespace App\Repositories\Interfaces;
 
 use App\InvoiceLine;
 use App\Invoice;
+use Illuminate\Support\Collection as Support;
+use App\Task;
 
 /**
  * Description of InvoiceLineRepositoryInterface
@@ -39,4 +41,15 @@ interface InvoiceLineRepositoryInterface {
      * 
      */
     public function deleteLine(): bool;
+    
+    /**
+     * 
+     */
+    public function getInvoiceLinesForTask(Task $objTask) : Support;
+    
+    /**
+     * 
+     * @param Invoice $objInvoice
+     */
+    public function getInvoiceLinesByInvoiceId(Invoice $objInvoice) : Support;
 }

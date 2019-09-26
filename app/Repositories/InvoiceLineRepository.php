@@ -6,6 +6,8 @@ use App\InvoiceLine;
 use App\Invoice;
 use App\Repositories\Interfaces\InvoiceLineRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
+use App\Task;
+use Illuminate\Support\Collection as Support;
 
 class InvoiceLineRepository extends BaseRepository implements InvoiceLineRepositoryInterface {
 
@@ -68,6 +70,31 @@ class InvoiceLineRepository extends BaseRepository implements InvoiceLineReposit
      */
     public function updateLine(array $params): bool {
         return $this->model->update($params);
+    }
+
+    /**
+     * 
+     * @param Task $objTask
+     * @return type
+     */
+    public function getInvoiceLinesForTask(Task $objTask): Support {
+        return $this->model->join('invoice_task', 'invoice_task.invoice_id', '=', 'invoice_lines.invoice_id')
+                        ->select('invoice_lines.*')
+                        ->where('invoice_task.task_id', $objTask->id)
+                        ->get();
+    }
+
+    /**
+     * 
+     * @param int $customerId
+     * @return type
+     */
+    public function getInvoiceLinesByInvoiceId(Invoice $objInvoice): Support {
+
+        return $this->model->join('invoices', 'invoices.id', '=', 'invoice_lines.invoice_id')
+                        ->select('invoice_lines.*')
+                        ->where('invoices.id', $objInvoice->id)
+                        ->get();
     }
 
 }

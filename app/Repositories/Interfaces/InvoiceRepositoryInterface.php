@@ -2,6 +2,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\Invoice;
+use App\Task;
 use Illuminate\Support\Collection;
 
 interface InvoiceRepositoryInterface
@@ -31,5 +32,11 @@ interface InvoiceRepositoryInterface
      * @param int $id
      */
     public function findInvoiceById(int $id): Invoice;
+    
+    /**
+     * 
+     * @param \App\Repositories\Interfaces\Task $objTask
+     */
+    public function getInvoiceForTask(Task $objTask): Collection;
   
 }

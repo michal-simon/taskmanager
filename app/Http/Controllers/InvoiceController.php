@@ -9,6 +9,8 @@ use App\Repositories\InvoiceLineRepository;
 use App\Repositories\Interfaces\InvoiceLineRepositoryInterface;
 use App\Transformations\InvoiceTransformable;
 use App\Invoice;
+use App\Repositories\TaskRepository;
+use App\Task;
 
 class InvoiceController extends Controller {
 
@@ -27,7 +29,7 @@ class InvoiceController extends Controller {
      * @return type
      */
     public function index(Request $request) {
-                
+
         $orderBy = !$request->column ? 'due_date' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
@@ -46,7 +48,7 @@ class InvoiceController extends Controller {
             $paginatedResults = $this->invoiceRepository->paginateArrayResults($invoices, $recordsPerPage);
             return $paginatedResults->toJson();
         }
-        
+
         return collect($invoices)->toJson();
     }
 
@@ -56,17 +58,21 @@ class InvoiceController extends Controller {
      * @return type
      */
     public function store(Request $request) {
-        
+
         $arrLines = json_decode($request->data, true);
-        
+
         if (!empty($request->invoice_id)) {
             $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
             $invoiceRepo = new InvoiceRepository($invoice);
             $invoiceRepo->updateInvoice($request->all());
         } else {
             $invoice = $this->invoiceRepository->createInvoice($request->all());
+            $invoiceRepo = new InvoiceRepository($invoice);
         }
-      
+
+        if ($request->has('task_id') && !empty($request->task_id)) {
+            $invoiceRepo->syncTasks($request->input('task_id'));
+        }
 
         if (is_array($arrLines) && !empty($arrLines)) {
             foreach ($arrLines as $arrLine) {
@@ -85,15 +91,15 @@ class InvoiceController extends Controller {
      */
     public function show(int $invoice_id) {
 
-        $lines = $this->invoiceRepository->getInvoiceLinesByInvoiceId($invoice_id);
         $invoice = $this->invoiceRepository->findInvoiceById($invoice_id);
+        $lines = $this->invoiceLineRepository->getInvoiceLinesByInvoiceId($invoice);
 
         $arrTest = [
             'lines' => $lines,
-            'invoice' => $invoice
+            'invoice' => $invoice[0]
         ];
 
-        return collect($arrTest)->toJson();
+        return response()->json($arrTest);
     }
 
     /**
@@ -136,6 +142,25 @@ class InvoiceController extends Controller {
         $update = new InvoiceRepository($invoice);
 
         $update->updateInvoice($request->all());
+    }
+
+    /**
+     * 
+     * @param int $task_id
+     * @return type
+     */
+    public function getInvoiceLinesForTask(int $task_id) {
+
+        $task = (new TaskRepository(new Task))->findTaskById($task_id);
+        $invoice = $this->invoiceRepository->getInvoiceForTask($task);
+        $lines = $this->invoiceLineRepository->getInvoiceLinesForTask($task);
+        
+        $arrTest = [
+            'lines' => $lines,
+            'invoice' => $invoice[0]
+        ];
+
+        return response()->json($arrTest);
     }
 
 }

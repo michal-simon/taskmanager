@@ -30,7 +30,7 @@ class LineItemEditor extends Component {
                     lineId: lineItem.id,
                     change_existing: true
                 }
-            } canUpdate={canUpdate} new={false} calculateTotal={this.getTotal} onDelete={this.handleRowDelete}  onChange={this.handleRowChange}/>
+            } canUpdate={false} new={false} calculateTotal={this.getTotal} onDelete={this.handleRowDelete}  onChange={this.handleRowChange}/>
         )
     }
 
