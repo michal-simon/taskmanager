@@ -1,6 +1,6 @@
 import React from 'react'
 import {Route} from 'react-router'
-import Dashboard from './components/Dashboard'
+import Kanban from './components/Kanban'
 //import About from './components/about';
 const IndexPage = () => {
 
@@ -13,7 +13,7 @@ const NotFoundPage = () => {
 
 export default(
     <Route>
-        <Route path='/dashboard' component={Dashboard}/>
+        <Route path='/dashboard' component={Kanban}/>
         {/* <Route path="/dashboard" component={IndexPage} /> */}
         <Route path='*' exact component={NotFoundPage}/>
     </Route>

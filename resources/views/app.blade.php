@@ -20,6 +20,9 @@
         <link rel="stylesheet" href="{{ asset('css/themify-icons.css') }}">
         <link rel="stylesheet" href="{{ asset('css/flag-icon.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/timeline.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/vector.css') }}">
+         <link rel="stylesheet" href="{{ asset('css/morris.css') }}">
         <link rel="stylesheet" href="vendors/selectFX/css/cs-skin-elastic.css">
         <link rel="stylesheet" href="vendors/jqvmap/dist/jqvmap.min.css">
 
@@ -202,7 +205,7 @@
                 <div class="col-sm-4">
                     <div class="page-header float-left">
                         <div class="page-title">
-                            <h1>Dashboard</h1>
+                            <h1>Kanban</h1>
                         </div>
                     </div>
                 </div>
@@ -210,7 +213,7 @@
                     <div class="page-header float-right">
                         <div class="page-title">
                             <ol class="breadcrumb text-right">
-                                <li><a href="#">Dashboard</a></li>
+                                <li><a href="#">Kanban</a></li>
                                 <li><a href="#">UI Elements</a></li>
                                 <li class="active">Buttons</li>
                             </ol>
@@ -230,6 +233,15 @@
         <script src="{{ asset('js/bootstrap.js') }}"></script>
         <script src="{{ asset('js/main.js') }}"></script>
         <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/timeline.js') }}"></script>
+        <script src="{{ asset('js/knob.js') }}"></script>
+        <script src="{{ asset('js/chart.js') }}"></script>
+        <script src="{{ asset('js/test.js') }}"></script>
+        <script src="{{ asset('js/test2.js') }}"></script>
+         <script src="{{ asset('js/test3.js') }}"></script>
+        <script src="{{ asset('js/vector.js') }}"></script>
+        <script src="{{ asset('js/echart.js') }}"></script>
+        <script src="{{ asset('js/dashboard.js') }}"></script>
 
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13" type="e9e5abddf22916310e683d1f-text/javascript"></script>
         <script type="e9e5abddf22916310e683d1f-text/javascript">

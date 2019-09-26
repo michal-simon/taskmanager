@@ -1,16 +1,17 @@
-/* eslint no-unused-vars: "React, Switch, Route, BrowserRouter, Dashboard, Login, ReactDOM" */
+/* eslint no-unused-vars: "React, Switch, Route, BrowserRouter, Kanban, Login, ReactDOM" */
 
 import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import UserList from './users/UserList'
 import ProductList from './products/ProductList'
-import Dashboard from './Dashboard'
+import Kanban from './Kanban'
 import Calendar from './calendar/Calendars'
 import Roles from './roles/Roles'
 import Invoice from './invoice/Invoice'
 import Customers from './customers/Customers'
 import ChatPage from './chat/ChatPage'
 import Login from './Login'
+import Dashboard from './Dashboard'
 
 class App extends Component {
     constructor (props, context) {
@@ -57,6 +58,7 @@ class App extends Component {
             <main>
                 <BrowserRouter>
                     <Switch>
+                        <Route path='/' component={Dashboard}/>
                         <Route path='/products' component={ProductList}/>
                         <Route path='/chat' component={ChatPage}/>
                         <Route path='/customers' render={(props) => <Customers {...props} customer_type={1} />}/>
@@ -77,26 +79,26 @@ class App extends Component {
                         <Route path='/roles' component={Roles}/>
                         <Route
                             path='/leads'
-                            render={(props) => <Dashboard {...props} task_type={2} />}
+                            render={(props) => <Kanban {...props} task_type={2} />}
                         />
                         <Route
                             path='/deals'
-                            render={(props) => <Dashboard {...props} task_type={3} />}
+                            render={(props) => <Kanban {...props} task_type={3} />}
                         />
 
                         <Route
                             path='/lead-subtasks'
-                            render={(props) => <Dashboard {...props} task_type={2} task_id={taskId} />}
+                            render={(props) => <Kanban {...props} task_type={2} task_id={taskId} />}
                         />
 
                         <Route
                             path='/deal-subtasks'
-                            render={(props) => <Dashboard {...props} task_type={2} task_id={taskId} />}
+                            render={(props) => <Kanban {...props} task_type={2} task_id={taskId} />}
                         />
 
                         <Route
                             path='/projects'
-                            render={(props) => <Dashboard {...props} task_type={1} project_id={projectId} />}
+                            render={(props) => <Kanban {...props} task_type={1} project_id={projectId} />}
                         />
                     </Switch>
                 </BrowserRouter>
