@@ -3,11 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Task.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/routes/api.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/common/Tasks.jsx</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/InvoiceController.php</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/TaskController.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/CustomerController.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Requests/CreateDealRequest.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/common/Card.jsx</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/InvoiceLineRepository.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/common/StatsCard.jsx</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Invoice.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/TaskRepository.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/Interfaces/InvoiceLineRepositoryInterface.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/routes/api.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/InvoiceRepository.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/Interfaces/InvoiceRepositoryInterface.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/Dashboard.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/common/Weather.jsx</file>
         </group>
     </open-files>
 </project-private>

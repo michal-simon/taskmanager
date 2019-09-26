@@ -40,6 +40,7 @@ class Calendars extends React.Component {
         this.getEvents = this.getEvents.bind(this)
         this.buildUserOptions = this.buildUserOptions.bind(this)
         this.buildTaskOptions = this.buildTaskOptions.bind(this)
+        this.filterEvents = this.filterEvents.bind(this)
     }
 
     componentDidMount () {
@@ -95,12 +96,20 @@ class Calendars extends React.Component {
             })
     }
 
-    handleUserChange (e) {
-        window.location.href = (!e.target.value ? '/calendar' : `/calendar-users?user_id=${e.target.value}`)
-    }
+    filterEvents (e) {
+        const url = (!e.target.value) ? '/api/events' : (e.target.name === 'user') ? `/api/events/users/${e.target.value}` : `/api/events/tasks/${e.target.value}`
 
-    handleTaskChange (e) {
-        window.location.href = (!e.target.value ? '/calendar' : `/calendar-tasks?task_id=${e.target.value}`)
+        axios.get(url)
+            .then((r) => {
+                this.setState({
+                    events: r.data
+                })
+            })
+            .catch((e) => {
+                console.warn(e)
+            })
+
+        //window.location.href = (!e.target.value ? '/calendar' : `/calendar-users?user_id=${e.target.value}`)
     }
 
     buildUserOptions () {
@@ -114,8 +123,8 @@ class Calendars extends React.Component {
         }
         return (
             <Input type="select"
-                   value={this.props.user_id} name="contributors" id="contributors"
-                   onChange={this.handleUserChange.bind(this)}>
+                   value={this.props.user_id} name="user" id="contributors"
+                   onChange={this.filterEvents.bind(this)}>
                 <option value="">Choose:</option>
                 {userContent}
             </Input>
@@ -133,7 +142,7 @@ class Calendars extends React.Component {
         }
         return (
             <Input type="select"
-                   value={this.props.task_id} name="tasks" id="tasks" onChange={this.handleTaskChange.bind(this)}>
+                   value={this.props.task_id} name="task" id="tasks" onChange={this.filterEvents.bind(this)}>
                 <option value="">Choose:</option>
                 {taskContent}
             </Input>
