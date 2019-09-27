@@ -9,6 +9,8 @@ use App\Repositories\Base\BaseRepository;
 use App\Exceptions\CreateTaskErrorException;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
 
@@ -93,13 +95,21 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
 
     /**
      * 
-     * @return type
+     * @param int $task_type
+     * @param type $limit
+     * @return Support
      */
-    public function getLeads(int $task_type): Support {
-        return $this->model->where('task_type', $task_type)
-                        ->where('is_completed', 0)
-                        ->where('parent_id', 0)
-                        ->get();
+    public function getLeads(int $task_type, $limit = null): Support {
+        $query = $this->model->where('task_type', $task_type)
+                ->where('is_completed', 0)
+                ->where('parent_id', 0)
+                ->orderBy('created_at', 'desc');
+
+        if ($limit !== null) {
+            $query->limit($limit);
+        }
+
+        return $query->get();
     }
 
     /**
@@ -158,8 +168,78 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
                         ->get();
     }
 
+    /**
+     * 
+     * @param Task $objTask
+     * @return Support
+     */
     public function getSubtasks(Task $objTask): Support {
         return $this->model->where('parent_id', $objTask->id)->get();
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    public function getSourceTypeCounts(int $task_type): Support {
+        return $this->model->join('source_type', 'source_type.id', '=', 'tasks.source_type')
+                        ->select('source_type.name', DB::raw('count(*) as value'))
+                        ->where('task_type', $task_type)
+                        ->groupBy('source_type.name')
+                        ->get();
+    }
+
+    /**
+     * 
+     * @return type
+     */
+    public function getStatusCounts(int $task_type): Support {
+        return $this->model->join('task_statuses', 'task_statuses.id', '=', 'tasks.task_status')
+                        ->select('task_statuses.title AS name', DB::raw('CEILING(count(*) * 100 / (select count(*) from tasks)) as value'))
+                        ->where('tasks.task_type', $task_type)
+                        ->groupBy('task_statuses.title')
+                        ->get();
+    }
+
+    /**
+     * 
+     * @param int $task_type
+     * @param int $number_of_days
+     * @return type
+     */
+    public function getRecentTasks(int $task_type, int $number_of_days) {
+
+        $date = Carbon::today()->subDays($number_of_days);
+        $result = $this->model->select(DB::raw('count(*) as total'))
+                ->where('created_at', '>=', $date)
+                ->where('task_type', $task_type)
+                ->get();
+
+        return !empty($result[0]) ? $result[0]['total'] : 0;
+    }
+
+    /**
+     * 
+     * @param int $task_type
+     * @return type
+     */
+    public function getNewDeals(int $task_type) {
+
+        $result = $this->model->select(DB::raw('count(*) as total'))
+                ->where('task_type', $task_type)
+                ->get();
+
+        return !empty($result[0]) ? $result[0]['total'] : 0;
+    }
+
+    /**
+     * 
+     * @param int $task_type
+     * @return type
+     */
+    public function getTotalEarnt(int $task_type) {
+
+        return $this->model->where('task_type', $task_type)->sum('valued_at');
     }
 
 }

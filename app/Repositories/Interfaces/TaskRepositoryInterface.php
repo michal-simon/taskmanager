@@ -56,8 +56,9 @@ interface TaskRepositoryInterface extends BaseRepositoryInterface
     /**
      * 
      * @param int $task_type
+     * @param type $limit
      */
-    public function getLeads(int $task_type) : Support;
+    public function getLeads(int $task_type, $limit = null) : Support;
     
     /**
      * 

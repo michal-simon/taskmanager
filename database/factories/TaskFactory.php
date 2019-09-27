@@ -28,6 +28,8 @@ $factory->define(Task::class, function (Faker $faker) {
         'customer_id' => $customer->id,
         'task_color' => 'colorBlue',
         'due_date' => $faker->dateTime(),
-        'task_type' => 2
+        'task_type' => 2,
+        'source_type' => 1,
+        'valued_at' => $faker->randomNumber(3)
     ];
 });

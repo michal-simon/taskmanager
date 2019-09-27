@@ -1,62 +1,69 @@
-/*!
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-* Coded by Creative Tim
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
+/* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { CardModule } from './common/Card.jsx'
-import ReactEcharts from 'echarts-for-react';
+import ReactEcharts from 'echarts-for-react'
 import { StatsCard } from './common/StatsCard.jsx'
+import axios from 'axios'
 
 class Dashboard extends Component {
-
-    constructor(props) {
-        super(props);
+    constructor (props) {
+        super(props)
         this.getOption = this.getOption.bind(this)
+        this.state = {
+            sources: [],
+            leadCounts: [],
+            totalBudget: 0,
+            totalEarnt: 0,
+            leadsToday: 0,
+            newDeals: 0,
+            newCustomers: 0,
+            deals: []
+        }
     }
 
-    createLegend (json) {
-        var legend = []
-        for (var i = 0; i < json["names"].length; i++) {
-            var type = 'fa fa-circle text-' + json['types'][i]
-            legend.push(<i className={type} key={i}/>)
-            legend.push(' ')
-            legend.push(json['names'][i])
-        }
-        return legend
+    componentDidMount () {
+        axios.get('/api/dashboard')
+            .then((r) => {
+                if (r.data) {
+                    this.setState(
+                        {
+                            sources: r.data.sources,
+                            leadCounts: r.data.leadCounts,
+                            totalBudget: r.data.totalBudget,
+                            totalEarnt: r.data.totalEarnt,
+                            leadsToday: r.data.leadsToday,
+                            newDeals: r.data.newDeals,
+                            newCustomers: r.data.newCustomers,
+                            deals: r.data.deals
+                        }
+                    )
+                }
+            })
+            .catch((e) => {
+                    console.warn(e)
+                }
+            )
     }
 
     getPieOptions () {
         return {
-            tooltip : {
+            tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
             },
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: ['Website','Personal Contact','Email','Other','Call']
+                data: ['Website', 'Personal Contact', 'Email', 'Other', 'Call']
             },
-            series : [
+            series: [
                 {
                     name: 'Sources',
                     type: 'pie',
-                    radius : '55%',
+                    radius: '55%',
                     center: ['50%', '60%'],
-                    data:[
-                        {value:335, name:'Personal Contact'},
-                        {value:310, name:'Call'},
-                        {value:234, name:'Email'},
-                        {value:135, name:'Other'},
-                        {value:1548, name:'Website'}
-                    ],
+                    data: this.state.sources,
                     itemStyle: {
                         emphasis: {
                             shadowBlur: 10,
@@ -73,58 +80,73 @@ class Dashboard extends Component {
         return {
             backgroundColor: '#1b1b1b',
             tooltip: {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b}: {c}%"
-                            },
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c}%'
+            },
             legend: {
-                                orient: 'horizontal',
-                                x: 'left',
-                                y: 0,
-                                data: ['Opened', 'Lost', 'Demo', 'Contacted', 'Won', 'No Show']
-                            },
+                orient: 'horizontal',
+                x: 'left',
+                y: 0,
+                data: ['Opened', 'Lost', 'Demo', 'Contacted', 'Won', 'No Show']
+            },
             // Add Custom Colors
-                        color: ['#0FB365', '#1EC481', '#28D094', '#48D7A4', '#94E8CA', '#BFF1DF'],
-
-                        // Enable drag recalculate
-                        calculable: true,
+            color: ['#0FB365', '#1EC481', '#28D094', '#48D7A4', '#94E8CA', '#BFF1DF'],
+            // Enable drag recalculate
+            calculable: true,
             toolbox: {
-                show : true,
-                feature : {
-                    mark : {show: true},
-                    restore : {show: true},
-                    saveAsImage : {show: true}
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
                 }
             },
             series: [
-                            {
-                                name: 'Deals',
-                                type: 'funnel',
-                                funnelAlign: 'left',
-                                x: '25%',
-                                x2: '25%',
-                                y: '17.5%',
-                                width: '50%',
-                                height: '80%',
-                                data: [
-                                    {value: 100, name: 'Opened'},
-                                    {value: 70, name: 'Lost'},
-                                    {value: 60, name: 'Demo'},
-                                    {value: 40, name: 'Contacted'},
-                                    {value: 20, name: 'Won'},
-                                    {value: 10, name: 'No Show'},
-                                ]
-                            }
-                        ]
-        };
+                {
+                    name: 'Deals',
+                    type: 'funnel',
+                    funnelAlign: 'left',
+                    x: '25%',
+                    x2: '25%',
+                    y: '17.5%',
+                    width: '50%',
+                    height: '80%',
+                    data: this.state.leadCounts
+                }
+            ]
+        }
     };
 
     render () {
-
         let onEvents = {
             'click': this.onChartClick,
             'legendselectchanged': this.onChartLegendselectchanged
         }
 
+        let leads = ''
+
+        if (this.state.deals.length) {
+            let count = 1;
+
+            leads = this.state.deals.map((lead, index) => {
+                return (
+                    <React.Fragment>
+                        <div className="media mt-1">
+                            <div className="media-left pr-2">
+                                <img className="media-object avatar avatar-md rounded-circle"
+                                     src={`/files/avatar${count++}.png`} alt="Generic placeholder image"/>
+                            </div>
+                            <div className="media-body">
+                                <p className="text-bold-600 m-0">{lead.title.substring(0, 40)} <span
+                                    className="float-right badge badge-success">{lead.status_name}</span></p>
+                                <p className="font-small-2 text-muted m-0">{lead.valued_at}<i
+                                    className="ft-calendar pl-1"></i>{lead.due_date}</p>
+                            </div>
+                        </div>
+                    </React.Fragment>
+                )
+            })
+        }
         return (
             <div className="content">
                 <div className="content-wrapper">
@@ -138,7 +160,7 @@ class Dashboard extends Component {
                                     header={
                                         <React.Fragment>
                                             <span className="success darken-1">Total Budget</span>
-                                            <h3 className="font-large-2 grey darken-1 text-bold-200">$24,879</h3>
+                                            <h3 className="font-large-2 grey darken-1 text-bold-200">{this.state.totalBudget}</h3>
                                         </React.Fragment>
                                     }
                                     content={
@@ -171,7 +193,7 @@ class Dashboard extends Component {
                                     content={
                                         <div className="earning-chart position-relative">
                                             <div className="chart-title position-absolute mt-2 ml-2">
-                                                <h1 className="font-large-2 grey darken-1 text-bold-200">$9,86M</h1>
+                                                <h1 className="font-large-2 grey darken-1 text-bold-200">{this.state.totalEarnt}</h1>
                                                 <span className="text-muted">Total Earning</span>
                                             </div>
                                             <div className="chartjs height-400">
@@ -194,7 +216,7 @@ class Dashboard extends Component {
                                         <div>
                                             <div className="media">
                                                 <div className="media-body text-left">
-                                                    <h3 className="success">2,780</h3>
+                                                    <h3 className="success">{this.state.leadsToday}</h3>
                                                     <span>Today's Leads</span>
                                                 </div>
                                                 <div className="media-right media-middle">
@@ -217,7 +239,7 @@ class Dashboard extends Component {
                                         <div>
                                             <div className="media">
                                                 <div className="media-body text-left">
-                                                    <h3 className="deep-orange">2,780</h3>
+                                                    <h3 className="deep-orange">{this.state.newDeals}</h3>
                                                     <span>New Deal</span>
                                                 </div>
                                                 <div className="media-right media-middle">
@@ -240,7 +262,7 @@ class Dashboard extends Component {
                                         <div>
                                             <div className="media">
                                                 <div className="media-body text-left">
-                                                    <h3 className="info">456</h3>
+                                                    <h3 className="info">{this.state.newCustomers}</h3>
                                                     <span>New Customers</span>
                                                 </div>
                                                 <div className="media-right media-middle">
@@ -265,18 +287,20 @@ class Dashboard extends Component {
                                     body={true}
                                     header={
                                         <React.Fragment>
-                                            <h4 className="card-title">Deals Funnel <span className="text-muted text-bold-400">This Month</span></h4>
-                                            <a className="heading-elements-toggle"><i className="ft-more-horizontal font-medium-3"></i></a>
+                                            <h4 className="card-title">Deals Funnel <span
+                                                className="text-muted text-bold-400">This Month</span></h4>
+                                            <a className="heading-elements-toggle"><i
+                                                className="ft-more-horizontal font-medium-3"></i></a>
                                             <div className="heading-elements">
-                                               <ul className="list-inline mb-0">
-                                                   <li><a data-action="reload"><i className="ft-rotate-cw"></i></a></li>
-                                               </ul>
+                                                <ul className="list-inline mb-0">
+                                                    <li><a data-action="reload"><i className="ft-rotate-cw"></i></a>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                </React.Fragment>
-                                       
+                                        </React.Fragment>
                                     }
                                     content={
-                                        <ReactEcharts option={this.getOption()} />
+                                        <ReactEcharts option={this.getOption()}/>
                                     }
                                 />
 
@@ -287,72 +311,23 @@ class Dashboard extends Component {
                                     body={true}
                                     header={
                                         <React.Fragment>
-                                            <h4 className="card-title">Deals <span className="text-muted text-bold-400">- Won 5</span></h4>
-                                            <a className="heading-elements-toggle"><i className="ft-more-horizontal font-medium-3"></i></a>
+                                            <h4 className="card-title">Deals <span className="text-muted text-bold-400">- Won 5</span>
+                                            </h4>
+                                            <a className="heading-elements-toggle"><i
+                                                className="ft-more-horizontal font-medium-3"></i></a>
                                             <div className="heading-elements">
                                                 <ul className="list-inline mb-0">
-                                                    <li><a data-action="reload"><i className="ft-rotate-cw"></i></a></li>
+                                                    <li><a data-action="reload"><i className="ft-rotate-cw"></i></a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </React.Fragment>
-
                                     }
                                     content={
-                                        <div style={{height: '300px', overflowY: 'auto'}} id="deals-list-scroll" className="card-body height-350 position-relative ps-container ps-theme-default" data-ps-id="6205b797-6d0d-611f-25fd-16195eadda29">
-                                            <div className="media">
-                                                <div className="media-left pr-2">
-                                                    <img className="media-object avatar avatar-md rounded-circle" src="/files/avatar-s-4.png" alt="Generic placeholder image" />
-                                                </div>
-                                                <div className="media-body">
-                                                    <p className="text-bold-600 m-0">ABC Inc. deal title <span className="float-right badge badge-success">Won</span></p>
-                                                    <p className="font-small-2 text-muted m-0">$122,000.88<i className="ft-calendar pl-1"></i> Yesterday</p>
-                                                </div>
-                                            </div>
-                                            <div className="media mt-1">
-                                                <div className="media-left pr-2">
-                                                    <img className="media-object avatar avatar-md rounded-circle" src="/files/avatar-s-5.png" alt="Generic placeholder image" />
-                                                </div>
-                                                <div className="media-body">
-                                                    <p className="text-bold-600 m-0">Donec ac condimentum massa <span className="float-right badge badge-primary">Opened</span></p>
-                                                    <p className="font-small-2 text-muted m-0">$80,000.52<i className="ft-calendar pl-1"></i> 2 Weeks ago</p>
-                                                </div>
-                                            </div>
-                                            <div className="media mt-1">
-                                                <div className="media-left pr-2">
-                                                    <img className="media-object avatar avatar-md rounded-circle" src="/files/avatar-s-6.png" alt="Generic placeholder image" />
-                                                </div>
-                                                <div className="media-body">
-                                                    <p className="text-bold-600 m-0">Simply dummy text of the printing <span className="float-right badge badge-danger">Lost</span></p>
-                                                    <p className="font-small-2 text-muted m-0">$40,215.28<i className="ft-calendar pl-1"></i> 1 Month ago</p>
-                                                </div>
-                                            </div>
-                                            <div className="media mt-1">
-                                                <div className="media-left pr-2">
-                                                    <img className="media-object avatar avatar-md rounded-circle" src="/files/avatar-s-7.png" alt="Generic placeholder image" />
-                                                </div>
-                                                <div className="media-body">
-                                                    <p className="text-bold-600 m-0">The generated Lorem or title <span className="float-right badge badge-warning">Demo</span></p>
-                                                    <p className="font-small-2 text-muted m-0">$25,215.28<i className="ft-calendar pl-1"></i> 1 Month ago</p>
-                                                </div>
-                                            </div>
-                                            <div className="media mt-1">
-                                                <div className="media-left pr-2">
-                                                    <img className="media-object avatar avatar-md rounded-circle" src="/files/avatar-s-8.png" alt="Generic placeholder image" />
-                                                </div>
-                                                <div className="media-body">
-                                                    <p className="text-bold-600 m-0">The standard chunk of Lorem <span className="float-right badge badge-info">Contected</span></p>
-                                                    <p className="font-small-2 text-muted m-0">$12,215.28<i className="ft-calendar pl-1"></i> 11/11/2016</p>
-                                                </div>
-                                            </div>
-                                            <div className="media mt-1">
-                                                <div className="media-left pr-2">
-                                                    <img className="media-object avatar avatar-md rounded-circle" src="/files/avatar-s-9.png" alt="Generic placeholder image" />
-                                                </div>
-                                                <div className="media-body">
-                                                    <p className="text-bold-600 m-0">Nam in egestas onsectetur <span className="float-right badge badge-secondary">No Show</span></p>
-                                                    <p className="font-small-2 text-muted m-0">$11,215.28<i className="ft-calendar pl-1"></i> 10/10/2016</p>
-                                                </div>
-                                            </div>
+                                        <div style={{ height: '300px', overflowY: 'auto' }} id="deals-list-scroll"
+                                             className="card-body height-350 position-relative ps-container ps-theme-default"
+                                             data-ps-id="6205b797-6d0d-611f-25fd-16195eadda29">
+                                            {leads}
                                         </div>
                                     }
                                 />
@@ -361,7 +336,7 @@ class Dashboard extends Component {
 
                         <Row className="match-height">
                             <Col className="col-xl-8" lg={12}>
-                                <StatsCard />
+                                <StatsCard/>
                             </Col>
 
                             <Col className="col-xl-4" lg={12}>
@@ -369,20 +344,22 @@ class Dashboard extends Component {
                                     body={true}
                                     header={
                                         <React.Fragment>
-                                            <h4 className="card-title">Sources <span className="text-muted text-bold-400">This Month</span></h4>
-                                            <a className="heading-elements-toggle"><i className="ft-more-horizontal font-medium-3"></i></a>
+                                            <h4 className="card-title">Sources <span
+                                                className="text-muted text-bold-400">This Month</span></h4>
+                                            <a className="heading-elements-toggle"><i
+                                                className="ft-more-horizontal font-medium-3"></i></a>
                                             <div className="heading-elements">
                                                 <ul className="list-inline mb-0">
-                                                    <li><a data-action="reload"><i className="ft-rotate-cw"></i></a></li>
+                                                    <li><a data-action="reload"><i className="ft-rotate-cw"></i></a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </React.Fragment>
-
                                     }
                                     content={
                                         <ReactEcharts
                                             option={this.getPieOptions()}
-                                            style={{height: 300}}
+                                            style={{ height: 300 }}
                                             onChartReady={this.onChartReady}
                                             onEvents={onEvents}
                                         />

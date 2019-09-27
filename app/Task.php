@@ -24,7 +24,8 @@ class Task extends Model {
         'customer_id',
         'rating',
         'valued_at',
-        'parent_id'
+        'parent_id',
+        'source_type'
     ];
 
     /**

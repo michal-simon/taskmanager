@@ -9,13 +9,25 @@ use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\User;
 
-class CommentController extends Controller
-{
+class CommentController extends Controller {
+
+    /**
+     * @var CommentRepositoryInterface
+     */
     private $commentRepository;
+
+    /**
+     * @var TaskRepositoryInterface
+     */
     private $taskRepository;
 
-    public function __construct(CommentRepositoryInterface $commentRepository, TaskRepositoryInterface $taskRepository)
-    {
+    /**
+     * CommentController constructor.
+     *
+     * @param CommentRepositoryInterface $commentRepository
+     * TaskRepositoryInterface $taskRepository
+     */
+    public function __construct(CommentRepositoryInterface $commentRepository, TaskRepositoryInterface $taskRepository) {
         $this->commentRepository = $commentRepository;
         $this->taskRepository = $taskRepository;
     }
@@ -29,8 +41,8 @@ class CommentController extends Controller
 
     public function store(CommentRequest $request) {
 
-         $validatedData = $request->validated();
-         $objUser = (new UserRepository(new User))->findUserById($request->user_id);
+        $validatedData = $request->validated();
+        $objUser = (new UserRepository(new User))->findUserById($request->user_id);
 
         $comment = $this->commentRepository->createComment([
             'task_id' => $validatedData['task_id'],
@@ -41,6 +53,7 @@ class CommentController extends Controller
         $arrResponse[0] = $comment;
         $arrResponse[0]['user'] = $objUser->toArray();
 
-       return collect($arrResponse)->toJson();
+        return collect($arrResponse)->toJson();
     }
+
 }

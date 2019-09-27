@@ -13,7 +13,8 @@ use App\Repositories\Base\BaseRepository;
 use App\Customer;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
-
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Description of CustomerRepository
@@ -92,11 +93,26 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
      * @param string $text
      * @return mixed
      */
-    public function searchCustomer(string $text = null) : Collection
-    {
+    public function searchCustomer(string $text = null): Collection {
         if (is_null($text)) {
             return $this->all();
         }
         return $this->model->searchCustomer($text)->get();
     }
+
+    /**
+     * 
+     * @param int $number_of_days
+     * @return type
+     */
+    public function getRecentCustomers(int $number_of_days) {
+
+        $date = Carbon::today()->subDays($number_of_days);
+        $result = $this->model->select(DB::raw('count(*) as total'))
+                        ->where('created_at', '>=', $date)
+                        ->get();
+        
+        return !empty($result[0]) ? $result[0]['total'] : 0; 
+    }
+
 }

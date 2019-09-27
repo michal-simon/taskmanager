@@ -5,12 +5,15 @@ namespace App\Transformations;
 use App\Task;
 use App\User;
 use App\Repositories\UserRepository;
+use App\Repositories\TaskStatusRepository;
+use App\TaskStatus;
 
 trait TaskTransformable {
 
     protected function transformTask(Task $task) {
 
         $objUser = (new UserRepository(new User))->findUserById($task->contributors);
+        $objStatus = (new TaskStatusRepository(new TaskStatus))->findStatusById($task->task_status);
 
         $prop = new Task;
         $prop->id = (int) $task->id;
@@ -21,6 +24,7 @@ trait TaskTransformable {
         $prop->task_color = $task->task_color;
         $prop->is_completed = $task->is_completed;
         $prop->task_status = $task->task_status;
+        $prop->status_name = $objStatus->title;
         $prop->task_type = $task->task_type;
         $prop->rating = $task->rating;
         $prop->customer_id = $task->customer_id;
