@@ -19,8 +19,6 @@ class LineItemEditor extends Component {
     }
 
     buildExistingLine (lineItem, index) {
-        const canUpdate = this.props.hasTasks ? true : false
-
         return (
             <LineItem key={index} id={index} lineItemData={
                 {
@@ -30,7 +28,7 @@ class LineItemEditor extends Component {
                     lineId: lineItem.id,
                     change_existing: true
                 }
-            } canUpdate={false} new={false} calculateTotal={this.getTotal} onDelete={this.handleRowDelete}  onChange={this.handleRowChange}/>
+            } calculateTotal={this.getTotal} onDelete={this.handleRowDelete}  onChange={this.handleRowChange}/>
         )
     }
 

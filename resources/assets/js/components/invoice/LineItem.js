@@ -17,7 +17,6 @@ class LineItem extends Component {
         this.deleteFromDatabase = this.deleteFromDatabase.bind(this)
         this.loadProducts = this.loadProducts.bind(this)
         this.buildProductOptions = this.buildProductOptions.bind(this)
-
         this.index = 0
     }
 
@@ -56,10 +55,8 @@ class LineItem extends Component {
             this.setState({ quantity: e.target.value })
             return false
         }
-
         const parent = e.target.parentNode.parentNode
-        this.index = [...parent.parentNode.children].indexOf(parent);
-
+        this.index = [...parent.parentNode.children].indexOf(parent)
         this.setState({ quantity: e.target.value }, this.pushToCaller)
     }
 
@@ -68,10 +65,8 @@ class LineItem extends Component {
             this.setState({ description: e.target.value })
             return false
         }
-
         const parent = e.target.parentNode.parentNode
-        this.index = [...parent.parentNode.children].indexOf(parent);
-
+        this.index = [...parent.parentNode.children].indexOf(parent)
         this.setState({ description: e.target.value }, this.pushToCaller)
     }
 
@@ -88,10 +83,8 @@ class LineItem extends Component {
             this.setState({ unit_price: e.target.value })
             return false
         }
-
         const parent = e.target.parentNode.parentNode
-        this.index = [...parent.parentNode.children].indexOf(parent);
-
+        this.index = [...parent.parentNode.children].indexOf(parent)
         this.setState({ unit_price: e.target.value }, this.pushToCaller)
     }
 
@@ -102,7 +95,6 @@ class LineItem extends Component {
             unit_price: parseFloat(this.state.unit_price),
             product_id: parseInt(this.state.product_id)
         })
-
         //this.props.calculateTotal()
     }
 
@@ -120,18 +112,15 @@ class LineItem extends Component {
         this.props.onDelete(this.props.id)
     }
 
-    handleProductChange(e) {
+    handleProductChange (e) {
         const price = e.target[e.target.selectedIndex].getAttribute('data-price')
         const productId = e.target.value
         const priceField = e.target.parentNode.nextSibling.firstElementChild
         priceField.value = price
-
         const lineId = priceField.parentNode.parentNode.getAttribute('data-id')
-
         const parent = e.target.parentNode.parentNode
-        this.index = [...parent.parentNode.children].indexOf(parent);
-
-        if(lineId) {
+        this.index = [...parent.parentNode.children].indexOf(parent)
+        if (lineId) {
             this.setState({ unit_price: price, product_id: productId })
             return false
         } else {
@@ -145,15 +134,14 @@ class LineItem extends Component {
             productList = <option value="">Loading...</option>
         } else {
             productList = this.state.products.map((product, index) => {
-
                 const selected = this.state.product_id && this.state.product_id === product.id ? 'selected' : ''
-
-                return <option selected={selected} key={index} data-price={product.price} value={product.id}>{product.name}</option>
+                return <option selected={selected} key={index} data-price={product.price}
+                               value={product.id}>{product.name}</option>
             })
         }
-
         return (
-            <Input defaultValue={this.state.product_id} name="product" type='select' onChange={this.handleProductChange}>
+            <Input defaultValue={this.state.product_id} name="product" type='select'
+                   onChange={this.handleProductChange}>
                 <option value="">Select Product</option>
                 {productList}
             </Input>
@@ -162,20 +150,24 @@ class LineItem extends Component {
 
     render () {
         const { lineId } = this.props.lineItemData
-        const button = this.props.canUpdate ? <Button color="danger" onClick={(event) => {this.props.onDelete(lineId, event)}}>Delete</Button>
-            : <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
-                className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
-        const updateButton = !this.props.canUpdate ? <Button color="primary" onClick={this.updateLine}>Update</Button> : ''
+
+        const button = !lineId ? <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
+                                    className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
+            : <Button color="danger" onClick={(event) => {
+                this.props.onDelete(lineId, event)
+            }}>Delete</Button>
+
+        const updateButton = !lineId ? '' : <Button color="primary" onClick={this.updateLine}>Update</Button>
 
         const lineForm = (
             <tr data-id={lineId} key={lineId}>
                 <td>
                     <Input name="quantity" data-line={lineId} type='text' value={this.state.quantity}
-                        onChange={this.handleQuantityChange} className='pa2 mr2 f6 form-control' />
+                        onChange={this.handleQuantityChange} className='pa2 mr2 f6 form-control'/>
                 </td>
                 <td>
                     <Input name="description" data-line={lineId} type='text' value={this.state.description}
-                        onChange={this.handleDescriptionChange} className='pa2 mr2 f6 form-control' />
+                        onChange={this.handleDescriptionChange} className='pa2 mr2 f6 form-control'/>
                 </td>
 
                 <td>
@@ -184,7 +176,7 @@ class LineItem extends Component {
                 <td>
                     <Input name="unit_price" data-line={lineId} type='text' data-column="5"
                         value={this.state.unit_price} onChange={this.handlePriceChange}
-                        className='pa2 mr2 f6 form-control' />
+                        className='pa2 mr2 f6 form-control'/>
                 </td>
                 <td>
                     <p className='pa2 mr2 f6'>{this.state.quantity * this.state.unit_price}</p>
@@ -195,9 +187,7 @@ class LineItem extends Component {
                 </td>
             </tr>
         )
-
         return lineForm
-
     }
 }
 

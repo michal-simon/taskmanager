@@ -96,7 +96,7 @@ class InvoiceController extends Controller {
 
         $arrTest = [
             'lines' => $lines,
-            'invoice' => $invoice[0]
+            'invoice' => $invoice
         ];
 
         return response()->json($arrTest);
