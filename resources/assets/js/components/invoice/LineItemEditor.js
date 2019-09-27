@@ -49,14 +49,10 @@ class LineItemEditor extends Component {
         }
 
         this.setTotal(grandTotal)
-        console.log('total', grandTotal)
-
         return grandTotal
-
     }
 
     handleRowChange (row, data) {
-        console.log('data', data)
         this.props.update(data, row)
     }
 
@@ -93,8 +89,6 @@ class LineItemEditor extends Component {
 
             return self.buildExistingLine(item, index)
         })
-
-       //this.state.total = total
 
         return (
             <table id='lines-table'>

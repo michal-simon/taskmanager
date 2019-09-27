@@ -17,6 +17,7 @@ class LineItem extends Component {
         this.deleteFromDatabase = this.deleteFromDatabase.bind(this)
         this.loadProducts = this.loadProducts.bind(this)
         this.buildProductOptions = this.buildProductOptions.bind(this)
+        this.setIndex = this.setIndex.bind(this)
         this.index = 0
     }
 
@@ -27,7 +28,6 @@ class LineItem extends Component {
     loadProducts () {
         axios.get('/api/products').then(data => {
             this.setState({ products: data.data })
-            console.log('products', this.state.products)
         })
     }
 
@@ -50,13 +50,18 @@ class LineItem extends Component {
             })
     }
 
+    setIndex (e) {
+        const parent = e.target.parentNode.parentNode
+        this.index = [...parent.parentNode.children].indexOf(parent)
+    }
+
     handleQuantityChange (e) {
         if (this.isExistingLine(e)) {
             this.setState({ quantity: e.target.value })
             return false
         }
-        const parent = e.target.parentNode.parentNode
-        this.index = [...parent.parentNode.children].indexOf(parent)
+
+        this.setIndex(e)
         this.setState({ quantity: e.target.value }, this.pushToCaller)
     }
 
@@ -65,8 +70,8 @@ class LineItem extends Component {
             this.setState({ description: e.target.value })
             return false
         }
-        const parent = e.target.parentNode.parentNode
-        this.index = [...parent.parentNode.children].indexOf(parent)
+
+        this.setIndex(e)
         this.setState({ description: e.target.value }, this.pushToCaller)
     }
 
@@ -83,8 +88,8 @@ class LineItem extends Component {
             this.setState({ unit_price: e.target.value })
             return false
         }
-        const parent = e.target.parentNode.parentNode
-        this.index = [...parent.parentNode.children].indexOf(parent)
+
+        this.setIndex(e)
         this.setState({ unit_price: e.target.value }, this.pushToCaller)
     }
 
@@ -104,7 +109,7 @@ class LineItem extends Component {
                 document.querySelector('tbody tr[data-id=\'' + lineId + '\']').remove()
             })
             .catch(function (error) {
-                console.log(error)
+                console.warn(error)
             })
     }
 
@@ -118,12 +123,12 @@ class LineItem extends Component {
         const priceField = e.target.parentNode.nextSibling.firstElementChild
         priceField.value = price
         const lineId = priceField.parentNode.parentNode.getAttribute('data-id')
-        const parent = e.target.parentNode.parentNode
-        this.index = [...parent.parentNode.children].indexOf(parent)
+
         if (lineId) {
             this.setState({ unit_price: price, product_id: productId })
             return false
         } else {
+            this.setIndex(e)
             this.setState({ unit_price: price, product_id: productId }, this.pushToCaller)
         }
     }
