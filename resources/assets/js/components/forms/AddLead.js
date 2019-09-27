@@ -8,16 +8,29 @@ class AddLead extends React.Component {
         super(props)
         this.state = {
             rating: '',
+            source_type: 0,
             customers: [],
+            sourceTypes: [],
             errors: []
         }
         this.hasLeadErrorFor = this.hasLeadErrorFor.bind(this)
         this.renderLeadErrorFor = this.renderLeadErrorFor.bind(this)
         this.updateLeadValue = this.updateLeadValue.bind(this)
+        this.buildCustomerList = this.buildCustomerList.bind(this)
     }
 
     componentDidMount () {
         this.getCustomers()
+        this.getSourceTypes()
+
+        this.setState(
+            {
+                rating: this.props.task.rating,
+                valued_at: this.props.task.valued_at,
+                source_type: this.props.task.source_type,
+                customer_id: this.props.task.customer_id
+            }
+        )
     }
 
     hasLeadErrorFor (field) {
@@ -46,6 +59,18 @@ class AddLead extends React.Component {
             })
     }
 
+    getSourceTypes () {
+        axios.get('/api/tasks/source-types')
+            .then((r) => {
+                this.setState({
+                    sourceTypes: r.data
+                })
+            })
+            .catch((e) => {
+                console.error(e)
+            })
+    }
+
     updateLeadValue (e) {
         this.setState({
             [e.target.name]: e.target.value
@@ -53,7 +78,7 @@ class AddLead extends React.Component {
         this.props.updateValue(e)
     }
 
-    render () {
+    buildCustomerList() {
         let customerList
         if (!this.state.customers.length) {
             customerList = <option value="">Loading...</option>
@@ -62,7 +87,61 @@ class AddLead extends React.Component {
                 <option key={index} value={customer.id}>{customer.name}</option>
             ))
         }
+
         const customerId = typeof this.props.task !== 'undefined' ? this.props.task.customer_id : ''
+        const disabled = typeof this.props.readOnly !== 'undefined' && this.props.readOnly === true ? 'disabled' : ''
+
+        return (
+            <FormGroup>
+                <Label for="location">Customer:</Label>
+                <Input className={this.hasLeadErrorFor('location') ? 'is-invalid' : ''} type="select"
+                       disabled={disabled}
+                       name="customer_id"
+                       id="customer_id"
+                       value={customerId}
+                       onChange={this.props.updateValue}>
+                    <option>Select Customer</option>
+                    {customerList}
+                </Input>
+                {this.renderLeadErrorFor('customer_id')}
+            </FormGroup>
+        )
+    }
+
+    buildSourceTypeList() {
+        let sourceTypeList
+        if (!this.state.sourceTypes.length) {
+            sourceTypeList = <option value="">Loading...</option>
+        } else {
+            sourceTypeList = this.state.sourceTypes.map((customer, index) => (
+                <option key={index} value={customer.id}>{customer.name}</option>
+            ))
+        }
+
+        const customerId = typeof this.props.task !== 'undefined' ? this.props.task.source_type : ''
+        const disabled = typeof this.props.readOnly !== 'undefined' && this.props.readOnly === true ? 'disabled' : ''
+
+        return (
+            <FormGroup>
+                <Label for="source_type">Source Type:</Label>
+                <Input className={this.hasLeadErrorFor('source_type') ? 'is-invalid' : ''} type="select"
+                       disabled={disabled}
+                       name="source_type"
+                       id="source_type"
+                       value={customerId}
+                       onChange={this.props.updateValue}>
+                    <option>Select Source Type</option>
+                    {sourceTypeList}
+                </Input>
+                {this.renderLeadErrorFor('source_type')}
+            </FormGroup>
+        )
+    }
+
+    render () {
+
+        const customerList = this.buildCustomerList()
+        const sourceTypeList = this.buildSourceTypeList()
         const disabled = typeof this.props.readOnly !== 'undefined' && this.props.readOnly === true ? 'disabled' : ''
         return (
             <div>
@@ -88,19 +167,8 @@ class AddLead extends React.Component {
                     {this.renderLeadErrorFor('updateValue')}
                 </FormGroup>
 
-                <FormGroup>
-                    <Label for="location">Customer:</Label>
-                    <Input className={this.hasLeadErrorFor('location') ? 'is-invalid' : ''} type="select"
-                        disabled={disabled}
-                        name="customer_id"
-                        id="customer_id"
-                        defaultValue={customerId}
-                        onChange={this.props.updateValue}>
-                        <option>Select Customer</option>
-                        {customerList}
-                    </Input>
-                    {this.renderLeadErrorFor('customer_id')}
-                </FormGroup>
+                {customerList}
+                {sourceTypeList}
             </div>
         )
     }

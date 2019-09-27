@@ -29,8 +29,10 @@ trait TaskTransformable {
         $prop->rating = $task->rating;
         $prop->customer_id = $task->customer_id;
         $prop->valued_at = $task->valued_at;
+        $prop->source_type = $task->source_type;
+        $prop->contributors = $task->contributors;
         $prop->is_active = $task->is_active;
-        
+
         return $prop;
     }
 

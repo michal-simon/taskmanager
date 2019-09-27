@@ -12,6 +12,7 @@ class AddModal extends React.Component {
             modal: false,
             title: '',
             rating: '',
+            source_type: 0,
             valued_at: '',
             customer_id: null,
             content: '',
@@ -101,6 +102,7 @@ class AddModal extends React.Component {
     handleClick (event) {
         axios.post('/api/tasks', {
             rating: this.state.rating,
+            source_type: this.state.source_type,
             valued_at: this.state.valued_at,
             customer_id: this.state.customer_id,
             title: this.state.title,

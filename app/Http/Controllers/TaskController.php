@@ -15,12 +15,21 @@ use App\Repositories\ProductRepository;
 use App\Repositories\CustomerRepository;
 use App\Customer;
 use App\Transformations\TaskTransformable;
+use App\Repositories\SourceTypeRepository;
+use App\SourceType;
 
 class TaskController extends Controller {
 
     use TaskTransformable;
 
+     /**
+     * @var TaskRepositoryInterface
+     */
     private $taskRepository;
+    
+     /**
+     * @var ProjectRepositoryInterface
+     */
     private $projectRepository;
 
     /**
@@ -49,6 +58,7 @@ class TaskController extends Controller {
      * @return Response
      */
     public function store(CreateTaskRequest $request) {
+
         $validatedData = $request->except('project_id');
 
         if (!empty($request->project_id)) {
@@ -56,7 +66,8 @@ class TaskController extends Controller {
         }
 
         $validatedData['customer_id'] = empty($validatedData['customer_id']) && isset($objProject) ? $objProject->customer_id : $validatedData['customer_id'];
-
+        $validatedData['source_type'] = empty($validatedData['source_type']) ? 1 : $validatedData['source_type'];
+        
         $task = $this->taskRepository->createTask($validatedData);
 
         if ($validatedData['task_type'] == 1) {
@@ -108,7 +119,7 @@ class TaskController extends Controller {
      *
      * @return Response
      */
-    public function update(UpdateTaskRequest $request, int $id) {
+    public function update(UpdateTaskRequest $request, int $id) {    
         $task = $this->taskRepository->findTaskById($id);
         $taskRepo = new TaskRepository($task);
         $taskRepo->updateTask($request->all());
@@ -202,6 +213,11 @@ class TaskController extends Controller {
         return response()->json($arrData);
     }
 
+    /**
+     * 
+     * @param CreateDealRequest $request
+     * @return type
+     */
     public function createDeal(CreateDealRequest $request) {
 
         $customer = (new CustomerRepository(new Customer))->createCustomer($request->except('_token', '_method', 'valued_at', 'title', 'description'));
@@ -220,6 +236,7 @@ class TaskController extends Controller {
 
         $task = $this->taskRepository->createTask(
                 [
+                    'source_type' => $request->source_type,
                     'title' => $request->title,
                     'description' => $request->description,
                     'customer_id' => $customer->id,
@@ -248,6 +265,12 @@ class TaskController extends Controller {
                     return $this->transformTask($task);
                 })->all();
         return response()->json($tasks);
+    }
+    
+    public function getSourceTypes() {
+        
+        $sourceTypes = (new SourceTypeRepository(new SourceType))->getAll();
+        return response()->json($sourceTypes);
     }
 
 }

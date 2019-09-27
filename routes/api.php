@@ -73,4 +73,5 @@ Route::get('tasks/subtasks/{task_id}', 'TaskController@getSubtasks');
 Route::get('events/tasks/{task_id}', 'EventController@getEventsForTask');
 Route::get('events/users/{user_id}', 'EventController@getEventsForUser');
 Route::get('dashboard', 'DashboardController@index');
+Route::get('tasks/source-types', 'TaskController@getSourceTypes');
 

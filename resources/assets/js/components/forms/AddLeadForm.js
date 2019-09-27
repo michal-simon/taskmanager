@@ -21,12 +21,14 @@ class AddLeadForm extends React.Component {
             title: '',
             valued_at: '',
             contributors: '',
+            source_type: '',
             values: [],
             loading: false,
             submitSuccess: false,
             count: 2,
             errors: [],
-            users: []
+            users: [],
+            sourceTypes: []
         }
         this.toggle = this.toggle.bind(this)
         this.handleInputChanges = this.handleInputChanges.bind(this)
@@ -34,11 +36,13 @@ class AddLeadForm extends React.Component {
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.buildUserOptions = this.buildUserOptions.bind(this)
+        this.buildSourceTypeOptions = this.buildSourceTypeOptions.bind(this)
         this.getUsers = this.getUsers.bind(this)
     }
 
     componentDidMount () {
         this.getUsers()
+        this.getSourceTypes()
     }
 
     hasErrorFor (field) {
@@ -80,6 +84,7 @@ class AddLeadForm extends React.Component {
             title: this.state.title,
             valued_at: this.state.valued_at,
             contributors: this.state.contributors,
+            source_type: this.state.source_type,
             task_type: this.props.task_type,
             task_status: this.props.status
         }
@@ -91,6 +96,7 @@ class AddLeadForm extends React.Component {
                     title: null,
                     content: null,
                     contributors: null,
+                    source_type: null,
                     due_date: null,
                     loading: false
                 })
@@ -103,6 +109,29 @@ class AddLeadForm extends React.Component {
                     errors: error.response.data.errors
                 })
             })
+    }
+
+    buildSourceTypeOptions () {
+        let sourceTypeContent
+        if (!this.state.sourceTypes.length) {
+            sourceTypeContent = <option value="">Loading...</option>
+        } else {
+            sourceTypeContent = this.state.sourceTypes.map((user, index) => (
+                <option key={index} value={user.id}>{user.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="contributors">Source Type:</Label>
+                <Input className={this.hasErrorFor('source_type') ? 'is-invalid' : ''} type="select"
+                       name="source_type" id="source_type" onChange={this.handleInputChanges.bind(this)}>
+                    <option value="">Choose:</option>
+                    {sourceTypeContent}
+                </Input>
+                {this.renderErrorFor('source_type')}
+            </FormGroup>
+        )
     }
 
     buildUserOptions () {
@@ -153,9 +182,29 @@ class AddLeadForm extends React.Component {
             })
     }
 
+    getSourceTypes () {
+        axios.get('/api/tasks/source-types')
+            .then((r) => {
+                this.setState({
+                    sourceTypes: r.data,
+                    err: ''
+                })
+            })
+            .then((r) => {
+                console.warn(this.state.users)
+            })
+            .catch((e) => {
+                console.error(e)
+                this.setState({
+                    err: e
+                })
+            })
+    }
+
     render () {
         const { submitSuccess, loading } = this.state
         const userOptions = this.buildUserOptions()
+        const sourceTypeOptions = this.buildSourceTypeOptions()
 
         return (
             <React.Fragment>
@@ -206,6 +255,8 @@ class AddLeadForm extends React.Component {
                             </FormGroup>
 
                             {userOptions}
+
+                            {sourceTypeOptions}
 
                             <hr />
 

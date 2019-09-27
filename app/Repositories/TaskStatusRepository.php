@@ -9,9 +9,9 @@ use App\Repositories\Base\BaseRepository;
 class TaskStatusRepository extends BaseRepository implements TaskStatusRepositoryInterface {
     
      /**
-     * TaskRepository constructor.
+     * TaskStatusRepository constructor.
      *
-     * @param Task $task
+     * @param TaskStatus $taskStatus
      */
     public function __construct(TaskStatus $taskStatus) {
         parent::__construct($taskStatus);
@@ -19,7 +19,7 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
     }
 
     public function getAll() {
-        return TaskStatus::where('is_active', 1)
+        return $this->model->where('is_active', 1)
                         ->orderBy('id', 'asc')
                         ->get();
     }
@@ -30,7 +30,7 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
      * @return type
      */
     public function getAllStatusForTaskType(int $task_type) {
-        return TaskStatus::where('is_active', 1)
+        return $this->model->where('is_active', 1)
                         ->where('task_type', $task_type)
                         ->orderBy('id', 'asc')
                         ->get();

@@ -10,22 +10,29 @@ import AddLead from './AddLead'
 class EditTask extends Component {
     constructor (props) {
         super(props)
+
         this.state = {
             title: this.props.task.title,
             description: this.props.task.content,
             due_date: this.props.task.due_date,
             contributors: this.props.task.contributors,
             rating: this.props.task.rating,
-            valued_at: this.props.valued_at,
+            source_type: this.props.task.source_type,
+            valued_at: this.props.task.valued_at,
             customer_id: this.props.task.customer_id,
             editMode: false,
             err: '',
             users: []
         }
+
         this.oldDueDate = props.task.due_date
         this.oldTitle = props.task.title
         this.oldDescription = props.task.description
         this.oldUser = props.task.contributors
+        this.oldSourceType = props.task.source_type
+        this.oldRating = props.task.rating
+        this.oldValuedAt = props.task.valued_at
+        this.oldCustomer = props.task.customer_id
         this.handleEdit = this.handleEdit.bind(this)
         this.handleSave = this.handleSave.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
@@ -47,7 +54,6 @@ class EditTask extends Component {
                 })
             })
             .then((r) => {
-                console.log(this.state.users)
             })
             .catch((e) => {
                 console.error(e)
@@ -66,9 +72,11 @@ class EditTask extends Component {
     handleSave () {
         const index = this.props.allTasks.findIndex(task => task.id === this.props.task.id)
         const currentObject = this.props.allTasks[index]
+
         axios.put(`/api/tasks/${this.props.task.id}`, {
-            customer_id: this.state.customers,
+            customer_id: this.state.customer_id,
             rating: this.state.rating,
+            source_type: this.state.source_type,
             valued_at: this.state.valued_at,
             title: this.state.title,
             content: this.state.description,
@@ -98,6 +106,10 @@ class EditTask extends Component {
             title: this.oldTitle,
             due_date: this.oldDueDate,
             description: this.oldDescription,
+            customer_id: this.oldCustomer,
+            rating: this.oldRating,
+            valued_at: this.oldValuedAt,
+            source_type: this.oldSourceType,
             editMode: false
         })
     }
@@ -126,6 +138,7 @@ class EditTask extends Component {
     getFormForLead (readOnly = false) {
         const objValues = {
             rating: this.state.rating,
+            source_type: this.state.source_type,
             valued_at: this.state.valued_at,
             customer_id: this.state.customer_id
         }
@@ -200,8 +213,11 @@ class EditTask extends Component {
                     </FormGroup>
 
                     <FormGroup>
+                        <Label>Assigned To</Label>
                         <Input value={this.state.contributors} type="select"
-                            className="form-control select-index input-xs" name="contributors"
+                            className="form-control select-index input-xs"
+                            id="contributors"
+                            name="contributors"
                             onChange={this.handleChange}>
                             {userContent}
                         </Input>
