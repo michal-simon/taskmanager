@@ -16,7 +16,7 @@ class EditInvoice extends Component {
             address: {},
             existingLines: [],
             customerName: '',
-            customer_id: 1,
+            customer_id: this.props.customer_id ? this.props.customer_id : 0,
             invoice_status: 1,
             customers: [],
             tasks: [],
@@ -237,7 +237,20 @@ class EditInvoice extends Component {
             <option key={index} value={customer.id}>{customer.name}</option>
         ))
 
-        return customerContent
+        return (
+            <FormGroup>
+                <Label for="customer">Customer(*):</Label>
+                <Input className={this.hasErrorFor('customer') ? 'is-invalid' : ''} type="select"
+                    name="customer_id"
+                    onChange={this.handleInput.bind(this)}
+                    value={this.state.customer_id}
+                >
+                    <option>Choose A customer</option>
+                    {customerContent}
+                </Input>
+                {this.renderErrorFor('customer')}
+            </FormGroup>
+        )
     }
 
     buildForm () {
@@ -261,15 +274,7 @@ class EditInvoice extends Component {
                     {this.renderErrorFor('due_date')}
                 </FormGroup>
 
-                <FormGroup>
-                    <Label for="customer">Customer(*):</Label>
-                    <Input className={this.hasErrorFor('customer') ? 'is-invalid' : ''} type="select"
-                           name="customer_id" onChange={this.handleInput.bind(this)}>
-                        <option>Choose A customer</option>
-                        {customerContent}
-                    </Input>
-                    {this.renderErrorFor('customer')}
-                </FormGroup>
+                {customerContent}
 
                 <LineItemEditor total={this.state.total} hasTasks={this.hasTasks} lineItemModel={this.state.existingLines} delete={this.handleDelete} update={this.updateData}
                                 setTotal={this.setTotal}/>

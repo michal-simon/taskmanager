@@ -160,6 +160,7 @@ class CreateEvent extends React.Component {
             <FormGroup>
                 <Label for="location">Customer:</Label>
                 <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="select"
+                    value={this.props.customer_id}
                     name="customer_id"
                     id="customer_id"
                     onChange={this.handleInput.bind(this)}>
