@@ -20,10 +20,9 @@ class Subtasks extends React.Component {
     }
 
     getSubtasks (e) {
-
         e.preventDefault()
 
-        this.setState({ visible: this.state.visible === 'collapse' ? 'collapse show' : 'collapse' });
+        this.setState({ visible: this.state.visible === 'collapse' ? 'collapse show' : 'collapse' })
 
         axios.get(`/api/tasks/subtasks/${this.props.task_id}`).then(data => {
             this.setState({ subtasks: data.data })
@@ -33,8 +32,7 @@ class Subtasks extends React.Component {
     buildSubtaskOptions () {
         const tasks = this.state.subtasks.map((task, index) => {
             return (
-                <a key={index} href="#"
-                   className="list-group-item list-group-item-action flex-column align-items-start">
+                <a key={index} href="#" className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
                         <ViewTask
                             task_type={this.props.task_type}
@@ -43,7 +41,7 @@ class Subtasks extends React.Component {
                             task={task}
                         />
                     </div>
-                    <h5 class="m-3">{task.valued_at}</h5>
+                    <h5 className="m-3">{task.valued_at}</h5>
                     <p className="mb-1">{task.content}</p>
                     <div>
                         <span className="task-due">{moment(task.dueDate).format('DD.MM.YYYY')}</span>
@@ -57,8 +55,6 @@ class Subtasks extends React.Component {
     }
 
     render () {
-
-
         const tasks = this.state.subtasks.length ? this.buildSubtaskOptions() : ''
 
         return (

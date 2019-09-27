@@ -56,7 +56,6 @@ class ProductSelect extends React.Component {
             productList = <option value="">Loading...</option>
         } else {
             productList = this.state.products.map((product, index) => {
-
                 return <option key={index} value={product.id}>{product.name}</option>
             })
         }

@@ -50,7 +50,7 @@ class AddStory extends React.Component {
 
     /** To be done */
     getStoryCount () {
-        axios.get(`/story/count`)
+        axios.get('/story/count')
             .then((r) => {
                 this.setState({
                     count: r.data.count,

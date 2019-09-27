@@ -28,24 +28,22 @@ class LineItemEditor extends Component {
                     lineId: lineItem.id,
                     change_existing: true
                 }
-            } calculateTotal={this.getTotal} onDelete={this.handleRowDelete}  onChange={this.handleRowChange}/>
+            } calculateTotal={this.getTotal} onDelete={this.handleRowDelete} onChange={this.handleRowChange}/>
         )
     }
 
-    setTotal(total) {
+    setTotal (total) {
         this.setState({ total: total })
         this.props.setTotal(total)
     }
 
     getTotal () {
-
         let grandTotal = 0
-        const all = document.getElementsByName("unit_price");
+        const all = document.getElementsByName('unit_price')
 
-        for(let i = 0, max = all.length; i < max; i++)
-        {
+        for (let i = 0, max = all.length; i < max; i++) {
             const quantity = all[i].parentNode.parentNode.firstChild.firstElementChild.value
-            grandTotal += all[i].value * quantity;
+            grandTotal += all[i].value * quantity
         }
 
         this.setTotal(grandTotal)
@@ -57,11 +55,10 @@ class LineItemEditor extends Component {
     }
 
     handleRowDelete (e, row) {
-
         const parent = row.target.parentNode.parentNode
-        const index = [...parent.parentNode.children].indexOf(parent);
-        let table = document.querySelector('#lines-table');
-        let tresult = table.deleteRow(index)
+        const index = [...parent.parentNode.children].indexOf(parent)
+        const table = document.querySelector('#lines-table')
+        const tresult = table.deleteRow(index)
         this.props.delete(index)
     }
 
@@ -78,15 +75,14 @@ class LineItemEditor extends Component {
         const lineItemRows = this.state.rowData.map((lineItem, index) =>
 
             <LineItem new={true} key={index} id={currentIndex} lineItemData={this.state.rowData[index]} onChange={this.handleRowChange}
-                      handleTaskChange={this.updateTasks} onDelete={this.handleRowDelete} calculateTotal={this.getTotal}/>
+                handleTaskChange={this.updateTasks} onDelete={this.handleRowDelete} calculateTotal={this.getTotal}/>
         )
+
         const self = this
-
         let total = 0
+
         const items = this.props.lineItemModel.map(function (item, index) {
-
             total += item.quantity * item.unit_price
-
             return self.buildExistingLine(item, index)
         })
 
@@ -99,25 +95,24 @@ class LineItemEditor extends Component {
                         <th>Product</th>
                         <th>Unit Price</th>
                         <th>Total</th>
-                        <th></th>
+                        <th/>
                     </tr>
                 </thead>
                 <tbody>
                     {items}
                     {lineItemRows}
 
-
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th></th>
+                        <th/>
                         <th>Grand total:</th>
                         <th>{this.state.total}</th>
-                        <th></th>
+                        <th/>
                     </tr>
 
                     <Button color="success" onClick={this.handleRowAdd}
-                            className='f6 link dim ph3 pv1 mb2 dib white bg-dark-green bn'>Add</Button>
+                        className='f6 link dim ph3 pv1 mb2 dib white bg-dark-green bn'>Add</Button>
 
                 </tfoot>
             </table>

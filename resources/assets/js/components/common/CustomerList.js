@@ -25,10 +25,7 @@ class CustomerList extends Component {
             })
     }
 
-
-
     render () {
-
         let customerContent
         if (!this.state.customers.length) {
             customerContent = <option value="">Loading...</option>

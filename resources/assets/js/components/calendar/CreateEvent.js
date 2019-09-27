@@ -75,12 +75,11 @@ class CreateEvent extends React.Component {
                     loading: false
                 })
 
-                if(this.props.action) {
+                if (this.props.action) {
                     const firstEvent = response.data
                     this.props.events.push(firstEvent)
                     this.props.action(this.props.events)
                 }
-
             })
             .catch((error) => {
                 this.setState({
@@ -173,7 +172,6 @@ class CreateEvent extends React.Component {
     }
 
     buildForm () {
-
         const customerList = this.getCustomerList()
         const userList = this.getUserList()
 
@@ -220,11 +218,10 @@ class CreateEvent extends React.Component {
     }
 
     render () {
-
         const form = this.buildForm()
         const saveButton = <Button color="primary" onClick={this.handleClick.bind(this)}>Add</Button>
 
-        if(this.props.modal) {
+        if (this.props.modal) {
             return (
                 <React.Fragment>
                     <Button color="success" onClick={this.toggle}>Add Event</Button>
@@ -253,7 +250,6 @@ class CreateEvent extends React.Component {
                 {saveButton}
             </div>
         )
-
     }
 }
 

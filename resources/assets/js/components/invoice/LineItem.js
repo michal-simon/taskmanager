@@ -100,7 +100,6 @@ class LineItem extends Component {
             unit_price: parseFloat(this.state.unit_price),
             product_id: parseInt(this.state.product_id)
         })
-        //this.props.calculateTotal()
     }
 
     deleteFromDatabase (lineId) {
@@ -141,12 +140,12 @@ class LineItem extends Component {
             productList = this.state.products.map((product, index) => {
                 const selected = this.state.product_id && this.state.product_id === product.id ? 'selected' : ''
                 return <option selected={selected} key={index} data-price={product.price}
-                               value={product.id}>{product.name}</option>
+                    value={product.id}>{product.name}</option>
             })
         }
         return (
             <Input defaultValue={this.state.product_id} name="product" type='select'
-                   onChange={this.handleProductChange}>
+                onChange={this.handleProductChange}>
                 <option value="">Select Product</option>
                 {productList}
             </Input>
@@ -157,7 +156,7 @@ class LineItem extends Component {
         const { lineId } = this.props.lineItemData
 
         const button = !lineId ? <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
-                                    className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
+            className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
             : <Button color="danger" onClick={(event) => {
                 this.props.onDelete(lineId, event)
             }}>Delete</Button>

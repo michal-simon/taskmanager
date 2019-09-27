@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form, Row, Col } from 'reactstrap'
+import { Button } from 'reactstrap'
 import AddTask from '../forms/AddTask'
 
 class TaskTab extends React.Component {
@@ -24,7 +24,7 @@ class TaskTab extends React.Component {
     }
 
     handleSlideClick () {
-        this.setState({ visible: this.state.visible === 'collapse' ? 'collapse show' : 'collapse' });
+        this.setState({ visible: this.state.visible === 'collapse' ? 'collapse show' : 'collapse' })
     }
 
     updateTasks (tasks) {
@@ -41,20 +41,17 @@ class TaskTab extends React.Component {
         const d = new Date(dateString)
         const dayName = days[d.getDay()]
         const monthName = monthNames[d.getMonth()]
-        const hours = d.getHours()
-        const minutes = d.getMinutes()
         const formattedDate = `${dayName} ${d.getDate()} ${monthName} ${d.getFullYear()}`
         return formattedDate
     }
 
     render () {
-
         const tasks = this.state.tasks.map((task, index) => {
             return (
-                <a href="#"
-                   className="list-group-item list-group-item-action flex-column align-items-start">
+                <a key={index} href="#"
+                    className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
-                        <h5 className="mb-1">{task.title} {task.valued_at}</h5>
+                        <h5 key={index} className="mb-1">{task.title} {task.valued_at}</h5>
                         <small>{this.formatDate(task.due_date)}</small>
                     </div>
                     <p className="mb-1">{task.content}</p>

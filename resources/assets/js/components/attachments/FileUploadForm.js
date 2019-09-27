@@ -69,9 +69,6 @@ class FileUpload extends Component {
     }
 
     onClickHandler () {
-
-        alert(this.props.user_id)
-
         const data = new FormData()
         data.append('user_id', this.props.user_id)
         data.append('task_id', this.props.task.id)
@@ -94,6 +91,7 @@ class FileUpload extends Component {
                 toast.success('upload success')
             })
             .catch(err => { // then print response status
+                console.warn(err)
                 toast.error('upload fail')
             })
     }

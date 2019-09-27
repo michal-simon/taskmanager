@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form, Row, Col } from 'reactstrap'
+import { Button } from 'reactstrap'
 import CreateEvent from '../calendar/CreateEvent'
 
 class EventTab extends React.Component {
@@ -20,12 +20,12 @@ class EventTab extends React.Component {
 
     componentDidMount () {
         axios.get(`/api/events/tasks/${this.props.task_id}`).then(data => {
-           this.setState({ events: data.data })
+            this.setState({ events: data.data })
         })
     }
 
     handleSlideClick () {
-        this.setState({ visible: this.state.visible === 'collapse' ? 'collapse show' : 'collapse' });
+        this.setState({ visible: this.state.visible === 'collapse' ? 'collapse show' : 'collapse' })
     }
 
     setEvents (events) {
@@ -40,18 +40,15 @@ class EventTab extends React.Component {
         const d = new Date(dateString)
         const dayName = days[d.getDay()]
         const monthName = monthNames[d.getMonth()]
-        const hours = d.getHours()
-        const minutes = d.getMinutes()
         const formattedDate = `${dayName} ${d.getDate()} ${monthName} ${d.getFullYear()}`
         return formattedDate
     }
 
     render () {
-
         const events = this.state.events.map((event, index) => {
             return (
-                <a href="#"
-                   className="list-group-item list-group-item-action flex-column align-items-start">
+                <a key={index} href="#"
+                    className="list-group-item list-group-item-action flex-column align-items-start">
                     <div className="d-flex w-100 justify-content-between">
                         <h5 className="mb-1">{event.title}</h5>
                         <small>{this.formatDate(event.beginDate)} - {this.formatDate(event.endDate)}</small>

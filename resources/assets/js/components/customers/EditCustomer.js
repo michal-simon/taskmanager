@@ -60,7 +60,7 @@ class EditCustomer extends React.Component {
         axios.put(`/api/customers/${this.state.id}`, this.state.customer).then(response => {
             this.toggle()
 
-            if(this.props.action) {
+            if (this.props.action) {
                 this.props.action(response.data)
             }
 
@@ -181,7 +181,7 @@ class EditCustomer extends React.Component {
         const form = this.buildForm()
         const updateButton = <Button color="primary" onClick={this.handleClick.bind(this)}>Update</Button>
 
-        if(this.props.modal) {
+        if (this.props.modal) {
             return (
                 <div>
                     <Button color="primary" onClick={this.toggle}>Edit</Button>

@@ -1,5 +1,3 @@
-/* eslint no-unused-vars: "React, Switch, Route, BrowserRouter, Kanban, Login, ReactDOM" */
-
 import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import UserList from './users/UserList'
@@ -62,7 +60,6 @@ class App extends Component {
                         <Route path='/products' component={ProductList}/>
                         <Route path='/chat' component={ChatPage}/>
                         <Route path='/customers' render={(props) => <Customers {...props} customer_type={1} />}/>
-                        {/*<Route path='/customers' render={(props) => <CustomerList {...props} customer_type={1} />} />*/}
                         <Route path='/invoice' component={Invoice}/>
                         <Route path='/users' component={UserList}/>
                         <Route path='/calendar' component={Calendar}/>

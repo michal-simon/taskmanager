@@ -125,7 +125,7 @@ class AddLeadForm extends React.Component {
             <FormGroup>
                 <Label for="contributors">Source Type:</Label>
                 <Input className={this.hasErrorFor('source_type') ? 'is-invalid' : ''} type="select"
-                       name="source_type" id="source_type" onChange={this.handleInputChanges.bind(this)}>
+                    name="source_type" id="source_type" onChange={this.handleInputChanges.bind(this)}>
                     <option value="">Choose:</option>
                     {sourceTypeContent}
                 </Input>
@@ -148,7 +148,7 @@ class AddLeadForm extends React.Component {
             <FormGroup>
                 <Label for="contributors">Assign to:</Label>
                 <Input className={this.hasErrorFor('contributors') ? 'is-invalid' : ''} type="select"
-                       name="contributors" id="contributors" onChange={this.handleInputChanges.bind(this)}>
+                    name="contributors" id="contributors" onChange={this.handleInputChanges.bind(this)}>
                     <option value="">Choose:</option>
                     {userContent}
                 </Input>

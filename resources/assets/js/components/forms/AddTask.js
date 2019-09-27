@@ -125,7 +125,8 @@ class AddModal extends React.Component {
                     due_date: null,
                     loading: false
                 })
-                if(this.props.action) {
+
+                if (this.props.action) {
                     const firstTask = response.data
                     this.props.tasks.push(firstTask)
                     this.props.action(this.props.tasks)
@@ -147,7 +148,6 @@ class AddModal extends React.Component {
     }
 
     buildForm () {
-
         const userOptions = this.buildUserOptions()
 
         return (
@@ -204,7 +204,7 @@ class AddModal extends React.Component {
             <FormGroup>
                 <Label for="contributors">Assign to:</Label>
                 <Input className={this.hasErrorFor('contributors') ? 'is-invalid' : ''} type="select"
-                       name="contributors" id="contributors" onChange={this.handleInput.bind(this)}>
+                    name="contributors" id="contributors" onChange={this.handleInput.bind(this)}>
                     <option value="">Choose:</option>
                     {userContent}
                 </Input>
@@ -218,11 +218,11 @@ class AddModal extends React.Component {
         const form = this.buildForm()
         const saveButton = <Button color="primary" onClick={this.handleClick.bind(this)}> Add</Button>
 
-        if(this.props.modal) {
+        if (this.props.modal) {
             return (
                 <div>
                     <Button color="success" className="customAddTask"
-                            title="Add task" onClick={this.toggle}>+</Button>
+                        title="Add task" onClick={this.toggle}>+</Button>
                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                         <ModalHeader toggle={this.toggle}>
                             Create a New Task to {this.changeColumnTitle(this.props.status)}

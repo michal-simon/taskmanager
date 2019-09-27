@@ -43,7 +43,7 @@ class EditInvoice extends Component {
         this.loadInvoice()
         this.loadCustomers()
 
-        if(this.props.task_id) {
+        if (this.props.task_id) {
             this.handleTaskChange()
         }
     }
@@ -83,12 +83,10 @@ class EditInvoice extends Component {
     handleTaskChange (e) {
         axios.get(`/api/products/tasks/${this.props.task_id}`)
             .then((r) => {
-
                 const arrLines = []
                 let total = 0
 
-                if(r.data && r.data.length) {
-
+                if (r.data && r.data.length) {
                     r.data.map((product) => {
                         const objLine = {
                             quantity: 1,
@@ -106,9 +104,8 @@ class EditInvoice extends Component {
                 this.setState({ existingLines: arrLines, data: arrLines, total: total })
             })
             .catch((e) => {
-                    console.warn(e)
-                }
-            )
+                console.warn(e)
+            })
     }
 
     hasErrorFor (field) {
@@ -119,31 +116,25 @@ class EditInvoice extends Component {
         axios.get('/api/customers/')
             .then((r) => {
                 this.setState({ customers: r.data })
-             })
-             .catch((e) => {
+            })
+            .catch((e) => {
                 console.warn(e)
-            }
-        )
+            })
     }
 
     loadInvoice () {
-
-        const url = this.props.task_id  ? `/api/invoice/task/${this.props.task_id}` : `/api/invoice/${this.state.invoice_id}`
+        const url = this.props.task_id ? `/api/invoice/task/${this.props.task_id}` : `/api/invoice/${this.state.invoice_id}`
 
         axios.get(url)
             .then((r) => {
-                if(r.data.invoice) {
+                if (r.data.invoice) {
                     this.setState({
                         existingLines: r.data.lines,
                         due_date: r.data.invoice.due_date,
                         invoice_id: r.data.invoice.id,
                         invoice_status: r.data.invoice.invoice_status
                     })
-
-                    //this.hasTasks = false
-
                 }
-
             })
             .catch((e) => {
                 console.warn(e)
@@ -172,30 +163,24 @@ class EditInvoice extends Component {
     }
 
     updateData (rowData, row) {
-
-        console.log('data 2', rowData)
-
-        if(this.state.data && this.state.data[row]) {
-            this.state.data[row] = rowData;
+        if (this.state.data && this.state.data[row]) {
+            this.state.data[row] = rowData
             return
         }
 
         this.setState(prevState => ({
             data: [...prevState.data, rowData]
         }))
-
-        return
     }
 
     handleDelete (row) {
-        if(!this.state.data || !this.state.data[row]) {
-
+        if (!this.state.data || !this.state.data[row]) {
             return false
         }
 
-        const array = [...this.state.data]; // make a separate copy of the array
-        array.splice(row, 1);
-        this.state.data = array;
+        const array = [...this.state.data]
+        array.splice(row, 1)
+        this.state.data = array
     }
 
     setTotal (total) {
@@ -203,7 +188,6 @@ class EditInvoice extends Component {
     }
 
     saveData () {
-
         const data = {
             invoice_id: this.state.invoice_id,
             task_id: this.props.task_id,
@@ -254,7 +238,6 @@ class EditInvoice extends Component {
     }
 
     buildForm () {
-
         const changeStatusButton = this.state.invoice_status === 1
             ? <Button color="primary" onClick={() => this.changeStatus(2).bind(this)}>Send</Button>
             : <Button color="primary" onClick={() => this.changeStatus(3).bind(this)}>Paid</Button>
@@ -269,15 +252,15 @@ class EditInvoice extends Component {
                 <FormGroup>
                     <Label for="due_date">Due Date(*):</Label>
                     <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''}
-                           value={this.state.due_date} type="date" name="due_date"
-                           onChange={this.handleInput.bind(this)}/>
+                        value={this.state.due_date} type="date" name="due_date"
+                        onChange={this.handleInput.bind(this)}/>
                     {this.renderErrorFor('due_date')}
                 </FormGroup>
 
                 {customerContent}
 
                 <LineItemEditor total={this.state.total} hasTasks={this.hasTasks} lineItemModel={this.state.existingLines} delete={this.handleDelete} update={this.updateData}
-                                setTotal={this.setTotal}/>
+                    setTotal={this.setTotal}/>
                 <Button color="success" onClick={this.saveData}>Save</Button>
                 {changeStatusButton}
                 <br/>
@@ -287,11 +270,10 @@ class EditInvoice extends Component {
     }
 
     render () {
-
         const buttonText = !this.props.add ? 'Create Invoice' : 'Update'
         const form = this.buildForm()
 
-        if(this.props.modal) {
+        if (this.props.modal) {
             return (
                 <React.Fragment>
                     <Button color="success" onClick={this.toggle}>{buttonText}</Button>
@@ -316,7 +298,6 @@ class EditInvoice extends Component {
                 {form}
             </div>
         )
-
     }
 }
 

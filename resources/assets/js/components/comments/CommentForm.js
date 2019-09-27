@@ -48,7 +48,7 @@ export default class CommentForm extends Component {
         })
             .then((response) => {
                 if (response.error) {
-                    this.setState({ loading: false, error: res.error })
+                    this.setState({ loading: false, error: response.error })
                 } else {
                     // add time return from api and push comment to parent state
                     if (response.data && response.data.length) {
@@ -62,6 +62,7 @@ export default class CommentForm extends Component {
                 }
             })
             .catch((error) => {
+                console.warn(error)
                 this.setState({
                     error: 'Something went wrong while submitting form.',
                     loading: false

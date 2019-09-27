@@ -17,7 +17,7 @@ export default class FileUploads extends Component {
     }
 
     componentDidMount () {
-       this.getFiles()
+        this.getFiles()
     }
 
     getFiles () {

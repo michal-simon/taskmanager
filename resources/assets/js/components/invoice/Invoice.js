@@ -61,7 +61,6 @@ export default class Invoice extends Component {
     }
 
     render () {
-
         const fetchUrl = '/api/invoice/'
 
         return (

@@ -11,10 +11,8 @@ import TaskTab from './TaskTab'
 import EditInvoice from '../invoice/EditInvoice'
 
 export default class TabContent extends Component {
-
     render () {
-
-        const userId = sessionStorage.getItem("user_id")
+        const userId = sessionStorage.getItem('user_id')
 
         return (
             <div className="container mt-5">

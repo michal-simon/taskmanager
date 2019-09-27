@@ -87,12 +87,11 @@ class Task extends Component {
                                         action={this.props.action}
                                         task={i}
                                     />
-                                    <i id="delete" className="fa fa-times" onClick={() => this.api(i.id)}></i>
+                                    <i id="delete" className="fa fa-times" onClick={() => this.api(i.id)} />
                                 </span>
 
                                 <h5 className="m-3">{i.valued_at}</h5>
                                 <p className="mb-1">{i.content}</p>
-
 
                                 <div>
                                     <span className="task-due">{moment(i.dueDate).format('DD.MM.YYYY')}</span>
@@ -101,8 +100,8 @@ class Task extends Component {
                                 <div className={i.color}/>
 
                                 <Subtasks task_id={i.id} task_type={this.props.task_type}
-                                          allTasks={this.props.tasks}
-                                          action={this.props.action} />
+                                    allTasks={this.props.tasks}
+                                    action={this.props.action} />
                             </div>
                         )
                     })

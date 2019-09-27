@@ -26,4 +26,3 @@ class CompleteProject extends Component {
 }
 
 export default CompleteProject
-

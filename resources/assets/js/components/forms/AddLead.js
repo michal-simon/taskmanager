@@ -7,8 +7,10 @@ class AddLead extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            rating: '',
-            source_type: 0,
+            rating: this.props.task.rating,
+            valued_at: this.props.task.valued_at,
+            source_type: this.props.task.source_type,
+            customer_id: this.props.task.customer_id,
             customers: [],
             sourceTypes: [],
             errors: []
@@ -22,15 +24,6 @@ class AddLead extends React.Component {
     componentDidMount () {
         this.getCustomers()
         this.getSourceTypes()
-
-        this.setState(
-            {
-                rating: this.props.task.rating,
-                valued_at: this.props.task.valued_at,
-                source_type: this.props.task.source_type,
-                customer_id: this.props.task.customer_id
-            }
-        )
     }
 
     hasLeadErrorFor (field) {
@@ -78,7 +71,7 @@ class AddLead extends React.Component {
         this.props.updateValue(e)
     }
 
-    buildCustomerList() {
+    buildCustomerList () {
         let customerList
         if (!this.state.customers.length) {
             customerList = <option value="">Loading...</option>
@@ -95,11 +88,12 @@ class AddLead extends React.Component {
             <FormGroup>
                 <Label for="location">Customer:</Label>
                 <Input className={this.hasLeadErrorFor('location') ? 'is-invalid' : ''} type="select"
-                       disabled={disabled}
-                       name="customer_id"
-                       id="customer_id"
-                       value={customerId}
-                       onChange={this.props.updateValue}>
+                    disabled={disabled}
+                    name="customer_id"
+                    id="customer_id"
+                    value={customerId}
+                    onChange={this.props.updateValue}
+                >
                     <option>Select Customer</option>
                     {customerList}
                 </Input>
@@ -108,7 +102,7 @@ class AddLead extends React.Component {
         )
     }
 
-    buildSourceTypeList() {
+    buildSourceTypeList () {
         let sourceTypeList
         if (!this.state.sourceTypes.length) {
             sourceTypeList = <option value="">Loading...</option>
@@ -125,11 +119,12 @@ class AddLead extends React.Component {
             <FormGroup>
                 <Label for="source_type">Source Type:</Label>
                 <Input className={this.hasLeadErrorFor('source_type') ? 'is-invalid' : ''} type="select"
-                       disabled={disabled}
-                       name="source_type"
-                       id="source_type"
-                       value={customerId}
-                       onChange={this.props.updateValue}>
+                    disabled={disabled}
+                    name="source_type"
+                    id="source_type"
+                    value={customerId}
+                    onChange={this.props.updateValue}
+                >
                     <option>Select Source Type</option>
                     {sourceTypeList}
                 </Input>
@@ -139,7 +134,6 @@ class AddLead extends React.Component {
     }
 
     render () {
-
         const customerList = this.buildCustomerList()
         const sourceTypeList = this.buildSourceTypeList()
         const disabled = typeof this.props.readOnly !== 'undefined' && this.props.readOnly === true ? 'disabled' : ''
@@ -159,11 +153,11 @@ class AddLead extends React.Component {
                 <FormGroup>
                     <Label for="valued_at">Value:</Label>
                     <Input className={this.hasLeadErrorFor('valued_at') ? 'is-invalid' : ''} type="text"
-                           disabled={disabled}
-                           name="valued_at"
-                           id="valued_at"
-                           value={this.state.valued_at}
-                           onChange={this.updateLeadValue}/>
+                        disabled={disabled}
+                        name="valued_at"
+                        id="valued_at"
+                        value={this.state.valued_at}
+                        onChange={this.updateLeadValue}/>
                     {this.renderLeadErrorFor('updateValue')}
                 </FormGroup>
 

@@ -58,7 +58,7 @@ class Calendars extends React.Component {
     }
 
     getEvents () {
-        const url = (this.props.user_id) ? `/api/events/users/${this.props.user_id}` : (this.props.task_id) ? `/api/events/tasks/${this.props.task_id}` : `/api/events`
+        const url = (this.props.user_id) ? `/api/events/users/${this.props.user_id}` : (this.props.task_id) ? `/api/events/tasks/${this.props.task_id}` : '/api/events'
         axios.get(url)
             .then((r) => {
                 this.setState({
@@ -71,7 +71,7 @@ class Calendars extends React.Component {
     }
 
     getTasks () {
-        const url = `/api/tasks`
+        const url = '/api/tasks'
         axios.get(url)
             .then((r) => {
                 this.setState({
@@ -108,8 +108,6 @@ class Calendars extends React.Component {
             .catch((e) => {
                 console.warn(e)
             })
-
-        //window.location.href = (!e.target.value ? '/calendar' : `/calendar-users?user_id=${e.target.value}`)
     }
 
     buildUserOptions () {
@@ -123,8 +121,9 @@ class Calendars extends React.Component {
         }
         return (
             <Input type="select"
-                   value={this.props.user_id} name="user" id="contributors"
-                   onChange={this.filterEvents.bind(this)}>
+                value={this.props.user_id} name="user" id="contributors"
+                onChange={this.filterEvents.bind(this)}
+            >
                 <option value="">Choose:</option>
                 {userContent}
             </Input>
@@ -142,7 +141,8 @@ class Calendars extends React.Component {
         }
         return (
             <Input type="select"
-                   value={this.props.task_id} name="task" id="tasks" onChange={this.filterEvents.bind(this)}>
+                value={this.props.task_id} name="task" id="tasks" onChange={this.filterEvents.bind(this)}
+            >
                 <option value="">Choose:</option>
                 {taskContent}
             </Input>
@@ -225,4 +225,3 @@ class Calendars extends React.Component {
 }
 
 export default Calendars
-

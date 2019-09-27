@@ -55,10 +55,6 @@ export default class DataTable extends Component {
         return pagesArray
     }
 
-    componentDidMount () {
-        this.setPage()
-    }
-
     setPage () {
         this.setState({ current_page: this.state.entities.current_page }, () => {
             this.fetchEntities()
@@ -145,7 +141,7 @@ export default class DataTable extends Component {
     pageList () {
         return this.pagesNumbers().map(page => {
             return <li className={page === this.state.entities.current_page ? 'page-item active' : 'page-item'}
-                       key={page}>
+                key={page}>
                 <button className="page-link" onClick={() => this.changePage(page)}>{page}</button>
             </li>
         })
@@ -174,13 +170,13 @@ export default class DataTable extends Component {
 
                 <Table className="mt-4" striped bordered hover responsive>
                     <thead>
-                    <tr>
-                        {this.tableHeads()}
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            {this.tableHeads()}
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {this.props.userList()}
+                        {this.props.userList()}
                     </tbody>
                 </Table>
                 {(this.state.entities.data && this.state.entities.data.length > 0) &&
@@ -188,18 +184,16 @@ export default class DataTable extends Component {
                     <ul className="pagination">
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={this.state.entities.current_page === 1}
-                                    onClick={() => this.changePage(this.state.entities.current_page - 1)}
-                            >
+                                disabled={this.state.entities.current_page === 1}
+                                onClick={() => this.changePage(this.state.entities.current_page - 1)}>
                                 Previous
                             </button>
                         </li>
                         {this.pageList()}
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={this.state.entities.last_page === this.state.entities.current_page}
-                                    onClick={() => this.changePage(this.state.entities.current_page + 1)}
-                            >
+                                disabled={this.state.entities.last_page === this.state.entities.current_page}
+                                onClick={() => this.changePage(this.state.entities.current_page + 1)}>
                                 Next
                             </button>
                         </li>

@@ -41,9 +41,8 @@ class Dashboard extends Component {
                 }
             })
             .catch((e) => {
-                    console.warn(e)
-                }
-            )
+                console.warn(e)
+            })
     }
 
     getPieOptions () {
@@ -115,32 +114,32 @@ class Dashboard extends Component {
                 }
             ]
         }
-    };
+    }
 
     render () {
-        let onEvents = {
-            'click': this.onChartClick,
-            'legendselectchanged': this.onChartLegendselectchanged
+        const onEvents = {
+            click: this.onChartClick,
+            legendselectchanged: this.onChartLegendselectchanged
         }
 
         let leads = ''
 
         if (this.state.deals.length) {
-            let count = 1;
+            let count = 1
 
             leads = this.state.deals.map((lead, index) => {
                 return (
                     <React.Fragment>
-                        <div className="media mt-1">
+                        <div key={index} className="media mt-1">
                             <div className="media-left pr-2">
                                 <img className="media-object avatar avatar-md rounded-circle"
-                                     src={`/files/avatar${count++}.png`} alt="Generic placeholder image"/>
+                                    src={`/files/avatar${count++}.png`} alt="Generic placeholder image"/>
                             </div>
                             <div className="media-body">
                                 <p className="text-bold-600 m-0">{lead.title.substring(0, 40)} <span
                                     className="float-right badge badge-success">{lead.status_name}</span></p>
                                 <p className="font-small-2 text-muted m-0">{lead.valued_at}<i
-                                    className="ft-calendar pl-1"></i>{lead.due_date}</p>
+                                    className="ft-calendar pl-1" />{lead.due_date}</p>
                             </div>
                         </div>
                     </React.Fragment>
@@ -150,7 +149,7 @@ class Dashboard extends Component {
         return (
             <div className="content">
                 <div className="content-wrapper">
-                    <div className="content-header row"></div>
+                    <div className="content-header row" />
                     <div className="content-body">
                         <Row>
                             <Col className="col-xl-4" lg={6} md={12}>
@@ -166,12 +165,12 @@ class Dashboard extends Component {
                                     content={
                                         <React.Fragment>
                                             <input type="text" value="75"
-                                                   className="knob hide-value responsive angle-offset"
-                                                   data-angleOffset="0" data-thickness=".15"
-                                                   data-linecap="round" data-width="150"
-                                                   data-height="150" data-inputColor="#e1e1e1"
-                                                   data-readOnly="true" data-fgColor="#37BC9B"
-                                                   data-knob-icon="ft-trending-up"/>
+                                                className="knob hide-value responsive angle-offset"
+                                                data-angleOffset="0" data-thickness=".15"
+                                                data-linecap="round" data-width="150"
+                                                data-height="150" data-inputColor="#e1e1e1"
+                                                data-readOnly="true" data-fgColor="#37BC9B"
+                                                data-knob-icon="ft-trending-up"/>
 
                                             <ul className="list-inline clearfix mt-2 mb-0">
                                                 <li className="border-right-grey border-right-lighten-2 pr-2">
@@ -197,13 +196,13 @@ class Dashboard extends Component {
                                                 <span className="text-muted">Total Earning</span>
                                             </div>
                                             <div className="chartjs height-400">
-                                                <canvas id="earning-chart" className="height-400 block"></canvas>
+                                                <canvas id="earning-chart" className="height-400 block" />
                                             </div>
                                             <div
                                                 className="chart-stats position-absolute position-bottom-0 position-right-0 mb-2 mr-3">
                                                 <a href="#" className="btn bg-info mr-1 white">Statistics <i
-                                                    className="ft-bar-chart"></i></a> <span className="text-muted">for the <a
-                                                href="#">last year.</a></span>
+                                                    className="ft-bar-chart" /></a> <span className="text-muted">for the <a
+                                                    href="#">last year.</a></span>
                                             </div>
                                         </div>
                                     }
@@ -220,14 +219,14 @@ class Dashboard extends Component {
                                                     <span>Today's Leads</span>
                                                 </div>
                                                 <div className="media-right media-middle">
-                                                    <i className="ft-award success font-large-2 float-right"></i>
+                                                    <i className="ft-award success font-large-2 float-right" />
                                                 </div>
                                             </div>
 
                                             <div className="progress mt-1 mb-0" style={{ height: '7px' }}>
                                                 <div className="progress-bar bg-success" role="progressbar"
-                                                     style={{ width: '80%' }} aria-valuenow="80" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
+                                                    style={{ width: '80%' }} aria-valuenow="80" aria-valuemin="0"
+                                                    aria-valuemax="100" />
                                             </div>
                                         </div>
                                     }
@@ -243,14 +242,14 @@ class Dashboard extends Component {
                                                     <span>New Deal</span>
                                                 </div>
                                                 <div className="media-right media-middle">
-                                                    <i className="ft-package deep-orange font-large-2 float-right"></i>
+                                                    <i className="ft-package deep-orange font-large-2 float-right" />
                                                 </div>
                                             </div>
 
                                             <div className="progress mt-1 mb-0" style={{ height: '7px' }}>
                                                 <div className="progress-bar bg-deep-orange" role="progressbar"
-                                                     style={{ width: '35%' }} aria-valuenow="35" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
+                                                    style={{ width: '35%' }} aria-valuenow="35" aria-valuemin="0"
+                                                    aria-valuemax="100" />
                                             </div>
                                         </div>
                                     }
@@ -266,14 +265,14 @@ class Dashboard extends Component {
                                                     <span>New Customers</span>
                                                 </div>
                                                 <div className="media-right media-middle">
-                                                    <i className="ft-users info font-large-2 float-right"></i>
+                                                    <i className="ft-users info font-large-2 float-right" />
                                                 </div>
                                             </div>
 
                                             <div className="progress mt-1 mb-0" style={{ height: '7px' }}>
                                                 <div className="progress-bar bg-success" role="progressbar"
-                                                     style={{ width: '35%' }} aria-valuenow="35" aria-valuemin="0"
-                                                     aria-valuemax="100"></div>
+                                                    style={{ width: '35%' }} aria-valuenow="35" aria-valuemin="0"
+                                                    aria-valuemax="100" />
                                             </div>
                                         </div>
                                     }
@@ -290,10 +289,10 @@ class Dashboard extends Component {
                                             <h4 className="card-title">Deals Funnel <span
                                                 className="text-muted text-bold-400">This Month</span></h4>
                                             <a className="heading-elements-toggle"><i
-                                                className="ft-more-horizontal font-medium-3"></i></a>
+                                                className="ft-more-horizontal font-medium-3" /></a>
                                             <div className="heading-elements">
                                                 <ul className="list-inline mb-0">
-                                                    <li><a data-action="reload"><i className="ft-rotate-cw"></i></a>
+                                                    <li><a data-action="reload"><i className="ft-rotate-cw" /></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -314,10 +313,10 @@ class Dashboard extends Component {
                                             <h4 className="card-title">Deals <span className="text-muted text-bold-400">- Won 5</span>
                                             </h4>
                                             <a className="heading-elements-toggle"><i
-                                                className="ft-more-horizontal font-medium-3"></i></a>
+                                                className="ft-more-horizontal font-medium-3" /></a>
                                             <div className="heading-elements">
                                                 <ul className="list-inline mb-0">
-                                                    <li><a data-action="reload"><i className="ft-rotate-cw"></i></a>
+                                                    <li><a data-action="reload"><i className="ft-rotate-cw" /></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -325,8 +324,8 @@ class Dashboard extends Component {
                                     }
                                     content={
                                         <div style={{ height: '300px', overflowY: 'auto' }} id="deals-list-scroll"
-                                             className="card-body height-350 position-relative ps-container ps-theme-default"
-                                             data-ps-id="6205b797-6d0d-611f-25fd-16195eadda29">
+                                            className="card-body height-350 position-relative ps-container ps-theme-default"
+                                            data-ps-id="6205b797-6d0d-611f-25fd-16195eadda29">
                                             {leads}
                                         </div>
                                     }
@@ -347,10 +346,10 @@ class Dashboard extends Component {
                                             <h4 className="card-title">Sources <span
                                                 className="text-muted text-bold-400">This Month</span></h4>
                                             <a className="heading-elements-toggle"><i
-                                                className="ft-more-horizontal font-medium-3"></i></a>
+                                                className="ft-more-horizontal font-medium-3" /></a>
                                             <div className="heading-elements">
                                                 <ul className="list-inline mb-0">
-                                                    <li><a data-action="reload"><i className="ft-rotate-cw"></i></a>
+                                                    <li><a data-action="reload"><i className="ft-rotate-cw" /></a>
                                                     </li>
                                                 </ul>
                                             </div>

@@ -11,25 +11,15 @@ class EditProduct extends React.Component {
             modal: false,
             loading: false,
             errors: [],
-            name: '',
-            description: '',
-            price: '',
-            sku: '',
-            id: ''
-        }
-        this.toggle = this.toggle.bind(this)
-        this.hasErrorFor = this.hasErrorFor.bind(this)
-        this.renderErrorFor = this.renderErrorFor.bind(this)
-    }
-
-    componentDidMount () {
-        this.setState({
-            id: this.props.product.id,
             name: this.props.product.name,
             description: this.props.product.description,
             price: this.props.product.price,
             sku: this.props.product.sku,
-        })
+            id: this.props.product.id
+        }
+        this.toggle = this.toggle.bind(this)
+        this.hasErrorFor = this.hasErrorFor.bind(this)
+        this.renderErrorFor = this.renderErrorFor.bind(this)
     }
 
     handleClick () {
@@ -105,7 +95,7 @@ class EditProduct extends React.Component {
                             <Label for="email">Description:</Label>
                             <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''}
                                 type="textarea"
-                                 name="description"
+                                name="description"
                                 defaultValue={this.state.description}
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('description')}

@@ -10,8 +10,8 @@ class EditRole extends React.Component {
             modal: false,
             loading: false,
             errors: [],
-            name: '',
-            description: '',
+            name: this.props.role.name,
+            description: this.props.role.description,
             permissions: [],
             attachedPermissions: [],
             selectedPermissions: [],
@@ -23,18 +23,12 @@ class EditRole extends React.Component {
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
-    handleInput (e) {
-        this.setState({ [e.target.name]: e.target.value })
+    componentDidMount () {
+        this.getRole()
     }
 
-    componentDidMount () {
-
-        this.setState({
-            name: this.props.role.name,
-            description: this.props.role.description
-        })
-
-        this.getRole()
+    handleInput (e) {
+        this.setState({ [e.target.name]: e.target.value })
     }
 
     handleMultiSelect (e) {

@@ -23,8 +23,7 @@ export default class ProductList extends Component {
     }
 
     userList () {
-
-        if(!this.state.products.length) {
+        if (!this.state.products.length) {
             return false
         }
 
@@ -46,7 +45,7 @@ export default class ProductList extends Component {
             })
         } else {
             return <tr>
-                <td colSpan={columns.length} className="text-center">No Records Found.</td>
+                <td className="text-center">No Records Found.</td>
             </tr>
         }
     }
@@ -66,7 +65,6 @@ export default class ProductList extends Component {
     }
 
     render () {
-
         const fetchUrl = '/api/products/'
 
         return (

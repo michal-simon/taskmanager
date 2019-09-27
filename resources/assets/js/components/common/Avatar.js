@@ -7,13 +7,12 @@ class Avatar extends Component {
     }
 
     render () {
-
         const initials = this.props.name.split(' ').map(x => x.charAt(0)).join('').substr(0, 2).toUpperCase()
 
         return (
             <React.Fragment>
                 <div className='avatar-circle avatar-circle-sm'>
-                    <span class='initials'>{initials}</span>
+                    <span className='initials'>{initials}</span>
                 </div>
             </React.Fragment>
         )

@@ -12,7 +12,7 @@ class ChatPage extends Component {
         this.sendMessage = this.sendMessage.bind(this)
         this.loadMessages = this.loadMessages.bind(this)
         this.state = {
-            userID: sessionStorage.getItem("user_id"),
+            userID: sessionStorage.getItem('user_id'),
             friends: [],
             messages: [],
             customer_id: 0
@@ -37,7 +37,7 @@ class ChatPage extends Component {
     }
 
     getCustomers () {
-        axios.get(`/api/messages/customers`)
+        axios.get('/api/messages/customers')
             .then((r) => {
                 this.setState({
                     friends: r.data
@@ -49,7 +49,7 @@ class ChatPage extends Component {
     }
 
     sendMessage (message) {
-        axios.post(`/api/messages`, message)
+        axios.post('/api/messages', message)
             .then((r) => {
                 // for now this will let us know things work.  `console` will give us a
                 // warning though
@@ -77,12 +77,12 @@ class ChatPage extends Component {
     }
 
     render () {
-        const showMessageBox = this.state.messages.length ? true : false
+        const showMessageBox = !!this.state.messages.length
         return (<Card className="grey lighten-3 chat-room">
             <CardBody>
                 <Row className="px-lg-2 px-2">
                     <Col md="6" xl="4" className="px-0 mb-4 mb-md-0 scrollable-friends-list"
-                         style={{ borderRight: '1px solid #CCC' }}>
+                        style={{ borderRight: '1px solid #CCC' }}>
                         <h6 className="font-weight-bold mb-3 text-lg-left">Member</h6>
 
                         <div className="overflow-auto">

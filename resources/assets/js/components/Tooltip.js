@@ -21,7 +21,6 @@ class Tooltips extends Component {
     }
 
     render () {
-
         const addButton = this.props.task_type === 3
             ? <AddLeadForm
                 tasks={this.props.tasks}
@@ -32,21 +31,21 @@ class Tooltips extends Component {
                 task_type={this.props.task_type}
             />
             : <AddTask
-            tasks={this.props.tasks}
-            storyType={this.props.storyType}
-            action={this.props.action}
-            status={this.props.id}
-            task_type={this.props.task_type}
-            project_id={this.props.project_id}
-            modal={true}
-        />
+                tasks={this.props.tasks}
+                storyType={this.props.storyType}
+                action={this.props.action}
+                status={this.props.id}
+                task_type={this.props.task_type}
+                project_id={this.props.project_id}
+                modal={true}
+            />
 
         return (
             <span>
-                <i className="fa fa-question-circle" id={'Tooltip-' + this.props.id} data-toggle="tooltip"></i>
+                <i className="fa fa-question-circle" id={'Tooltip-' + this.props.id} data-toggle="tooltip" />
                 <Tooltip placement={this.props.placement} isOpen={this.state.tooltipOpen}
                     target={'Tooltip-' + this.props.id} toggle={this.toggle}>
-                      {this.props.content}
+                    {this.props.content}
                 </Tooltip>
 
                 {addButton}

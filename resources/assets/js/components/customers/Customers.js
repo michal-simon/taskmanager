@@ -24,7 +24,6 @@ export default class Customers extends Component {
     }
 
     customerList () {
-
         if (this.state.customers && this.state.customers.length) {
             return this.state.customers.map(customer => {
                 console.log('columns', Object.keys(customer))
@@ -35,7 +34,7 @@ export default class Customers extends Component {
                                 {this.displayCustomerAddress(customer[index])}
                             </React.Fragment>
                         )
-                    } else if(index === 'id') {
+                    } else if (index === 'id') {
                         return <td><Avatar name={customer.name}/></td>
                     } else {
                         return (
@@ -81,7 +80,7 @@ export default class Customers extends Component {
             return ''
         }
 
-        if(address.address_2) {
+        if (address.address_2) {
             return `${address.address_1}, ${address.address_2}, ${address.zip}, ${address.city}`
         }
 

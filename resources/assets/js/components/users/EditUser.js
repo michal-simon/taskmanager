@@ -5,7 +5,6 @@ import axios from 'axios'
 import PropTypes from 'prop-types'
 
 class EditUser extends React.Component {
-
     constructor (props) {
         super(props)
         this.state = {

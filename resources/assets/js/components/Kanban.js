@@ -33,7 +33,7 @@ class Kanban extends Component {
     }
 
     getTaskUrl () {
-        switch(true) {
+        switch (true) {
             case (typeof this.props.task_id !== 'undefined' && this.props.task_id !== null):
                 return `/api/tasks/subtasks/${this.props.task_id}`
 
@@ -69,7 +69,7 @@ class Kanban extends Component {
     }
 
     getStoryDetails () {
-        axios.get(`/api/projects`)
+        axios.get('/api/projects')
             .then((r) => {
                 this.setState({
                     stories: r.data,
