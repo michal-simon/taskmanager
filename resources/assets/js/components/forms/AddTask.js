@@ -54,7 +54,7 @@ class AddModal extends React.Component {
         }
     }
 
-    handleInput (e) {
+    handleInput (e) {        
         this.setState({
             [e.target.name]: e.target.value
         })

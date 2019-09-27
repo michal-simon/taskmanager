@@ -7,6 +7,8 @@ use App\Repositories\Interfaces\FileRepositoryInterface;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\User;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AttachmentCreated;
 
 class UploadController extends Controller
 {
@@ -50,6 +52,10 @@ class UploadController extends Controller
                 $arrAddedFiles[$count]['user'] = $objUser->toArray();
 
             }
+            
+            //send notification
+        $user = auth()->guard('user')->user();
+        Notification::send($user, new AttachmentCreated($file));
 
             return collect($arrAddedFiles)->toJson();
         }

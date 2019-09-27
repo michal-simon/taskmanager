@@ -8,6 +8,8 @@ use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\User;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\CommentCreated;
 
 class CommentController extends Controller {
 
@@ -52,6 +54,10 @@ class CommentController extends Controller {
 
         $arrResponse[0] = $comment;
         $arrResponse[0]['user'] = $objUser->toArray();
+        
+        //send notification
+        $user = auth()->guard('user')->user();
+        Notification::send($user, new CommentCreated($comment));
 
         return collect($arrResponse)->toJson();
     }

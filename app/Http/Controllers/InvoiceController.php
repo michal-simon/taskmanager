@@ -11,6 +11,8 @@ use App\Transformations\InvoiceTransformable;
 use App\Invoice;
 use App\Repositories\TaskRepository;
 use App\Task;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\InvoiceCreated;
 
 class InvoiceController extends Controller {
 
@@ -79,6 +81,10 @@ class InvoiceController extends Controller {
                 $this->invoiceLineRepository->createInvoiceLine($invoice, $arrLine);
             }
         }
+        
+        //send notification
+        $user = auth()->guard('user')->user();
+        Notification::send($user, new InvoiceCreated($invoice));
 
         $invoice = $this->transformInvoice($invoice);
         return $invoice->toJson();

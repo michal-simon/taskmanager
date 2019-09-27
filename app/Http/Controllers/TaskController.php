@@ -17,6 +17,8 @@ use App\Customer;
 use App\Transformations\TaskTransformable;
 use App\Repositories\SourceTypeRepository;
 use App\SourceType;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TaskCreated;
 
 class TaskController extends Controller {
 
@@ -73,6 +75,10 @@ class TaskController extends Controller {
         if ($validatedData['task_type'] == 1) {
             $objProject->tasks()->attach($task);
         }
+        
+        //send notification
+        $user = auth()->guard('user')->user();
+        Notification::send($user, new TaskCreated($task));
 
         return response()->json($this->transformTask($task));
     }

@@ -12,6 +12,8 @@ use App\Repositories\TaskRepository;
 use App\Task;
 use App\Repositories\UserRepository;
 use App\User;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\EventCreated;
 
 class EventController extends Controller {
 
@@ -55,7 +57,6 @@ class EventController extends Controller {
      * @return Response
      */
     public function store(CreateEventRequest $request) {
-        
          $arrData = [
             'customer_id' => $request->customer_id,
             'title' => $request->title,
@@ -65,6 +66,13 @@ class EventController extends Controller {
         ];
 
         $event = $this->eventRepository->createEvent($arrData);
+        
+        //send notification
+        $user = auth()->guard('user')->user();
+        Notification::send($user, new EventCreated($event));
+        
+        
+        //attach invited users
         $this->eventRepository->attachUsers($event, $request->users);
         
         $eventRepo = new EventRepository($event);

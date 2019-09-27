@@ -7,10 +7,10 @@ class AddLead extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            rating: this.props.task.rating,
-            valued_at: this.props.task.valued_at,
-            source_type: this.props.task.source_type,
-            customer_id: this.props.task.customer_id,
+            rating: this.props.task ? this.props.task.rating : 0,
+            valued_at: this.props.task ? this.props.task.valued_at : 0,
+            source_type: this.props.task ? this.props.task.source_type : 0,
+            customer_id: this.props.task ? this.props.customer_id : 0,
             customers: [],
             sourceTypes: [],
             errors: []
@@ -68,6 +68,7 @@ class AddLead extends React.Component {
         this.setState({
             [e.target.name]: e.target.value
         })
+        
         this.props.updateValue(e)
     }
 
@@ -81,7 +82,6 @@ class AddLead extends React.Component {
             ))
         }
 
-        const customerId = typeof this.props.task !== 'undefined' ? this.props.task.customer_id : ''
         const disabled = typeof this.props.readOnly !== 'undefined' && this.props.readOnly === true ? 'disabled' : ''
 
         return (
@@ -91,8 +91,8 @@ class AddLead extends React.Component {
                     disabled={disabled}
                     name="customer_id"
                     id="customer_id"
-                    value={customerId}
-                    onChange={this.props.updateValue}
+                    value={this.state.customer_id}
+                    onChange={this.updateLeadValue}
                 >
                     <option>Select Customer</option>
                     {customerList}
@@ -112,7 +112,6 @@ class AddLead extends React.Component {
             ))
         }
 
-        const customerId = typeof this.props.task !== 'undefined' ? this.props.task.source_type : ''
         const disabled = typeof this.props.readOnly !== 'undefined' && this.props.readOnly === true ? 'disabled' : ''
 
         return (
@@ -122,8 +121,8 @@ class AddLead extends React.Component {
                     disabled={disabled}
                     name="source_type"
                     id="source_type"
-                    value={customerId}
-                    onChange={this.props.updateValue}
+                    value={this.state.source_type}
+                    onChange={this.updateLeadValue}
                 >
                     <option>Select Source Type</option>
                     {sourceTypeList}
