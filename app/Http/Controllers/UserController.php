@@ -11,6 +11,7 @@ use App\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
 use App\Transformations\UserTransformable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\UploadedFile;
 
 class UserController extends Controller {
 
@@ -137,8 +138,29 @@ class UserController extends Controller {
         if ($request->has('role')) {
             $user->roles()->sync($request->input('role'));
         }
-        
+
         return response()->json('Uodated user successfully');
+    }
+
+    public function upload(Request $request) {
+        if ($request->hasFile('file') && $request->file('file') instanceof UploadedFile) {
+            $user = auth()->guard('user')->user();
+            $userRepo = new UserRepository($user);
+            $data['profile_photo'] = $this->userRepository->saveUserImage($request->file('file'));
+            $userRepo->updateUser($data);
+        }
+        
+        return response()->json('file uploaded successfully');
+    }
+
+    /**
+     * return a user based on username
+     * @param string $username
+     * @return type
+     */
+    public function profile(string $username) {
+        $user = $this->userRepository->findUserByUsername($username);
+        return response()->json($user);
     }
 
 }

@@ -11,6 +11,7 @@ import ChatPage from './chat/ChatPage'
 import Login from './Login'
 import Dashboard from './Dashboard'
 import MessageContainer from './activity/MessageContainer'
+import UserProfile from './users/UserProfile'
 
 
 class App extends Component {
@@ -53,6 +54,7 @@ class App extends Component {
         const projectId = this.getQueryVariable('project_id')
         const taskId = this.getQueryVariable('task_id')
         const userId = this.getQueryVariable('user_id')
+        const username = this.getQueryVariable('username')
 
         return (
             <main>
@@ -69,6 +71,11 @@ class App extends Component {
                         <Route
                             path='/calendar-users'
                             render={(props) => <Calendar {...props} user_id={userId} />}
+                        />
+
+                        <Route
+                            path='/user-profile'
+                            render={(props) => <UserProfile {...props} username={username} />}
                         />
 
                         <Route

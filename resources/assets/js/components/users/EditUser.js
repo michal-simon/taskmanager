@@ -16,6 +16,8 @@ class EditUser extends React.Component {
             selectedRoles: []
         }
 
+        alert(this.props.user.id)
+
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)

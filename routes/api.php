@@ -77,4 +77,6 @@ Route::get('tasks/source-types', 'TaskController@getSourceTypes');
 Route::get('activity', 'ActivityController@index');
 Route::delete('comments/{comment_id}', 'CommentController@destroy');
 Route::put('comments/{comment_id}', 'CommentController@update');
+Route::post('user/upload', 'UserController@upload');
+Route::get('user/profile/{username}', 'UserController@profile');
 

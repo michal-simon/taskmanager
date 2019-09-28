@@ -7,10 +7,40 @@ use App\Repositories\Base\BaseRepositoryInterface;
 
 interface UserRepositoryInterface extends BaseRepositoryInterface
 {
-    //public function getAll(string $orderBy, string $orderDir, int $recordsPerPage, $blActive = true);
+    /**
+     * 
+     * @param type $columns
+     * @param string $orderBy
+     * @param string $sortBy
+     */
     public function listUsers($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc') : Collection;
+    
+    /**
+     * 
+     */
     public function deleteUser() : bool;
+    
+    /**
+     * 
+     * @param array $data
+     */
     public function updateUser(array $data) : bool;
+    
+    /**
+     * 
+     * @param int $id
+     */
     public function findUserById(int $id) : User;
+    
+    /**
+     * 
+     * @param array $data
+     */
     public function createUser(array $data) : User;
+    
+    /**
+     * 
+     * @param string $username
+     */
+    public function findUserByUsername(string $username) : User;
 }

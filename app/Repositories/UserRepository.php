@@ -9,6 +9,7 @@ use App\Exceptions\CreateUserErrorException;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\UploadedFile;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface {
 
@@ -105,13 +106,30 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
     /**
      * @param array $roleIds
      */
-    public function syncRoles(array $roleIds) {     
+    public function syncRoles(array $roleIds) {
 
         foreach ($roleIds[0] as $roleId) {
             $mappedObjects[] = $roleId;
         }
-        
+
         $this->model->roles()->sync($mappedObjects);
+    }
+
+    /**
+     * 
+     * @param string $username
+     * @return User
+     */
+    public function findUserByUsername(string $username): User {
+        return $this->model->where('username', $username)->first();
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @return string
+     */
+    public function saveUserImage(UploadedFile $file): string {
+        return $file->store('users', ['disk' => 'public']);
     }
 
 }
