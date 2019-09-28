@@ -74,4 +74,7 @@ Route::get('events/tasks/{task_id}', 'EventController@getEventsForTask');
 Route::get('events/users/{user_id}', 'EventController@getEventsForUser');
 Route::get('dashboard', 'DashboardController@index');
 Route::get('tasks/source-types', 'TaskController@getSourceTypes');
+Route::get('activity', 'ActivityController@getCommentsForMessageBoard');
+Route::delete('comments/{comment_id}', 'CommentController@destroy');
+Route::put('comments/{comment_id}', 'CommentController@update');
 

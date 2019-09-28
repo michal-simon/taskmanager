@@ -10,6 +10,8 @@ use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\CommentCreated;
+use App\Repositories\CommentRepository;
+use Illuminate\Http\Request;
 
 class CommentController extends Controller {
 
@@ -41,13 +43,19 @@ class CommentController extends Controller {
         return $comments->toJson();
     }
 
+    /**
+     * 
+     * @param CommentRequest $request
+     * @return type
+     */
     public function store(CommentRequest $request) {
 
         $validatedData = $request->validated();
         $objUser = (new UserRepository(new User))->findUserById($request->user_id);
-
+       
         $comment = $this->commentRepository->createComment([
-            'task_id' => $validatedData['task_id'],
+            'parent_id' => !empty($validatedData['parent_id']) ? $validatedData['parent_id'] : 0,
+            'task_id' => !empty($validatedData['task_id']) ? $validatedData['task_id'] : 0,
             'comment' => $validatedData['comment'],
             'user_id' => $validatedData['user_id']
         ]);
@@ -61,5 +69,31 @@ class CommentController extends Controller {
 
         return collect($arrResponse)->toJson();
     }
+    
+    /**
+     * 
+     * @param int $id
+     * @return type
+     */
+    public function destroy(int $id) {
+        $comment = $this->commentRepository->findCommentById($id);
+        $commentRepo = new CommentRepository($comment);
+        $commentRepo->deleteComment();
 
+        return response()->json('Comment deleted!');
+    }
+    
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id) {
+        $comment = $this->commentRepository->findCommentById($id);
+        $update = new CommentRepository($comment);
+        $update->updateComment($request->all());
+        return response()->json('Comment updated!');
+    }
 }

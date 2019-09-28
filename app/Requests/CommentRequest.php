@@ -24,8 +24,9 @@ class CommentRequest extends FormRequest
     public function rules()
     {
         return [
+            'parent_id'=> 'nullable',
             'comment'=> 'required',
-            'task_id'=> 'required',
+            'task_id'=> 'nullable',
             'user_id'=> 'required',
         ];
     }

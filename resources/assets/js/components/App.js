@@ -10,6 +10,8 @@ import Customers from './customers/Customers'
 import ChatPage from './chat/ChatPage'
 import Login from './Login'
 import Dashboard from './Dashboard'
+import MessageContainer from './activity/MessageContainer'
+
 
 class App extends Component {
     constructor (props, context) {
@@ -58,6 +60,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/' component={Dashboard}/>
                         <Route path='/products' component={ProductList}/>
+                        <Route path='/activity' component={MessageContainer}/>
                         <Route path='/chat' component={ChatPage}/>
                         <Route path='/customers' render={(props) => <Customers {...props} customer_type={1} />}/>
                         <Route path='/invoice' component={Invoice}/>
