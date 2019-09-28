@@ -55,7 +55,7 @@ class EditCustomer extends React.Component {
     }
 
     handleClick (event) {
-        this.setState({ loading: true })
+        this.setState({ loading: true, submitSuccess: false })
 
         axios.put(`/api/customers/${this.state.id}`, this.state.customer).then(response => {
             this.toggle()
@@ -213,6 +213,10 @@ class EditCustomer extends React.Component {
 
         return (
             <div>
+                {submitSuccess && (
+                    <div className="mt-3 alert alert-info" role="alert">
+                        Customer's details has been edited successfully </div>
+                )}
                 {form}
                 {updateButton}
             </div>

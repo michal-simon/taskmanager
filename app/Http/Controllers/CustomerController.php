@@ -91,7 +91,7 @@ class CustomerController extends Controller {
         $data = $request->except('_method', '_token');
         $update->updateCustomer($data);
 
-        if (!empty($address)) {
+        if (!empty($address) && $address->count() > 0) {
             $addRessRepo = new AddressRepository($address[0]);
 
             $addRessRepo->updateAddress([

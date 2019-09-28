@@ -24,7 +24,8 @@ class AddModal extends React.Component {
             project_id: this.props.storyType ? parseInt(this.props.storyType) : 0,
             loading: false,
             users: [],
-            errors: []
+            errors: [],
+            submitSuccess: false
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
@@ -100,6 +101,9 @@ class AddModal extends React.Component {
     }
 
     handleClick (event) {
+
+        this.setState({ submitSuccess: false, loading: true })
+
         axios.post('/api/tasks', {
             rating: this.state.rating,
             source_type: this.state.source_type,
@@ -123,7 +127,8 @@ class AddModal extends React.Component {
                     content: null,
                     contributors: null,
                     due_date: null,
-                    loading: false
+                    loading: false,
+                    submitSuccess: true
                 })
 
                 if (this.props.action) {
@@ -244,6 +249,10 @@ class AddModal extends React.Component {
 
         return (
             <div>
+                {this.state.submitSuccess && (
+                    <div className="mt-3 alert alert-info" role="alert">
+                        The event has been created successfully </div>
+                )}
                 {form}
                 {leadForm}
                 {saveButton}
