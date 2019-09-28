@@ -33,7 +33,7 @@ class ActivityController extends Controller {
     }
 
     public function index() {
-        $comments = $this->commentRepository->listComments();
+        $comments = $this->commentRepository->getCommentsForActivityFeed();
         $list = $this->notificationRepository->listNotifications();
 
         $notifications = $list->map(function (Notification $notification) {

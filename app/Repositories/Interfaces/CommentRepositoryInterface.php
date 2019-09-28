@@ -37,4 +37,10 @@ interface CommentRepositoryInterface
      * @param string $sortBy
      */
     public function listComments($columns = array('*'), string $orderBy = 'id', string $sortBy = 'asc') : Collection;
+    
+    /**
+     * 
+     */
+    public function getCommentsForActivityFeed() : Collection;
+   
 }
