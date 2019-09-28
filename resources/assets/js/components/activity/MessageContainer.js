@@ -2,6 +2,8 @@ import * as React from 'react'
 import MessageDialog from './MessageDialog'
 import MessageBoard from './MessageBoard'
 import axios from 'axios'
+import { Col, Container, ListGroup, ListGroupItem, ModalHeader } from 'reactstrap'
+import MessageCard from './MessageCard'
 
 class MessageContainer extends React.Component {
     constructor (props) {
@@ -10,9 +12,9 @@ class MessageContainer extends React.Component {
             isDialogOpen: false,
             mode: '',
             activeMessage: undefined,
-            messages: []
+            messages: [],
+            notifications: []
         }
-
         this.setMode = this.setMode.bind(this)
         this.toggleOpenState = this.toggleOpenState.bind(this)
         this.setActiveMessage = this.setActiveMessage.bind(this)
@@ -34,7 +36,6 @@ class MessageContainer extends React.Component {
         this.setState({
             mode
         })
-
         this.toggleOpenState()
     }
 
@@ -62,11 +63,12 @@ class MessageContainer extends React.Component {
             })
     }
 
-    fetchMessages() {
+    fetchMessages () {
         axios.get('/api/activity')
             .then((r) => {
                 this.setState({
-                    messages: r.data
+                    messages: r.data.comments,
+                    notifications: r.data.notifications
                 })
             })
             .catch((e) => {
@@ -79,23 +81,19 @@ class MessageContainer extends React.Component {
         const messageId = this.state.messages.length
             ? this.state.messages[this.state.messages.length - 1].id + 1
             : 1
-
         const newMessage = {
             comment: messageText,
             parent_id: null,
-            user_id: sessionStorage.getItem("user_id")
+            user_id: sessionStorage.getItem('user_id')
         }
-
         this.newMessage(newMessage)
     }
 
     newMessage (newMessage) {
         axios.post('/api/comments', newMessage).then(response => {
-
             alert('Mike')
-
             this.setState(prevState => ({
-                messages: [...prevState.messages,newMessage]
+                messages: [...prevState.messages, newMessage]
             }))
         })
             .catch((error) => {
@@ -104,11 +102,9 @@ class MessageContainer extends React.Component {
     }
 
     submitMessage (messageText, mode) {
-
         if (!messageText) {
             return
         }
-
         if (mode === 'Create') {
             this.createMessage(messageText)
         } else if (mode === 'Edit') {
@@ -116,17 +112,15 @@ class MessageContainer extends React.Component {
         } else {
             this.commentOnMessage(messageText)
         }
-
         this.toggleOpenState()
     }
 
     deleteMessage (id) {
-
         axios.delete(`/api/comments/${id}`).then(response => {
             const arrMessages = [...this.state.messages]
             const index = arrMessages.findIndex(message => message.id === id)
             arrMessages.splice(index, 1)
-            this.setState({messages: arrMessages})
+            this.setState({ messages: arrMessages })
         })
             .catch((error) => {
                 console.warn(error)
@@ -136,13 +130,12 @@ class MessageContainer extends React.Component {
     changeMessage (messageText) {
         const { activeMessage } = this.state
         activeMessage.comment = messageText
-
         axios.put(`/api/comments/${activeMessage.id}`).then(response => {
-             const arrMessages = [...this.state.messages]
-             const index = arrMessages.findIndex(message => message.id === activeMessage.id)
+            const arrMessages = [...this.state.messages]
+            const index = arrMessages.findIndex(message => message.id === activeMessage.id)
             arrMessages[index].comment = messageText
             console.log(arrMessages)
-            this.setState({messages: arrMessages})
+            this.setState({ messages: arrMessages })
         })
             .catch((error) => {
                 console.warn(error)
@@ -159,19 +152,21 @@ class MessageContainer extends React.Component {
             id: messageId,
             comment: messageText,
             parent_id: activeMessage.id,
-            user_id: sessionStorage.getItem("user_id")
+            user_id: sessionStorage.getItem('user_id')
         }
-
         this.newMessage(newMessage)
     }
 
     render () {
-        const { messages, mode, isDialogOpen, users, activeMessage } = this.state
-
-        if(this.state.users && this.state.users.length) {
-
-            console.log('message', this.state.activeMessage)
-
+        const {
+            messages,
+            notifications,
+            mode,
+            isDialogOpen,
+            users,
+            activeMessage
+        } = this.state
+        if (this.state.users && this.state.users.length) {
             return (
                 <React.Fragment>
                     <MessageDialog
@@ -192,12 +187,23 @@ class MessageContainer extends React.Component {
                         setActiveMessage={this.setActiveMessage}
                     />
 
+                    {notifications.length ? (
+                        <ListGroup className="m-3">
+                            {notifications.map((notification) => (
+                                <React.Fragment>
+                                    <ListGroupItem className="d-flex justify-content-between align-items-center">
+                                        {`${notification.data.message}  by ${notification.author}`}
+                                        <span>{notification.created_at}</span>
+                                    </ListGroupItem>
+                                </React.Fragment>
+                            ))}
+                        </ListGroup>
+                    ) : null}
+
                 </React.Fragment>
             )
         }
-
         return (<div>Loading</div>)
-
     }
 }
 

@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Comment;
-use App\Requests\CommentRequest;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
-use App\Repositories\Interfaces\TaskRepositoryInterface;
-use App\Repositories\UserRepository;
-use App\User;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\CommentCreated;
+use App\Repositories\Interfaces\NotificationRepositoryInterface;
+use App\Notification;
+use App\Transformations\NotificationTransformable;
 
 class ActivityController extends Controller {
+    
+    use NotificationTransformable;
 
     /**
      * @var CommentRepositoryInterface
@@ -21,50 +19,33 @@ class ActivityController extends Controller {
     /**
      * @var TaskRepositoryInterface
      */
-    private $taskRepository;
+    private $notificationRepository;
 
     /**
-     * CommentController constructor.
+     * ActivityController constructor.
      *
      * @param CommentRepositoryInterface $commentRepository
-     * TaskRepositoryInterface $taskRepository
+     * NotificationRepositoryInterface $notificationRepository
      */
-    public function __construct(CommentRepositoryInterface $commentRepository, TaskRepositoryInterface $taskRepository) {
+    public function __construct(CommentRepositoryInterface $commentRepository, NotificationRepositoryInterface $notificationRepository) {
         $this->commentRepository = $commentRepository;
-        $this->taskRepository = $taskRepository;
+        $this->notificationRepository = $notificationRepository;
     }
 
-    public function index($task_id) {
-
-        $objTask = $this->taskRepository->findTaskById($task_id);
-        $comments = $this->commentRepository->getAllCommentsForTask($objTask);
-        return $comments->toJson();
-    }
-
-    public function store(CommentRequest $request) {
-
-        $validatedData = $request->validated();
-        $objUser = (new UserRepository(new User))->findUserById($request->user_id);
-
-        $comment = $this->commentRepository->createComment([
-            'task_id' => $validatedData['task_id'],
-            'comment' => $validatedData['comment'],
-            'user_id' => $validatedData['user_id']
-        ]);
-
-        $arrResponse[0] = $comment;
-        $arrResponse[0]['user'] = $objUser->toArray();
-        
-        //send notification
-        $user = auth()->guard('user')->user();
-        Notification::send($user, new CommentCreated($comment));
-
-        return collect($arrResponse)->toJson();
-    }
-    
-    public function getCommentsForMessageBoard() {  
+    public function index() {
         $comments = $this->commentRepository->listComments();
-        return response()->json($comments);
+        $list = $this->notificationRepository->listNotifications();
+
+        $notifications = $list->map(function (Notification $notification) {
+                    return $this->transformNotification($notification);
+                })->all();
+
+        return response()->json(
+                        [
+                            'notifications' => $notifications,
+                            'comments' => $comments
+                        ]
+        );
     }
 
 }

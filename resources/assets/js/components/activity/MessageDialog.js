@@ -5,12 +5,6 @@ class MessageDialog extends React.Component {
     constructor (props) {
         super(props)
 
-        if(this.props.message) {
-            alert('yes')
-        }
-
-        console.log('props', this.props)
-
         this.state = {
             messageText: this.props.message ? this.props.message.comment : ''
         }

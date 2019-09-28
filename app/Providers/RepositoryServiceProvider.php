@@ -33,6 +33,8 @@ use App\Repositories\Interfaces\MessageRepositoryInterface;
 use App\Repositories\MessageRepository;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\ProductRepository;
+use App\Repositories\Interfaces\NotificationRepositoryInterface;
+use App\Repositories\NotificationRepository;
 
 class RepositoryServiceProvider extends ServiceProvider {
 
@@ -109,6 +111,10 @@ class RepositoryServiceProvider extends ServiceProvider {
 
         $this->app->bind(
                 ProductRepositoryInterface::class, ProductRepository::class
+        );
+        
+         $this->app->bind(
+                NotificationRepositoryInterface::class, NotificationRepository::class
         );
     }
 
