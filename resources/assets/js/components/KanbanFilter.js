@@ -90,7 +90,7 @@ export default class KanbanFilter extends Component {
             customerContent = <option value="">Loading...</option>
         } else {
             customerContent = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
+                <option key={index} value={customer.id}>{customer.name}</option>
             ))
         }
         if (!this.state.users.length) {

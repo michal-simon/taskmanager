@@ -199,7 +199,7 @@ class CalendarEvent extends React.Component {
         return (
             <FormGroup>
                 <Label for="users">Attendees</Label>
-                <Input defaultValue={this.state.attendees} onChange={this.handleMultiSelect} type="select"
+                <Input value={this.state.attendees} onChange={this.handleMultiSelect} type="select"
                     name="users" id="users" multiple>
                     {userList}
                 </Input>

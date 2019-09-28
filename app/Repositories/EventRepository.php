@@ -62,7 +62,9 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
      * @throws \Exception
      */
     public function deleteEvent(): bool {
-        return $this->delete();
+        $result = $this->delete();
+        $this->model->users()->detach();
+        return $result;
     }
 
     /**

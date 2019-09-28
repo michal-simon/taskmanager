@@ -64,7 +64,9 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @throws \Exception
      */
     public function deleteTask(): bool {
-        return $this->delete();
+        $result = $this->delete();
+        $this->model->products()->detach();
+        return $result;
     }
 
     /**
@@ -117,7 +119,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @return mixed
      */
     public function searchTask(string $text = null): Collection {
-        if (is_null($text)) {
+        if ($text === null) {
             return $this->all();
         }
         return $this->model->searchTask($text)->get();
