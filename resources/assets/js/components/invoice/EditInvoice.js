@@ -36,6 +36,7 @@ class EditInvoice extends Component {
         this.buildForm = this.buildForm.bind(this)
         this.createInvoice = this.createInvoice.bind(this)
         this.handleAddFiled = this.handleAddFiled.bind(this)
+        this.handleFieldChange = this.handleFieldChange.bind(this)
 
         this.total = 0
     }
@@ -167,16 +168,23 @@ class EditInvoice extends Component {
         })
     }
 
-    updateData (rowData, row) {
-
-        if (this.state.data && this.state.data[row]) {
-            this.state.data[row] = rowData
-            return
-        }
-
+    updateData (rowData) {
         this.setState(prevState => ({
             data: [...prevState.data, rowData]
         }))
+    }
+
+    handleFieldChange (name, value, row) {
+        const newItemArray = this.state.data.map((item, sidx) => {
+            if (row !== sidx) return item;
+            return { ...item, [name]: value };
+        });
+
+        this.setState((prevState, props) => {
+            return {
+                data: newItemArray
+            };
+        });
     }
 
     handleAddFiled () {
@@ -193,12 +201,11 @@ class EditInvoice extends Component {
     };
 
     handleDelete (idx) {
-
-        this.setState((prevState, props) => {
-            return {
-                data: this.state.data.filter((s, sidx) => idx !== sidx)
-            };
+        const newTasks = this.state.data.filter((task, tIndex) => {
+            return idx !== tIndex;
         });
+
+        this.setState({ data: newTasks })
     }
 
     setTotal (total) {
@@ -301,7 +308,7 @@ class EditInvoice extends Component {
                     total={this.state.total}
                     rows={this.state.data}
                     delete={this.handleDelete}
-                    update={this.updateData}
+                    update={this.handleFieldChange}
                     onAddFiled={this.handleAddFiled}
                     setTotal={this.setTotal}/>
                 <Button color="success" onClick={this.saveData}>Save</Button>

@@ -36,8 +36,23 @@ class LineItemEditor extends Component {
         return grandTotal
     }
 
-    handleRowChange (row, data) {
-        this.props.update(data, row)
+    handleRowChange (e) {
+        const parent = e.target.parentNode.parentNode
+        const row = [...parent.parentNode.children].indexOf(parent)
+
+        this.props.update(e.currentTarget.name, e.currentTarget.value, row)
+
+        if(e.currentTarget.name === 'product_id') {
+
+            const price = e.target[e.target.selectedIndex].getAttribute('data-price')
+
+            setTimeout(() => {
+                this.props.update('unit_price', price, row)
+            });
+
+
+        }
+
     }
 
     handleRowDelete (e, row) {
@@ -51,12 +66,10 @@ class LineItemEditor extends Component {
     }
 
     render () {
-        let currentIndex = document.querySelectorAll('[name=unit_price]').length
-        currentIndex = currentIndex > 0 ? currentIndex - 1 : 0
 
         const lineItemRows = this.props.rows.map((lineItem, index) =>
 
-            <LineItem new={true} key={index} id={currentIndex} lineItemData={lineItem} onChange={this.handleRowChange}
+            <LineItem new={true} key={index} lineItemData={lineItem} onChange={this.handleRowChange}
                 handleTaskChange={this.updateTasks} onDelete={this.handleRowDelete} calculateTotal={this.getTotal}/>
         )
 

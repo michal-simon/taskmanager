@@ -58,6 +58,7 @@ class InvoiceController extends Controller {
      */
     public function store(Request $request) {
         $arrLines = json_decode($request->data, true);
+        
         $invoice = $this->invoiceRepository->createInvoice($request->all());
         $invoiceRepo = new InvoiceRepository($invoice);
 
