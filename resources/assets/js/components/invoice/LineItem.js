@@ -11,7 +11,6 @@ class LineItem extends Component {
         this.handleDeleteClick = this.handleDeleteClick.bind(this)
         this.loadProducts = this.loadProducts.bind(this)
         this.buildProductOptions = this.buildProductOptions.bind(this)
-        this.index = 0
     }
 
     componentDidMount () {

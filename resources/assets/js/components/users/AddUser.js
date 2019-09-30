@@ -2,6 +2,7 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
+import DropdownDate  from '../common/DropdownDate'
 
 class AddUser extends React.Component {
     constructor (props) {
@@ -12,7 +13,10 @@ class AddUser extends React.Component {
             email: '',
             first_name: '',
             last_name: '',
-            profile_photo: '5af1921c0fe5703dd4a463ec',
+            dob: '',
+            job_description: '',
+            phone_number: '',
+            gender: '',
             role_id: 0,
             password: '',
             loading: false,
@@ -25,6 +29,21 @@ class AddUser extends React.Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
         this.getRoleList = this.getRoleList.bind(this)
+        this.setDate = this.setDate.bind(this)
+        this.buildGenderDropdown = this.buildGenderDropdown.bind(this)
+
+        this.defaultValues = {
+            year: 'Select Year',
+            month: 'Select Month',
+            day: 'Select Day'
+        }
+
+        this.classes = {
+            dateContainer: 'form-row',
+            yearContainer: 'col-md-4 mb-3',
+            monthContainer: 'col-md-4 mb-3',
+            dayContainer: 'col-md-4 mb-3'
+        }
     }
 
     componentDidMount () {
@@ -63,7 +82,10 @@ class AddUser extends React.Component {
             email: this.state.email,
             first_name: this.state.first_name,
             last_name: this.state.last_name,
-            profile_photo: this.state.profile_photo,
+            job_description: this.state.job_description,
+            phone_number: this.state.phone_number,
+            dob: this.state.dob,
+            gender: this.state.gender,
             password: this.state.password,
             role: this.state.selectedRoles
         })
@@ -77,7 +99,9 @@ class AddUser extends React.Component {
                     email: null,
                     first_name: null,
                     last_name: null,
-                    profile_photo: null,
+                    phone_number: null,
+                    job_description: null,
+                    gender: null,
                     password: null,
                     role_id: null,
                     loading: false
@@ -120,11 +144,47 @@ class AddUser extends React.Component {
             ))
         }
 
-        return roleList
+       return (
+           <FormGroup>
+               <Label for="users">Roles</Label>
+               <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
+                      name="role" id="role" multiple>
+                   {roleList}
+               </Input>
+               {this.renderErrorFor('users')}
+           </FormGroup>
+       )
+    }
+
+    setDate (date) {
+        this.setState({ dob: date })
+    }
+
+    buildGenderDropdown () {
+        const arrOptions = ['male', 'female']
+
+        const options = arrOptions.map(option => {
+            return <option value={option}>{option}</option>
+        })
+
+        return (
+            <FormGroup>
+                <Label for="gender">Gender(*):</Label>
+                <Input className={this.hasErrorFor('gender') ? 'is-invalid' : ''}
+                    type="select"
+                    name="gender"
+                    onChange={this.handleInput.bind(this)}>
+                    <option value="">Select gender</option>
+                    {options}
+                </Input>
+                {this.renderErrorFor('gender')}
+            </FormGroup>
+        )
     }
 
     render () {
         const roleList = this.getRoleList()
+        const genderList = this.buildGenderDropdown()
 
         return (
             <React.Fragment>
@@ -136,54 +196,78 @@ class AddUser extends React.Component {
                     <ModalBody>
                         <FormGroup>
                             <Label for="username">Username(*):</Label>
-                            <Input className={this.hasErrorFor('username') ? 'is-invalid' : ''} type="text"
-                                name="username" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('username') ? 'is-invalid' : ''}
+                                placeholder="Username"
+                                type="text"
+                                name="username"
+                                onChange={this.handleInput.bind(this)}/>
+                            <small className="form-text text-muted">Your username must be "firstname"."lastname" eg joe.bloggs.</small>
                             {this.renderErrorFor('username')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="email">Email(*):</Label>
-                            <Input className={this.hasErrorFor('email') ? 'is-invalid' : ''} type="email" name="email"
+                            <Input className={this.hasErrorFor('email') ? 'is-invalid' : ''}
+                                placeholder="Email"
+                                type="email"
+                                name="email"
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('email')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="first_name">First Name(*):</Label>
-                            <Input className={this.hasErrorFor('first_name') ? 'is-invalid' : ''} type="text"
-                                name="first_name" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('first_name') ? 'is-invalid' : ''}
+                                type="text"
+                                name="first_name"
+                                placeholder="First Name"
+                                onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('first_name')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="last_name">Last Name(*):</Label>
-                            <Input className={this.hasErrorFor('last_name') ? 'is-invalid' : ''} type="text"
-                                name="last_name" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('last_name') ? 'is-invalid' : ''}
+                                type="text"
+                                placeholder="Last Name"
+                                name="last_name"
+                                onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('last_name')}
                         </FormGroup>
 
+                        {genderList}
+
+                        <DropdownDate classes={this.classes} defaultValues={this.defaultValues} onDateChange={this.setDate}/>
+
                         <FormGroup>
-                            <Label for="profile_photo">Profile Photo URL(*):</Label>
-                            <Input className={this.hasErrorFor('profile_photo') ? 'is-invalid' : ''} type="text"
-                                name="profile_photo" onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('profile_photo')}
+                            <Label for="job_description">Job Description:</Label>
+                            <Input className={this.hasErrorFor('job_description') ? 'is-invalid' : ''}
+                                type="text"
+                                placeholder="Job Description"
+                                name="job_description"
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('job_description')}
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label for="phone_number">Phone Number:</Label>
+                            <Input className={this.hasErrorFor('phone_number') ? 'is-invalid' : ''}
+                                type="tel"
+                                name="phone_number"
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('phone_number')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="password">Password:</Label>
                             <Input className={this.hasErrorFor('password') ? 'is-invalid' : ''} type="password"
                                 name="password" onChange={this.handleInput.bind(this)}/>
+                            <small className="form-text text-muted">Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.</small>
                             {this.renderErrorFor('password')}
                         </FormGroup>
 
-                        <FormGroup>
-                            <Label for="users">Roles</Label>
-                            <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
-                                name="role" id="role" multiple>
-                                {roleList}
-                            </Input>
-                            {this.renderErrorFor('users')}
-                        </FormGroup>
+                        {roleList}
+
                     </ModalBody>
 
                     <ModalFooter>
