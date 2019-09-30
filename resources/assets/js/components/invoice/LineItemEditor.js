@@ -55,26 +55,22 @@ class LineItemEditor extends Component {
     }
 
     handleRowDelete (e, row) {
-        const parent = row.target.parentNode.parentNode
-        const index = [...parent.parentNode.children].indexOf(parent)
-        const table = document.querySelector('#lines-table')
-        const tresult = table.deleteRow(index)
+         const parent = row.target.parentNode.parentNode
+         const index = [...parent.parentNode.children].indexOf(parent)
         this.props.delete(index)
     }
 
     handleRowAdd () {
-        const rowDataCopy = this.state.rowData.slice(0)
-        rowDataCopy.push({ quantity: 0, description: '', unit_price: 0 })
-        this.setState({ rowData: rowDataCopy })
+        this.props.onAddFiled()
     }
 
     render () {
         let currentIndex = document.querySelectorAll('[name=unit_price]').length
         currentIndex = currentIndex > 0 ? currentIndex - 1 : 0
 
-        const lineItemRows = this.state.rowData.map((lineItem, index) =>
+        const lineItemRows = this.props.rows.map((lineItem, index) =>
 
-            <LineItem new={true} key={index} id={currentIndex} lineItemData={this.state.rowData[index]} onChange={this.handleRowChange}
+            <LineItem new={true} key={index} id={currentIndex} lineItemData={lineItem} onChange={this.handleRowChange}
                 handleTaskChange={this.updateTasks} onDelete={this.handleRowDelete} calculateTotal={this.getTotal}/>
         )
 

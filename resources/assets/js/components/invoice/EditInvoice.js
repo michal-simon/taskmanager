@@ -35,16 +35,24 @@ class EditInvoice extends Component {
         this.handleTaskChange = this.handleTaskChange.bind(this)
         this.handleDelete = this.handleDelete.bind(this)
         this.buildForm = this.buildForm.bind(this)
+        this.createInvoice = this.createInvoice.bind(this)
+        this.handleAddFiled = this.handleAddFiled.bind(this)
+
         this.total = 0
         this.hasTasks = false
+        this.hasLines = false
+        this.loadedTasks = false
     }
 
     componentDidMount () {
-        this.loadInvoice()
+        if(this.props.task_id) {
+            this.handleTaskChange()
+        }
+
         this.loadCustomers()
 
-        if (this.props.task_id) {
-            this.handleTaskChange()
+        if(this.props.task_id || this.props.invoice_id) {
+            this.loadInvoice()
         }
     }
 
@@ -101,7 +109,7 @@ class EditInvoice extends Component {
                 }
 
                 this.hasTasks = true
-                this.setState({ existingLines: arrLines, data: arrLines, total: total })
+                this.setState({ data: arrLines, total: total })
             })
             .catch((e) => {
                 console.warn(e)
@@ -128,13 +136,18 @@ class EditInvoice extends Component {
         axios.get(url)
             .then((r) => {
                 if (r.data.invoice) {
+
+                    this.hasLines = !!(r.data.lines && r.data.lines.length)
+
                     this.setState({
-                        existingLines: r.data.lines,
+                        data: r.data.lines,
                         due_date: r.data.invoice.due_date,
                         invoice_id: r.data.invoice.id,
                         invoice_status: r.data.invoice.invoice_status
                     })
                 }
+
+                this.loadedTasks = true
             })
             .catch((e) => {
                 console.warn(e)
@@ -163,6 +176,7 @@ class EditInvoice extends Component {
     }
 
     updateData (rowData, row) {
+
         if (this.state.data && this.state.data[row]) {
             this.state.data[row] = rowData
             return
@@ -173,14 +187,25 @@ class EditInvoice extends Component {
         }))
     }
 
-    handleDelete (row) {
-        if (!this.state.data || !this.state.data[row]) {
-            return false
-        }
+    handleAddFiled () {
+        this.setState((prevState, props) => {
+            return {
+                data: this.state.data.concat({
+                    description: '',
+                    quantity: 0,
+                    unit_price: 0,
+                    product_id: 0
+                })
+            };
+        });
+    };
 
-        const array = [...this.state.data]
-        array.splice(row, 1)
-        this.state.data = array
+    handleDelete (idx) {
+        this.setState((prevState, props) => {
+            return {
+                data: this.state.data.filter((s, sidx) => idx !== sidx)
+            };
+        });
     }
 
     setTotal (total) {
@@ -198,7 +223,26 @@ class EditInvoice extends Component {
             payment_type: 1
         }
 
-        axios.post('/api/invoice', data)
+        if(!this.state.invoice_id) {
+
+            return this.createInvoice('/api/invoice', data)
+        }
+
+        axios.put(`/api/invoice/${this.state.invoice_id}`, data)
+            .then((response) => {
+                const firstInvoice = response.data
+                const allInvoices = this.props.invoices
+                allInvoices.push(firstInvoice)
+                this.props.action(allInvoices)
+            })
+            .catch((error) => {
+                console.warn(error)
+            })
+
+    }
+
+    createInvoice (url, data) {
+        axios.post(url, data)
             .then((response) => {
                 const firstInvoice = response.data
                 const allInvoices = this.props.invoices
@@ -259,7 +303,14 @@ class EditInvoice extends Component {
 
                 {customerContent}
 
-                <LineItemEditor total={this.state.total} hasTasks={this.hasTasks} lineItemModel={this.state.existingLines} delete={this.handleDelete} update={this.updateData}
+                <LineItemEditor
+                    total={this.state.total}
+                    hasTasks={this.hasTasks}
+                    rows={this.state.data}
+                    lineItemModel={this.state.existingLines}
+                    delete={this.handleDelete}
+                    update={this.updateData}
+                    onAddFiled={this.handleAddFiled}
                     setTotal={this.setTotal}/>
                 <Button color="success" onClick={this.saveData}>Save</Button>
                 {changeStatusButton}

@@ -6,6 +6,7 @@ import { Button, Input } from 'reactstrap'
 class LineItem extends Component {
     constructor (props) {
         super(props)
+
         this.state = Object.assign({}, props.lineItemData)
         this.state.products = []
         this.handleQuantityChange = this.handleQuantityChange.bind(this)
@@ -77,9 +78,11 @@ class LineItem extends Component {
 
     isExistingLine (e) {
         const lineId = e.target.parentNode.parentNode.getAttribute('data-id')
-        if (lineId) {
-            return true
+
+        if (!lineId) {
+            return false
         }
+
         return false
     }
 
@@ -153,13 +156,14 @@ class LineItem extends Component {
     }
 
     render () {
-        const { lineId } = this.props.lineItemData
+        const lineId = this.props.lineItemData && this.props.lineItemData.lineId ? this.props.lineItemData.lineId : ''
 
-        const button = !lineId ? <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
-            className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
-            : <Button color="danger" onClick={(event) => {
+        const button = !lineId
+            ? <Button color="danger" onClick={(event) => {
                 this.props.onDelete(lineId, event)
             }}>Delete</Button>
+            : <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
+                      className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
 
         const updateButton = !lineId ? '' : <Button color="primary" onClick={this.updateLine}>Update</Button>
 

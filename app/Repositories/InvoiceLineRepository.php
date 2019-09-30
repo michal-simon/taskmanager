@@ -97,4 +97,14 @@ class InvoiceLineRepository extends BaseRepository implements InvoiceLineReposit
                         ->get();
     }
 
+    /**
+     * 
+     * @param Invoice $objInvoice
+     * @return bool
+     */
+    public function deleteAllLines(Invoice $objInvoice): bool {
+        
+        return $this->model->where('invoice_id', $objInvoice->id)->delete();
+    }
+
 }

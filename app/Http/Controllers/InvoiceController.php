@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\InvoiceRepositoryInterface;
 use App\Repositories\InvoiceRepository;
-use App\Repositories\InvoiceLineRepository;
 use App\Repositories\Interfaces\InvoiceLineRepositoryInterface;
 use App\Transformations\InvoiceTransformable;
 use App\Invoice;
-use App\Repositories\TaskRepository;
-use App\Task;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\InvoiceCreated;
 
@@ -62,15 +59,9 @@ class InvoiceController extends Controller {
     public function store(Request $request) {
 
         $arrLines = json_decode($request->data, true);
-
-        if (!empty($request->invoice_id)) {
-            $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
-            $invoiceRepo = new InvoiceRepository($invoice);
-            $invoiceRepo->updateInvoice($request->all());
-        } else {
-            $invoice = $this->invoiceRepository->createInvoice($request->all());
-            $invoiceRepo = new InvoiceRepository($invoice);
-        }
+        
+        $invoice = $this->invoiceRepository->createInvoice($request->all());
+        $invoiceRepo = new InvoiceRepository($invoice);
 
         if ($request->has('task_id') && !empty($request->task_id)) {
             $invoiceRepo->syncTasks($request->input('task_id'));
@@ -81,7 +72,7 @@ class InvoiceController extends Controller {
                 $this->invoiceLineRepository->createInvoiceLine($invoice, $arrLine);
             }
         }
-        
+
         //send notification
         $user = auth()->guard('user')->user();
         Notification::send($user, new InvoiceCreated($invoice));
@@ -109,64 +100,37 @@ class InvoiceController extends Controller {
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
-     */
-    public function destroyLine(int $id) {
-        $customer = $this->invoiceLineRepository->findLineById($id);
-        $customerRepo = new InvoiceLineRepository($customer);
-        $customerRepo->deleteLine();
-    }
-
-    /**
-     * 
-     * @param int $id
-     * @param Request $request
-     */
-    public function updateLine(int $id, Request $request) {
-
-        $invoiceLine = $this->invoiceLineRepository->findLineById($id);
-
-        $update = new InvoiceLineRepository($invoiceLine);
-
-        $update->updateLine($request->all());
-    }
-
-    /**
      * 
      * @param int $id
      * @param Request $request
      */
     public function update(int $id, Request $request) {
+        $arrLines = json_decode($request->data, true);
+        $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
 
-        $invoice = $this->invoiceRepository->findInvoiceById($id);
+        $invoiceRepo = new InvoiceRepository($invoice);
+        $invoiceRepo->updateInvoice($request->all());
 
-        $update = new InvoiceRepository($invoice);
+        if ($request->has('task_id') && !empty($request->task_id)) {
+            $invoiceRepo->syncTasks($request->input('task_id'));
+        }
 
-        $update->updateInvoice($request->all());
-    }
+        $this->invoiceLineRepository->deleteAllLines($invoice);
 
-    /**
-     * 
-     * @param int $task_id
-     * @return type
-     */
-    public function getInvoiceLinesForTask(int $task_id) {
+        if (is_array($arrLines) && !empty($arrLines)) {
+            foreach ($arrLines as $arrLine) {
 
-        $task = (new TaskRepository(new Task))->findTaskById($task_id);
-        $invoice = $this->invoiceRepository->getInvoiceForTask($task);
-        $lines = $this->invoiceLineRepository->getInvoiceLinesForTask($task);
-        
-        $arrTest = [
-            'lines' => $lines,
-            'invoice' => $invoice[0]
-        ];
+                $this->invoiceLineRepository->createInvoiceLine($invoice, [
+                    'quantity' => $arrLine['quantity'],
+                    'description' => $arrLine['description'],
+                    'unit_price' => $arrLine['unit_price'],
+                    'product_id' => $arrLine['product_id']
+                ]);
+            }
+        }
 
-        return response()->json($arrTest);
+        $invoice = $this->transformInvoice($invoice);
+        return $invoice->toJson();
     }
 
 }
