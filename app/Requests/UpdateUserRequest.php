@@ -4,15 +4,14 @@ namespace App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
-{
+class UpdateUserRequest extends FormRequest {
+
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -21,15 +20,18 @@ class UpdateUserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            'role'              => 'nullable|array',
-            'username'          => 'required|string',
-            'profile_photo'     => 'nullable|string',
-            'email'             => 'required|string',
-            'first_name'        => 'required|string',
-            'last_name'         => 'required|string'
+            'gender' => 'nullable|string',
+            'job_description' => 'nullable|string',
+            'phone_number' => 'nullable|string',
+            'dob' => 'nullable|string',
+            'role' => 'nullable|array',
+            'username' => 'required|string',
+            'profile_photo' => 'nullable|string',
+            'email' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string'
         ];
     }
 
@@ -38,13 +40,13 @@ class UpdateUserRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
-    {
+    public function messages() {
         return [
-            'username.required'     => 'Username is required!',
-            'email.required'        => 'Email is required!',
-            'first_name.required'   => 'First Name is required!',
-            'last_name.required'    => 'Last Name is required!'
+            'username.required' => 'Username is required!',
+            'email.required' => 'Email is required!',
+            'first_name.required' => 'First Name is required!',
+            'last_name.required' => 'Last Name is required!'
         ];
     }
+
 }

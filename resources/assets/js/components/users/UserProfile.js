@@ -5,6 +5,7 @@ import { Progress } from 'reactstrap'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import EditUser from './EditUser'
+import { monthByNumber } from '../common/helper'
 
 class UserProfile extends React.Component {
     constructor (props) {
@@ -30,6 +31,19 @@ class UserProfile extends React.Component {
                 console.warn(err)
                 toast.error('upload fail')
             })
+    }
+
+    /**
+     * return date as format January 21, 1991
+     * @param dob
+     */
+    formatDate (dob) {
+        const date = new Date(dob)
+        const startYear = date.getFullYear()
+        const startMonth = date.getMonth()
+        const startDay = date.getDate()
+
+        return `${monthByNumber[startMonth]} ${startDay}, ${startYear}`
     }
 
     fileChangedHandler (e) {
@@ -66,8 +80,11 @@ class UserProfile extends React.Component {
 
     render () {
 
+        const imgUrl = this.state.user.profile_photo ? `/storage/${this.state.user.profile_photo}` : "https://cdn.bootstrapsnippet.net/assets/image/dummy-avatar.jpg"
+        const gender = this.state.user.gender ? this.state.user.gender[0].toUpperCase() + this.state.user.gender.slice(1) : ''
+
         let $imagePreview = (<img className="w-100 rounded border"
-                                  src="https://cdn.bootstrapsnippet.net/assets/image/dummy-avatar.jpg"/>)
+                                  src={imgUrl}/>)
         let userData = ''
         let button = ''
         let uploadButton = ''
@@ -76,6 +93,9 @@ class UserProfile extends React.Component {
             $imagePreview = (<img className="w-100 rounded border" src={this.state.imagePreviewUrl} alt="icon"/>)
         }
         if (this.state.user && this.state.user.id) {
+
+            console.log('user', this.state.user)
+
             button = parseInt(sessionStorage.getItem('user_id')) === this.state.user.id
                 ? <EditUser user={this.state.user} user_id={this.state.user.id}/>
                 : ''
@@ -91,14 +111,11 @@ class UserProfile extends React.Component {
                         <h2 class="font-weight-bold m-0">
                             {`${this.state.user.first_name} ${this.state.user.last_name}`}
                         </h2>
-                        <address class="m-0 pt-2 pl-0 pl-md-4 font-weight-light text-secondary">
-                            <i class="fa fa-map-marker"></i>
-                            Garden City, NY
-                        </address>
+
                     </div>
 
                     <p className="h5 text-primary mt-2 d-block font-weight-light">
-                        Full-Stack Programmer
+                        {this.state.user.job_description}
                     </p>
 
                     <section class="d-flex mt-5">
@@ -110,15 +127,7 @@ class UserProfile extends React.Component {
                     </h6>
                     <dl className="row mt-4 mb-4 pb-3">
                         <dt className="col-sm-3">Phone</dt>
-                        <dd className="col-sm-9">+1 123 456 78900</dd>
-
-                        <dt className="col-sm-3">Home address</dt>
-                        <dd className="col-sm-9">
-                            <address className="mb-0">
-                                2983 Heavner Court<br/>
-                                Garden City, NY 11530
-                            </address>
-                        </dd>
+                        <dd className="col-sm-9">{this.state.user.phone_number}</dd>
 
                         <dt className="col-sm-3">Email address</dt>
                         <dd className="col-sm-9">
@@ -131,10 +140,10 @@ class UserProfile extends React.Component {
                     </h6>
                     <dl className="row mt-4 mb-4 pb-3">
                         <dt className="col-sm-3">Birthday</dt>
-                        <dd className="col-sm-9">January 21, 1991</dd>
+                        <dd className="col-sm-9">{this.formatDate(this.state.user.dob)}</dd>
 
                         <dt className="col-sm-3">Gender</dt>
-                        <dd className="col-sm-9">Male</dd>
+                        <dd className="col-sm-9">{gender}</dd>
                     </dl>
                 </React.Fragment>
             )

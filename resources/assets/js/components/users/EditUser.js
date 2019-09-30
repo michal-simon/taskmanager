@@ -3,6 +3,7 @@ import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
 import PropTypes from 'prop-types'
+import DropdownDate from '../common/DropdownDate'
 
 class EditUser extends React.Component {
     constructor (props) {
@@ -16,12 +17,26 @@ class EditUser extends React.Component {
             selectedRoles: []
         }
 
-        alert(this.props.user.id)
+        this.defaultValues = {
+            year: 'Select Year',
+            month: 'Select Month',
+            day: 'Select Day'
+        }
+
+        this.classes = {
+            dateContainer: 'form-row',
+            yearContainer: 'col-md-4 mb-3',
+            monthContainer: 'col-md-4 mb-3',
+            dayContainer: 'col-md-4 mb-3'
+        }
 
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
+        this.getRoleList = this.getRoleList.bind(this)
+        this.setDate = this.setDate.bind(this)
+        this.buildGenderDropdown = this.buildGenderDropdown.bind(this)
     }
 
     componentDidMount () {
@@ -48,9 +63,12 @@ class EditUser extends React.Component {
             email: this.state.user.email,
             first_name: this.state.user.first_name,
             last_name: this.state.user.last_name,
-            profile_photo: this.state.user.profile_photo,
             password: this.state.user.password,
-            role: this.state.selectedRoles
+            role: this.state.selectedRoles,
+            job_description: this.state.user.job_description,
+            phone_number: this.state.user.phone_number,
+            dob: this.state.user.dob,
+            gender: this.state.user.gender,
         })
             .then((response) => {
                 const index = this.props.users.findIndex(user => parseInt(user.id) === this.props.user_id)
@@ -81,7 +99,6 @@ class EditUser extends React.Component {
 
     setValues (values) {
         this.setState({ user: { ...this.state.user, ...values } })
-        console.log(this.state.user)
     }
 
     handleInput (e) {
@@ -98,7 +115,7 @@ class EditUser extends React.Component {
         })
     }
 
-    render () {
+    getRoleList () {
         let roleList = null
         if (!this.state.roles.length) {
             roleList = <option value="">Loading...</option>
@@ -107,6 +124,50 @@ class EditUser extends React.Component {
                 <option key={index} value={role.id}>{role.name}</option>
             ))
         }
+
+        return (
+            <FormGroup>
+                <Label for="users">Roles</Label>
+                <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
+                    name="role" id="role" multiple>
+                    {roleList}
+                </Input>
+                {this.renderErrorFor('users')}
+            </FormGroup>
+        )
+    }
+
+    setDate (date) {
+        alert(date)
+        this.setValues({ ['dob']: date })
+    }
+
+    buildGenderDropdown () {
+        const arrOptions = ['male', 'female']
+
+        const options = arrOptions.map(option => {
+            return <option value={option}>{option}</option>
+        })
+
+        return (
+            <FormGroup>
+                <Label for="gender">Gender(*):</Label>
+                <Input className={this.hasErrorFor('gender') ? 'is-invalid' : ''}
+                    value={this.state.user.gender}
+                    type="select"
+                    name="gender"
+                    onChange={this.handleInput.bind(this)}>
+                    <option value="">Select gender</option>
+                    {options}
+                </Input>
+                {this.renderErrorFor('gender')}
+            </FormGroup>
+        )
+    }
+
+    render () {
+        const genderList = this.buildGenderDropdown()
+        const roleList = this.getRoleList()
 
         return (
             <React.Fragment>
@@ -118,9 +179,12 @@ class EditUser extends React.Component {
                     <ModalBody>
                         <FormGroup>
                             <Label for="username">Username(*):</Label>
-                            <Input className={this.hasErrorFor('username') ? 'is-invalid' : ''} type="text"
+                            <Input className={this.hasErrorFor('username') ? 'is-invalid' : ''}
+                                placeholder="Username"
+                                type="text"
                                 name="username" defaultValue={this.state.user.username}
                                 onChange={this.handleInput.bind(this)}/>
+                            <small className="form-text text-muted">Your username must be "firstname"."lastname" eg joe.bloggs.</small>
                             {this.renderErrorFor('username')}
                         </FormGroup>
 
@@ -147,11 +211,29 @@ class EditUser extends React.Component {
                             {this.renderErrorFor('last_name')}
                         </FormGroup>
 
+                        {genderList}
+
+                        <DropdownDate selectedDate={this.state.user.dob} classes={this.classes} defaultValues={this.defaultValues} onDateChange={this.setDate}/>
+
                         <FormGroup>
-                            <Label for="profile_photo">Profile Photo URL(*):</Label>
-                            <Input className={this.hasErrorFor('profile_photo') ? 'is-invalid' : ''} type="text"
-                                name="profile_photo" onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('profile_photo')}
+                            <Label for="password">Job Description:</Label>
+                            <Input className={this.hasErrorFor('job_description') ? 'is-invalid' : ''}
+                                type="text"
+                                value={this.state.user.job_description}
+                                placeholder="Job Description"
+                                name="job_description"
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('job_description')}
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label for="phone_number">Phone Number:</Label>
+                            <Input className={this.hasErrorFor('phone_number') ? 'is-invalid' : ''}
+                                value={this.state.user.phone_number}
+                                type="tel"
+                                name="phone_number"
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('phone_number')}
                         </FormGroup>
 
                         <FormGroup>
@@ -162,14 +244,8 @@ class EditUser extends React.Component {
                             {this.renderErrorFor('password')}
                         </FormGroup>
 
-                        <FormGroup>
-                            <Label for="users">Roles</Label>
-                            <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
-                                name="role" id="role" multiple>
-                                {roleList}
-                            </Input>
-                            {this.renderErrorFor('users')}
-                        </FormGroup>
+                        {roleList}
+
                     </ModalBody>
 
                     <ModalFooter>
