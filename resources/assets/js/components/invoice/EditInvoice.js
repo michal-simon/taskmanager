@@ -14,7 +14,6 @@ class EditInvoice extends Component {
             invoice_id: this.props.invoice_id,
             lines: [],
             address: {},
-            existingLines: [],
             customerName: '',
             customer_id: this.props.customer_id ? this.props.customer_id : 0,
             invoice_status: 1,
@@ -39,9 +38,6 @@ class EditInvoice extends Component {
         this.handleAddFiled = this.handleAddFiled.bind(this)
 
         this.total = 0
-        this.hasTasks = false
-        this.hasLines = false
-        this.loadedTasks = false
     }
 
     componentDidMount () {
@@ -108,7 +104,6 @@ class EditInvoice extends Component {
                     })
                 }
 
-                this.hasTasks = true
                 this.setState({ data: arrLines, total: total })
             })
             .catch((e) => {
@@ -137,8 +132,6 @@ class EditInvoice extends Component {
             .then((r) => {
                 if (r.data.invoice) {
 
-                    this.hasLines = !!(r.data.lines && r.data.lines.length)
-
                     this.setState({
                         data: r.data.lines,
                         due_date: r.data.invoice.due_date,
@@ -147,7 +140,6 @@ class EditInvoice extends Component {
                     })
                 }
 
-                this.loadedTasks = true
             })
             .catch((e) => {
                 console.warn(e)
@@ -201,6 +193,7 @@ class EditInvoice extends Component {
     };
 
     handleDelete (idx) {
+
         this.setState((prevState, props) => {
             return {
                 data: this.state.data.filter((s, sidx) => idx !== sidx)
@@ -213,6 +206,7 @@ class EditInvoice extends Component {
     }
 
     saveData () {
+
         const data = {
             invoice_id: this.state.invoice_id,
             task_id: this.props.task_id,
@@ -305,9 +299,7 @@ class EditInvoice extends Component {
 
                 <LineItemEditor
                     total={this.state.total}
-                    hasTasks={this.hasTasks}
                     rows={this.state.data}
-                    lineItemModel={this.state.existingLines}
                     delete={this.handleDelete}
                     update={this.updateData}
                     onAddFiled={this.handleAddFiled}

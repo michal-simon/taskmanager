@@ -41,7 +41,7 @@ class InvoiceLineController extends Controller {
      * @param Request $request
      */
     public function updateLine(int $id, Request $request) {
-        
+
         $invoiceLine = $this->invoiceLineRepository->findLineById($id);
 
         $update = new InvoiceLineRepository($invoiceLine);
@@ -58,8 +58,13 @@ class InvoiceLineController extends Controller {
 
         $task = (new TaskRepository(new Task))->findTaskById($task_id);
         $invoice = $this->invoiceRepository->getInvoiceForTask($task);
+
+        if (!$invoice->count()) {
+            return response()->json('empty');
+        }
+
         $lines = $this->invoiceLineRepository->getInvoiceLinesForTask($task);
-        
+
         $arrTest = [
             'lines' => $lines,
             'invoice' => $invoice[0]

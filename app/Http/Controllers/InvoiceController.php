@@ -57,9 +57,7 @@ class InvoiceController extends Controller {
      * @return type
      */
     public function store(Request $request) {
-
         $arrLines = json_decode($request->data, true);
-        
         $invoice = $this->invoiceRepository->createInvoice($request->all());
         $invoiceRepo = new InvoiceRepository($invoice);
 
@@ -105,7 +103,7 @@ class InvoiceController extends Controller {
      * @param Request $request
      */
     public function update(int $id, Request $request) {
-        $arrLines = json_decode($request->data, true);
+        $arrLines = json_decode($request->data, true);    
         $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
 
         $invoiceRepo = new InvoiceRepository($invoice);

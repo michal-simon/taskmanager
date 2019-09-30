@@ -15,7 +15,6 @@ class LineItem extends Component {
         this.handleProductChange = this.handleProductChange.bind(this)
         this.handleDeleteClick = this.handleDeleteClick.bind(this)
         this.pushToCaller = this.pushToCaller.bind(this)
-        this.deleteFromDatabase = this.deleteFromDatabase.bind(this)
         this.loadProducts = this.loadProducts.bind(this)
         this.buildProductOptions = this.buildProductOptions.bind(this)
         this.setIndex = this.setIndex.bind(this)
@@ -30,25 +29,6 @@ class LineItem extends Component {
         axios.get('/api/products').then(data => {
             this.setState({ products: data.data })
         })
-    }
-
-    updateLine (e) {
-        const parent = e.target.parentNode.parentNode
-        const lineId = e.target.parentNode.parentNode.getAttribute('data-id')
-        if (!lineId) {
-            return false
-        }
-        const inputs = parent.querySelectorAll('input')
-        const obj = {}
-        for (let i = 0; i < inputs.length; ++i) {
-            obj[inputs[i].getAttribute('name')] = inputs[i].value
-        }
-        axios.put(`/api/invoice/line/${lineId}`, obj)
-            .then((response) => {
-            })
-            .catch((error) => {
-                console.warn(error)
-            })
     }
 
     setIndex (e) {
@@ -105,16 +85,6 @@ class LineItem extends Component {
         })
     }
 
-    deleteFromDatabase (lineId) {
-        axios.delete('/api/invoice/line/' + lineId)
-            .then(function (response) {
-                document.querySelector('tbody tr[data-id=\'' + lineId + '\']').remove()
-            })
-            .catch(function (error) {
-                console.warn(error)
-            })
-    }
-
     handleDeleteClick () {
         this.props.onDelete(this.props.id)
     }
@@ -141,13 +111,12 @@ class LineItem extends Component {
             productList = <option value="">Loading...</option>
         } else {
             productList = this.state.products.map((product, index) => {
-                const selected = this.state.product_id && this.state.product_id === product.id ? 'selected' : ''
-                return <option selected={selected} key={index} data-price={product.price}
+                return <option key={index} data-price={product.price}
                     value={product.id}>{product.name}</option>
             })
         }
         return (
-            <Input defaultValue={this.state.product_id} name="product" type='select'
+            <Input value={this.state.product_id} name="product" type='select'
                 onChange={this.handleProductChange}>
                 <option value="">Select Product</option>
                 {productList}
@@ -158,14 +127,9 @@ class LineItem extends Component {
     render () {
         const lineId = this.props.lineItemData && this.props.lineItemData.lineId ? this.props.lineItemData.lineId : ''
 
-        const button = !lineId
-            ? <Button color="danger" onClick={(event) => {
+        const button = <Button color="danger" onClick={(event) => {
                 this.props.onDelete(lineId, event)
             }}>Delete</Button>
-            : <Button color="danger" onClick={() => this.deleteFromDatabase(lineId)}
-                      className='f6 link dim ph3 pv1 mb2 dib white bg-dark-red bn'>Delete</Button>
-
-        const updateButton = !lineId ? '' : <Button color="primary" onClick={this.updateLine}>Update</Button>
 
         const lineForm = (
             <tr data-id={lineId} key={lineId}>
@@ -191,7 +155,6 @@ class LineItem extends Component {
                 </td>
                 <td>
                     {button}
-                    {updateButton}
                 </td>
             </tr>
         )

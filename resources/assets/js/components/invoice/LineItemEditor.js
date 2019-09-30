@@ -18,20 +18,6 @@ class LineItemEditor extends Component {
         this.setTotal = this.setTotal.bind(this)
     }
 
-    buildExistingLine (lineItem, index) {
-        return (
-            <LineItem key={index} id={index} lineItemData={
-                {
-                    quantity: lineItem.quantity,
-                    description: lineItem.description,
-                    unit_price: lineItem.unit_price,
-                    lineId: lineItem.id,
-                    change_existing: true
-                }
-            } calculateTotal={this.getTotal} onDelete={this.handleRowDelete} onChange={this.handleRowChange}/>
-        )
-    }
-
     setTotal (total) {
         this.setState({ total: total })
         this.props.setTotal(total)
@@ -74,44 +60,37 @@ class LineItemEditor extends Component {
                 handleTaskChange={this.updateTasks} onDelete={this.handleRowDelete} calculateTotal={this.getTotal}/>
         )
 
-        const self = this
-        let total = 0
-
-        const items = this.props.lineItemModel.map(function (item, index) {
-            total += item.quantity * item.unit_price
-            return self.buildExistingLine(item, index)
-        })
-
         return (
-            <table id='lines-table'>
-                <thead>
-                    <tr>
-                        <th>Quantity</th>
-                        <th>Description</th>
-                        <th>Product</th>
-                        <th>Unit Price</th>
-                        <th>Total</th>
-                        <th/>
-                    </tr>
-                </thead>
-                <tbody>
-                    {items}
-                    {lineItemRows}
+            <React.Fragment>
+                <table id='lines-table'>
+                    <thead>
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Description</th>
+                            <th>Product</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                            <th/>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {lineItemRows}
 
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th/>
-                        <th>Grand total:</th>
-                        <th>{this.state.total}</th>
-                        <th/>
-                    </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th/>
+                            <th>Grand total:</th>
+                            <th>{this.state.total}</th>
+                            <th/>
+                        </tr>
+                    </tfoot>
+                </table>
 
-                    <Button color="success" onClick={this.handleRowAdd}
-                        className='f6 link dim ph3 pv1 mb2 dib white bg-dark-green bn'>Add</Button>
-
-                </tfoot>
-            </table>
+                <Button color="success" onClick={this.handleRowAdd}
+                    className='f6 link dim ph3 pv1 mb2 dib white bg-dark-green bn'>Add
+                </Button>
+            </React.Fragment>
         )
     }
 }
