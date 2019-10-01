@@ -11,7 +11,6 @@ export default class FileUploads extends Component {
             files: [],
             loading: false
         }
-
         this.addFile = this.addFile.bind(this)
         this.getFiles = this.getFiles.bind(this)
     }
@@ -49,6 +48,13 @@ export default class FileUploads extends Component {
     }
 
     render () {
+        const list = this.state.files && this.state.files.length
+            ? <FileUploadList
+                loading={this.state.loading}
+                files={this.state.files}
+            />
+            : ''
+
         return (
             <div className="col-12">
                 <h1 className="font-weight-light text-center text-lg-left mt-4 mb-0">Attachments</h1>
@@ -59,10 +65,7 @@ export default class FileUploads extends Component {
                     task={this.props.task}
                 />}
 
-                {<FileUploadList
-                    loading={this.state.loading}
-                    files={this.state.files}
-                />}
+                {list}
             </div>
         )
     }

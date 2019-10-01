@@ -31,9 +31,9 @@ class CreateTaskRequest extends FormRequest {
             'contributors' => 'required|numeric',
             'created_by' => 'required|string',
             'due_date' => 'required',
+            'start_date' => 'nullable',
             'task_status' => 'required',
-            'project_id' => 'nullable',
-            'task_color' => 'nullable|string',
+            'project_id' => 'nullable'
         ];
     }
 

@@ -8,12 +8,9 @@ class CompleteTask extends Component {
     }
 
     handleMarkTaskAsCompleted (taskId) {
-        axios.put(`/api/tasks/${taskId}`).then(response => {
-            const tasks = this.props.tasks.filter(task => {
-                return task.id !== taskId
-            })
-
-            this.props.updateTasksCB(tasks)
+        axios.put(`/api/tasks/complete/${taskId}`).then(response => {
+            const filteredArray = this.props.tasks.filter(item => item.id !== parseInt(taskId))
+            this.props.action(filteredArray)
         })
     }
 

@@ -15,6 +15,7 @@ class EditTask extends Component {
             title: this.props.task.title,
             description: this.props.task.content,
             due_date: this.props.task.due_date,
+            start_date: this.props.task.start_date,
             contributors: this.props.task.contributors,
             rating: this.props.task.rating,
             source_type: this.props.task.source_type,
@@ -22,9 +23,11 @@ class EditTask extends Component {
             customer_id: this.props.task.customer_id,
             editMode: false,
             err: '',
-            users: []
+            users: [],
+            selectedUsers: []
         }
 
+        this.oldStartDate = props.task.start_date
         this.oldDueDate = props.task.due_date
         this.oldTitle = props.task.title
         this.oldDescription = props.task.description
@@ -39,6 +42,7 @@ class EditTask extends Component {
         this.handleDelete = this.handleDelete.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleDoubleClick = this.handleDoubleClick.bind(this)
+        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
     componentDidMount () {
@@ -80,8 +84,9 @@ class EditTask extends Component {
             valued_at: this.state.valued_at,
             title: this.state.title,
             content: this.state.description,
-            contributors: this.state.contributors,
-            due_date: this.state.due_date
+            contributors: this.state.selectedUsers,
+            due_date: this.state.due_date,
+            start_date: this.state.start_date
         })
             .then((response) => {
                 this.setState({
@@ -91,6 +96,7 @@ class EditTask extends Component {
                 currentObject.content = this.state.description
                 currentObject.contributors = this.state.contributors
                 currentObject.due_date = this.state.due_date
+                currentObject.start_date = this.state.start_date
                 this.props.action(this.props.allTasks)
             })
             .catch((error) => {
@@ -104,6 +110,7 @@ class EditTask extends Component {
         this.setState({
             contributors: this.oldUser,
             title: this.oldTitle,
+            start_date: this.oldStartDate,
             due_date: this.oldDueDate,
             description: this.oldDescription,
             customer_id: this.oldCustomer,
@@ -153,17 +160,40 @@ class EditTask extends Component {
         )
     }
 
-    render () {
-        let panelTitle = null
+    handleMultiSelect (e) {
+        this.setState({ selectedUsers: Array.from(e.target.selectedOptions, (item) => item.value) })
+    }
+
+    buildUserOptions () {
         let userContent = null
         if (!this.state.users.length) {
             userContent = <option value="">Loading...</option>
         } else {
             userContent = this.state.users.map((user, index) => (
                 <option key={index}
-                    value={user.id}>{user.first_name + ' ' + user.last_name}</option>
+                        value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
+
+        return (
+            <FormGroup>
+                <Label>Assigned To</Label>
+                <Input multiple
+                    type="select"
+                    value={this.state.selectedUsers}
+                    id="contributors"
+                    name="contributors"
+                    onChange={this.handleMultiSelect}>
+                    {userContent}
+                </Input>
+            </FormGroup>
+        )
+    }
+
+    render () {
+        let panelTitle = null
+        const userContent = this.buildUserOptions()
+
         if (this.state.editMode) {
             panelTitle = (
                 <div className="center-block">
@@ -206,23 +236,20 @@ class EditTask extends Component {
                     </FormGroup>
 
                     <FormGroup>
+                        <Label>Start Date</Label>
+                        <Input type="text" name="start_date"
+                               value={this.state.start_date}
+                               onChange={this.handleChange}/>
+                    </FormGroup>
+
+                    <FormGroup>
                         <Label>Due Date</Label>
                         <Input type="text" name="due_date"
                             value={this.state.due_date}
                             onChange={this.handleChange}/>
                     </FormGroup>
 
-                    <FormGroup>
-                        <Label>Assigned To</Label>
-                        <Input value={this.state.contributors} type="select"
-                            className="form-control select-index input-xs"
-                            id="contributors"
-                            name="contributors"
-                            onChange={this.handleChange}>
-                            {userContent}
-                        </Input>
-                    </FormGroup>
-
+                    {userContent}
                     {leadForm}
 
                     <Button className="btn btn-success btn-xs mr-3" onClick={this.handleSave}>Save</Button>
@@ -242,20 +269,27 @@ class EditTask extends Component {
                     </FormGroup>
 
                     <FormGroup>
+                        <Label>Start Date</Label>
+                        <Input readOnly type="text" name="start_date" placeholder={this.state.start_date}
+                               value={this.state.start_date}
+                               onDoubleClick={this.handleDoubleClick}/>
+                    </FormGroup>
+
+                    <FormGroup>
                         <Label>Due Date</Label>
                         <Input readOnly type="text" name="due_date" placeholder={this.state.due_date}
                             value={this.state.due_date}
                             onDoubleClick={this.handleDoubleClick}/>
                     </FormGroup>
 
-                    <FormGroup>
-                        <Label>User</Label>
-                        <Input disabled value={this.state.contributors} type="select"
-                            className="form-control select-index input-xs" name="contributors"
-                            onChange={this.handleDoubleClick}>
-                            {userContent}
-                        </Input>
-                    </FormGroup>
+                    {/*<FormGroup>*/}
+                    {/*    <Label>User</Label>*/}
+                    {/*    <Input disabled value={this.state.contributors} type="select"*/}
+                    {/*        className="form-control select-index input-xs" name="contributors"*/}
+                    {/*        onChange={this.handleDoubleClick}>*/}
+                    {/*        {userContent}*/}
+                    {/*    </Input>*/}
+                    {/*</FormGroup>*/}
 
                     {leadForm}
                 </form>

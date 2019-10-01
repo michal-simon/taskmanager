@@ -161,6 +161,15 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     public function syncProducts(array $params) {
         $this->model->products()->sync($params);
     }
+    
+     /**
+     * Sync the users
+     *
+     * @param array $params
+     */
+    public function syncUsers(array $params) {
+        $this->model->users()->sync($params);
+    }
 
     public function getTasksWithProducts(): Support {
 

@@ -161,5 +161,4 @@ class CustomerController extends Controller {
 
         return response()->json('Customer deleted!');
     }
-
 }

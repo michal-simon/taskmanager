@@ -8,7 +8,8 @@ export default class Story extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            columns: []
+            columns: [],
+            loading: true
         }
 
         this.buildColumn = this.buildColumn.bind(this)
@@ -23,7 +24,8 @@ export default class Story extends Component {
         axios.get(`/api/status/${this.props.task_type}`)
             .then((r) => {
                 this.setState({
-                    columns: r.data
+                    columns: r.data,
+                    loading: false
                 })
             })
             .catch((e) => {
@@ -33,8 +35,9 @@ export default class Story extends Component {
     }
 
     buildColumn (column) {
+
         return (
-            <div data-status={column.id} className={`tasks mcolor${column.id}`}>
+            <div data-status={column.id} style={{borderColor: column.column_color}} className={`tasks mcolor${column.id}`}>
                 <div className="task-header story">
                     <h3 className="task-title mr-auto"> {column.title} <span className="badge text-muted">(3)</span></h3>
 
@@ -56,7 +59,7 @@ export default class Story extends Component {
                         action={this.props.action}
                         tasks={this.props.tasks}
                         loading={this.props.loading}
-                        filter={column.id}
+                        column={column}
                     />
                 </div>
             </div>
@@ -68,12 +71,15 @@ export default class Story extends Component {
             return this.buildColumn(column)
         })
 
+        const loading = this.state.loading === true
+            ? <div className="space">
+                <h2 className="story">Loading...</h2>
+            </div>
+            : ''
+
         return (
             <div className="">
-                <div className="space">
-                    <h2 className="story">{this.props.storyName[0] ? this.props.storyName[0].name : 'Loading...'}</h2>
-                </div>
-
+                {loading}
                 {columns}
             </div>
         )

@@ -24,7 +24,6 @@ class CreateProjectRequest extends FormRequest {
         return [
             'title' => 'string|required',
             'description' => 'string|required',
-            'created_by' => 'string|required',
             'customer_id' => 'numeric|required',
         ];
     }
@@ -38,7 +37,7 @@ class CreateProjectRequest extends FormRequest {
         return [
             'title.required' => 'Title is required!',
             'description.required' => 'Description is required!',
-            'created_by.required' => 'Created by is required!'
+            'customer_id.required' => 'Customer is required!'
         ];
     }
 

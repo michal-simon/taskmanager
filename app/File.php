@@ -9,6 +9,7 @@ class File extends Model
     protected $fillable = [
         'task_id', 
         'filename', 
+        'file_path', 
         'user_id'
     ];
 

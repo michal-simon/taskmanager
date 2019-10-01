@@ -2,7 +2,7 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import TabContent from '../tabs/TabContent'
-import Tooltips from '../Tooltip'
+import CompleteTask from '../CompleteTask'
 
 class ViewTask extends React.Component {
     constructor (props) {
@@ -27,7 +27,7 @@ class ViewTask extends React.Component {
                 <a href='#' onClick={this.toggle}><h4 className="mb-1">{this.props.task.title}</h4></a>
                 <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
-                        Add Story
+                        Task
                     </ModalHeader>
 
                     <ModalBody>
@@ -41,6 +41,11 @@ class ViewTask extends React.Component {
 
                     <ModalFooter>
                         <Button color="secondary" onClick={this.toggle}>Close</Button>
+                        <CompleteTask
+                            action={this.props.action}
+                            tasks={this.props.allTasks}
+                            taskId={this.props.task.id}
+                        />
                     </ModalFooter>
                 </Modal>
             </div>

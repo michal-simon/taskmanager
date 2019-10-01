@@ -12,16 +12,16 @@ trait TaskTransformable {
 
     protected function transformTask(Task $task) {
 
-        $objUser = (new UserRepository(new User))->findUserById($task->contributors);
+//        $objUser = (new UserRepository(new User))->findUserById($task->contributors);
         $objStatus = (new TaskStatusRepository(new TaskStatus))->findStatusById($task->task_status);
 
         $prop = new Task;
         $prop->id = (int) $task->id;
         $prop->title = $task->title;
         $prop->content = $task->content;
-        $prop->name = $objUser->first_name . ' ' . $objUser->last_name;
+//        $prop->name = $objUser->first_name . ' ' . $objUser->last_name;
         $prop->due_date = $task->due_date;
-        $prop->task_color = $task->task_color;
+        $prop->start_date = $task->start_date;
         $prop->is_completed = $task->is_completed;
         $prop->task_status = $task->task_status;
         $prop->status_name = $objStatus->title;
@@ -30,7 +30,7 @@ trait TaskTransformable {
         $prop->customer_id = $task->customer_id;
         $prop->valued_at = $task->valued_at;
         $prop->source_type = $task->source_type;
-        $prop->contributors = $task->contributors;
+//        $prop->contributors = $task->contributors;
         $prop->is_active = $task->is_active;
 
         return $prop;

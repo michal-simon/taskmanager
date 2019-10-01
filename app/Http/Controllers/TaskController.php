@@ -24,12 +24,12 @@ class TaskController extends Controller {
 
     use TaskTransformable;
 
-     /**
+    /**
      * @var TaskRepositoryInterface
      */
     private $taskRepository;
-    
-     /**
+
+    /**
      * @var ProjectRepositoryInterface
      */
     private $projectRepository;
@@ -60,8 +60,8 @@ class TaskController extends Controller {
      * @return Response
      */
     public function store(CreateTaskRequest $request) {
-
         $validatedData = $request->except('project_id');
+        $currentUser = auth()->guard('user')->user();
 
         if (!empty($request->project_id)) {
             $objProject = $this->projectRepository->findProjectById($request->project_id);
@@ -69,27 +69,32 @@ class TaskController extends Controller {
 
         $validatedData['customer_id'] = empty($validatedData['customer_id']) && isset($objProject) ? $objProject->customer_id : $validatedData['customer_id'];
         $validatedData['source_type'] = empty($validatedData['source_type']) ? 1 : $validatedData['source_type'];
-        
+        $validatedData['created_by'] = $currentUser->id;
+
         $task = $this->taskRepository->createTask($validatedData);
 
         if ($validatedData['task_type'] == 1) {
             $objProject->tasks()->attach($task);
         }
-        
+
+        if ($request->has('contributors')) {
+            $taskRepo = new TaskRepository($task);
+            $taskRepo->syncUsers($request->input('contributors'));
+        }
+
         //send notification
-        $user = auth()->guard('user')->user();
-        Notification::send($user, new TaskCreated($task));
+        Notification::send($currentUser, new TaskCreated($task));
 
         return response()->json($this->transformTask($task));
     }
 
     /**
      * 
-     * @param Task $task
+     * @param int $task_id
      * @return type
      */
-    public function markAsCompleted(Task $task) {
-        $objTask = $this->taskRepository->findTaskById($id);
+    public function markAsCompleted(int $task_id) {
+        $objTask = $this->taskRepository->findTaskById($task_id);
         $taskRepo = new TaskRepository($objTask);
         $taskRepo->updateTask(['is_completed' => true]);
         return response()->json('Task updated!');
@@ -125,10 +130,16 @@ class TaskController extends Controller {
      *
      * @return Response
      */
-    public function update(UpdateTaskRequest $request, int $id) {    
+    public function update(UpdateTaskRequest $request, int $id) {
         $task = $this->taskRepository->findTaskById($id);
         $taskRepo = new TaskRepository($task);
         $taskRepo->updateTask($request->all());
+
+        if ($request->has('contributors')) {
+            $taskRepo->syncUsers($request->input('contributors'));
+        }
+
+        return response()->json('Updated task successfully');
     }
 
     public function getLeads() {
@@ -227,6 +238,7 @@ class TaskController extends Controller {
     public function createDeal(CreateDealRequest $request) {
 
         $customer = (new CustomerRepository(new Customer))->createCustomer($request->except('_token', '_method', 'valued_at', 'title', 'description'));
+        $currentUser = auth()->guard('user')->user();
 
         $customer->addresses()->create([
             'company_name' => $request->company_name,
@@ -242,17 +254,21 @@ class TaskController extends Controller {
 
         $task = $this->taskRepository->createTask(
                 [
+                    'created_by' => $currentUser->id,
                     'source_type' => $request->source_type,
                     'title' => $request->title,
                     'description' => $request->description,
                     'customer_id' => $customer->id,
                     'valued_at' => $request->valued_at,
-                    'contributors' => $request->contributors,
                     'task_type' => $request->task_type,
-                    'task_status' => $request->task_status,
-                    'task_color' => 'colorBlue'
+                    'task_status' => $request->task_status
                 ]
         );
+
+        if ($request->has('contributors')) {
+            $taskRepo = new TaskRepository($task);
+            $taskRepo->syncUsers($request->input('contributors'));
+        }
 
         return $task->toJson();
     }
@@ -272,9 +288,9 @@ class TaskController extends Controller {
                 })->all();
         return response()->json($tasks);
     }
-    
+
     public function getSourceTypes() {
-        
+
         $sourceTypes = (new SourceTypeRepository(new SourceType))->getAll();
         return response()->json($sourceTypes);
     }

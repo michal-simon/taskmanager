@@ -62,7 +62,9 @@ class Task extends Component {
     }
 
     render () {
-        const { tasks, loading, filter } = this.props
+        const { tasks, loading, column } = this.props
+        const filter = column.id
+
         let content
         if (loading) {
             content = <div className="loader">
@@ -72,10 +74,11 @@ class Task extends Component {
             content =
                 tasks.filter(i => i.task_status === Number(filter))
                     .map((i, index) => {
-                        const color = i.task_color.replace('color', '').toLowerCase()
                         const divStyle = {
-                            borderLeft: `2px solid ${color}`
+                            borderLeft: `2px solid ${this.props.column.column_color}`
                         }
+
+                        console.log('div style', divStyle)
 
                         return (
                             <div style={divStyle} data-task={i.id} id={i.id} className="mcell-task card" key={index}>

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
+use App\Repositories\ProjectRepository;
 use App\Requests\CreateProjectRequest;
+use App\Requests\UpdateProjectRequest;
 
 class ProjectController extends Controller {
 
@@ -32,15 +34,29 @@ class ProjectController extends Controller {
     public function store(CreateProjectRequest $request) {
 
         $validatedData = $request->validated();
+        $currentUser = auth()->guard('user')->user();
 
         $project = $this->projectRepository->create([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
-            'created_by' => $validatedData['created_by'],
+            'created_by' => $currentUser->id,
             'customer_id' => $validatedData['customer_id'],
         ]);
 
         return $project->toJson();
+    }
+    
+     /**
+     * @param UpdateProjectRequest $request
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function update(UpdateProjectRequest $request, int $id) {
+        $project = $this->projectRepository->findProjectById($id);
+        $projectRepo = new ProjectRepository($project);
+        $projectRepo->updateProject($request->all());
+        return response()->json('Updated project successfully');
     }
 
     /**

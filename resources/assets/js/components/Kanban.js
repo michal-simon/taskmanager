@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Story from './Story'
 import KanbanFilter from './KanbanFilter'
-import AddStory from './forms/AddStory'
 
 class Kanban extends Component {
     constructor (props, context) {
@@ -18,7 +17,6 @@ class Kanban extends Component {
             loading: true,
             loadingStory: true
         }
-        this.handleChange = this.handleChange.bind(this)
         this.project_id = this.props.project_id
         this.updateTasks = this.updateTasks.bind(this)
         this.addProject = this.addProject.bind(this)
@@ -28,7 +26,6 @@ class Kanban extends Component {
     }
 
     componentDidMount () {
-        this.getStoryDetails()
         this.getTasks()
     }
 
@@ -68,23 +65,6 @@ class Kanban extends Component {
             })
     }
 
-    getStoryDetails () {
-        axios.get('/api/projects')
-            .then((r) => {
-                this.setState({
-                    stories: r.data,
-                    err2: '',
-                    loadingStory: false
-                })
-            })
-            .catch((e) => {
-                this.setState({
-                    loadingStory: false,
-                    err2: e
-                })
-            })
-    }
-
     updateTasks (tasks) {
         this.setState({
             tasks: tasks
@@ -107,57 +87,31 @@ class Kanban extends Component {
         })
     }
 
-    handleChange (event) {
-        const projectId = event.target.value
-        const url = this.props.task_type === 1 ? `?project_id=${projectId}` : `/leads?project_id=${projectId}`
-        window.location.href = url
-    }
-
-    getStories () {
-        const { stories, loadingStory } = this.state
-        let storyTable
-        if (!loadingStory) {
-            storyTable = stories.map((story, index) => {
-                return (
-                    <option key={story.id} value={story.id}>{story.title}</option>
-                )
-            })
-        }
-        return storyTable
+    hideMenu() {
+        const body = document.body
+        body.classList.add('open')
+        document.getElementsByClassName('navbar-toggler')[0].style.display = 'block'
     }
 
     render () {
-        let storyTable
         const divStyle = this.props.task_type === 2 || this.props.task_type === 3 ? {
             left: 0,
             width: '100%'
         } : {}
-        const body = document.body
-        body.classList.add('open')
-        document.getElementsByClassName('navbar-toggler')[0].style.display = 'block'
-        if (this.props.task_type !== 2 && this.props.task_type !== 3) {
-            storyTable = (
-                <React.Fragment>
-                    <AddStory addProject={this.addProject} />
 
-                    <select className="form-control" onChange={this.handleChange} value={this.props.project_id}>
-                        <option>Choose Project</option>
-                        {this.getStories()}
-                    </select>
-                </React.Fragment>
-            )
-        }
+        this.hideMenu()
+
         return (
             <React.Fragment>
                 <KanbanFilter
                     reset={this.resetFilters}
                     action={this.updateTasks}
                     task_type={this.props.task_type}
+                    addProject={this.addProject}
+                    project_id={this.props.project_id}
                 />
 
                 <div id="board" className="board">
-
-                    {storyTable}
 
                     <div style={divStyle}>
                         <aside>

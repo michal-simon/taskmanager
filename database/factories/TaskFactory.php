@@ -26,7 +26,6 @@ $factory->define(Task::class, function (Faker $faker) {
         'is_completed' => 0,
         'contributors' => $user->id,
         'customer_id' => $customer->id,
-        'task_color' => 'colorBlue',
         'due_date' => $faker->dateTime(),
         'task_type' => 2,
         'source_type' => 1,

@@ -19,13 +19,14 @@ class AddModal extends React.Component {
             contributors: '',
             created_by: '5af1921c0fe5703dd4a463ec',
             due_date: '',
+            start_date: '',
             task_status: parseInt(this.props.status),
-            task_color: '',
             project_id: this.props.storyType ? parseInt(this.props.storyType) : 0,
             loading: false,
             users: [],
             errors: [],
-            submitSuccess: false
+            submitSuccess: false,
+            selectedUsers: []
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
@@ -34,6 +35,7 @@ class AddModal extends React.Component {
         this.buildForm = this.buildForm.bind(this)
         this.buildUserOptions = this.buildUserOptions.bind(this)
         this.getUsers = this.getUsers.bind(this)
+        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
     componentDidMount () {
@@ -112,9 +114,9 @@ class AddModal extends React.Component {
             title: this.state.title,
             content: this.state.content,
             task_status: parseInt(this.props.status),
-            contributors: this.state.contributors,
+            contributors: this.state.selectedUsers,
             due_date: this.state.due_date,
-            task_color: this.state.task_color,
+            start_date: this.state.start_date,
             project_id: parseInt(this.props.project_id),
             created_by: this.state.created_by,
             task_type: this.props.task_type,
@@ -127,6 +129,7 @@ class AddModal extends React.Component {
                     content: null,
                     contributors: null,
                     due_date: null,
+                    start_date: null,
                     loading: false,
                     submitSuccess: true
                 })
@@ -173,26 +176,28 @@ class AddModal extends React.Component {
 
                 {userOptions}
 
+                <i className="fa fa-calendar-alt" /> Created Date: {moment().format('L, h:mm:ss')} <br/>
+
                 <FormGroup>
-                    <Label for="task_color">Task Color:</Label>
-                    <Input className={this.hasErrorFor('task_color') ? 'is-invalid' : ''} type="select"
-                        name="task_color" id="task_color" onChange={this.handleInput.bind(this)}>
-                        <option value="">Choose:</option>
-                        <option value="colorBlue">Red</option>
-                        <option value="colorGreen">Green</option>
-                        <option value="colorGrey">Grey</option>
-                    </Input>
-                    {this.renderErrorFor('task_color')}
+                    <Label for="start_date">Start Date:</Label>
+                    <Input className={this.hasErrorFor('start_date') ? 'is-invalid' : ''} type="datetime-local"
+                           name="start_date" id="start_date" onChange={this.handleInput.bind(this)}/>
+                    {this.renderErrorFor('start_date')}
                 </FormGroup>
 
-                <hr/>
-                <i className="fa fa-calendar-alt" /> Created Date: {moment().format('L, h:mm:ss')} <br/>
-                <i className="fa fa-clock" />Due Date:
-                <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''} type="datetime-local"
-                    name="due_date" id="due_date" onChange={this.handleInput.bind(this)}/>
-                {this.renderErrorFor('due_date')}
+                <FormGroup>
+                    <Label for="due_date"> <i className="fa fa-clock" />Due Date:</Label>
+                    <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''} type="datetime-local"
+                           name="due_date" id="due_date" onChange={this.handleInput.bind(this)}/>
+                    {this.renderErrorFor('due_date')}
+                </FormGroup>
+
             </Form>
         )
+    }
+
+    handleMultiSelect (e) {
+        this.setState({ selectedUsers: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
     buildUserOptions () {
@@ -208,9 +213,10 @@ class AddModal extends React.Component {
         return (
             <FormGroup>
                 <Label for="contributors">Assign to:</Label>
-                <Input className={this.hasErrorFor('contributors') ? 'is-invalid' : ''} type="select"
-                    name="contributors" id="contributors" onChange={this.handleInput.bind(this)}>
-                    <option value="">Choose:</option>
+                <Input className={this.hasErrorFor('contributors') ? 'is-invalid' : ''} multiple
+                    type="select"
+                    value={this.state.selectedUsers}
+                    name="contributors" id="contributors" onChange={this.handleMultiSelect.bind(this)}>
                     {userContent}
                 </Input>
                 {this.renderErrorFor('contributors')}

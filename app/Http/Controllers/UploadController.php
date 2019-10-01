@@ -6,6 +6,7 @@ use App\Requests\UploadRequest;
 use App\Repositories\Interfaces\FileRepositoryInterface;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\UserRepository;
+use App\Repositories\FileRepository;
 use App\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AttachmentCreated;
@@ -40,11 +41,12 @@ class UploadController extends Controller
             foreach($request->file('file') as $count => $file)
             {
                 $filename = $file->getClientOriginalName();
-                $file->move(public_path().'/files/', $filename);  
+                $file_path = $file->store('uploads', ['disk' => 'public']);
                 
                 $file = $this->fileRepository->createFile([
                     'task_id' => $request->task_id,
                     'filename' => $filename,
+                    'file_path' => $file_path,
                     'user_id' => $objUser->id
                 ]);
 
@@ -59,5 +61,21 @@ class UploadController extends Controller
 
             return collect($arrAddedFiles)->toJson();
         }
+    }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     *
+     * @return \Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function destroy($id) {
+
+        $file = $this->fileRepository->findFileById($id);
+        $fileRepo = new FileRepository($file);
+        $fileRepo->deleteFile();
+        return response()->json('File deleted!');
     }
 }

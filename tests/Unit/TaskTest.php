@@ -75,7 +75,6 @@ class TaskTest extends TestCase {
             'content' => $this->faker->sentence,
             'is_completed' => 0,
             'contributors' => $this->user->id,
-            'task_color' => 'colorBlue',
             'due_date' => $this->faker->dateTime,
         ];
 

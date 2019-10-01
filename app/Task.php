@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Project;
 use App\Traits\SearchableTrait;
 use App\Product;
+use App\User;
 
 class Task extends Model {
 
@@ -15,9 +16,10 @@ class Task extends Model {
         'title',
         'project_id',
         'content',
-        'task_color',
         'contributors',
+        'is_completed',
         'due_date',
+        'start_date',
         'task_status',
         'created_by',
         'task_type',
@@ -61,5 +63,9 @@ class Task extends Model {
 
     public function products() {
         return $this->belongsToMany(Product::class);
+    }
+    
+    public function users() {
+        return $this->belongsToMany(User::class);
     }
 }

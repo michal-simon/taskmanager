@@ -34,7 +34,7 @@ Route::delete('customers/{customer_id}', 'CustomerController@destroy');
 Route::put('tasks/{task_id}', 'TaskController@update');
 Route::post('tasks', 'TaskController@store');
 Route::get('tasks/getTasksForProject/{project_id}', 'TaskController@getTasksForProject');
-//Route::put('tasks/{task}', 'TaskController@markAsCompleted');
+Route::put('tasks/complete/{task}', 'TaskController@markAsCompleted');
 Route::delete('tasks/{task}', 'TaskController@destroy');
 Route::post('tasks/filterTasks/{task_type}', 'TaskController@filterTasks');
 Route::put('tasks/status/{task_id}', 'TaskController@updateStatus');
@@ -92,7 +92,7 @@ Route::get('projects', 'ProjectController@index');
 Route::get('projects', 'ProjectController@index');
 Route::post('projects', 'ProjectController@store');
 Route::get('projects/{id}', 'ProjectController@show');
-Route::put('projects/{project}', 'ProjectController@markAsCompleted');
+Route::put('projects/{project}', 'ProjectController@update');
 
 // login
 Route::get('login', 'LoginController@showLogin');
@@ -102,3 +102,4 @@ Route::get('logout', 'LoginController@doLogout');
 // uploads
 Route::post('uploads', 'UploadController@store');
 Route::get('uploads/{task_id}', 'UploadController@index');
+Route::delete('uploads/{file_id}', 'UploadController@destroy');

@@ -22,6 +22,11 @@ class AddStory extends React.Component {
         this.handleClick = this.handleClick.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
+        this.buildCustomerOptions = this.buildCustomerOptions.bind(this)
+    }
+
+    componentDidMount () {
+        this.getCustomers()
     }
 
     hasErrorFor (field) {
@@ -106,27 +111,43 @@ class AddStory extends React.Component {
     }
 
     toggle () {
-        this.getCustomers()
         this.setState({
             modal: !this.state.modal
         })
     }
 
-    render () {
+    buildCustomerOptions () {
         let customerList
         if (!this.state.customers.length) {
             customerList = <option value="">Loading...</option>
         } else {
             customerList = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.first_name + ' ' + customer.last_name}</option>
+                <option key={index} value={customer.id}>{customer.name}</option>
             ))
         }
+
+        return (
+            <FormGroup>
+                <Label for="contributors">Customer:</Label>
+                <Input className={this.hasErrorFor('customer_id') ? 'is-invalid' : ''} type="select"
+                       name="customer_id" id="customer_id" onChange={this.handleInput.bind(this)}>
+                    <option value="">Choose:</option>
+                    {customerList}
+                </Input>
+                {this.renderErrorFor('contributors')}
+            </FormGroup>
+        )
+    }
+
+    render () {
+        const customerList = this.buildCustomerOptions()
+
         return (
             <div>
-                <Button color="secondary" onClick={this.toggle}><i className="fa fa-plus-circle"/> Add Project</Button>
+                <Button color="success" onClick={this.toggle}><i className="fa fa-plus-circle"/> Add Project</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
-                        Add Story
+                        Add Project
                     </ModalHeader>
 
                     <ModalBody>
@@ -144,15 +165,7 @@ class AddStory extends React.Component {
                             {this.renderErrorFor('description')}
                         </FormGroup>
 
-                        <FormGroup>
-                            <Label for="contributors">Customer:</Label>
-                            <Input className={this.hasErrorFor('customer_id') ? 'is-invalid' : ''} type="select"
-                                name="customer_id" id="customer_id" onChange={this.handleInput.bind(this)}>
-                                <option value="">Choose:</option>
-                                {customerList}
-                            </Input>
-                            {this.renderErrorFor('contributors')}
-                        </FormGroup>
+                        {customerList}
 
                         <FormGroup>
                             <Label for="created_by">Created by(*):</Label>
