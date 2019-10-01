@@ -24,7 +24,6 @@ $factory->define(Task::class, function (Faker $faker) {
         'title' => $faker->text,
         'content' => $faker->text,
         'is_completed' => 0,
-        'contributors' => $user->id,
         'customer_id' => $customer->id,
         'due_date' => $faker->dateTime(),
         'task_type' => 2,

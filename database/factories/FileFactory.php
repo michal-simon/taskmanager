@@ -25,5 +25,6 @@ $factory->define(File::class, function (Faker $faker) {
         'task_id' => $task->id,
         'user_id' => $user->id,
         'filename' => $faker->text,
+        'file_path' => $faker->word,
     ];
 });

@@ -22,9 +22,10 @@ $factory->define(Comment::class, function (Faker $faker) {
     $task = factory(Task::class)->create();
 
     return [
-    'is_active' => 1,
-    'task_id' => $task->id,
-    'user_id' => $user->id,
-    'comment' => $faker->text,
+        'parent_id' => 0,
+        'is_active' => 1,
+        'task_id' => $task->id,
+        'user_id' => $user->id,
+        'comment' => $faker->text,
     ];
 });

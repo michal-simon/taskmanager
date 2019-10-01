@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Task;
 use App\User;
+use App\Product;
 use App\Customer;
 use App\Repositories\TaskRepository;
 use Illuminate\Support\Collection;
@@ -67,6 +68,24 @@ class TaskTest extends TestCase {
     }
 
     /** @test */
+    public function it_can_attach_a_user() {
+        $user = factory(User::class)->create();
+        $task = factory(Task::class)->create();
+        $taskRepo = new TaskRepository($task);
+        $result = $taskRepo->syncUsers([$user->id]);
+        $this->assertArrayHasKey('attached', $result);
+    }
+
+    /** @test */
+    public function it_can_attach_a_product() {
+        $product = factory(Product::class)->create();
+        $task = factory(Task::class)->create();
+        $taskRepo = new TaskRepository($task);
+        $result = $taskRepo->syncProducts([$product->id]);
+        $this->assertArrayHasKey('attached', $result);
+    }
+
+    /** @test */
     public function it_can_create_a_task() {
 
         $data = [
@@ -74,7 +93,6 @@ class TaskTest extends TestCase {
             'title' => $this->faker->word,
             'content' => $this->faker->sentence,
             'is_completed' => 0,
-            'contributors' => $this->user->id,
             'due_date' => $this->faker->dateTime,
         ];
 

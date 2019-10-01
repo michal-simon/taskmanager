@@ -3,7 +3,8 @@
 namespace Tests\Unit;
 
 use App\Event;
-use App\Customer;
+use App\Task;
+use App\User;
 use App\Repositories\EventRepository;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -98,6 +99,24 @@ class EventUnitTest extends TestCase {
         $this->expectException(\Illuminate\Database\QueryException::class);
         $task = new EventRepository(new Event);
         $task->createEvent([]);
+    }
+    
+    /** @test */
+    public function it_can_attach_a_task() {
+        $task = factory(Task::class)->create();
+        $event = factory(Event::class)->create();
+        $eventRepo = new EventRepository($event);
+        $result = $eventRepo->syncTask($task->id);
+        $this->assertArrayHasKey('attached', $result);
+    }
+    
+     /** @test */
+    public function it_can_attach_a_user() {
+        $user = factory(User::class)->create();
+        $event = factory(Event::class)->create();
+        $eventRepo = new EventRepository($event);
+        $result = $eventRepo->attachUsers($event, [$user->id]);
+        $this->assertTrue($result);
     }
 
     public function tearDown() : void {

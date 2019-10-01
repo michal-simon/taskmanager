@@ -163,7 +163,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @param array $params
      */
     public function syncProducts(array $params) {
-        $this->model->products()->sync($params);
+        return $this->model->products()->sync($params);
     }
 
     /**
@@ -172,7 +172,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @param array $params
      */
     public function syncUsers(array $params) {
-        $this->model->users()->sync($params);
+        return $this->model->users()->sync($params);
     }
 
     public function getTasksWithProducts(): Support {

@@ -91,6 +91,8 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
             $objUser = (new UserRepository(new User))->findUserById($userId);
             $objEvent->users()->attach($objUser);
         }
+        
+        return true;
     }
 
     /**
@@ -99,7 +101,7 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
      * @param array $params
      */
     public function syncTask(int $task_id) {
-        $this->model->tasks()->sync($task_id);
+        return $this->model->tasks()->sync($task_id);
     }
 
     /**
