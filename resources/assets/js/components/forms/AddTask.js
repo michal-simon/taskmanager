@@ -34,13 +34,11 @@ class AddModal extends React.Component {
         this.handleInput = this.handleInput.bind(this)
         this.buildForm = this.buildForm.bind(this)
         this.buildUserOptions = this.buildUserOptions.bind(this)
-        this.getUsers = this.getUsers.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
     componentDidMount () {
         this.changeColumnTitle()
-        this.getUsers()
     }
 
     hasErrorFor (field) {
@@ -61,25 +59,6 @@ class AddModal extends React.Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
-
-    getUsers () {
-        axios.get('/api/users')
-            .then((r) => {
-                this.setState({
-                    users: r.data,
-                    err: ''
-                })
-            })
-            .then((r) => {
-                console.log(this.state.users)
-            })
-            .catch((e) => {
-                console.error(e)
-                this.setState({
-                    err: e
-                })
-            })
     }
 
     toggle () {
@@ -202,10 +181,10 @@ class AddModal extends React.Component {
 
     buildUserOptions () {
         let userContent
-        if (!this.state.users.length) {
+        if (!this.props.users) {
             userContent = <option value="">Loading...</option>
         } else {
-            userContent = this.state.users.map((user, index) => (
+            userContent = this.props.users.map((user, index) => (
                 <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }

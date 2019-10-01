@@ -41,6 +41,9 @@ class AddLead extends React.Component {
     }
 
     getCustomers () {
+
+        alert('here 4')
+
         axios.get('/api/customers')
             .then((r) => {
                 this.setState({

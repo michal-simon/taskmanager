@@ -11,6 +11,8 @@ class EditTask extends Component {
     constructor (props) {
         super(props)
 
+        console.log('task', this.props.task)
+
         this.state = {
             title: this.props.task.title,
             description: this.props.task.content,
@@ -24,7 +26,7 @@ class EditTask extends Component {
             editMode: false,
             err: '',
             users: [],
-            selectedUsers: []
+            selectedUsers: this.props.task.contributors ? this.props.task.contributors : []
         }
 
         this.oldStartDate = props.task.start_date
@@ -43,28 +45,6 @@ class EditTask extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleDoubleClick = this.handleDoubleClick.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
-    }
-
-    componentDidMount () {
-        this.getUsers()
-    }
-
-    getUsers () {
-        axios.get('/api/users')
-            .then((r) => {
-                this.setState({
-                    users: r.data,
-                    err: ''
-                })
-            })
-            .then((r) => {
-            })
-            .catch((e) => {
-                console.error(e)
-                this.setState({
-                    err: e
-                })
-            })
     }
 
     handleEdit () {
@@ -166,28 +146,16 @@ class EditTask extends Component {
 
     buildUserOptions () {
         let userContent = null
-        if (!this.state.users.length) {
+        if (!this.props.users) {
             userContent = <option value="">Loading...</option>
         } else {
-            userContent = this.state.users.map((user, index) => (
+            userContent = this.props.users.map((user, index) => (
                 <option key={index}
                         value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
 
-        return (
-            <FormGroup>
-                <Label>Assigned To</Label>
-                <Input multiple
-                    type="select"
-                    value={this.state.selectedUsers}
-                    id="contributors"
-                    name="contributors"
-                    onChange={this.handleMultiSelect}>
-                    {userContent}
-                </Input>
-            </FormGroup>
-        )
+        return userContent
     }
 
     render () {
@@ -249,7 +217,18 @@ class EditTask extends Component {
                             onChange={this.handleChange}/>
                     </FormGroup>
 
-                    {userContent}
+                    <FormGroup>
+                        <Label>Assigned To</Label>
+                        <Input multiple
+                            type="select"
+                            value={this.state.selectedUsers}
+                            id="contributors"
+                            name="contributors"
+                            onChange={this.handleMultiSelect}>
+                            {userContent}
+                        </Input>
+                    </FormGroup>
+
                     {leadForm}
 
                     <Button className="btn btn-success btn-xs mr-3" onClick={this.handleSave}>Save</Button>
@@ -279,18 +258,23 @@ class EditTask extends Component {
                         <Label>Due Date</Label>
                         <Input readOnly type="text" name="due_date" placeholder={this.state.due_date}
                             value={this.state.due_date}
-                            onDoubleClick={this.handleDoubleClick}/>
+                            onDoubleClick={this.handleDoubleClick}
+                        />
                     </FormGroup>
 
-                    {/*<FormGroup>*/}
-                    {/*    <Label>User</Label>*/}
-                    {/*    <Input disabled value={this.state.contributors} type="select"*/}
-                    {/*        className="form-control select-index input-xs" name="contributors"*/}
-                    {/*        onChange={this.handleDoubleClick}>*/}
-                    {/*        {userContent}*/}
-                    {/*    </Input>*/}
-                    {/*</FormGroup>*/}
-
+                    <FormGroup>
+                        <Label>Assigned To</Label>
+                        <Input multiple
+                            readOnly
+                            type="select"
+                            value={this.state.selectedUsers}
+                            id="contributors"
+                            name="contributors"
+                            onDoubleClick={this.handleDoubleClick}
+                        >
+                            {userContent}
+                        </Input>
+                    </FormGroup>
                     {leadForm}
                 </form>
             )

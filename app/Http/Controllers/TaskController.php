@@ -60,9 +60,9 @@ class TaskController extends Controller {
      * @return Response
      */
     public function store(CreateTaskRequest $request) {
-        $validatedData = $request->except('project_id');
+        $validatedData = $request->except('project_id', 'contributors');
         $currentUser = auth()->guard('user')->user();
-
+       
         if (!empty($request->project_id)) {
             $objProject = $this->projectRepository->findProjectById($request->project_id);
         }
@@ -100,7 +100,12 @@ class TaskController extends Controller {
         return response()->json('Task updated!');
     }
 
-    public function getTasksForProject($projectId) {
+    /**
+     * 
+     * @param int $projectId
+     * @return type
+     */
+    public function getTasksForProject(int $projectId) {
         $objProject = $this->projectRepository->findProjectById($projectId);
         $list = $this->taskRepository->getTasksForProject($objProject);
 
@@ -130,10 +135,10 @@ class TaskController extends Controller {
      *
      * @return Response
      */
-    public function update(UpdateTaskRequest $request, int $id) {
+    public function update(UpdateTaskRequest $request, int $id) {   
         $task = $this->taskRepository->findTaskById($id);
         $taskRepo = new TaskRepository($task);
-        $taskRepo->updateTask($request->all());
+        $taskRepo->updateTask($request->except('contributors'));
 
         if ($request->has('contributors')) {
             $taskRepo->syncUsers($request->input('contributors'));
@@ -179,7 +184,7 @@ class TaskController extends Controller {
      * @param int $task_type
      */
     public function filterTasks(Request $request, int $task_type) {
-
+        
         $list = $this->taskRepository->filterTasks($request->all(), $task_type);
 
         $tasks = $list->map(function (Task $task) {

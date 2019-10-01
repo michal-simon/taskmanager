@@ -27,7 +27,7 @@ class UpdateTaskRequest extends FormRequest {
             'customer_id' => 'nullable|numeric',
             'title' => 'required',
             'content' => 'required',
-            'contributors' => 'required|numeric',
+            'contributors' => 'required|array',
             'due_date' => 'required',
         ];
     }

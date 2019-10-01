@@ -23,6 +23,7 @@ class Tooltips extends Component {
     render () {
         const addButton = this.props.task_type === 3
             ? <AddLeadForm
+                users={this.props.users}
                 tasks={this.props.tasks}
                 storyType={this.props.storyType}
                 action={this.props.action}
@@ -31,6 +32,7 @@ class Tooltips extends Component {
                 task_type={this.props.task_type}
             />
             : <AddTask
+                users={this.props.users}
                 tasks={this.props.tasks}
                 storyType={this.props.storyType}
                 action={this.props.action}

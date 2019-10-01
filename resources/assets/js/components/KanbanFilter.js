@@ -10,9 +10,7 @@ export default class KanbanFilter extends Component {
         super(props)
         this.state = {
             filters: [],
-            stories: [],
-            customers: [],
-            users: []
+            stories: []
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleProjectChange = this.handleProjectChange.bind(this)
@@ -21,8 +19,6 @@ export default class KanbanFilter extends Component {
     }
 
     componentDidMount () {
-        this.getCustomers()
-        this.getUsers()
         this.getStoryDetails()
     }
 
@@ -47,19 +43,21 @@ export default class KanbanFilter extends Component {
     handleChange (event) {
         const column = event.target.id
         const value = event.target.value
+        const project_id = this.props.project_id ? this.props.project_id : 0
+
+
         if (value === 'all') {
             const updatedRowState = this.state.filters.filter(filter => filter.column !== column)
             this.setState({ filters: updatedRowState })
             return true
         }
         this.setState(prevState => ({
-            filters: [...prevState.filters, { column: column, value: value }]
+            filters: [...prevState.filters, { column: column, value: value, project_id: project_id }]
         }))
         return true
     }
 
     resetFilters () {
-        console.log('props', this.props)
         this.props.reset()
     }
 
@@ -73,36 +71,6 @@ export default class KanbanFilter extends Component {
             })
             .catch((error) => {
                 alert(error)
-            })
-    }
-
-    getUsers () {
-        axios.get('api/users')
-            .then((r) => {
-                this.setState({
-                    users: r.data
-                })
-            })
-            .catch((e) => {
-                this.setState({
-                    loading: false,
-                    err: e
-                })
-            })
-    }
-
-    getCustomers () {
-        axios.get('/api/customers')
-            .then((r) => {
-                this.setState({
-                    customers: r.data
-                })
-            })
-            .catch((e) => {
-                this.setState({
-                    loading: false,
-                    err: e
-                })
             })
     }
 
@@ -126,10 +94,10 @@ export default class KanbanFilter extends Component {
 
     buildCustomerOptions () {
         let customerContent = null
-        if (!this.state.customers.length) {
+        if (!this.props.customers) {
             customerContent = <option value="">Loading...</option>
         } else {
-            customerContent = this.state.customers.map((customer, index) => (
+            customerContent = this.props.customers.map((customer, index) => (
                 <option key={index} value={customer.id}>{customer.name}</option>
             ))
         }
@@ -146,17 +114,17 @@ export default class KanbanFilter extends Component {
 
     buildUserOptions () {
         let userContent = null
-        if (!this.state.users.length) {
+        if (!this.props.users) {
             userContent = <option value="">Loading...</option>
         } else {
-            userContent = this.state.users.map((user, index) => (
+            userContent = this.props.users.map((user, index) => (
                 <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
         return (
             <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                 <Label for="examplePassword" className="mr-sm-2" hidden>User</Label>
-                <Input type="select" id="contributors" name="contributors" onChange={this.handleChange}>
+                <Input type="select" id="task_user.user_id" name="task_user.user_id" onChange={this.handleChange}>
                     <option value="all">Select user...</option>
                     {userContent}
                 </Input>
@@ -168,8 +136,10 @@ export default class KanbanFilter extends Component {
         const userContent = this.buildUserOptions()
         const projectContent =  this.props.task_type !== 2 && this.props.task_type !== 3 ? this.buildProjectOptions() : ''
         const customerContent = this.buildCustomerOptions()
-        const addButton = this.props.task_type !== 2 && this.props.task_type !== 3 ? <AddStory addProject={this.props.addProject}/> : ''
-        const editButton = this.props.project_id ? <EditProject project_id={this.props.project_id} /> : ''
+        const addButton = this.props.task_type !== 2 && this.props.task_type !== 3
+            ? <AddStory customers={this.props.customers} addProject={this.props.addProject}/>
+            : ''
+        const editButton = this.props.project_id ? <EditProject customers={this.props.customers} project_id={this.props.project_id} /> : ''
 
         return (
             <Card style={{ margin: '10px' }}>

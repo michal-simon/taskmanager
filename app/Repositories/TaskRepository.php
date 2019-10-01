@@ -129,25 +129,29 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * 
      * @param array $arrFilters
      * @param type $task_type
-     * @param Project $objProject
      * @return Support
      */
-    public function filterTasks(array $arrFilters, $task_type, Project $objProject = null): Support {
+    public function filterTasks(array $arrFilters, $task_type): Support {
+
+        $query = $this->model->select('tasks.id as id', 'tasks.*')
+                ->leftJoin('task_user', 'tasks.id', '=', 'task_user.task_id');
 
         if ($task_type === 1) {
-            $query = $this->model->join('project_task', 'tasks.id', '=', 'project_task.task_id')
-                    ->select('tasks.id as id', 'tasks.*')
-                    ->where('project_id', $objProject->id)
+            $query = $query->join('project_task', 'tasks.id', '=', 'project_task.task_id')
                     ->where('is_completed', 0)
                     ->where('parent_id', 0);
         } else {
-            $query = Task::where('is_completed', 0)
+            $query = $query->where('is_completed', 0)
                     ->where('task_type', $task_type);
         }
 
 
         foreach ($arrFilters as $arrFilter) {
             $query->where($arrFilter['column'], '=', $arrFilter['value']);
+            
+            if(!empty($arrFilter['project_id'])) {
+                $query->where('project_id', $arrFilter['project_id']);
+            }
         }
 
         return $query->get();
@@ -161,8 +165,8 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     public function syncProducts(array $params) {
         $this->model->products()->sync($params);
     }
-    
-     /**
+
+    /**
      * Sync the users
      *
      * @param array $params

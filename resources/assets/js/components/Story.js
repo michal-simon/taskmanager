@@ -35,13 +35,13 @@ export default class Story extends Component {
     }
 
     buildColumn (column) {
-
         return (
             <div data-status={column.id} style={{borderColor: column.column_color}} className={`tasks mcolor${column.id}`}>
                 <div className="task-header story">
                     <h3 className="task-title mr-auto"> {column.title} <span className="badge text-muted">(3)</span></h3>
 
                     <Tooltips
+                        users={this.props.users}
                         tasks={this.props.tasks}
                         id={column.id}
                         content={column.description}
@@ -55,6 +55,9 @@ export default class Story extends Component {
 
                 <div className="task-body">
                     <Task
+                        project_id={this.props.project_id}
+                        customers={this.props.customers}
+                        users={this.props.users}
                         task_type={this.props.task_type}
                         action={this.props.action}
                         tasks={this.props.tasks}

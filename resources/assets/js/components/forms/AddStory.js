@@ -25,10 +25,6 @@ class AddStory extends React.Component {
         this.buildCustomerOptions = this.buildCustomerOptions.bind(this)
     }
 
-    componentDidMount () {
-        this.getCustomers()
-    }
-
     hasErrorFor (field) {
         return !!this.state.errors[field]
     }
@@ -98,18 +94,6 @@ class AddStory extends React.Component {
             })
     }
 
-    getCustomers () {
-        axios.get('/api/customers')
-            .then((r) => {
-                this.setState({
-                    customers: r.data
-                })
-            })
-            .catch((e) => {
-                console.error(e)
-            })
-    }
-
     toggle () {
         this.setState({
             modal: !this.state.modal
@@ -118,10 +102,10 @@ class AddStory extends React.Component {
 
     buildCustomerOptions () {
         let customerList
-        if (!this.state.customers.length) {
+        if (!this.props.customers) {
             customerList = <option value="">Loading...</option>
         } else {
-            customerList = this.state.customers.map((customer, index) => (
+            customerList = this.props.customers.map((customer, index) => (
                 <option key={index} value={customer.id}>{customer.name}</option>
             ))
         }

@@ -19,6 +19,7 @@ export default class TabContent extends Component {
                 <TabList>
                     <div label="Task" className="tab-content">
                         <EditTask
+                            users={this.props.users}
                             task_type={this.props.task_type}
                             allTasks={this.props.allTasks}
                             action={this.props.action}
@@ -48,6 +49,9 @@ export default class TabContent extends Component {
 
                     <div label="Tasks" className="tab-content">
                         <TaskTab
+                            project_id={this.props.project_id}
+                            customers={this.props.customers}
+                            users={this.props.users}
                             task_id={this.props.task.id}
                             task_type={this.props.task_type}
                         />

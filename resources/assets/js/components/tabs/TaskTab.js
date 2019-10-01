@@ -64,9 +64,12 @@ class TaskTab extends React.Component {
                 <Button color="success" onClick={this.handleSlideClick}>{this.state.visible === 'collapse show' ? 'Hide Add' : 'Show Add'}</Button>
                 <div className={this.state.visible}>
                     <AddTask
+                        users={this.props.users}
+                        customers={this.props.customers}
                         status={9}
                         modal={false}
                         task_id={this.props.task_id}
+                        project_id={this.props.project_id}
                         tasks={this.state.tasks}
                         action={this.updateTasks}
                         task_type={this.props.task_type}

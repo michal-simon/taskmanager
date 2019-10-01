@@ -28,7 +28,7 @@ class CreateTaskRequest extends FormRequest {
             'task_type' => 'required',
             'title' => 'required',
             'content' => 'required',
-            'contributors' => 'required|numeric',
+            'contributors' => 'required|array',
             'created_by' => 'required|string',
             'due_date' => 'required',
             'start_date' => 'nullable',

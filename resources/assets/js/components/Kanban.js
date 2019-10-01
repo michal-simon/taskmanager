@@ -11,6 +11,8 @@ class Kanban extends Component {
             open: false,
             show: true,
             tasks: [],
+            users: [],
+            customers: [],
             stories: [],
             err: '',
             err2: '',
@@ -22,11 +24,45 @@ class Kanban extends Component {
         this.addProject = this.addProject.bind(this)
         this.resetFilters = this.resetFilters.bind(this)
         this.getTaskUrl = this.getTaskUrl.bind(this)
+        this.getUsers = this.getUsers.bind(this)
+        this.getCustomers = this.getCustomers.bind(this)
         this.cachedTasks = []
     }
 
     componentDidMount () {
         this.getTasks()
+        this.getUsers()
+        this.getCustomers()
+    }
+
+    getCustomers () {
+        axios.get('/api/customers')
+            .then((r) => {
+                this.setState({
+                    customers: r.data
+                })
+            })
+            .catch((e) => {
+                this.setState({
+                    loading: false,
+                    err: e
+                })
+            })
+    }
+
+    getUsers () {
+        axios.get('api/users')
+            .then((r) => {
+                this.setState({
+                    users: r.data
+                })
+            })
+            .catch((e) => {
+                this.setState({
+                    loading: false,
+                    err: e
+                })
+            })
     }
 
     getTaskUrl () {
@@ -104,6 +140,8 @@ class Kanban extends Component {
         return (
             <React.Fragment>
                 <KanbanFilter
+                    customers={this.state.customers}
+                    users={this.state.users}
                     reset={this.resetFilters}
                     action={this.updateTasks}
                     task_type={this.props.task_type}
@@ -116,6 +154,8 @@ class Kanban extends Component {
                     <div style={divStyle}>
                         <aside>
                             <Story
+                                customers={this.state.customers}
+                                users={this.state.users}
                                 tasks={this.state.tasks}
                                 action={this.updateTasks}
                                 storyName={this.state.stories.filter(i => i.id === parseInt(this.project_id))}

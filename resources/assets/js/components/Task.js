@@ -8,6 +8,7 @@ import './dragdrop'
 import Loader from './Loader'
 import ViewTask from './forms/viewTask'
 import Subtasks from './forms/Subtasks'
+import Avatar from './common/Avatar'
 
 class Task extends Component {
     constructor (props) {
@@ -74,17 +75,30 @@ class Task extends Component {
             content =
                 tasks.filter(i => i.task_status === Number(filter))
                     .map((i, index) => {
+
+                        let contributors = ''
+
+                        if(i.users.length) {
+
+                            contributors = i.users.map((user, index) => {
+                                return (
+                                    <Avatar inline={true} name={user.first_name + ' ' + user.last_name} />
+                                )
+                            })
+                        }
+
                         const divStyle = {
                             borderLeft: `2px solid ${this.props.column.column_color}`
                         }
-
-                        console.log('div style', divStyle)
 
                         return (
                             <div style={divStyle} data-task={i.id} id={i.id} className="mcell-task card" key={index}>
 
                                 <span className="task-name">
                                     <ViewTask
+                                        project_id={this.props.project_id}
+                                        customers={this.props.customers}
+                                        users={this.props.users}
                                         task_type={this.props.task_type}
                                         allTasks={this.props.tasks}
                                         action={this.props.action}
@@ -97,14 +111,21 @@ class Task extends Component {
                                 <p className="mb-1">{i.content}</p>
 
                                 <div>
-                                    <span className="task-due">{moment(i.dueDate).format('DD.MM.YYYY')}</span>
-                                    <span className="task-contributors">{i.name}</span>
+                                    <span className="task-due">Start: {moment(i.startDate).format('DD.MM.YYYY')}</span>
+                                    <span className="task-due">Due: {moment(i.dueDate).format('DD.MM.YYYY')}</span>
+                                    <span className="task-contributors">
+                                        {contributors}
+                                    </span>
                                 </div>
                                 <div className={i.color}/>
 
-                                <Subtasks task_id={i.id} task_type={this.props.task_type}
+                                <Subtasks task_id={i.id}
+                                    customers={this.props.customers}
+                                    users={this.props.users}
+                                    task_type={this.props.task_type}
                                     allTasks={this.props.tasks}
-                                    action={this.props.action} />
+                                    action={this.props.action}
+                                />
                             </div>
                         )
                     })

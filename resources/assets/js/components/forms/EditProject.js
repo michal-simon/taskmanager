@@ -26,7 +26,6 @@ class EditProject extends React.Component {
     }
 
     componentDidMount () {
-        this.getCustomers()
         this.getProject()
     }
 
@@ -79,18 +78,6 @@ class EditProject extends React.Component {
             })
     }
 
-    getCustomers () {
-        axios.get('/api/customers')
-            .then((r) => {
-                this.setState({
-                    customers: r.data
-                })
-            })
-            .catch((e) => {
-                console.error(e)
-            })
-    }
-
     getProject () {
         axios.get(`/api/projects/${this.props.project_id}`)
             .then((r) => {
@@ -115,10 +102,10 @@ class EditProject extends React.Component {
 
     buildCustomerOptions () {
         let customerList
-        if (!this.state.customers.length) {
+        if (!this.props.customers) {
             customerList = <option value="">Loading...</option>
         } else {
-            customerList = this.state.customers.map((customer, index) => (
+            customerList = this.props.customers.map((customer, index) => (
                 <option key={index} value={customer.id}>{customer.name}</option>
             ))
         }

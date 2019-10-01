@@ -349,7 +349,7 @@ input[type=time] {
 	font-weight: normal;
 	text-align: right;
 	display: inline-block;
-	width: 50%;
+	width: 100%;
 	img {
 		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
 		border-radius: 50%;
@@ -1511,7 +1511,7 @@ $color_celeste_approx: #ccc;
 
 	.initials {
 		position: relative;
-		top: $size*0.25;
+		top: $size*0.20;
 		font-size: $size*0.5;
 		line-height: $size*0.5;
 		color: #fff;
@@ -1522,6 +1522,7 @@ $color_celeste_approx: #ccc;
 
 .avatar-circle      { @include avatar(100px); }
 .avatar-circle-sm   { @include avatar(50px); }
+.avatar-circle-xs   { @include avatar(35px); }
 .avatar-circle-lg   { @include avatar(250px); }
 
 //.open aside.left-panel {

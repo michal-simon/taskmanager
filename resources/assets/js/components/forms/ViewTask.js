@@ -32,6 +32,9 @@ class ViewTask extends React.Component {
 
                     <ModalBody>
                         <TabContent
+                            project_id={this.props.project_id}
+                            users={this.props.users}
+                            customers={this.props.customers}
                             task_type={this.props.task_type}
                             allTasks={this.props.allTasks}
                             action={this.props.action}
