@@ -19,7 +19,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Task::class, function (Faker $faker) {
     $customer = factory(Customer::class)->create();
-    $user = factory(User::class)->create();
     return [
         'title' => $faker->text,
         'content' => $faker->text,

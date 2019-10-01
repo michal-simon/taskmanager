@@ -17,6 +17,8 @@ use App\Repositories\Interfaces\FileRepositoryInterface;
 use App\Repositories\FileRepository;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\RoleRepository;
+use App\Repositories\Interfaces\DepartmentRepositoryInterface;
+use App\Repositories\DepartmentRepository;
 use App\Repositories\Interfaces\InvoiceRepositoryInterface;
 use App\Repositories\InvoiceRepository;
 use App\Repositories\Interfaces\InvoiceLineRepositoryInterface;
@@ -94,6 +96,10 @@ class RepositoryServiceProvider extends ServiceProvider {
         );
 
         $this->app->bind(
+                DepartmentRepositoryInterface::class, DepartmentRepository::class
+        );
+
+        $this->app->bind(
                 EventRepositoryInterface::class, EventRepository::class
         );
 
@@ -112,8 +118,8 @@ class RepositoryServiceProvider extends ServiceProvider {
         $this->app->bind(
                 ProductRepositoryInterface::class, ProductRepository::class
         );
-        
-         $this->app->bind(
+
+        $this->app->bind(
                 NotificationRepositoryInterface::class, NotificationRepository::class
         );
     }
