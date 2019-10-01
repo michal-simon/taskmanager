@@ -102,6 +102,7 @@ class EditProject extends React.Component {
 
     buildCustomerOptions () {
         let customerList
+
         if (!this.props.customers) {
             customerList = <option value="">Loading...</option>
         } else {

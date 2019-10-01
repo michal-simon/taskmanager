@@ -4,7 +4,7 @@ import axios from 'axios'
 import EditUser from './EditUser'
 import AddUser from './AddUser'
 import { Button } from 'reactstrap'
-import DataTable from '../common/DataTable'
+import Directory from '../common/Directory'
 import Avatar from '../common/Avatar'
 
 export default class UserList extends Component {
@@ -24,29 +24,77 @@ export default class UserList extends Component {
     }
 
     userList () {
+
         if (this.state.users && this.state.users.length) {
-            return this.state.users.map(user => {
-                const columnList = Object.keys(user).map(key => {
-                    if (key === 'id') {
-                        return <td key={key}><Avatar name={user.first_name + ' ' + user.last_name}/></td>
-                    }
-                    return <td key={key}>{user[key]}</td>
-                })
-                return <tr key={user.id}>
 
-                    {columnList}
+            const list = this.state.users.map(user => {
 
-                    <td>
-                        <Button color="danger" onClick={() => this.deleteUser(user.id)}>Delete</Button>
-                        <EditUser user_id={user.id} users={this.state.users} action={this.addUserToState}/>
-                    </td>
-                </tr>
+                return (
+                    <li className="list-group-item">
+                        <div className="row w-100">
+                            <div className="col-12 col-sm-6 col-md-3 px-0">
+                                {/*<img src="http://demos.themes.guide/bodeo/assets/images/users/m101.jpg" alt="Mike Anamendolla" className="rounded-circle mx-auto d-block img-fluid" />*/}
+                                <Avatar lg={true} name={user.first_name + ' ' + user.last_name} />
+
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-9 text-center text-sm-left">
+                                <span className="float-right pulse" title="online now">
+                                    <Button color="danger" onClick={() => this.deleteUser(user.id)}>Delete</Button>
+                                    <EditUser user_id={user.id} users={this.state.users} action={this.addUserToState}/>
+
+                                </span>
+                                <label className="name lead">{user.first_name + ' ' + user.last_name}</label>
+                                <br />
+                                <span className="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" data-original-title="" title=""></span>
+                                <span className="text-muted small text-truncate">{user.email}</span>
+                            </div>
+                        </div>
+                    </li>
+                )
+
             })
+
+
+            return (
+                <div className="col-12 mt-3">
+                    <div className="card card-default" id="card_contacts">
+                        <div id="contacts" className="panel-collapse collapse show">
+                            <ul className="pull-down list-group" id="contact-list">
+                                {list}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            )
+
         } else {
-            return <tr>
-                <td className="text-center">No Records Found.</td>
-            </tr>
+            return <p className="text-center">No Records Found.</p>
         }
+
+
+        // if (this.state.users && this.state.users.length) {
+        //     return this.state.users.map(user => {
+        //         const columnList = Object.keys(user).map(key => {
+        //             if (key === 'id') {
+        //                 return <td key={key}><Avatar name={user.first_name + ' ' + user.last_name}/></td>
+        //             }
+        //             return <td key={key}>{user[key]}</td>
+        //         })
+        //         return <tr key={user.id}>
+        //
+        //             {columnList}
+        //
+        //             <td>
+        //                 <Button color="danger" onClick={() => this.deleteUser(user.id)}>Delete</Button>
+        //                 <EditUser user_id={user.id} users={this.state.users} action={this.addUserToState}/>
+        //             </td>
+        //         </tr>
+        //     })
+        // } else {
+        //     return <tr>
+        //         <td className="text-center">No Records Found.</td>
+        //     </tr>
+        // }
     }
 
     deleteUser (id) {
@@ -71,7 +119,7 @@ export default class UserList extends Component {
 
                 <AddUser users={this.state.users} action={this.addUserToState}/>
 
-                <DataTable
+                <Directory
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}
