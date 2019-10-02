@@ -12,6 +12,8 @@ use App\Repositories\UserRepository;
 use App\Transformations\UserTransformable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\UploadedFile;
+use App\Repositories\DepartmentRepository;
+use App\Department;
 
 class UserController extends Controller {
 
@@ -169,6 +171,12 @@ class UserController extends Controller {
     public function profile(string $username) {
         $user = $this->userRepository->findUserByUsername($username);
         return response()->json($user);
+    }
+
+    public function filterUsersByDepartment(int $department_id) {
+        $objDepartment = (new DepartmentRepository(new Department))->findDepartmentById($department_id);
+        $users = $this->userRepository->getUsersForDepartment($objDepartment);
+        return response()->json($users);
     }
 
 }

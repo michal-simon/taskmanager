@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\User;
+use App\Department;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 use App\Exceptions\CreateUserErrorException;
@@ -107,7 +108,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
      * @param array $roleIds
      */
     public function syncRoles(array $roleIds) {
-        
+
         $mappedObjects = [];
 
         foreach ($roleIds[0] as $roleId) {
@@ -124,6 +125,19 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
      */
     public function findUserByUsername(string $username): User {
         return $this->model->where('username', $username)->first();
+    }
+
+    /**
+     * 
+     * @param string $username
+     * @return User
+     */
+    public function getUsersForDepartment(Department $objDepartment): Support {
+        return $this->model->join('department_user', 'department_user.user_id', '=', 'users.id')
+                        ->select('users.*')
+                        ->where('department_user.department_id', $objDepartment->id)
+                        ->groupBy('users.id')
+                        ->get();
     }
 
     /**

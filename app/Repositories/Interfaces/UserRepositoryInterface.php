@@ -4,6 +4,7 @@ namespace App\Repositories\Interfaces;
 use App\User;
 use Illuminate\Support\Collection;
 use App\Repositories\Base\BaseRepositoryInterface;
+use App\Department;
 
 interface UserRepositoryInterface extends BaseRepositoryInterface
 {
@@ -43,4 +44,10 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
      * @param string $username
      */
     public function findUserByUsername(string $username) : User;
+    
+    /**
+     * 
+     * @param Department $objDepartment
+     */
+    public function getUsersForDepartment(Department $objDepartment): Collection;
 }

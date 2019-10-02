@@ -77,6 +77,7 @@ Route::put('users/{user_id}', 'UserController@update');
 Route::get('users', 'UserController@index');
 Route::post('user/upload', 'UserController@upload');
 Route::get('user/profile/{username}', 'UserController@profile');
+Route::get('users/department/{department_id}', 'UserController@filterUsersByDepartment');
 
 // events
 Route::get('events', 'EventController@index');

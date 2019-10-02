@@ -6,6 +6,7 @@ import AddUser from './AddUser'
 import { Button } from 'reactstrap'
 import DataTable from '../common/DataTable'
 import Avatar from '../common/Avatar'
+import { Input, FormGroup } from 'reactstrap'
 
 export default class UserList extends Component {
     constructor (props) {
@@ -16,12 +17,57 @@ export default class UserList extends Component {
             errors: []
         }
 
+        this.cachedResults = []
         this.addUserToState = this.addUserToState.bind(this)
         this.userList = this.userList.bind(this)
     }
 
     componentDidMount () {
         this.getDepartments()
+    }
+
+    filterDepartments (e) {
+
+        const deptId = e.target.value
+
+        if(deptId === '') {
+            this.setState({ users:cachedResults })
+            return
+        }
+
+        axios.get(`/api/users/department/${deptId}`)
+            .then((r) => {
+                this.cachedResults = this.state.users
+
+                this.setState({
+                    users: r.data
+                })
+            })
+            .catch((e) => {
+                alert(e)
+            })
+    }
+
+    buildDepartmentOptions () {
+        let departmentList
+        if (!this.state.departments.length) {
+            departmentList = <option value="">Loading...</option>
+        } else {
+            departmentList = this.state.departments.map((department, index) => (
+                <option key={index} value={department.id}>{department.name}</option>
+            ))
+        }
+
+        return (
+            <div className="col-4">
+                <FormGroup>
+                    <Input onChange={this.filterDepartments.bind(this)} type="select" name="department" id="department">
+                        <option value="">Select Department</option>
+                        {departmentList}
+                    </Input>
+                </FormGroup>
+            </div>
+        )
     }
 
     getDepartments () {
@@ -47,7 +93,11 @@ export default class UserList extends Component {
                     if (key === 'id') {
                         return <td key={key}><Avatar name={user.first_name + ' ' + user.last_name}/></td>
                     }
-                    return <td key={key}>{user[key]}</td>
+
+                    if(key !== 'department') {
+                        return <td key={key}>{user[key]}</td>
+                    }
+
                 })
                 return <tr key={user.id}>
 
@@ -82,13 +132,17 @@ export default class UserList extends Component {
 
     render () {
         const fetchUrl = '/api/users/'
+        const departmentOptions = this.buildDepartmentOptions()
 
         return (
             <div className="data-table m-md-3 m-0">
 
                 <AddUser departments={this.state.departments} users={this.state.users} action={this.addUserToState}/>
 
+                {departmentOptions}
+
                 <DataTable
+                    ignore={['department']}
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}
