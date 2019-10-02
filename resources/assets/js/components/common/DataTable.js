@@ -117,7 +117,7 @@ export default class DataTable extends Component {
             icon = <i className="fa fa-arrow-down" />
         }
         return this.state.columns.map(column => {
-            if(this.props.ignore && !this.props.ignore.includes(column)) {
+            if (this.props.ignore && !this.props.ignore.includes(column)) {
                 return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
                     {this.columnHead(column)}
                     {icon}

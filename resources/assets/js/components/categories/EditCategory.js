@@ -68,7 +68,6 @@ class EditCategory extends React.Component {
     }
 
     render () {
-
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Edit Category</Button>
@@ -94,8 +93,8 @@ class EditCategory extends React.Component {
                                 value={this.state.description}
                                 type="textarea"
                                 name="description"
-                                 id="description" rows="5"
-                                 placeholder="Description" onChange={this.handleInput.bind(this)} />
+                                id="description" rows="5"
+                                placeholder="Description" onChange={this.handleInput.bind(this)} />
                             {this.renderErrorFor('description')}
                         </FormGroup>
 

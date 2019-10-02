@@ -174,7 +174,7 @@ class EditInvoice extends Component {
 
     handleFieldChange (name, value, row) {
         const newItemArray = this.state.data.map((item, sidx) => {
-            if (row !== sidx) return item;
+            if (row !== sidx) return item
             return { ...item, [name]: value }
         })
 
@@ -221,7 +221,7 @@ class EditInvoice extends Component {
             payment_type: 1
         }
 
-        if(!this.state.invoice_id) {
+        if (!this.state.invoice_id) {
             return this.createInvoice('/api/invoice', data)
         }
 
@@ -235,7 +235,6 @@ class EditInvoice extends Component {
             .catch((error) => {
                 console.warn(error)
             })
-
     }
 
     createInvoice (url, data) {

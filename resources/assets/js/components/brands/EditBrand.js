@@ -11,7 +11,7 @@ class EditBrand extends React.Component {
             loading: false,
             errors: [],
             name: this.props.brand.name,
-            id: this.props.brand.id,
+            id: this.props.brand.id
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
@@ -42,7 +42,7 @@ class EditBrand extends React.Component {
 
     handleClick () {
         axios.put(`/api/brands/${this.state.id}`, {
-            name: this.state.name,
+            name: this.state.name
         })
             .then((response) => {
                 this.toggle()
@@ -75,7 +75,7 @@ class EditBrand extends React.Component {
                         <FormGroup>
                             <Label for="name">Name(*):</Label>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
-                                   value={this.state.name} onChange={this.handleInput.bind(this)}/>
+                                value={this.state.name} onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
                         </FormGroup>
 

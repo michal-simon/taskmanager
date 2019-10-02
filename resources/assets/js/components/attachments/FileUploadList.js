@@ -4,7 +4,6 @@ import FileUpload from './FileUpload'
 import axios from 'axios'
 
 class CommentList extends React.Component {
-
     constructor (props) {
         super(props)
         this.state = {

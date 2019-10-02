@@ -32,7 +32,6 @@ class Subtasks extends React.Component {
 
     buildSubtaskOptions () {
         const tasks = this.state.subtasks.map((task, index) => {
-
             let contributors = ''
 
             if (task.users.length) {

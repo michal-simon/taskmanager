@@ -16,7 +16,7 @@ export default function FileUpload (props) {
             </a>
             {file.filename}<br />
             {`${file.user.first_name} ${file.user.last_name}`}
-            <br /><button class="btn btn-danger" onClick={() => props.delete(file.id)}>Delete</button>
+            <br /><button className="btn btn-danger" onClick={() => props.delete(file.id)}>Delete</button>
         </div>
     )
 }

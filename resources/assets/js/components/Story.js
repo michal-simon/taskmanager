@@ -36,7 +36,7 @@ export default class Story extends Component {
 
     buildColumn (column) {
         return (
-            <div data-status={column.id} style={{borderColor: column.column_color}} className={`tasks mcolor${column.id}`}>
+            <div data-status={column.id} style={{ borderColor: column.column_color }} className={`tasks mcolor${column.id}`}>
                 <div className="task-header story">
                     <h3 className="task-title mr-auto"> {column.title} <span className="badge text-muted">(3)</span></h3>
 

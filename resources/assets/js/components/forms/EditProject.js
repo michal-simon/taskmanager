@@ -81,7 +81,7 @@ class EditProject extends React.Component {
     getProject () {
         axios.get(`/api/projects/${this.props.project_id}`)
             .then((r) => {
-                if(r.data) {
+                if (r.data) {
                     this.setState({
                         title: r.data.title,
                         description: r.data.description,

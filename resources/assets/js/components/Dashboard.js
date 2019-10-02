@@ -129,7 +129,7 @@ class Dashboard extends Component {
 
             leads = this.state.deals.map((lead, index) => {
                 return (
-                    <React.Fragment>
+                    <React.Fragment key={index}>
                         <div key={index} className="media mt-1">
                             <div className="media-left pr-2">
                                 <img className="media-object avatar avatar-md rounded-circle"

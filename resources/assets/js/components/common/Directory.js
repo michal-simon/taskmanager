@@ -108,7 +108,7 @@ export default class Directory extends Component {
     pageList () {
         return this.pagesNumbers().map(page => {
             return <li className={page === this.state.entities.current_page ? 'page-item active' : 'page-item'}
-                       key={page}>
+                key={page}>
                 <button className="page-link" onClick={() => this.changePage(page)}>{page}</button>
             </li>
         })
@@ -142,16 +142,16 @@ export default class Directory extends Component {
                     <ul className="pagination">
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={this.state.entities.current_page === 1}
-                                    onClick={() => this.changePage(this.state.entities.current_page - 1)}>
+                                disabled={this.state.entities.current_page === 1}
+                                onClick={() => this.changePage(this.state.entities.current_page - 1)}>
                                 Previous
                             </button>
                         </li>
                         {this.pageList()}
                         <li className="page-item">
                             <button className="page-link"
-                                    disabled={this.state.entities.last_page === this.state.entities.current_page}
-                                    onClick={() => this.changePage(this.state.entities.current_page + 1)}>
+                                disabled={this.state.entities.last_page === this.state.entities.current_page}
+                                onClick={() => this.changePage(this.state.entities.current_page + 1)}>
                                 Next
                             </button>
                         </li>

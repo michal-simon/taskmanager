@@ -45,7 +45,6 @@ export default class KanbanFilter extends Component {
         const value = event.target.value
         const project_id = this.props.project_id ? this.props.project_id : 0
 
-
         if (value === 'all') {
             const updatedRowState = this.state.filters.filter(filter => filter.column !== column)
             this.setState({ filters: updatedRowState })
@@ -134,7 +133,7 @@ export default class KanbanFilter extends Component {
 
     render () {
         const userContent = this.buildUserOptions()
-        const projectContent =  this.props.task_type !== 2 && this.props.task_type !== 3 ? this.buildProjectOptions() : ''
+        const projectContent = this.props.task_type !== 2 && this.props.task_type !== 3 ? this.buildProjectOptions() : ''
         const customerContent = this.buildCustomerOptions()
         const addButton = this.props.task_type !== 2 && this.props.task_type !== 3
             ? <AddStory customers={this.props.customers} addProject={this.props.addProject}/>

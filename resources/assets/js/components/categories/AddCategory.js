@@ -88,7 +88,7 @@ class AddCategory extends React.Component {
                         <FormGroup>
                             <Label for="description">Description </Label>
                             <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="textarea" name="description" id="description" rows="5"
-                                      placeholder="Description" onChange={this.handleInput.bind(this)} />
+                                placeholder="Description" onChange={this.handleInput.bind(this)} />
                             {this.renderErrorFor('description')}
                         </FormGroup>
 

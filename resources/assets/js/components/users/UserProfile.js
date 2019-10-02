@@ -48,8 +48,8 @@ class UserProfile extends React.Component {
 
     fileChangedHandler (e) {
         e.preventDefault()
-        let reader = new FileReader()
-        let file = e.target.files[0]
+        const reader = new FileReader()
+        const file = e.target.files[0]
         reader.onloadend = () => {
             this.setState({
                 selectedFile: file,
@@ -82,8 +82,7 @@ class UserProfile extends React.Component {
         const imgUrl = this.state.user.profile_photo ? `/storage/${this.state.user.profile_photo}` : 'https://cdn.bootstrapsnippet.net/assets/image/dummy-avatar.jpg'
         const gender = this.state.user.gender ? this.state.user.gender[0].toUpperCase() + this.state.user.gender.slice(1) : ''
 
-        let $imagePreview = (<img className="w-100 rounded border"
-                                  src={imgUrl}/>)
+        let $imagePreview = (<img className="w-100 rounded border" src={imgUrl}/>)
         let userData = ''
         let button = ''
         let uploadButton = ''
@@ -100,7 +99,7 @@ class UserProfile extends React.Component {
             uploadButton = parseInt(sessionStorage.getItem('user_id')) === this.state.user.id
                 ? <label className="btn btn-default btn-file">
                     Browse <input onChange={this.fileChangedHandler.bind(this)} type="file"
-                                  style={{ display: 'none' }}/>
+                        style={{ display: 'none' }}/>
                 </label>
                 : ''
 
@@ -159,7 +158,7 @@ class UserProfile extends React.Component {
                                 <div className="pt-2">
                                     <ToastContainer/>
                                     <Progress max="100" color="success"
-                                              value={this.state.loaded}>{Math.round(this.state.loaded, 2)}%</Progress>
+                                        value={this.state.loaded}>{Math.round(this.state.loaded, 2)}%</Progress>
 
                                     {uploadButton}
                                     <Button color="success" onClick={this.submit}>Save changes</Button>

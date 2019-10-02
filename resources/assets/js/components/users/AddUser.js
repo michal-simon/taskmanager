@@ -148,11 +148,11 @@ class AddUser extends React.Component {
                 <Label for="users">Roles</Label>
                 <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
                     name="role" id="role" multiple>
-                   {roleList}
-               </Input>
-               {this.renderErrorFor('users')}
-           </FormGroup>
-       )
+                    {roleList}
+                </Input>
+                {this.renderErrorFor('users')}
+            </FormGroup>
+        )
     }
 
     buildDepartmentOptions () {

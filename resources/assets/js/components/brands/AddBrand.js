@@ -43,7 +43,7 @@ class AddBrand extends React.Component {
 
     handleClick () {
         axios.post('/api/brands', {
-            name: this.state.name,
+            name: this.state.name
         })
             .then((response) => {
                 this.toggle()
@@ -81,7 +81,7 @@ class AddBrand extends React.Component {
                         <FormGroup>
                             <Label for="username">Name(*):</Label>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
-                                   onChange={this.handleInput.bind(this)}/>
+                                onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
                         </FormGroup>
                     </ModalBody>

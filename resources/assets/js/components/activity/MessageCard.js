@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Card, CardHeader, CardBody, CardFooter, Button, Collapse, ListGroup, ListGroupItem } from 'reactstrap'
+import { Card, CardHeader, CardBody, CardFooter, Button, Collapse, ListGroup, ListGroupItem } from 'reactstrap'
 import Avatar from '../common/Avatar'
 
 const messageListCardStyles = ({
@@ -24,7 +24,7 @@ const messageListCardStyles = ({
     commentText: {
         overflowWrap: 'break-word'
     }
-});
+})
 
 class MessageCard extends React.Component {
     constructor (props) {
@@ -32,13 +32,12 @@ class MessageCard extends React.Component {
         this.state = {
             expanded: false
         }
-
         this.handleExpandClick = this.handleExpandClick.bind(this)
     }
 
     handleExpandClick () {
-        this.setState(state => ({ expanded: !state.expanded }));
-    };
+        this.setState(state => ({ expanded: !state.expanded }))
+    }
 
     render () {
         const {
@@ -48,24 +47,20 @@ class MessageCard extends React.Component {
             messages,
             setActiveMessage,
             setMode,
-            deleteMessage,
-        } = this.props;
-
+            deleteMessage
+        } = this.props
         const author = users.find(
             (user) => user.id === currentMessage.user_id
         )
-
         const firstName2 = author ? author.first_name : 'Michael'
         const lastName2 = author ? author.last_name : 'Hampton'
-
         const childMessages = messages.filter(
             (message) => message.parent_id === currentMessage.id
         )
-
         return (
             <Card style={messageListCardStyles.card}>
                 <CardHeader>
-                    <Avatar name={`${firstName2}  ${lastName2}`} />
+                    <Avatar name={`${firstName2}  ${lastName2}`}/>
                     {`${firstName2}  ${lastName2}`}
                 </CardHeader>
                 <CardBody>
@@ -80,18 +75,18 @@ class MessageCard extends React.Component {
                             <Button
                                 aria-label="Edit message"
                                 onClick={() => {
-                                    setActiveMessage(currentMessage);
-                                    setMode('Edit');
+                                    setActiveMessage(currentMessage)
+                                    setMode('Edit')
                                 }}
                             >
-                                <i className="fa fa-edit" />
+                                <i className="fa fa-edit"/>
                             </Button>
 
                             <Button
                                 aria-label="Delete message"
                                 onClick={() => deleteMessage(currentMessage.id)}
                             >
-                                <i className="fa fa-times" />
+                                <i className="fa fa-times"/>
                             </Button>
 
                         </React.Fragment>
@@ -101,11 +96,11 @@ class MessageCard extends React.Component {
                                 <Button
                                     aria-label="Comment message"
                                     onClick={() => {
-                                        setActiveMessage(currentMessage);
-                                        setMode('Comment');
+                                        setActiveMessage(currentMessage)
+                                        setMode('Comment')
                                     }}
                                 >
-                                    <i className="fa fa-comment" />
+                                    <i className="fa fa-comment"/>
                                 </Button>
                             ) : null}
                         </React.Fragment>
@@ -119,7 +114,7 @@ class MessageCard extends React.Component {
                                 aria-expanded={this.state.expanded}
                                 aria-label="Display comments"
                             >
-                                <i className="fa fa-plus" />
+                                <i className="fa fa-plus"/>
                             </Button>
                         </React.Fragment>
                     ) : null}
@@ -133,16 +128,13 @@ class MessageCard extends React.Component {
                         <h6>Comments</h6>
                         <ListGroup>
                             {childMessages.map((message) => {
-
-                                const author =  users.find(
+                                const author = users.find(
                                     (user) => user.id === message.user_id
-                                );
-
+                                )
                                 const firstName = author ? author.first_name : 'Michael'
                                 const lastName = author ? author.last_name : 'Hampton'
-
-                                return (<ListGroupItem>
-                                    <Avatar name={`${firstName}  ${lastName}`} />
+                                return (<ListGroupItem key={user.id}>
+                                    <Avatar name={`${firstName}  ${lastName}`}/>
                                     {`${firstName}  ${lastName}`}
                                     <p>
                                         {message.comment}
@@ -158,4 +150,4 @@ class MessageCard extends React.Component {
     }
 }
 
-export default MessageCard;
+export default MessageCard

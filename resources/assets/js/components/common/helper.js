@@ -11,8 +11,7 @@ export const monthByNumber = {
     9: 'October',
     10: 'November',
     11: 'December'
-};
-
+}
 export const numberByMonth = {
     January: 0,
     February: 1,
@@ -26,8 +25,7 @@ export const numberByMonth = {
     October: 9,
     November: 10,
     December: 11
-};
-
+}
 export const daysInMonth = {
     0: 31,
     1: 28,
@@ -41,10 +39,9 @@ export const daysInMonth = {
     9: 31,
     10: 30,
     11: 31
-};
-
+}
 export const unit = {
     day: 'day',
     month: 'month',
     year: 'year'
-};
+}

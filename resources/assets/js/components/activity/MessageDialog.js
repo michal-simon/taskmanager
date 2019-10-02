@@ -1,27 +1,24 @@
-import * as React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form } from 'reactstrap'
+import * as React from 'react'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap'
 
 class MessageDialog extends React.Component {
     constructor (props) {
         super(props)
-
         this.state = {
             messageText: this.props.message ? this.props.message.comment : ''
         }
-
         this.onChange = this.onChange.bind(this)
     }
 
-    onChange(e) {
+    onChange (e) {
         this.setState({
             messageText: e.target.value.trim()
-        });
+        })
     }
 
-    render() {
-        const { mode, submitMessage, toggleOpenState, isDialogOpen } = this.props;
-        const { messageText } = this.state;
-
+    render () {
+        const { mode, submitMessage, toggleOpenState, isDialogOpen } = this.props
+        const { messageText } = this.state
         return (
             <Modal isOpen={isDialogOpen} toggle={toggleOpenState} className={this.props.className}>
                 <ModalHeader toggle={toggleOpenState}>
@@ -51,4 +48,4 @@ class MessageDialog extends React.Component {
     }
 }
 
-export default MessageDialog;
+export default MessageDialog

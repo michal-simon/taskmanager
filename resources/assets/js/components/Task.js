@@ -75,14 +75,12 @@ class Task extends Component {
             content =
                 tasks.filter(i => i.task_status === Number(filter))
                     .map((i, index) => {
-
                         let contributors = ''
 
-                        if(i.users.length) {
-
+                        if (i.users.length) {
                             contributors = i.users.map((user, index) => {
                                 return (
-                                    <Avatar inline={true} name={user.first_name + ' ' + user.last_name} />
+                                    <Avatar key={index} inline={true} name={user.first_name + ' ' + user.last_name} />
                                 )
                             })
                         }

@@ -67,7 +67,6 @@ export default class DropdownDate extends React.Component {
             selectedMonth = -1
             selectedDay = -1
         }
-
         this.setState({
             startYear,
             startMonth,
@@ -117,7 +116,7 @@ export default class DropdownDate extends React.Component {
         const yearOptions = []
         yearOptions.push(
             <option key={-1} value="-1"
-                    className={(this.props.classes && this.props.classes.yearOptions) ? this.props.classes.yearOptions : null}
+                className={(this.props.classes && this.props.classes.yearOptions) ? this.props.classes.yearOptions : null}
             >
                 {(this.props.defaultValues && this.props.defaultValues.year) ? this.props.defaultValues.year : ''}
             </option>
@@ -126,7 +125,7 @@ export default class DropdownDate extends React.Component {
             for (let i = endYear; i >= startYear; i--) {
                 yearOptions.push(
                     <option key={i} value={i}
-                            className={(this.props.classes && this.props.classes.yearOptions) ? this.props.classes.yearOptions : null}
+                        className={(this.props.classes && this.props.classes.yearOptions) ? this.props.classes.yearOptions : null}
                     >{i}</option>
                 )
             }
@@ -134,7 +133,7 @@ export default class DropdownDate extends React.Component {
             for (let i = startYear; i <= endYear; i++) {
                 yearOptions.push(
                     <option key={i} value={i}
-                            className={(this.props.classes && this.props.classes.yearOptions) ? this.props.classes.yearOptions : null}
+                        className={(this.props.classes && this.props.classes.yearOptions) ? this.props.classes.yearOptions : null}
                     >{i}</option>
                 )
             }
@@ -186,14 +185,14 @@ export default class DropdownDate extends React.Component {
         const monthOptions = []
         monthOptions.push(
             <option key={-1} value="-1"
-                    className={(this.props.classes && this.props.classes.monthOptions) ? this.props.classes.monthOptions : null}
+                className={(this.props.classes && this.props.classes.monthOptions) ? this.props.classes.monthOptions : null}
             >{(this.props.defaultValues && this.props.defaultValues.month) ? this.props.defaultValues.month : ''}
             </option>
         )
         months.forEach((elem) => {
             monthOptions.push(
                 <option key={elem.value} value={elem.value}
-                        className={(this.props.classes && this.props.classes.monthOptions) ? this.props.classes.monthOptions : null}
+                    className={(this.props.classes && this.props.classes.monthOptions) ? this.props.classes.monthOptions : null}
                 >{elem.month}</option>
             )
         })
@@ -203,10 +202,9 @@ export default class DropdownDate extends React.Component {
     generateDayOptions () {
         const { startYear, startMonth, startDay, endYear, endMonth, endDay, selectedYear, selectedMonth } = this.state
         const dayOptions = []
-
         dayOptions.push(
             <option key={-1} value="-1"
-                    className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
+                className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
             >
                 {(this.props.defaultValues && this.props.defaultValues.day) ? this.props.defaultValues.day : ''}
             </option>
@@ -218,7 +216,7 @@ export default class DropdownDate extends React.Component {
                 for (let i = startDay; i <= monthDays; i++) {
                     dayOptions.push(
                         <option key={i} value={i}
-                                className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
+                            className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
                         >{i}</option>
                     )
                 }
@@ -227,7 +225,7 @@ export default class DropdownDate extends React.Component {
                 for (let i = 1; i <= monthDays; i++) {
                     dayOptions.push(
                         <option key={i} value={i}
-                                className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
+                            className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
                         >{i}</option>
                     )
                 }
@@ -237,7 +235,7 @@ export default class DropdownDate extends React.Component {
                 for (let i = 1; i <= endDay; i++) {
                     dayOptions.push(
                         <option key={i} value={i}
-                                className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
+                            className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
                         >{i}</option>
                     )
                 }
@@ -246,7 +244,7 @@ export default class DropdownDate extends React.Component {
                 for (let i = 1; i <= monthDays; i++) {
                     dayOptions.push(
                         <option key={i} value={i}
-                                className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
+                            className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
                         >{i}</option>
                     )
                 }
@@ -257,7 +255,7 @@ export default class DropdownDate extends React.Component {
                 for (let i = 1; i <= monthDays; i++) {
                     dayOptions.push(
                         <option key={i} value={i}
-                                className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
+                            className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
                         >{i}</option>
                     )
                 }
@@ -265,7 +263,7 @@ export default class DropdownDate extends React.Component {
                 for (let i = 1; i <= 31; i++) {
                     dayOptions.push(
                         <option key={i} value={i}
-                                className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
+                            className={(this.props.classes && this.props.classes.dayOptions) ? this.props.classes.dayOptions : null}
                         >{i}</option>
                     )
                 }
@@ -320,7 +318,7 @@ export default class DropdownDate extends React.Component {
     renderMonth () {
         return (
             <div key="month" id="dropdown-month"
-                 className={(this.props.classes && this.props.classes.monthContainer) ? this.props.classes.monthContainer : null}>
+                className={(this.props.classes && this.props.classes.monthContainer) ? this.props.classes.monthContainer : null}>
 
                 <Label>Month</Label>
 
@@ -341,7 +339,7 @@ export default class DropdownDate extends React.Component {
     renderDay () {
         return (
             <div key="day" id="dropdown-day"
-                 className={(this.props.classes && this.props.classes.dayContainer) ? this.props.classes.dayContainer : null}>
+                className={(this.props.classes && this.props.classes.dayContainer) ? this.props.classes.dayContainer : null}>
 
                 <Label>Day</Label>
 
@@ -363,7 +361,7 @@ export default class DropdownDate extends React.Component {
         const order = ['year', 'month', 'day']
         return (
             <div id="dropdown-date"
-                 className={(this.props.classes && this.props.classes.dateContainer) ? this.props.classes.dateContainer : null}>
+                className={(this.props.classes && this.props.classes.dateContainer) ? this.props.classes.dateContainer : null}>
                 <Label className="col-12" for="dob">Date of Birth(*):</Label>
                 {order.map(part => {
                     return this.renderParts[part]()

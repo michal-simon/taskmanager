@@ -85,10 +85,10 @@ class AddDepartment extends React.Component {
             <FormGroup>
                 <Label for="contributors">Department Manager:</Label>
                 <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
-                       type="select"
-                       name="department_manager"
-                       id="department_manager"
-                       onChange={this.handleInput.bind(this)}>
+                    type="select"
+                    name="department_manager"
+                    id="department_manager"
+                    onChange={this.handleInput.bind(this)}>
                     <option value="">Choose Department Manager</option>
                     {userContent}
                 </Input>
@@ -98,7 +98,6 @@ class AddDepartment extends React.Component {
     }
 
     render () {
-
         const userOptions = this.buildUserOptions()
 
         return (

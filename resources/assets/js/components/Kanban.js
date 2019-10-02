@@ -123,7 +123,7 @@ class Kanban extends Component {
         })
     }
 
-    hideMenu() {
+    hideMenu () {
         const body = document.body
         body.classList.add('open')
         document.getElementsByClassName('navbar-toggler')[0].style.display = 'block'

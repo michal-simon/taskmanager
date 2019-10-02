@@ -2,7 +2,7 @@ import * as React from 'react'
 import MessageDialog from './MessageDialog'
 import MessageBoard from './MessageBoard'
 import axios from 'axios'
-import { Col, Container, ListGroup, ListGroupItem, ModalHeader } from 'reactstrap'
+import { ListGroup, ListGroupItem } from 'reactstrap'
 import MessageCard from './MessageCard'
 
 class MessageContainer extends React.Component {

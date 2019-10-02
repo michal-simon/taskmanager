@@ -52,8 +52,8 @@ class LineItemEditor extends Component {
     }
 
     handleRowDelete (e, row) {
-         const parent = row.target.parentNode.parentNode
-         const index = [...parent.parentNode.children].indexOf(parent)
+        const parent = row.target.parentNode.parentNode
+        const index = [...parent.parentNode.children].indexOf(parent)
         this.props.delete(index)
     }
 

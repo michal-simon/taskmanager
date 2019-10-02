@@ -96,7 +96,6 @@ export default class UserList extends Component {
                     if (this.ignoredColumns && !this.ignoredColumns.includes(key)) {
                         return <td key={key}>{user[key]}</td>
                     }
-
                 })
 
                 return <tr key={user.id}>

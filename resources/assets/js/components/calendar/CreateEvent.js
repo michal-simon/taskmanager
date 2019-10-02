@@ -19,8 +19,9 @@ class CreateEvent extends React.Component {
             users: [],
             errors: [],
             selectedUsers: [],
-            submitSuccess: false,
+            submitSuccess: false
         }
+
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.toggle = this.toggle.bind(this)
@@ -56,7 +57,6 @@ class CreateEvent extends React.Component {
     }
 
     handleClick (event) {
-
         this.setState({ submitSuccess: false, loading: true })
 
         axios.post('/api/events', {
@@ -252,8 +252,8 @@ class CreateEvent extends React.Component {
             <div>
                 {this.state.submitSuccess && (
                     <div className="mt-3 alert alert-info" role="alert">
-                       The event has been created successfully </div>
-                    )}
+                        The event has been created successfully </div>
+                )}
                 {form}
                 {saveButton}
             </div>
