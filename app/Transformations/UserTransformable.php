@@ -22,6 +22,7 @@ trait UserTransformable
         $prop->last_name = $user->last_name;
         $prop->email = $user->email;
         $prop->username = $user->username;
+        $prop->department = $user->departments()->pluck('department_id')->all();
         
         return $prop;
     }

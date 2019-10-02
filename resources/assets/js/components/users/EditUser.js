@@ -14,7 +14,8 @@ class EditUser extends React.Component {
             errors: [],
             user: [],
             roles: [],
-            selectedRoles: []
+            selectedRoles: [],
+            department: 0
         }
 
         this.defaultValues = {
@@ -37,6 +38,7 @@ class EditUser extends React.Component {
         this.getRoleList = this.getRoleList.bind(this)
         this.setDate = this.setDate.bind(this)
         this.buildGenderDropdown = this.buildGenderDropdown.bind(this)
+        this.buildDepartmentOptions = this.buildDepartmentOptions.bind(this)
     }
 
     componentDidMount () {
@@ -60,6 +62,7 @@ class EditUser extends React.Component {
     handleClick () {
         axios.put(`/api/users/${this.state.user.id}`, {
             username: this.state.user.username,
+            department: this.state.user.department,
             email: this.state.user.email,
             first_name: this.state.user.first_name,
             last_name: this.state.user.last_name,
@@ -137,8 +140,29 @@ class EditUser extends React.Component {
         )
     }
 
+    buildDepartmentOptions () {
+        let departmentList
+        if (!this.props.departments.length) {
+            departmentList = <option value="">Loading...</option>
+        } else {
+            departmentList = this.props.departments.map((department, index) => (
+                <option key={index} value={department.id}>{department.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="users">Department</Label>
+                <Input value={this.state.user.department} onChange={this.handleInput.bind(this)} type="select" name="department" id="department">
+                    <option value="">Select Department</option>
+                    {departmentList}
+                </Input>
+                {this.renderErrorFor('department')}
+            </FormGroup>
+        )
+    }
+
     setDate (date) {
-        alert(date)
         this.setValues({ ['dob']: date })
     }
 
@@ -167,6 +191,7 @@ class EditUser extends React.Component {
 
     render () {
         const genderList = this.buildGenderDropdown()
+        const departmentList = this.buildDepartmentOptions()
         const roleList = this.getRoleList()
 
         return (
@@ -212,6 +237,7 @@ class EditUser extends React.Component {
                         </FormGroup>
 
                         {genderList}
+                        {departmentList}
 
                         <DropdownDate selectedDate={this.state.user.dob} classes={this.classes} defaultValues={this.defaultValues} onDateChange={this.setDate}/>
 

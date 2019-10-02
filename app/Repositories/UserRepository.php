@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\User;
+use App\Department;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 use App\Exceptions\CreateUserErrorException;
@@ -108,6 +109,8 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
      */
     public function syncRoles(array $roleIds) {
 
+        $mappedObjects = [];
+
         foreach ($roleIds[0] as $roleId) {
             $mappedObjects[] = $roleId;
         }
@@ -125,11 +128,33 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
     }
 
     /**
+     * 
+     * @param string $username
+     * @return User
+     */
+    public function getUsersForDepartment(Department $objDepartment): Support {
+        return $this->model->join('department_user', 'department_user.user_id', '=', 'users.id')
+                        ->select('users.*')
+                        ->where('department_user.department_id', $objDepartment->id)
+                        ->groupBy('users.id')
+                        ->get();
+    }
+
+    /**
      * @param UploadedFile $file
      * @return string
      */
     public function saveUserImage(UploadedFile $file): string {
         return $file->store('users', ['disk' => 'public']);
+    }
+
+    /**
+     * Sync the categories
+     *
+     * @param array $params
+     */
+    public function syncDepartment(int $department_id) {
+        return $this->model->departments()->sync($department_id);
     }
 
 }

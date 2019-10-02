@@ -12,6 +12,8 @@ use App\Repositories\UserRepository;
 use App\Transformations\UserTransformable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\UploadedFile;
+use App\Repositories\DepartmentRepository;
+use App\Department;
 
 class UserController extends Controller {
 
@@ -38,7 +40,7 @@ class UserController extends Controller {
         $this->roleRepo = $roleRepository;
     }
 
-    public function index(Request $request) {        
+    public function index(Request $request) {
         $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
@@ -78,10 +80,14 @@ class UserController extends Controller {
         $validatedData = $request->validated();
 
         $user = $this->userRepository->createUser($validatedData);
+        $userRepo = new UserRepository($user);
 
         if ($request->has('role')) {
-            $userRepo = new UserRepository($user);
             $userRepo->syncRoles([$request->input('role')]);
+        }
+
+        if ($request->has('department')) {
+            $userRepo->syncDepartment($request->input('department'));
         }
 
         return $this->transformUser($user);
@@ -139,6 +145,10 @@ class UserController extends Controller {
             $user->roles()->sync($request->input('role'));
         }
 
+        if ($request->has('department')) {
+            $userRepo->syncDepartment($request->input('department'));
+        }
+
         return response()->json('Uodated user successfully');
     }
 
@@ -149,7 +159,7 @@ class UserController extends Controller {
             $data['profile_photo'] = $this->userRepository->saveUserImage($request->file('file'));
             $userRepo->updateUser($data);
         }
-        
+
         return response()->json('file uploaded successfully');
     }
 
@@ -161,6 +171,12 @@ class UserController extends Controller {
     public function profile(string $username) {
         $user = $this->userRepository->findUserByUsername($username);
         return response()->json($user);
+    }
+
+    public function filterUsersByDepartment(int $department_id) {
+        $objDepartment = (new DepartmentRepository(new Department))->findDepartmentById($department_id);
+        $users = $this->userRepository->getUsersForDepartment($objDepartment);
+        return response()->json($users);
     }
 
 }

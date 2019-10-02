@@ -17,6 +17,7 @@ class AddUser extends React.Component {
             job_description: '',
             phone_number: '',
             gender: '',
+            department: 0,
             role_id: 0,
             password: '',
             loading: false,
@@ -31,6 +32,7 @@ class AddUser extends React.Component {
         this.getRoleList = this.getRoleList.bind(this)
         this.setDate = this.setDate.bind(this)
         this.buildGenderDropdown = this.buildGenderDropdown.bind(this)
+        this.buildDepartmentOptions = this.buildDepartmentOptions.bind(this)
 
         this.defaultValues = {
             year: 'Select Year',
@@ -79,6 +81,7 @@ class AddUser extends React.Component {
     handleClick () {
         axios.post('/api/users', {
             username: this.state.username,
+            department: this.state.department,
             email: this.state.email,
             first_name: this.state.first_name,
             last_name: this.state.last_name,
@@ -115,13 +118,10 @@ class AddUser extends React.Component {
     }
 
     handleInput (e) {
+
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
-
-    handleChange (event) {
-        this.setState({ name: event.target.value })
     }
 
     toggle () {
@@ -156,6 +156,28 @@ class AddUser extends React.Component {
        )
     }
 
+    buildDepartmentOptions () {
+        let departmentList
+        if (!this.props.departments.length) {
+            departmentList = <option value="">Loading...</option>
+        } else {
+            departmentList = this.props.departments.map((department, index) => (
+                <option key={index} value={department.id}>{department.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="users">Department</Label>
+                <Input onChange={this.handleInput.bind(this)} type="select" name="department" id="department">
+                    <option value="">Select Department</option>
+                    {departmentList}
+                </Input>
+                {this.renderErrorFor('department')}
+            </FormGroup>
+        )
+    }
+
     setDate (date) {
         this.setState({ dob: date })
     }
@@ -185,6 +207,7 @@ class AddUser extends React.Component {
     render () {
         const roleList = this.getRoleList()
         const genderList = this.buildGenderDropdown()
+        const departmentList = this.buildDepartmentOptions()
 
         return (
             <React.Fragment>
@@ -236,6 +259,7 @@ class AddUser extends React.Component {
                         </FormGroup>
 
                         {genderList}
+                        {departmentList}
 
                         <DropdownDate classes={this.classes} defaultValues={this.defaultValues} onDateChange={this.setDate}/>
 

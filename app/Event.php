@@ -30,8 +30,8 @@ class Event extends Authenticatable {
     public function users() {
         return $this->belongsToMany(User::class);
     }
-    
-     public function tasks() {
+
+    public function tasks() {
         return $this->belongsToMany(Task::class);
     }
 
