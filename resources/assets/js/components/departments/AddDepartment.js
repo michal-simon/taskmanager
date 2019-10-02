@@ -89,6 +89,7 @@ class AddDepartment extends React.Component {
                        name="department_manager"
                        id="department_manager"
                        onChange={this.handleInput.bind(this)}>
+                    <option value="">Choose Department Manager</option>
                     {userContent}
                 </Input>
                 {this.renderErrorFor('department_manager')}

@@ -34,17 +34,11 @@ class UserController extends Controller {
      * @param RoleRepositoryInterface $roleRepository
      */
     public function __construct(UserRepositoryInterface $userRepository, RoleRepositoryInterface $roleRepository) {
-        
-        die('Mike 2');
-        
         $this->userRepository = $userRepository;
         $this->roleRepo = $roleRepository;
     }
 
-    public function index(Request $request) {
-        
-        die('Mike');
-        
+    public function index(Request $request) {        
         $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;

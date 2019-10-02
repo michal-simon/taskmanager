@@ -45,6 +45,9 @@ export default class UserList extends Component {
                                 </span>
                                 <label className="name lead">{user.first_name + ' ' + user.last_name}</label>
                                 <br />
+                                <span className="fa fa-phone fa-fw text-muted" data-toggle="tooltip" title="" data-original-title={this.displayCustomerPhone(customer.address)}></span>
+                                <span className="text-muted small">{this.displayCustomerPhone(customer.address)}</span>
+                                <br/>
                                 <span className="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" data-original-title="" title=""></span>
                                 <span className="text-muted small text-truncate">{user.email}</span>
                             </div>

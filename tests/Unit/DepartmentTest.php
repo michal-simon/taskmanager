@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Department;
+use App\User;
 use App\Repositories\DepartmentRepository;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -49,16 +50,18 @@ class DepartmentUnitTest extends TestCase {
 
     /** @test */
     public function it_can_find_a_department() {
+        $user = factory(User::class)->create();
         $data = [
-            'first_name' => $this->faker->firstName,
-            'email' => $this->faker->email,
+            'name' => $this->faker->name,
+            'department_manager' => $user->id,
         ];
+        
         $department = new DepartmentRepository(new Department);
         $created = $department->createDepartment($data);
         $found = $department->findDepartmentById($created->id);
         $this->assertInstanceOf(Department::class, $found);
-        $this->assertEquals($data['first_name'], $found->first_name);
-        $this->assertEquals($data['email'], $found->email);
+        $this->assertEquals($data['name'], $found->name);
+        $this->assertEquals($data['department_manager'], $found->department_manager);
     }
 
     /** @test */
@@ -66,29 +69,29 @@ class DepartmentUnitTest extends TestCase {
         $cust = factory(Department::class)->create();
         $department = new DepartmentRepository($cust);
         $update = [
-            'first_name' => $this->faker->firstName,
+            'name' => $this->faker->name,
         ];
         $updated = $department->updateDepartment($update);
         $this->assertTrue($updated);
-        $this->assertEquals($update['first_name'], $cust->first_name);
+        $this->assertEquals($update['name'], $cust->name);
         $this->assertDatabaseHas('departments', $update);
     }
 
     /** @test */
     public function it_can_create_a_department() {
+
+        $user = factory(User::class)->create();
+
         $data = [
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-            'email' => $this->faker->email,
-            'company_name' => $this->faker->company,
-            'job_title' => $this->faker->jobTitle,
+            'name' => $this->faker->name,
+            'department_manager' => $user->id
         ];
         $department = new DepartmentRepository(new Department);
         $created = $department->createDepartment($data);
         $this->assertInstanceOf(Department::class, $created);
-        $this->assertEquals($data['first_name'], $created->first_name);
-        $this->assertEquals($data['email'], $created->email);
-        $collection = collect($data)->except('password');
+        $this->assertEquals($data['name'], $created->name);
+        $this->assertEquals($data['department_manager'], $created->department_manager);
+        $collection = collect($data);
         $this->assertDatabaseHas('departments', $collection->all());
     }
 

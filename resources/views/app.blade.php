@@ -43,6 +43,15 @@
                 </div>
                 <div id="main-menu" class="main-menu collapse navbar-collapse">
                     <ul class="nav navbar-nav">
+
+                     <li>
+                                                <a href="/dashboard"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                                            </li>
+
+                                             <li>
+                                                                        <a href="/activity"> <i class="menu-icon fa fa-dashboard"></i>Activity </a>
+                                                                    </li>
+
                         <li>
                             <a href="/users"> <i class="menu-icon fa fa-dashboard"></i>Employees </a>
                         </li>

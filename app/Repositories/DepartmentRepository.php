@@ -70,7 +70,7 @@ class DepartmentRepository extends BaseRepository implements DepartmentRepositor
      * @return bool
      * @throws DeleteDepartmentErrorException
      */
-    public function deleteDepartmentById(): bool {
+    public function deleteDepartment(): bool {
         return $this->delete();
     }
 

@@ -40,7 +40,7 @@ class MessageBoard extends React.Component {
                        {messages.map((message) => (
                            <React.Fragment>
                                {!message.parent_id ? (
-                                   <Col key={message.id} xs={12} sm={6} md={3}>
+                                   <Col key={message.id} xs={12} sm={12} md={12}>
                                        <MessageCard
                                            setMode={setMode}
                                            currentMessage={message}

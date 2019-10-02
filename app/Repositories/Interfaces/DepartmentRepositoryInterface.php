@@ -36,5 +36,5 @@ interface DepartmentRepositoryInterface extends BaseRepositoryInterface {
     /**
      * 
      */
-    public function deleteDepartmentById(): bool;
+    public function deleteDepartment(): bool;
 }

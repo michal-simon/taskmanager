@@ -11,6 +11,7 @@ class EditDepartment extends React.Component {
             loading: false,
             errors: [],
             name: this.props.department.name,
+            department_id: this.props.department.id,
             department_manager: this.props.department.department_manager,
             permissions: [],
             attachedPermissions: [],
@@ -56,10 +57,11 @@ class EditDepartment extends React.Component {
                 <Label for="contributors">Department Manager:</Label>
                 <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
                     type="select"
-                    value={this.state.department.department_manager}
+                    value={this.state.department_manager}
                     name="department_manager"
                     id="department_manager"
                     onChange={this.handleInput.bind(this)}>
+                    <option value="">Choose Department Manager</option>
                     {userContent}
                 </Input>
                 {this.renderErrorFor('department_manager')}
@@ -68,10 +70,9 @@ class EditDepartment extends React.Component {
     }
 
     handleClick () {
-        axios.put(`/api/departments/${this.state.department.id}`, {
+        axios.put(`/api/departments/${this.state.department_id}`, {
             name: this.state.name,
-            department_manager: this.state.department_manager,
-            permissions: this.state.attachedPermissions
+            department_manager: this.state.department_manager
         })
             .then((response) => {
                 this.toggle()

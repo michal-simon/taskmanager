@@ -35,9 +35,6 @@ class DepartmentController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request) {
-        
-        die('Mike');
-
         $orderBy = !$request->column ? 'name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
@@ -103,7 +100,7 @@ class DepartmentController extends Controller {
         $department = $this->departmentRepo->findDepartmentById($id);
 
         $departmentRepo = new DepartmentRepository($department);
-        $departmentRepo->deleteDepartmentById();
+        $departmentRepo->deleteDepartment();
         return response()->json('Customer deleted!');
     }
 
