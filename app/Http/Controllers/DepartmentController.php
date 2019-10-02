@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\PermissionRepositoryInterface;
 use App\Repositories\DepartmentRepository;
 use App\Repositories\Interfaces\DepartmentRepositoryInterface;
 use App\Requests\CreateDepartmentRequest;
@@ -22,27 +21,22 @@ class DepartmentController extends Controller {
     private $departmentRepo;
 
     /**
-     * @var PermissionRepositoryInterface
-     */
-    private $permissionRepository;
-
-    /**
      * DepartmentController constructor.
      *
      * @param DepartmentRepositoryInterface $departmentRepository
-     * @param PermissionRepositoryInterface $permissionRepository
      */
     public function __construct(
-    DepartmentRepositoryInterface $departmentRepository, PermissionRepositoryInterface $permissionRepository
+    DepartmentRepositoryInterface $departmentRepository
     ) {
         $this->departmentRepo = $departmentRepository;
-        $this->permissionRepository = $permissionRepository;
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request) {
+        
+        die('Mike');
 
         $orderBy = !$request->column ? 'name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
@@ -75,26 +69,6 @@ class DepartmentController extends Controller {
         $departmentObj = $this->departmentRepo->createDepartment($request->except('_method', '_token'));
         $department = $this->transformDepartment($departmentObj);
         return $department->toJson();
-    }
-
-    /**
-     * @param $id
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function edit($id) {
-        $department = $this->departmentRepo->findDepartmentById($id);
-        $departmentRepo = new DepartmentRepository($department);
-        $attachedPermissionsArrayIds = $departmentRepo->listPermissions()->pluck('id')->all();
-        $permissions = $this->permissionRepository->listPermissions(['*'], 'name', 'asc');
-
-        $arrData = [
-            'permissions' => $permissions->toArray(),
-            'department' => $department->toArray(),
-            'attachedPermissions' => $attachedPermissionsArrayIds
-        ];
-        
-        return response()->json($arrData);
     }
 
     /**

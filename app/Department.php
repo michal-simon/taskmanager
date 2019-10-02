@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\SearchableTrait;
 
-class Role extends Model {
+class Department extends Model {
 
     use SearchableTrait;
     

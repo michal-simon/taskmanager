@@ -1,19 +1,18 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import axios from 'axios'
-import EditDepartment from './EditDepartment'
-import AddDepartment from './AddDepartment'
+import EditBrand from './EditBrand'
+import AddBrand from './AddBrand'
 import { Button } from 'reactstrap'
 import DataTable from '../common/DataTable'
 
-export default class Departments extends Component {
+export default class Brands extends Component {
     constructor (props) {
         super(props)
 
         this.state = {
-            departments: [],
-            errors: [],
-            users: []
+            brands: [],
+            errors: []
         }
 
         this.addUserToState = this.addUserToState.bind(this)
@@ -24,26 +23,26 @@ export default class Departments extends Component {
         this.getUsers()
     }
 
-    addUserToState (departments) {
-        this.setState({ departments: departments })
+    addUserToState (brands) {
+        this.setState({ brands: brands })
     }
 
     userList () {
-        if (this.state.departments && this.state.departments.length) {
-            return this.state.departments.map(department => {
-                const columnList = Object.keys(department).map(key => {
-                    return <td key={key}>{department[key]}</td>
+        if (this.state.brands && this.state.brands.length) {
+            return this.state.brands.map(brand => {
+                const columnList = Object.keys(brand).map(key => {
+                    return <td key={key}>{brand[key]}</td>
                 })
-                return <tr key={department.id}>
+                return <tr key={brand.id}>
 
                     {columnList}
 
                     <td>
-                        <Button color="danger" onClick={() => this.deleteDepartment(department.id)}>Delete</Button>
-                        <EditDepartment
+                        <Button color="danger" onClick={() => this.deleteBrand(brand.id)}>Delete</Button>
+                        <EditBrand
                             users={this.state.users}
-                            department={department}
-                            departments={this.state.departments}
+                            brand={brand}
+                            brands={this.state.brands}
                             action={this.addUserToState}
                         />
                     </td>
@@ -56,14 +55,14 @@ export default class Departments extends Component {
         }
     }
 
-    deleteDepartment (id) {
+    deleteBrand (id) {
         const self = this
-        axios.delete('/api/departments/' + id)
+        axios.delete('/api/brands/' + id)
             .then(function (response) {
-                const arrDepartments = [...self.state.departments]
-                const index = arrDepartments.findIndex(department => department.id === id)
-                arrDepartments.splice(index, 1)
-                self.addUserToState(arrDepartments)
+                const arrBrands = [...self.state.brands]
+                const index = arrBrands.findIndex(brand => brand.id === id)
+                arrBrands.splice(index, 1)
+                self.addUserToState(arrBrands)
             })
             .catch(function (error) {
                 console.log(error)
@@ -86,12 +85,12 @@ export default class Departments extends Component {
     }
 
     render () {
-        const fetchUrl = '/api/departments/'
+        const fetchUrl = '/api/brands/'
 
         return (
             <div className="data-table m-md-3 m-0">
 
-                <AddDepartment users={this.state.users} departments={this.state.departments} action={this.addUserToState}/>
+                <AddBrand users={this.state.users} brands={this.state.brands} action={this.addUserToState}/>
 
                 <DataTable
                     userList={this.userList}

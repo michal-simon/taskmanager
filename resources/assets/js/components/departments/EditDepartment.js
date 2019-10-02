@@ -20,19 +20,11 @@ class EditDepartment extends React.Component {
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.handleMultiSelect = this.handleMultiSelect.bind(this)
-    }
-
-    componentDidMount () {
-
+        this.buildUserOptions = this.buildUserOptions.bind(this)
     }
 
     handleInput (e) {
         this.setState({ [e.target.name]: e.target.value })
-    }
-
-    handleMultiSelect (e) {
-        this.setState({ attachedPermissions: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
     hasErrorFor (field) {
@@ -47,6 +39,32 @@ class EditDepartment extends React.Component {
                 </span>
             )
         }
+    }
+
+    buildUserOptions () {
+        let userContent
+        if (!this.props.users.length) {
+            userContent = <option value="">Loading...</option>
+        } else {
+            userContent = this.props.users.map((user, index) => (
+                <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="contributors">Department Manager:</Label>
+                <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
+                    type="select"
+                    value={this.state.department.department_manager}
+                    name="department_manager"
+                    id="department_manager"
+                    onChange={this.handleInput.bind(this)}>
+                    {userContent}
+                </Input>
+                {this.renderErrorFor('department_manager')}
+            </FormGroup>
+        )
     }
 
     handleClick () {
@@ -76,18 +94,8 @@ class EditDepartment extends React.Component {
     }
 
     render () {
-        let permissionsList = null
-        console.log('state', this.state)
-        if (!this.state.permissions.length) {
-            permissionsList = <option value="">Loading...</option>
-        } else {
-            permissionsList = this.state.permissions.map((permission, index) => {
-                const selected = this.state.attachedPermissions.indexOf(permission.id) > -1 ? 'selected' : ''
-                return (
-                    <option selected={selected} key={index} value={permission.id}>{permission.name}</option>
-                )
-            })
-        }
+        const userOptions = this.buildUserOptions()
+
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Update</Button>
@@ -103,18 +111,7 @@ class EditDepartment extends React.Component {
                             {this.renderErrorFor('name')}
                         </FormGroup>
 
-                        <FormGroup>
-                            <Label for="email">Department Manager(*):</Label>
-                            <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
-                                type="text"
-                                name="department_manager" value={this.state.department_manager}
-                                onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('department_manager')}
-                        </FormGroup>
-
-                        <Input onChange={this.handleMultiSelect} type="select" multiple>
-                            {permissionsList}
-                        </Input>
+                        {userOptions}
 
                     </ModalBody>
 

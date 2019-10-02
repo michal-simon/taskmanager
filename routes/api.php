@@ -55,6 +55,13 @@ Route::delete('roles/{role_id}', 'RoleController@destroy');
 Route::get('roles/{role_id}', 'RoleController@edit');
 Route::put('roles/{role_id}', 'RoleController@update');
 
+//departments
+Route::get('departments', 'DepartmentController@index');
+Route::post('departments', 'DepartmentController@store');
+Route::delete('departments/{department_id}', 'DepartmentController@destroy');
+Route::get('departments/{department_id}', 'DepartmentController@edit');
+Route::put('departments/{department_id}', 'DepartmentController@update');
+
 // comments
 Route::get('comments/{task_id}', 'CommentController@index');
 Route::delete('comments/{comment_id}', 'CommentController@destroy');

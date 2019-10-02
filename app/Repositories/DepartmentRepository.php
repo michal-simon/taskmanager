@@ -3,10 +3,8 @@
 namespace App\Repositories;
 
 use App\Repositories\Base\BaseRepository;
-use App\Permission;
 use App\Repositories\Interfaces\DepartmentRepositoryInterface;
 use App\Department;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 
 class DepartmentRepository extends BaseRepository implements DepartmentRepositoryInterface {

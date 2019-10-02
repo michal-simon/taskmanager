@@ -9,8 +9,8 @@ use App\Traits\SearchableTrait;
 class Role extends Model {
 
     use SearchableTrait;
-    
-      protected $searchable = [
+
+    protected $searchable = [
         /**
          * Columns and their priority in search results.
          * Columns with higher values are more important.
@@ -22,7 +22,6 @@ class Role extends Model {
             'roles.name' => 10
         ]
     ];
-    
     protected $fillable = ['name', 'description'];
 
     /**
@@ -48,7 +47,7 @@ class Role extends Model {
     public function attachPermission(Permission $permission) {
         $this->permissions()->attach([$permission->id]);
     }
-    
+
     /**
      * @param $term
      *

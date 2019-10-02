@@ -13,13 +13,13 @@ class AddDepartment extends React.Component {
             loading: false,
             errors: []
         }
+
+        console.log('props', this.props)
+
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-    }
-
-    handleChange (event) {
-        this.setState({ name: event.target.value })
+        this.buildUserOptions = this.buildUserOptions.bind(this)
     }
 
     handleInput (e) {
@@ -71,7 +71,35 @@ class AddDepartment extends React.Component {
         })
     }
 
+    buildUserOptions () {
+        let userContent
+        if (!this.props.users.length) {
+            userContent = <option value="">Loading...</option>
+        } else {
+            userContent = this.props.users.map((user, index) => (
+                <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="contributors">Department Manager:</Label>
+                <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
+                       type="select"
+                       name="department_manager"
+                       id="department_manager"
+                       onChange={this.handleInput.bind(this)}>
+                    {userContent}
+                </Input>
+                {this.renderErrorFor('department_manager')}
+            </FormGroup>
+        )
+    }
+
     render () {
+
+        const userOptions = this.buildUserOptions()
+
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Add Department</Button>
@@ -87,17 +115,7 @@ class AddDepartment extends React.Component {
                             {this.renderErrorFor('name')}
                         </FormGroup>
 
-                        <FormGroup>
-                            <Label for="email">Department Manager(*):</Label>
-                            <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
-                                type="select"
-                                name="department_manager"
-                                onChange={this.handleInput.bind(this)} >
-
-
-                            </Input>
-                            {this.renderErrorFor('department_manager')}
-                        </FormGroup>
+                        {userOptions}
                     </ModalBody>
 
                     <ModalFooter>
