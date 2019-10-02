@@ -35,11 +35,10 @@ class Subtasks extends React.Component {
 
             let contributors = ''
 
-            if(task.users.length) {
-
+            if (task.users.length) {
                 contributors = task.users.map((user, index) => {
                     return (
-                        <Avatar inline={true} name={user.first_name + ' ' + user.last_name} />
+                        <Avatar key={index} inline={true} name={user.first_name + ' ' + user.last_name} />
                     )
                 })
             }
@@ -61,7 +60,7 @@ class Subtasks extends React.Component {
                         <span className="task-due">Start: {moment(task.startDate).format('DD.MM.YYYY')}</span>
                         <span className="task-due">Due: {moment(task.dueDate).format('DD.MM.YYYY')}</span>
                         <span className="task-contributors">
-                             {contributors}
+                            {contributors}
                         </span>
                     </div>
                 </a>

@@ -91,7 +91,7 @@ class AddProduct extends React.Component {
             <FormGroup>
                 <Label for="users">Categories</Label>
                 <Input defaultValue={this.state.selectedCategories} onChange={this.handleMultiSelect} type="select"
-                       name="category" id="category" multiple>
+                    name="category" id="category" multiple>
                     {categoryList}
                 </Input>
                 {this.renderErrorFor('category')}
@@ -138,7 +138,6 @@ class AddProduct extends React.Component {
     }
 
     render () {
-
         const brandList = this.buildBrandOptions()
         const categoryList = this.buildCategoryOptions()
 

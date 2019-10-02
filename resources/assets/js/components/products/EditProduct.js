@@ -35,7 +35,7 @@ class EditProduct extends React.Component {
             price: this.state.price,
             sku: this.state.sku,
             category: this.state.selectedCategories,
-            brand_id: this.state.brand_id,
+            brand_id: this.state.brand_id
         })
             .then((response) => {
                 this.toggle()
@@ -135,9 +135,7 @@ class EditProduct extends React.Component {
         )
     }
 
-
     render () {
-
         const brandList = this.buildBrandOptions()
         const categoryList = this.buildCategoryOptions()
 

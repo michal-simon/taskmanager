@@ -82,7 +82,6 @@ class AddModal extends React.Component {
     }
 
     handleClick (event) {
-
         this.setState({ submitSuccess: false, loading: true })
 
         axios.post('/api/tasks', {
@@ -160,14 +159,14 @@ class AddModal extends React.Component {
                 <FormGroup>
                     <Label for="start_date">Start Date:</Label>
                     <Input className={this.hasErrorFor('start_date') ? 'is-invalid' : ''} type="datetime-local"
-                           name="start_date" id="start_date" onChange={this.handleInput.bind(this)}/>
+                        name="start_date" id="start_date" onChange={this.handleInput.bind(this)}/>
                     {this.renderErrorFor('start_date')}
                 </FormGroup>
 
                 <FormGroup>
                     <Label for="due_date"> <i className="fa fa-clock" />Due Date:</Label>
                     <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''} type="datetime-local"
-                           name="due_date" id="due_date" onChange={this.handleInput.bind(this)}/>
+                        name="due_date" id="due_date" onChange={this.handleInput.bind(this)}/>
                     {this.renderErrorFor('due_date')}
                 </FormGroup>
 

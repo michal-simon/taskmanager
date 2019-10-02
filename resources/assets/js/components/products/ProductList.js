@@ -22,18 +22,17 @@ export default class ProductList extends Component {
         this.ignore = ['brand_id', 'category_ids', 'status']
     }
 
-    addProductToState (products) {
-        this.setState({ products: products })
-    }
-
     componentDidMount () {
         this.getBrands()
         this.getCategories()
     }
 
-    filter (e) {
+    addProductToState (products) {
+        this.setState({ products: products })
+    }
 
-        if(!e.target.value) {
+    filter (e) {
+        if (!e.target.value) {
             return
         }
 
@@ -124,12 +123,13 @@ export default class ProductList extends Component {
         if (this.state.products && this.state.products.length) {
             return this.state.products.map(product => {
                 const columns = Object.keys(this.state.products[0])
-                const columnList = columns.map(key => {
 
-                    if(this.ignore && !this.ignore.includes(key)) {
+                const columnList = columns.map(key => {
+                    if (this.ignore && !this.ignore.includes(key)) {
                         return <td key={key}>{product[key]}</td>
                     }
                 })
+
                 return <tr key={product.id}>
 
                     {columnList}

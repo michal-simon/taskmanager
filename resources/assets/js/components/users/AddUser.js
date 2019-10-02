@@ -2,7 +2,7 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
-import DropdownDate  from '../common/DropdownDate'
+import DropdownDate from '../common/DropdownDate'
 
 class AddUser extends React.Component {
     constructor (props) {
@@ -118,7 +118,6 @@ class AddUser extends React.Component {
     }
 
     handleInput (e) {
-
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -144,11 +143,11 @@ class AddUser extends React.Component {
             ))
         }
 
-       return (
-           <FormGroup>
-               <Label for="users">Roles</Label>
-               <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
-                      name="role" id="role" multiple>
+        return (
+            <FormGroup>
+                <Label for="users">Roles</Label>
+                <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
+                    name="role" id="role" multiple>
                    {roleList}
                </Input>
                {this.renderErrorFor('users')}
@@ -186,7 +185,7 @@ class AddUser extends React.Component {
         const arrOptions = ['male', 'female']
 
         const options = arrOptions.map(option => {
-            return <option value={option}>{option}</option>
+            return <option key={option} value={option}>{option}</option>
         })
 
         return (

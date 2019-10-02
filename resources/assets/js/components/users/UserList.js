@@ -28,11 +28,9 @@ export default class UserList extends Component {
     }
 
     filterDepartments (e) {
-
         const deptId = e.target.value
 
-        if(deptId === '') {
-            this.setState({ users:cachedResults })
+        if (deptId === '') {
             return
         }
 
@@ -95,13 +93,13 @@ export default class UserList extends Component {
                         return <td key={key}><Avatar name={user.first_name + ' ' + user.last_name}/></td>
                     }
 
-                    if(this.ignoredColumns && !this.ignoredColumns.includes(key)) {
+                    if (this.ignoredColumns && !this.ignoredColumns.includes(key)) {
                         return <td key={key}>{user[key]}</td>
                     }
 
                 })
-                return <tr key={user.id}>
 
+                return <tr key={user.id}>
                     {columnList}
 
                     <td>

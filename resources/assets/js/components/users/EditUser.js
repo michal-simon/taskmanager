@@ -71,7 +71,7 @@ class EditUser extends React.Component {
             job_description: this.state.user.job_description,
             phone_number: this.state.user.phone_number,
             dob: this.state.user.dob,
-            gender: this.state.user.gender,
+            gender: this.state.user.gender
         })
             .then((response) => {
                 const index = this.props.users.findIndex(user => parseInt(user.id) === this.props.user_id)
@@ -163,14 +163,14 @@ class EditUser extends React.Component {
     }
 
     setDate (date) {
-        this.setValues({ ['dob']: date })
+        this.setValues({ dob: date })
     }
 
     buildGenderDropdown () {
         const arrOptions = ['male', 'female']
 
         const options = arrOptions.map(option => {
-            return <option value={option}>{option}</option>
+            return <option key={option} value={option}>{option}</option>
         })
 
         return (

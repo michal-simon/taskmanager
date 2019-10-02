@@ -42,13 +42,13 @@ class EditInvoice extends Component {
     }
 
     componentDidMount () {
-        if(this.props.task_id) {
+        if (this.props.task_id) {
             this.handleTaskChange()
         }
 
         this.loadCustomers()
 
-        if(this.props.task_id || this.props.invoice_id) {
+        if (this.props.task_id || this.props.invoice_id) {
             this.loadInvoice()
         }
     }
@@ -132,7 +132,6 @@ class EditInvoice extends Component {
         axios.get(url)
             .then((r) => {
                 if (r.data.invoice) {
-
                     this.setState({
                         data: r.data.lines,
                         due_date: r.data.invoice.due_date,
@@ -140,7 +139,6 @@ class EditInvoice extends Component {
                         invoice_status: r.data.invoice.invoice_status
                     })
                 }
-
             })
             .catch((e) => {
                 console.warn(e)
@@ -177,14 +175,14 @@ class EditInvoice extends Component {
     handleFieldChange (name, value, row) {
         const newItemArray = this.state.data.map((item, sidx) => {
             if (row !== sidx) return item;
-            return { ...item, [name]: value };
-        });
+            return { ...item, [name]: value }
+        })
 
         this.setState((prevState, props) => {
             return {
                 data: newItemArray
-            };
-        });
+            }
+        })
     }
 
     handleAddFiled () {
@@ -196,14 +194,14 @@ class EditInvoice extends Component {
                     unit_price: 0,
                     product_id: 0
                 })
-            };
-        });
-    };
+            }
+        })
+    }
 
     handleDelete (idx) {
         const newTasks = this.state.data.filter((task, tIndex) => {
-            return idx !== tIndex;
-        });
+            return idx !== tIndex
+        })
 
         this.setState({ data: newTasks })
     }
@@ -213,7 +211,6 @@ class EditInvoice extends Component {
     }
 
     saveData () {
-
         const data = {
             invoice_id: this.state.invoice_id,
             task_id: this.props.task_id,
@@ -225,7 +222,6 @@ class EditInvoice extends Component {
         }
 
         if(!this.state.invoice_id) {
-
             return this.createInvoice('/api/invoice', data)
         }
 

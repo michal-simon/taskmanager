@@ -50,8 +50,8 @@ class LineItem extends Component {
         const lineId = this.props.lineItemData && this.props.lineItemData.lineId ? this.props.lineItemData.lineId : ''
 
         const button = <Button color="danger" onClick={(event) => {
-                this.props.onDelete(lineId, event)
-            }}>Delete</Button>
+            this.props.onDelete(lineId, event)
+        }}>Delete</Button>
 
         const lineForm = (
             <tr data-id={lineId} key={lineId}>

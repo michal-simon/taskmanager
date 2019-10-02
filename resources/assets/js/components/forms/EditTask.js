@@ -11,8 +11,6 @@ class EditTask extends Component {
     constructor (props) {
         super(props)
 
-        console.log('task', this.props.task)
-
         this.state = {
             title: this.props.task.title,
             description: this.props.task.content,
@@ -151,7 +149,7 @@ class EditTask extends Component {
         } else {
             userContent = this.props.users.map((user, index) => (
                 <option key={index}
-                        value={user.id}>{user.first_name + ' ' + user.last_name}</option>
+                    value={user.id}>{user.first_name + ' ' + user.last_name}</option>
             ))
         }
 
@@ -206,8 +204,8 @@ class EditTask extends Component {
                     <FormGroup>
                         <Label>Start Date</Label>
                         <Input type="text" name="start_date"
-                               value={this.state.start_date}
-                               onChange={this.handleChange}/>
+                            value={this.state.start_date}
+                            onChange={this.handleChange}/>
                     </FormGroup>
 
                     <FormGroup>
@@ -250,8 +248,8 @@ class EditTask extends Component {
                     <FormGroup>
                         <Label>Start Date</Label>
                         <Input readOnly type="text" name="start_date" placeholder={this.state.start_date}
-                               value={this.state.start_date}
-                               onDoubleClick={this.handleDoubleClick}/>
+                            value={this.state.start_date}
+                            onDoubleClick={this.handleDoubleClick}/>
                     </FormGroup>
 
                     <FormGroup>

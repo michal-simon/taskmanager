@@ -114,7 +114,7 @@ class AddStory extends React.Component {
             <FormGroup>
                 <Label for="contributors">Customer:</Label>
                 <Input className={this.hasErrorFor('customer_id') ? 'is-invalid' : ''} type="select"
-                       name="customer_id" id="customer_id" onChange={this.handleInput.bind(this)}>
+                    name="customer_id" id="customer_id" onChange={this.handleInput.bind(this)}>
                     <option value="">Choose:</option>
                     {customerList}
                 </Input>

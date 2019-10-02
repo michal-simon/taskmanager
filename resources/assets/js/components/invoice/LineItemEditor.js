@@ -42,17 +42,13 @@ class LineItemEditor extends Component {
 
         this.props.update(e.currentTarget.name, e.currentTarget.value, row)
 
-        if(e.currentTarget.name === 'product_id') {
-
+        if (e.currentTarget.name === 'product_id') {
             const price = e.target[e.target.selectedIndex].getAttribute('data-price')
 
             setTimeout(() => {
                 this.props.update('unit_price', price, row)
-            });
-
-
+            })
         }
-
     }
 
     handleRowDelete (e, row) {
@@ -66,7 +62,6 @@ class LineItemEditor extends Component {
     }
 
     render () {
-
         const lineItemRows = this.props.rows.map((lineItem, index) =>
 
             <LineItem new={true} key={index} lineItemData={lineItem} onChange={this.handleRowChange}

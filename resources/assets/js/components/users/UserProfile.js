@@ -79,8 +79,7 @@ class UserProfile extends React.Component {
     }
 
     render () {
-
-        const imgUrl = this.state.user.profile_photo ? `/storage/${this.state.user.profile_photo}` : "https://cdn.bootstrapsnippet.net/assets/image/dummy-avatar.jpg"
+        const imgUrl = this.state.user.profile_photo ? `/storage/${this.state.user.profile_photo}` : 'https://cdn.bootstrapsnippet.net/assets/image/dummy-avatar.jpg'
         const gender = this.state.user.gender ? this.state.user.gender[0].toUpperCase() + this.state.user.gender.slice(1) : ''
 
         let $imagePreview = (<img className="w-100 rounded border"
@@ -92,23 +91,23 @@ class UserProfile extends React.Component {
         if (this.state.imagePreviewUrl) {
             $imagePreview = (<img className="w-100 rounded border" src={this.state.imagePreviewUrl} alt="icon"/>)
         }
+
         if (this.state.user && this.state.user.id) {
-
-            console.log('user', this.state.user)
-
             button = parseInt(sessionStorage.getItem('user_id')) === this.state.user.id
                 ? <EditUser user={this.state.user} user_id={this.state.user.id}/>
                 : ''
+
             uploadButton = parseInt(sessionStorage.getItem('user_id')) === this.state.user.id
                 ? <label className="btn btn-default btn-file">
                     Browse <input onChange={this.fileChangedHandler.bind(this)} type="file"
                                   style={{ display: 'none' }}/>
                 </label>
                 : ''
+
             userData = (
                 <React.Fragment>
-                    <div class="d-flex align-items-center">
-                        <h2 class="font-weight-bold m-0">
+                    <div className="d-flex align-items-center">
+                        <h2 className="font-weight-bold m-0">
                             {`${this.state.user.first_name} ${this.state.user.last_name}`}
                         </h2>
 
@@ -118,7 +117,7 @@ class UserProfile extends React.Component {
                         {this.state.user.job_description}
                     </p>
 
-                    <section class="d-flex mt-5">
+                    <section className="d-flex mt-5">
                         {button}
                     </section>
 
@@ -154,8 +153,8 @@ class UserProfile extends React.Component {
                     <Col className="pr-md-5" md={4}>
                         {$imagePreview}
                         <div className="pt-4 mt-2">
-                            <section class="mb-4 pb-1">
-                                <h3 class="h6 font-weight-light text-secondary text-uppercase"> Change Profile
+                            <section className="mb-4 pb-1">
+                                <h3 className="h6 font-weight-light text-secondary text-uppercase"> Change Profile
                                     Picture</h3>
                                 <div className="pt-2">
                                     <ToastContainer/>
@@ -163,7 +162,7 @@ class UserProfile extends React.Component {
                                               value={this.state.loaded}>{Math.round(this.state.loaded, 2)}%</Progress>
 
                                     {uploadButton}
-                                    <button className="btn btn-success" onClick={this.submit}>Save changes</button>
+                                    <Button color="success" onClick={this.submit}>Save changes</Button>
                                 </div>
                             </section>
                         </div>
