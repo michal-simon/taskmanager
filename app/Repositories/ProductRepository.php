@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
 use App\Task;
+use App\Brand;
+use App\Category;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface {
 
@@ -100,8 +102,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         }
         return $this->model->searchProduct($text)->get();
     }
-    
-     /**
+
+    /**
      * List all the products
      *
      * @param string $order
@@ -113,6 +115,68 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $this->model->join('product_task', 'product_task.product_id', '=', 'products.id')
                         ->select('products.*')
                         ->where('product_task.task_id', $objTask->id)
+                        ->get();
+    }
+
+    /**
+     * Detach the categories
+     */
+    public function detachCategories() {
+        $this->model->categories()->detach();
+    }
+
+    /**
+     * Return the categories which the product is associated with
+     *
+     * @return Collection
+     */
+    public function getCategories(): Collection {
+        return $this->model->categories()->get();
+    }
+
+    /**
+     * Sync the categories
+     *
+     * @param array $params
+     */
+    public function syncCategories(array $params) {
+        $this->model->categories()->sync($params);
+    }
+
+    /**
+     * @param Brand $brand
+     */
+    public function saveBrand(Brand $brand) {
+        $this->model->brand()->associate($brand);
+    }
+
+    /**
+     * @return Brand
+     */
+    public function findBrand() {
+        return $this->model->brand;
+    }
+
+    /**
+     * 
+     * @param Brand $objBrand
+     * @return Support
+     */
+    public function filterProductsByBrand(Brand $objBrand): Support {
+        return $this->model->where('brand_id', $objBrand->id)->get();
+    }
+
+    /**
+     * 
+     * @param Category $objCategory
+     * @return Support
+     */
+    public function filterProductsByCategory(Category $objCategory): Support {
+
+        return $this->model->join('category_product', 'category_product.product_id', '=', 'products.id')
+                        ->select('products.*')
+                        ->where('category_product.category_id', $objCategory->id)
+                        ->groupBy('products.id')
                         ->get();
     }
 

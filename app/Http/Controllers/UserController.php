@@ -38,7 +38,7 @@ class UserController extends Controller {
         $this->roleRepo = $roleRepository;
     }
 
-    public function index(Request $request) {
+    public function index(Request $request) {        
         $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;

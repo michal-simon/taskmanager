@@ -57,7 +57,11 @@ class EventController extends Controller {
      * @return Response
      */
     public function store(CreateEventRequest $request) {
-         $arrData = [
+
+        $user = auth()->guard('user')->user();
+
+        $arrData = [
+            'created_by' => $user->id,
             'customer_id' => $request->customer_id,
             'title' => $request->title,
             'location' => $request->location,
@@ -66,21 +70,21 @@ class EventController extends Controller {
         ];
 
         $event = $this->eventRepository->createEvent($arrData);
-        
+
         //send notification
-        $user = auth()->guard('user')->user();
+
         Notification::send($user, new EventCreated($event));
-        
-        
+
+
         //attach invited users
         $this->eventRepository->attachUsers($event, $request->users);
-        
+
         $eventRepo = new EventRepository($event);
-        
-         if ($request->has('task_id')) {
-             $eventRepo->syncTask($request->input('task_id'));
+
+        if ($request->has('task_id')) {
+            $eventRepo->syncTask($request->input('task_id'));
         }
-  
+
         return $event->toJson();
     }
 
@@ -120,19 +124,19 @@ class EventController extends Controller {
 
         $eventRepo->attachUsers($event, $request->users);
     }
-    
+
     /**
      * 
      * @param int $task_id
      * @return type
      */
     public function getEventsForTask(int $task_id) {
-        
+
         $objTask = (new TaskRepository(new Task))->findTaskById($task_id);
         $events = $this->eventRepository->getEventsForTask($objTask);
         return $events->toJson();
     }
-    
+
     /**
      * 
      * @param int $user_id

@@ -6,7 +6,10 @@ import Kanban from './Kanban'
 import Calendar from './calendar/Calendars'
 import Roles from './roles/Roles'
 import Invoice from './invoice/Invoice'
+import Brands from './brands/Brands'
+import Categories from './categories/Categories'
 import Customers from './customers/Customers'
+import Departments from './departments/Departments'
 import ChatPage from './chat/ChatPage'
 import Login from './Login'
 import Dashboard from './Dashboard'
@@ -65,6 +68,9 @@ class App extends Component {
                         <Route path='/activity' component={MessageContainer}/>
                         <Route path='/chat' component={ChatPage}/>
                         <Route path='/customers' render={(props) => <Customers {...props} customer_type={1} />}/>
+                        <Route path='/departments' component={Departments}/>
+                        <Route path='/brands' component={Brands}/>
+                        <Route path='/categories' component={Categories}/>
                         <Route path='/invoice' component={Invoice}/>
                         <Route path='/users' component={UserList}/>
                         <Route path='/calendar' component={Calendar}/>
