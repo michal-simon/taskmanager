@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use App\Traits\SearchableTrait;
+use App\Brand;
+use App\Category;
 
 class Product extends Model {
 
@@ -38,14 +40,24 @@ class Product extends Model {
         'slug',
     ];
 
-   /**
+    /**
      * @param $term
      *
      * @return mixed
      */
-    public function searchProduct($term)
-    {
+    public function searchProduct($term) {
         return self::search($term);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function brand() {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function categories() {
+        return $this->belongsToMany(Category::class);
     }
 
 }

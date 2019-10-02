@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import axios from 'axios'
-import EditBrand from './EditBrand'
-import AddBrand from './AddBrand'
+import EditCategory from './EditCategory'
+import AddCategory from './AddCategory'
 import { Button } from 'reactstrap'
 import DataTable from '../common/DataTable'
 

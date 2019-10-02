@@ -37,6 +37,10 @@ use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\ProductRepository;
 use App\Repositories\Interfaces\NotificationRepositoryInterface;
 use App\Repositories\NotificationRepository;
+use App\Repositories\Interfaces\BrandRepositoryInterface;
+use App\Repositories\BrandRepository;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Repositories\CategoryRepository;
 
 class RepositoryServiceProvider extends ServiceProvider {
 
@@ -117,6 +121,14 @@ class RepositoryServiceProvider extends ServiceProvider {
 
         $this->app->bind(
                 ProductRepositoryInterface::class, ProductRepository::class
+        );
+
+        $this->app->bind(
+                BrandRepositoryInterface::class, BrandRepository::class
+        );
+
+        $this->app->bind(
+                CategoryRepositoryInterface::class, CategoryRepository::class
         );
 
         $this->app->bind(
