@@ -20,6 +20,7 @@ export default class UserList extends Component {
         this.cachedResults = []
         this.addUserToState = this.addUserToState.bind(this)
         this.userList = this.userList.bind(this)
+        this.ignoredColumns = ['department']
     }
 
     componentDidMount () {
@@ -94,7 +95,7 @@ export default class UserList extends Component {
                         return <td key={key}><Avatar name={user.first_name + ' ' + user.last_name}/></td>
                     }
 
-                    if(key !== 'department') {
+                    if(this.ignoredColumns && !this.ignoredColumns.includes(key)) {
                         return <td key={key}>{user[key]}</td>
                     }
 
@@ -142,7 +143,7 @@ export default class UserList extends Component {
                 {departmentOptions}
 
                 <DataTable
-                    ignore={['department']}
+                    ignore={this.ignoredColumns}
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}
