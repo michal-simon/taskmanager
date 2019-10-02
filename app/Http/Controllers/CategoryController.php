@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Categories;
+namespace App\Http\Controllers;
 
 use App\Repositories\CategoryRepository;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
@@ -8,8 +8,12 @@ use App\Requests\CreateCategoryRequest;
 use App\Requests\UpdateCategoryRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Category;
+use App\Transformations\CategoryTransformable;
 
 class CategoryController extends Controller {
+    
+    use CategoryTransformable;
 
     /**
      * @var CategoryRepositoryInterface

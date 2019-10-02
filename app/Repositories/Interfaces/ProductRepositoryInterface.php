@@ -7,6 +7,8 @@ use App\Product;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
 use App\Task;
+use App\Brand;
+use App\Category;
 
 interface ProductRepositoryInterface extends BaseRepositoryInterface {
 
@@ -52,11 +54,50 @@ interface ProductRepositoryInterface extends BaseRepositoryInterface {
      * @param string $text
      * @return mixed
      */
-    public function searchProduct(string $text = null) : Collection;
-    
+    public function searchProduct(string $text = null): Collection;
+
     /**
      * 
      * @param \App\Repositories\Interfaces\Task $objTask
      */
     public function getProductsForTask(Task $objTask): Support;
+
+    /**
+     * 
+     */
+    public function detachCategories();
+
+    /**
+     * 
+     */
+    public function getCategories(): Collection;
+
+    /**
+     * 
+     * @param array $params
+     */
+    public function syncCategories(array $params);
+    
+    /**
+     * 
+     * @param Brand $brand
+     */
+    public function saveBrand(Brand $brand);
+    
+    /**
+     * 
+     */
+    public function findBrand();
+    
+    /**
+     * 
+     * @param Brand $objBrand
+     */
+    public function filterProductsByBrand(Brand $objBrand): Support;
+    
+    /**
+     * 
+     * @param \App\Repositories\Interfaces\Category $objCategory
+     */
+    public function filterProductsByCategory(Category $objCategory): Support;
 }

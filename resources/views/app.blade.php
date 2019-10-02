@@ -52,6 +52,14 @@
                                                                         <a href="/activity"> <i class="menu-icon fa fa-dashboard"></i>Activity </a>
                                                                     </li>
 
+                                                                     <li>
+                                                                                                                                            <a href="/brands"> <i class="menu-icon fa fa-dashboard"></i>Brands </a>
+                                                                                                                                        </li>
+
+                                                                                                                                         <li>
+                                                                                                                                                                                                                <a href="/categories"> <i class="menu-icon fa fa-dashboard"></i>Categories </a>
+                                                                                                                                                                                                            </li>
+
                         <li>
                             <a href="/users"> <i class="menu-icon fa fa-dashboard"></i>Employees </a>
                         </li>

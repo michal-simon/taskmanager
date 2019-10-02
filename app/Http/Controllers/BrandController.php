@@ -1,14 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Brands;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\BrandRepository;
-use App\Repositories\BrandRepositoryInterface;
+use App\Repositories\Interfaces\BrandRepositoryInterface;
 use App\Requests\CreateBrandRequest;
 use App\Requests\UpdateBrandRequest;
+use App\Transformations\BrandTransformable;
+use Illuminate\Http\Request;
+use App\Brand;
 
 class BrandController extends Controller {
+    
+    use BrandTransformable;
 
     /**
      * @var BrandRepositoryInterface
@@ -35,7 +40,7 @@ class BrandController extends Controller {
         if (request()->has('search_term') && !empty($request->search_term)) {
             $list = $this->brandRepo->searchBrand(request()->input('search_term'));
         } else {
-            $list = $this->brandRepo->listBrands($orderBy, $orderDir);
+            $list = $this->brandRepo->listBrands(['*'], $orderBy, $orderDir);
         }
 
         $brands = $list->map(function (Brand $brand) {

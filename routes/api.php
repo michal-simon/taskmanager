@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 
- // routes/api.php
+// routes/api.php
 
 Route::get('status/{task_type}', 'TaskStatusController@index');
 Route::get('dashboard', 'DashboardController@index');
@@ -62,6 +62,20 @@ Route::delete('departments/{department_id}', 'DepartmentController@destroy');
 Route::get('departments/{department_id}', 'DepartmentController@edit');
 Route::put('departments/{department_id}', 'DepartmentController@update');
 
+//brands
+Route::get('brands', 'BrandController@index');
+Route::post('brands', 'BrandController@store');
+Route::delete('brands/{brand_id}', 'BrandController@destroy');
+Route::get('brands/{brand_id}', 'BrandController@edit');
+Route::put('brands/{brand_id}', 'BrandController@update');
+
+//categories
+Route::get('categories', 'CategoryController@index');
+Route::post('categories', 'CategoryController@store');
+Route::delete('categories/{category_id}', 'CategoryController@destroy');
+Route::get('categories/{category_id}', 'CategoryController@edit');
+Route::put('categories/{category_id}', 'CategoryController@update');
+
 // comments
 Route::get('comments/{task_id}', 'CommentController@index');
 Route::delete('comments/{comment_id}', 'CommentController@destroy');
@@ -93,6 +107,7 @@ Route::post('products', 'ProductController@store');
 Route::delete('products/{product_id}', 'ProductController@destroy');
 Route::put('products/{product_id}', 'ProductController@update');
 Route::get('products/tasks/{task_id}', 'ProductController@getProductsForTask');
+Route::get('products/filter/{filter_type}/{id}', 'ProductController@filterProducts');
 
 // projects
 Route::get('projects', 'ProjectController@index');

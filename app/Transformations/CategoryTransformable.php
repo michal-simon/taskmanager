@@ -10,6 +10,7 @@ trait CategoryTransformable {
         $prop = new Category;
         $prop->id = (int) $category->id;
         $prop->name = $category->name;
+        $prop->description = $category->description;
         $prop->status = $category->status;
         return $prop;
     }

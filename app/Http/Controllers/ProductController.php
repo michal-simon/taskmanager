@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\Interfaces\BrandRepositoryInterface;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\ProductRepository;
 use App\Requests\CreateProductRequest;
 use App\Requests\UpdateProductRequest;
@@ -11,6 +13,8 @@ use App\Transformations\ProductTransformable;
 use Illuminate\Http\Request;
 use App\Repositories\TaskRepository;
 use App\Task;
+use App\Repositories\BrandRepository;
+use App\Brand;
 
 class ProductController extends Controller {
 
@@ -22,14 +26,28 @@ class ProductController extends Controller {
     private $productRepo;
 
     /**
+     * @var CategoryRepositoryInterface
+     */
+    private $categoryRepo;
+
+    /**
+     * @var BrandRepositoryInterface
+     */
+    private $brandRepo;
+
+    /**
      * ProductController constructor.
      *
      * @param ProductRepositoryInterface $productRepository
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param BrandRepositoryInterface $brandRepository
      */
     public function __construct(
-    ProductRepositoryInterface $productRepository
+    ProductRepositoryInterface $productRepository, CategoryRepositoryInterface $categoryRepository, BrandRepositoryInterface $brandRepository
     ) {
         $this->productRepo = $productRepository;
+        $this->categoryRepo = $categoryRepository;
+        $this->brandRepo = $brandRepository;
     }
 
     /**
@@ -73,6 +91,24 @@ class ProductController extends Controller {
 
         $product = $this->productRepo->createProduct($data);
 
+        $productRepo = new ProductRepository($product);
+
+        if ($request->has('category')) {
+            $productRepo->syncCategories($request->input('category'));
+        } else {
+            $productRepo->detachCategories();
+        }
+
+        if ($request->has('brand')) {
+            $brand = (new BrandRepository(new Brand))->findBrandById($request->input('brand'));
+
+            echo '<pre>';
+            print_r($brand);
+            die;
+
+            $productRepo->saveBrand($brand);
+        }
+
         return $this->transformProduct($product);
     }
 
@@ -93,6 +129,12 @@ class ProductController extends Controller {
         );
 
         $data['slug'] = str_slug($request->input('name'));
+
+        if ($request->has('category')) {
+            $productRepo->syncCategories($request->input('category'));
+        } else {
+            $productRepo->detachCategories();
+        }
 
         $productRepo->updateProduct($data);
 
@@ -118,16 +160,16 @@ class ProductController extends Controller {
         $productRepo = new ProductRepository($product);
         $productRepo->deleteProduct();
     }
-    
+
     /**
      * 
      * @param int $task_id
      * @return type
      */
     public function getProductsForTask(int $task_id) {
-        
+
         $task = (new TaskRepository(new Task))->findTaskById($task_id);
-        
+
         $list = $this->productRepo->getProductsForTask($task);
 
         $products = $list->map(function (Product $product) {
@@ -135,6 +177,31 @@ class ProductController extends Controller {
                 })->all();
 
         return collect($products)->toJson();
+    }
+
+    /**
+     * 
+     * @param string $filter
+     * @param int $id
+     * @return type
+     */
+    public function filterProducts(string $filter, int $id) {
+
+        if ($filter === 'brand') {
+
+            $objBrand = $this->brandRepo->findBrandById($id);
+            $list = $this->productRepo->filterProductsByBrand($objBrand);
+        } else {
+            $objCategory = $this->categoryRepo->findCategoryById($id);
+            $list = $this->productRepo->filterProductsByCategory($objCategory);
+        }
+
+        $products = $list->map(function (Product $product) {
+                    return $this->transformProduct($product);
+                })->all();
+
+
+        return response()->json($products);
     }
 
 }

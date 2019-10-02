@@ -15,11 +15,17 @@ class EditProduct extends React.Component {
             description: this.props.product.description,
             price: this.props.product.price,
             sku: this.props.product.sku,
-            id: this.props.product.id
+            id: this.props.product.id,
+            categories: [],
+            selectedCategories: this.props.product.category_ids ? this.props.product.category_ids : [],
+            brand_id: this.props.product.brand_id
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
+        this.buildCategoryOptions = this.buildCategoryOptions.bind(this)
+        this.buildBrandOptions = this.buildBrandOptions.bind(this)
+        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
     handleClick () {
@@ -27,7 +33,9 @@ class EditProduct extends React.Component {
             name: this.state.name,
             description: this.state.description,
             price: this.state.price,
-            sku: this.state.sku
+            sku: this.state.sku,
+            category: this.state.selectedCategories,
+            brand_id: this.state.brand_id,
         })
             .then((response) => {
                 this.toggle()
@@ -36,6 +44,8 @@ class EditProduct extends React.Component {
                 this.props.products[index].description = this.state.description
                 this.props.products[index].price = this.state.price
                 this.props.products[index].sku = this.state.sku
+                this.props.products[index].brand_id = this.state.brand_id
+                this.props.products[index].category_ids = this.state.selectedCategories
 
                 this.props.action(this.props.products)
             })
@@ -66,13 +76,71 @@ class EditProduct extends React.Component {
         })
     }
 
+    handleMultiSelect (e) {
+        this.setState({ selectedCategories: Array.from(e.target.selectedOptions, (item) => item.value) })
+    }
+
     toggle () {
         this.setState({
             modal: !this.state.modal
         })
     }
 
+    buildCategoryOptions () {
+        let categoryList = null
+        if (!this.props.categories.length) {
+            categoryList = <option value="">Loading...</option>
+        } else {
+            categoryList = this.props.categories.map((category, index) => (
+                <option key={index} value={category.id}>{category.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="category">Categories</Label>
+                <Input defaultValue={this.state.selectedCategories} onChange={this.handleMultiSelect} type="select"
+                    name="category"
+                    id="category" multiple>
+                    {categoryList}
+                </Input>
+                {this.renderErrorFor('category')}
+            </FormGroup>
+        )
+    }
+
+    buildBrandOptions () {
+        let brandList
+        if (!this.props.brands.length) {
+            brandList = <option value="">Loading...</option>
+        } else {
+            brandList = this.props.brands.map((brand, index) => (
+                <option key={index} value={brand.id}>{brand.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="users">Brand</Label>
+                <Input value={this.state.brand_id} onChange={this.handleInput.bind(this)}
+                    type="select"
+                    name="brand_id"
+                    id="brand_id"
+                >
+                    <option value="">Select Brand</option>
+                    {brandList}
+                </Input>
+                {this.renderErrorFor('brand')}
+            </FormGroup>
+        )
+    }
+
+
     render () {
+
+        const brandList = this.buildBrandOptions()
+        const categoryList = this.buildCategoryOptions()
+
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Update</Button>
@@ -120,6 +188,9 @@ class EditProduct extends React.Component {
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('sku')}
                         </FormGroup>
+
+                        {brandList}
+                        {categoryList}
                     </ModalBody>
 
                     <ModalFooter>
