@@ -107,6 +107,8 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
      * @param array $roleIds
      */
     public function syncRoles(array $roleIds) {
+        
+        $mappedObjects = [];
 
         foreach ($roleIds[0] as $roleId) {
             $mappedObjects[] = $roleId;
@@ -130,6 +132,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
      */
     public function saveUserImage(UploadedFile $file): string {
         return $file->store('users', ['disk' => 'public']);
+    }
+
+    /**
+     * Sync the categories
+     *
+     * @param array $params
+     */
+    public function syncDepartment(int $department_id) {
+        return $this->model->departments()->sync($department_id);
     }
 
 }

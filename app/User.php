@@ -9,6 +9,7 @@ use App\Traits\SearchableTrait;
 use Laratrust\Traits\LaratrustUserTrait;
 use App\Message;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Department;
 
 class User extends Authenticatable {
 
@@ -88,6 +89,10 @@ class User extends Authenticatable {
      */
     public function searchUser($term) {
         return self::search($term);
+    }
+
+    public function departments() {
+        return $this->belongsToMany(Department::class);
     }
 
 }

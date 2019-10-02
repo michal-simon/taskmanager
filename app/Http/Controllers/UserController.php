@@ -38,7 +38,7 @@ class UserController extends Controller {
         $this->roleRepo = $roleRepository;
     }
 
-    public function index(Request $request) {        
+    public function index(Request $request) {
         $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
@@ -78,10 +78,14 @@ class UserController extends Controller {
         $validatedData = $request->validated();
 
         $user = $this->userRepository->createUser($validatedData);
+        $userRepo = new UserRepository($user);
 
         if ($request->has('role')) {
-            $userRepo = new UserRepository($user);
             $userRepo->syncRoles([$request->input('role')]);
+        }
+
+        if ($request->has('department')) {
+            $userRepo->syncDepartment($request->input('department'));
         }
 
         return $this->transformUser($user);
@@ -139,6 +143,10 @@ class UserController extends Controller {
             $user->roles()->sync($request->input('role'));
         }
 
+        if ($request->has('department')) {
+            $userRepo->syncDepartment($request->input('department'));
+        }
+
         return response()->json('Uodated user successfully');
     }
 
@@ -149,7 +157,7 @@ class UserController extends Controller {
             $data['profile_photo'] = $this->userRepository->saveUserImage($request->file('file'));
             $userRepo->updateUser($data);
         }
-        
+
         return response()->json('file uploaded successfully');
     }
 

@@ -22,6 +22,7 @@ class CreateUserRequest extends FormRequest {
      */
     public function rules() {
         return [
+            'department' => 'nullable|numeric',
             'gender' => 'nullable|string',
             'job_description' => 'nullable|string',
             'phone_number' => 'nullable|string',
