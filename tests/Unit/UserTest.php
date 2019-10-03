@@ -10,11 +10,13 @@ use Illuminate\Support\Collection;
 use App\Department;
 use App\Role;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Transformations\UserTransformable;
 
 class UserTest extends TestCase {
 
     use DatabaseTransactions,
-        WithFaker;
+        WithFaker,
+        UserTransformable;
 
     public function setUp(): void {
         parent::setUp();
@@ -121,6 +123,28 @@ class UserTest extends TestCase {
         $userRepo = new UserRepository($user);
         $result = $userRepo->syncRoles([0 => [$role->id]]);
         $this->assertArrayHasKey('attached', $result);
+    }
+
+    /** @test */
+    public function it_can_transform_user() {
+        $user = factory(User::class)->create();
+
+        $arrUser = [
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'username' => $this->faker->userName,
+            'email' => $this->faker->email,
+            'password' => $this->faker->password,
+            'is_active' => 1
+        ];
+
+        $user = factory(User::class)->create($arrUser);
+        $transformed = $this->transformUser($user);
+
+        $this->assertEquals($arrUser['first_name'], $transformed->first_name);
+        $this->assertEquals($arrUser['last_name'], $transformed->last_name);
+        $this->assertEquals($arrUser['username'], $transformed->username);
+        $this->assertEquals($arrUser['email'], $transformed->email);
     }
 
     public function tearDown(): void {

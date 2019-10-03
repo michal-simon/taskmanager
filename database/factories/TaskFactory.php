@@ -27,6 +27,7 @@ $factory->define(Task::class, function (Faker $faker) {
         'due_date' => $faker->dateTime(),
         'task_type' => 2,
         'source_type' => 1,
+        'task_status' => 1,
         'valued_at' => $faker->randomNumber(3)
     ];
 });

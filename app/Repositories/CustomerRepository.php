@@ -109,10 +109,19 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
 
         $date = Carbon::today()->subDays($number_of_days);
         $result = $this->model->select(DB::raw('count(*) as total'))
-                        ->where('created_at', '>=', $date)
-                        ->get();
-        
-        return !empty($result[0]) ? $result[0]['total'] : 0; 
+                ->where('created_at', '>=', $date)
+                ->get();
+
+        return !empty($result[0]) ? $result[0]['total'] : 0;
+    }
+
+    /**
+     * Find the address attached to the customer
+     *
+     * @return mixed
+     */
+    public function findAddresses(): Support {
+        return $this->model->addresses;
     }
 
 }

@@ -12,11 +12,13 @@ use App\Customer;
 use App\Repositories\TaskRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Transformations\TaskTransformable;
 
 class TaskTest extends TestCase {
 
     use DatabaseTransactions,
-        WithFaker;
+        WithFaker,
+        TaskTransformable;
 
     private $user;
     private $customer;
@@ -116,6 +118,30 @@ class TaskTest extends TestCase {
         $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
         $task = new TaskRepository(new Task);
         $task->findTaskById(999);
+    }
+
+    /** @test */
+    public function it_can_transform_task() {
+        $customer = factory(Customer::class)->create();
+
+        $title = $this->faker->title;
+        $content = $this->faker->sentence;
+        $due_date = $this->faker->dateTime;
+        $task_type = 2;
+
+        $address = factory(Task::class)->create([
+            'title' => $title,
+            'content' => $content,
+            'due_date' => $due_date,
+            'task_type' => $task_type
+        ]);
+
+        $transformed = $this->transformTask($address);
+
+        $this->assertEquals($title, $transformed->title);
+        $this->assertEquals($content, $transformed->content);
+        $this->assertEquals($due_date, $transformed->due_date);
+        $this->assertEquals($task_type, $transformed->task_type);
     }
 
     public function tearDown(): void {

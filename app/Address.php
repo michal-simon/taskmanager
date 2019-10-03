@@ -10,6 +10,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\SearchableTrait;
+use App\Customer;
 
 /**
  * Description of Address
@@ -17,8 +19,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @author michael.hampton
  */
 class Address extends Model {
-    
-    use SoftDeletes;
+
+    use SoftDeletes,
+        SearchableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -38,5 +41,43 @@ class Address extends Model {
         'status',
         'phone'
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [];
+    protected $dates = ['deleted_at'];
+
+    /**
+     * Searchable rules.
+     *
+     * @var array
+     */
+    protected $searchable = [
+        'columns' => [
+            'alias' => 5,
+            'address_1' => 10,
+            'address_2' => 5,
+            'zip' => 5,
+            'city' => 10,
+            'state_code' => 10,
+            'phone' => 5
+        ]
+    ];
+
+    /**
+     * @param $term
+     *
+     * @return mixed
+     */
+    public function searchAddress($term) {
+        return self::search($term);
+    }
+
+    public function customer() {
+        return $this->belongsTo(Customer::class);
+    }
 
 }

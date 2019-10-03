@@ -6,6 +6,7 @@ use App\Address;
 use Illuminate\Support\Collection;
 use App\Repositories\Base\BaseRepository;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
+use App\Customer;
 
 class AddressRepository extends BaseRepository implements AddressRepositoryInterface {
     //use AddressTransformable;
@@ -58,4 +59,50 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
     public function findAddressById(int $id): Address {
         return $this->findOneOrFail($id);
     }
+
+    /**
+     * Return the customer owner of the address
+     *
+     * @return Customer
+     */
+    public function findCustomer(): Customer {
+        return $this->model->customer;
+    }
+
+    /**
+     * Return the address
+     *
+     * @param int $id
+     *
+     * @return Address
+     * @throws AddressNotFoundException
+     */
+    public function findCustomerAddressById(int $id, Customer $customer): Address {
+        return $customer
+                        ->addresses()
+                        ->whereId($id)
+                        ->firstOrFail();
+    }
+
+    /**
+     * Attach the customer to the address
+     *
+     * @param Address $address
+     * @param Customer $customer
+     */
+    public function attachToCustomer(Address $address, Customer $customer) {
+        $customer->addresses()->save($address);
+    }
+
+    /**
+     * @param string $text
+     * @return mixed
+     */
+    public function searchAddress(string $text = null): Collection {
+        if (is_null($text)) {
+            return $this->all(['*'], 'address_1', 'asc');
+        }
+        return $this->model->searchAddress($text)->get();
+    }
+
 }

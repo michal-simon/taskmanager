@@ -39,7 +39,7 @@ class BrandUnitTest extends TestCase {
     /** @test */
     public function it_can_update_the_brand() {
         $brand = factory(Brand::class)->create();
-        $data = ['name' => 'Argentina'];
+        $data = ['name' => $this->faker->company];
         $brandRepo = new BrandRepository($brand);
         $updated = $brandRepo->updateBrand($data);
         $found = $brandRepo->findBrandById($brand->id);
@@ -58,7 +58,18 @@ class BrandUnitTest extends TestCase {
 
     /** @test */
     public function it_can_create_a_brand() {
-        $data = ['name' => $this->faker->company];
+
+        $data = [
+            'name' => $this->faker->company,
+            'website' => $this->faker->url,
+            'phone_number' => $this->faker->phoneNumber,
+            'email' => $this->faker->email,
+            'address_1' => $this->faker->streetName,
+            'address_2' => $this->faker->streetAddress,
+            'town' => $this->faker->word,
+            'city' => $this->faker->city,
+            'postcode' => $this->faker->postcode
+        ];
         $brandRepo = new BrandRepository(new Brand);
         $brand = $brandRepo->createBrand($data);
         $this->assertInstanceOf(Brand::class, $brand);

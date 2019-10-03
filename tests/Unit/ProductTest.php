@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Transformations\ProductTransformable;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
+use App\Category;
 
 class ProductTest extends TestCase {
 
@@ -132,6 +133,20 @@ class ProductTest extends TestCase {
         $this->assertEquals($params['description'], $created->description);
         $this->assertEquals($params['price'], $created->price);
         $this->assertEquals($params['status'], $created->status);
+    }
+
+    /** @test */
+    public function it_can_detach_all_the_categories() {
+        $product = factory(Product::class)->create();
+        $categories = factory(Category::class, 4)->create();
+        $productRepo = new ProductRepository($product);
+        $ids = $categories->transform(function (Category $category) {
+                    return $category->id;
+                })->all();
+        $productRepo->syncCategories($ids);
+        $this->assertCount(4, $productRepo->getCategories());
+        $productRepo->detachCategories();
+        $this->assertCount(0, $productRepo->getCategories());
     }
 
     public function tearDown(): void {
