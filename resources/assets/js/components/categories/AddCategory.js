@@ -9,6 +9,7 @@ class AddCategory extends React.Component {
         this.state = {
             modal: false,
             name: '',
+            parent: 0,
             description: '',
             status: 1,
             loading: false,
@@ -18,6 +19,7 @@ class AddCategory extends React.Component {
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
+        this.buildParentOptions = this.buildParentOptions.bind(this)
     }
 
     handleInput (e) {
@@ -42,6 +44,7 @@ class AddCategory extends React.Component {
 
     handleClick () {
         axios.post('/api/categories', {
+            parent: this.state.parent,
             name: this.state.name,
             description: this.state.description,
             status: this.state.status
@@ -70,7 +73,35 @@ class AddCategory extends React.Component {
         })
     }
 
+    buildParentOptions () {
+        let categoryList
+        if (!this.props.categories.length) {
+            categoryList = <option value="">Loading...</option>
+        } else {
+            categoryList = this.props.categories.map((category, index) => (
+                <option key={index} value={category.id}>{category.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="gender">Parent:</Label>
+                <Input className={this.hasErrorFor('parent') ? 'is-invalid' : ''}
+                       type="select"
+                       name="parent"
+                       onChange={this.handleInput.bind(this)}>
+                    <option value="">Select Parent</option>
+                    {categoryList}
+                </Input>
+                {this.renderErrorFor('parent')}
+            </FormGroup>
+        )
+    }
+
     render () {
+
+        const parentDropdown = this.buildParentOptions()
+
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Add Category</Button>
@@ -91,6 +122,8 @@ class AddCategory extends React.Component {
                                 placeholder="Description" onChange={this.handleInput.bind(this)} />
                             {this.renderErrorFor('description')}
                         </FormGroup>
+
+                        {parentDropdown}
 
                         <FormGroup>
                             <Label for="cover">Cover </Label>

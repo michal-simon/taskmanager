@@ -12,6 +12,7 @@ class EditCategory extends React.Component {
             description: this.props.category.description,
             status: this.props.category.status,
             id: this.props.category.id,
+            parent: this.props.category.parent_id,
             loading: false,
             errors: []
         }
@@ -19,6 +20,7 @@ class EditCategory extends React.Component {
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
+        this.buildParentOptions = this.buildParentOptions.bind(this)
     }
 
     handleInput (e) {
@@ -45,7 +47,8 @@ class EditCategory extends React.Component {
         axios.put(`/api/categories/${this.state.id}`, {
             name: this.state.name,
             description: this.state.description,
-            status: this.state.status
+            status: this.state.status,
+            parent: this.state.parent,
         })
             .then((response) => {
                 this.toggle()
@@ -67,7 +70,36 @@ class EditCategory extends React.Component {
         })
     }
 
+    buildParentOptions () {
+        let categoryList
+        if (!this.props.categories.length) {
+            categoryList = <option value="">Loading...</option>
+        } else {
+            categoryList = this.props.categories.map((category, index) => (
+                <option key={index} value={category.id}>{category.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="gender">Parent:</Label>
+                <Input className={this.hasErrorFor('parent') ? 'is-invalid' : ''}
+                       value={this.state.parent}
+                       type="select"
+                       name="parent"
+                       onChange={this.handleInput.bind(this)}>
+                    <option value="">Select Parent</option>
+                    {categoryList}
+                </Input>
+                {this.renderErrorFor('parent')}
+            </FormGroup>
+        )
+    }
+
     render () {
+
+        const parentDropdown = this.buildParentOptions()
+
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Edit Category</Button>
@@ -97,6 +129,8 @@ class EditCategory extends React.Component {
                                 placeholder="Description" onChange={this.handleInput.bind(this)} />
                             {this.renderErrorFor('description')}
                         </FormGroup>
+
+                        {parentDropdown}
 
                         <FormGroup>
                             <Label for="cover">Cover </Label>

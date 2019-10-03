@@ -17,6 +17,7 @@ export default class Brands extends Component {
 
         this.addUserToState = this.addUserToState.bind(this)
         this.userList = this.userList.bind(this)
+        this.ignoredColumns = ['status', 'parent_id']
     }
 
     componentDidMount () {
@@ -31,7 +32,9 @@ export default class Brands extends Component {
         if (this.state.categories && this.state.categories.length) {
             return this.state.categories.map(category => {
                 const columnList = Object.keys(category).map(key => {
-                    return <td key={key}>{category[key]}</td>
+                    if (this.ignoredColumns && !this.ignoredColumns.includes(key)) {
+                        return <td key={key}>{category[key]}</td>
+                    }
                 })
                 return <tr key={category.id}>
 
@@ -90,9 +93,14 @@ export default class Brands extends Component {
         return (
             <div className="data-table m-md-3 m-0">
 
-                <AddCategory users={this.state.users} categories={this.state.categories} action={this.addUserToState}/>
+                <AddCategory
+                    users={this.state.users}
+                    categories={this.state.categories}
+                    action={this.addUserToState}
+                />
 
                 <DataTable
+                    ignore={this.ignoredColumns}
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}

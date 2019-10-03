@@ -69,7 +69,7 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
         }
         $merge = $collection->merge(compact('slug', 'cover'));
         $category = new Category($merge->all());
-        if (isset($params['parent'])) {
+        if (isset($params['parent']) && !empty($params['parent'])) {
             $parent = $this->findCategoryById($params['parent']);
             $category->parent()->associate($parent);
         }
