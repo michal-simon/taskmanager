@@ -4,7 +4,7 @@ import axios from 'axios'
 import AddCustomer from './AddCustomer'
 import EditCustomer from './EditCustomer'
 import { Button } from 'reactstrap'
-import Directory from '../common/Directory'
+import DataTable from '../common/DataTable'
 import Avatar from '../common/Avatar'
 
 export default class Customers extends Component {
@@ -17,6 +17,7 @@ export default class Customers extends Component {
 
         this.updateCustomers = this.updateCustomers.bind(this)
         this.customerList = this.customerList.bind(this)
+        this.ignoredColumns = []
     }
 
     updateCustomers (customers) {
@@ -25,62 +26,44 @@ export default class Customers extends Component {
 
     customerList () {
         if (this.state.customers && this.state.customers.length) {
+            return this.state.customers.map(customer => {
+                console.log('columns', Object.keys(customer))
+                const test = Object.keys(customer).map((index, element) => {
+                    if (index === 'address') {
+                        return (
+                            <React.Fragment>
+                                {this.displayCustomerAddress(customer[index])}
+                            </React.Fragment>
+                        )
+                    } else if (index === 'id') {
+                        return <td><Avatar name={customer.name}/></td>
+                    } else {
+                        return (
+                            <td>{customer[index]}</td>
+                        )
+                    }
+                })
+                return (
+                    <tr key={customer.id}>
+                        {test}
+                        <td>
+                            <EditCustomer
+                                customer_type={this.props.customer_type}
+                                id={customer.id}
+                                action={this.updateCustomers}
+                                customers={this.state.customers}
+                                modal={true}
+                            />
+                            <Button color="danger" onClick={() => this.deleteCustomer(customer.id)}>Delete</Button>
 
-            const list = this.state.customers.map(customer => {
-
-               return (
-                    <li className="list-group-item">
-                        <div className="row w-100">
-                            <div className="col-12 col-sm-6 col-md-3 px-0">
-                                {/*<img src="http://demos.themes.guide/bodeo/assets/images/users/m101.jpg" alt="Mike Anamendolla" className="rounded-circle mx-auto d-block img-fluid" />*/}
-                                <Avatar lg={true} name={customer.name} />
-
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-9 text-center text-sm-left">
-                                <span className="float-right pulse" title="online now">
-                                    <EditCustomer
-                                        customer_type={this.props.customer_type}
-                                        id={customer.id}
-                                        action={this.updateCustomers}
-                                        customers={this.state.customers}
-                                        modal={true}
-                                    />
-
-                                    <Button color="danger" onClick={() => this.deleteCustomer(customer.id)}>Delete</Button>
-
-                                </span>
-                                <label className="name lead">{customer.name}</label>
-                                <br />
-                                <span className="fa fa-map-marker fa-fw text-muted" data-toggle="tooltip" title="" data-original-title={this.displayCustomerAddress(customer.address)}></span>
-                                <span className="text-muted">{this.displayCustomerAddress(customer.address)}</span>
-                                <br />
-                                <span className="fa fa-phone fa-fw text-muted" data-toggle="tooltip" title="" data-original-title={this.displayCustomerPhone(customer.address)}></span>
-                                <span className="text-muted small">{this.displayCustomerPhone(customer.address)}</span>
-                                <br />
-                                <span className="fa fa-envelope fa-fw text-muted" data-toggle="tooltip" data-original-title="" title=""></span>
-                                <span className="text-muted small text-truncate">{customer.email}</span>
-                            </div>
-                        </div>
-                    </li>
-               )
-
+                        </td>
+                    </tr>
+                )
             })
-
-
-            return (
-                <div className="col-12 mt-3">
-                    <div className="card card-default" id="card_contacts">
-                        <div id="contacts" className="panel-collapse collapse show">
-                            <ul className="pull-down list-group" id="contact-list">
-                                {list}
-                            </ul>  
-                        </div>  
-                    </div>    
-                </div>
-            )
-
         } else {
-            return <p className="text-center">No Records Found.</p>
+            return <tr>
+                <td className="text-center">No Records Found.</td>
+            </tr>
         }
     }
 
@@ -94,7 +77,6 @@ export default class Customers extends Component {
     }
 
     displayCustomerAddress (address) {
-
         if (!address) {
             return ''
         }
@@ -107,12 +89,15 @@ export default class Customers extends Component {
     }
 
     displayCustomerPhone (address) {
-
         if (!address) {
-            return (<span />)
+            return (<span>&nbsp</span>)
         }
-
-        return (<span key={address.id}>{address.phone}</span>)
+        const phone = address.map(function (address) {
+            return (<span key={address.id}>{address.phone}</span>)
+        })
+        return (
+            <td>{phone}</td>
+        )
     }
 
     render () {
@@ -127,7 +112,7 @@ export default class Customers extends Component {
                     customers={this.state.customers}
                 />
 
-                <Directory
+                <DataTable
                     userList={this.customerList}
                     fetchUrl={fetchUrl}
                     updateState={this.updateCustomers}
@@ -136,3 +121,4 @@ export default class Customers extends Component {
         )
     }
 }
+
