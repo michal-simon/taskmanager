@@ -12,6 +12,7 @@ class EditDepartment extends React.Component {
             errors: [],
             name: this.props.department.name,
             department_id: this.props.department.id,
+            parent: this.props.department.parent_id,
             department_manager: this.props.department.department_manager,
             permissions: [],
             attachedPermissions: [],
@@ -22,6 +23,7 @@ class EditDepartment extends React.Component {
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.buildUserOptions = this.buildUserOptions.bind(this)
+        this.buildParentOptions = this.buildParentOptions.bind(this)
     }
 
     handleInput (e) {
@@ -69,10 +71,37 @@ class EditDepartment extends React.Component {
         )
     }
 
+    buildParentOptions () {
+        let departmentList
+        if (!this.props.departments.length) {
+            departmentList = <option value="">Loading...</option>
+        } else {
+            departmentList = this.props.departments.map((department, index) => (
+                <option key={index} value={department.id}>{department.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="gender">Parent:</Label>
+                <Input className={this.hasErrorFor('parent') ? 'is-invalid' : ''}
+                       value={this.state.parent}
+                       type="select"
+                       name="parent"
+                       onChange={this.handleInput.bind(this)}>
+                    <option value="">Select Parent</option>
+                    {departmentList}
+                </Input>
+                {this.renderErrorFor('parent')}
+            </FormGroup>
+        )
+    }
+
     handleClick () {
         axios.put(`/api/departments/${this.state.department_id}`, {
             name: this.state.name,
-            department_manager: this.state.department_manager
+            department_manager: this.state.department_manager,
+            parent: this.state.parent
         })
             .then((response) => {
                 this.toggle()
@@ -96,6 +125,7 @@ class EditDepartment extends React.Component {
 
     render () {
         const userOptions = this.buildUserOptions()
+        const parentDropdown = this.buildParentOptions()
 
         return (
             <React.Fragment>
@@ -112,6 +142,7 @@ class EditDepartment extends React.Component {
                             {this.renderErrorFor('name')}
                         </FormGroup>
 
+                        {parentDropdown}
                         {userOptions}
 
                     </ModalBody>

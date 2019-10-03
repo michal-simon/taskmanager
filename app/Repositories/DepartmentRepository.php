@@ -42,7 +42,7 @@ class DepartmentRepository extends BaseRepository implements DepartmentRepositor
     public function createDepartment(array $data): Department {
         $department = new Department($data);
 
-        if (isset($data['parent'])) {
+        if (isset($data['parent']) && !empty($data['parent'])) {
             $parent = $this->findDepartmentById($data['parent']);
             $department->parent()->associate($parent);
         }
@@ -71,7 +71,7 @@ class DepartmentRepository extends BaseRepository implements DepartmentRepositor
 
         $department = $this->findDepartmentById($this->model->id);
         // set parent attribute default value if not set
-        $data['parent'] = $params['parent'] ?? 0;
+        $data['parent'] = $data['parent'] ?? 0;
 
         if ((int) $data['parent'] == 0) {
             $department->saveAsRoot();

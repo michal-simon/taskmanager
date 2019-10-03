@@ -94,10 +94,12 @@ export default class DataTable extends Component {
             cancelToken: this.cancel.token
         })
             .then(response => {
-                this.setState({ entities: response.data, loading: false })
-                const columns = this.props.columns && this.props.columns.length ? this.props.columns : Object.keys(response.data.data[0])
-                this.setState({ columns: columns })
-                this.props.updateState(response.data.data)
+                if(response.data && Object.keys(response.data).length) {
+                    this.setState({ entities: response.data, loading: false })
+                    const columns = this.props.columns && this.props.columns.length ? this.props.columns : Object.keys(response.data.data[0])
+                    this.setState({ columns: columns })
+                    this.props.updateState(response.data.data)
+                }
             })
             .catch(error => {
                 if (axios.isCancel(error) || error) {

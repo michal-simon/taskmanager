@@ -18,6 +18,7 @@ export default class Departments extends Component {
 
         this.addUserToState = this.addUserToState.bind(this)
         this.userList = this.userList.bind(this)
+        this.ignoredColumns = ['department_manager', 'parent_id']
     }
 
     componentDidMount () {
@@ -32,7 +33,9 @@ export default class Departments extends Component {
         if (this.state.departments && this.state.departments.length) {
             return this.state.departments.map(department => {
                 const columnList = Object.keys(department).map(key => {
-                    return <td key={key}>{department[key]}</td>
+                    if (this.ignoredColumns && !this.ignoredColumns.includes(key)) {
+                        return <td key={key}>{department[key]}</td>
+                    }
                 })
                 return <tr key={department.id}>
 
@@ -94,6 +97,7 @@ export default class Departments extends Component {
                 <AddDepartment users={this.state.users} departments={this.state.departments} action={this.addUserToState}/>
 
                 <DataTable
+                    ignore={this.ignoredColumns}
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}

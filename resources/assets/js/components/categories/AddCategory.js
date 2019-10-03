@@ -99,7 +99,6 @@ class AddCategory extends React.Component {
     }
 
     render () {
-
         const parentDropdown = this.buildParentOptions()
 
         return (
