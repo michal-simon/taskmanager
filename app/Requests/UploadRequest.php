@@ -2,32 +2,21 @@
 
 namespace App\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Repositories\Base\BaseFormRequest;
 
-class UploadRequest extends FormRequest
-{
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+class UploadRequest extends BaseFormRequest {
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'filename.*' => 'mimes:doc,pdf,docx,jpg,png,gif',
-            'file'=> 'required',
-            'task_id'=> 'required',
-            'user_id'=> 'required',
+            'file' => 'required',
+            'task_id' => 'required',
+            'user_id' => 'required',
         ];
     }
 
@@ -36,12 +25,12 @@ class UploadRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
-    {
+    public function messages() {
         return [
             'photos.required' => 'You must select a file!',
             'task_id.required' => 'There was an unexpected error!',
             'user_id.required' => 'There was an unexpected error!',
         ];
     }
+
 }

@@ -2,19 +2,9 @@
 
 namespace App\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use App\Repositories\Base\BaseFormRequest;
 
-class CreateEventRequest extends FormRequest {
-
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize() {
-        return true;
-    }
+class CreateEventRequest extends BaseFormRequest {
 
     /**
      * Get the validation rules that apply to the request.

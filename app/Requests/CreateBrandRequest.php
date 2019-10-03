@@ -2,18 +2,9 @@
 
 namespace App\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Repositories\Base\BaseFormRequest;
 
-class CreateBrandRequest extends FormRequest {
-    
-     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize() {
-        return true;
-    }
+class CreateBrandRequest extends BaseFormRequest {
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +13,14 @@ class CreateBrandRequest extends FormRequest {
      */
     public function rules() {
         return [
-            'name' => ['required', 'unique:brands']
+            'name' => ['required', 'unique:brands'],
+            'website' => ['required', 'string'],
+            'phone_number' => ['required', 'string'],
+            'email' => ['required', 'string'],
+            'address_1' => ['required', 'string'],
+            'city' => ['required', 'string'],
+            'town' => ['required', 'string'],
+            'postcode' => ['required', 'string'],
         ];
     }
 

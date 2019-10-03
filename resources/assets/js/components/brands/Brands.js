@@ -17,6 +17,7 @@ export default class Brands extends Component {
 
         this.addUserToState = this.addUserToState.bind(this)
         this.userList = this.userList.bind(this)
+        this.ignoredColumns = ['address_1', 'address_2', 'postcode', 'town', 'city']
     }
 
     componentDidMount () {
@@ -31,7 +32,10 @@ export default class Brands extends Component {
         if (this.state.brands && this.state.brands.length) {
             return this.state.brands.map(brand => {
                 const columnList = Object.keys(brand).map(key => {
-                    return <td key={key}>{brand[key]}</td>
+
+                    if (this.ignoredColumns && !this.ignoredColumns.includes(key)) {
+                        return <td key={key}>{brand[key]}</td>
+                    }
                 })
                 return <tr key={brand.id}>
 
@@ -93,6 +97,7 @@ export default class Brands extends Component {
                 <AddBrand users={this.state.users} brands={this.state.brands} action={this.addUserToState}/>
 
                 <DataTable
+                    ignore={this.ignoredColumns}
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}

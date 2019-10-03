@@ -1,24 +1,18 @@
 <?php
+
 namespace App\Requests;
-use Illuminate\Foundation\Http\FormRequest;
+
+use App\Repositories\Base\BaseFormRequest;
 use Illuminate\Validation\Rule;
-class UpdateCustomerRequest extends FormRequest
-{
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize() {
-        return true;
-    }
+
+class UpdateCustomerRequest extends BaseFormRequest {
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'address_1' => ['required'],
             'first_name' => ['required'],
@@ -26,4 +20,5 @@ class UpdateCustomerRequest extends FormRequest
             'email' => ['required', 'email', Rule::unique('customers')->ignore($this->segment(3))]
         ];
     }
+
 }

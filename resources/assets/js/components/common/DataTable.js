@@ -101,6 +101,7 @@ export default class DataTable extends Component {
             })
             .catch(error => {
                 if (axios.isCancel(error) || error) {
+                    console.log('error', error)
                     this.setState({
                         loading: false,
                         message: 'Failed to fetch the data. Please check network'
@@ -116,14 +117,17 @@ export default class DataTable extends Component {
         } else {
             icon = <i className="fa fa-arrow-down" />
         }
-        return this.state.columns.map(column => {
-            if (this.props.ignore && !this.props.ignore.includes(column)) {
-                return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
-                    {this.columnHead(column)}
-                    {icon}
-                </th>
-            }
-        })
+
+        if(this.state.columns && this.state.columns.length) {
+            return this.state.columns.map(column => {
+                if (!this.props.ignore || (this.props.ignore.length && !this.props.ignore.includes(column))) {
+                    return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
+                        {this.columnHead(column)}
+                        {icon}
+                    </th>
+                }
+            })
+        }
     }
 
     sortByColumn (column) {
