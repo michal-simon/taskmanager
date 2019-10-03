@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\User;
 use App\Task;
+use App\Customer;
 
 class Event extends Authenticatable {
 
@@ -35,4 +36,7 @@ class Event extends Authenticatable {
         return $this->belongsToMany(Task::class);
     }
 
+    public function customer() {
+        return $this->belongsTo(Customer::class);
+    }
 }

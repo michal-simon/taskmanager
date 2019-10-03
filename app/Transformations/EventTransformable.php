@@ -16,7 +16,8 @@ trait EventTransformable {
      */
     protected function transformEvent(Event $event) {
         $prop = new Event;
-        $customer = (new CustomerRepository(new Customer))->findCustomerById($event->customer_id);
+        
+        $customer = $event->customer;
 
         $prop->id = (int) $event->id;
         $prop->location = $event->location;

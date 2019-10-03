@@ -28,6 +28,7 @@ class AddLeadForm extends React.Component {
             count: 2,
             errors: [],
             users: [],
+            selectedUsers: [],
             sourceTypes: []
         }
         this.toggle = this.toggle.bind(this)
@@ -37,6 +38,7 @@ class AddLeadForm extends React.Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.buildUserOptions = this.buildUserOptions.bind(this)
         this.buildSourceTypeOptions = this.buildSourceTypeOptions.bind(this)
+        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
     componentDidMount () {
@@ -81,7 +83,7 @@ class AddLeadForm extends React.Component {
             customer_type: this.props.customer_type,
             title: this.state.title,
             valued_at: this.state.valued_at,
-            contributors: this.state.contributors,
+            contributors: this.state.selectedUsers,
             source_type: this.state.source_type,
             task_type: this.props.task_type,
             task_status: this.props.status
@@ -107,6 +109,10 @@ class AddLeadForm extends React.Component {
                     errors: error.response.data.errors
                 })
             })
+    }
+
+    handleMultiSelect (e) {
+        this.setState({ selectedUsers: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
     buildSourceTypeOptions () {
@@ -145,9 +151,10 @@ class AddLeadForm extends React.Component {
         return (
             <FormGroup>
                 <Label for="contributors">Assign to:</Label>
-                <Input className={this.hasErrorFor('contributors') ? 'is-invalid' : ''} type="select"
-                    name="contributors" id="contributors" onChange={this.handleInputChanges.bind(this)}>
-                    <option value="">Choose:</option>
+                <Input className={this.hasErrorFor('contributors') ? 'is-invalid' : ''} multiple
+                    type="select"
+                    value={this.state.selectedUsers}
+                    name="contributors" id="contributors" onChange={this.handleMultiSelect.bind(this)}>
                     {userContent}
                 </Input>
                 {this.renderErrorFor('contributors')}

@@ -15,9 +15,7 @@ trait NotificationTransformable {
      */
     protected function transformNotification(Notification $notification) {
         
-        $user = (new UserRepository(new User))->findUserById($notification->notifiable_id);
-//        $data = json_decode($notification->data, true);
-//        $message = $data['message'];
+        $user = $notification->user;
         
         $prop = new Notification;
         $prop->id = (int) $notification->id;

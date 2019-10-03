@@ -16,7 +16,6 @@ trait DepartmentTransformable {
      */
     protected function transformDepartment(Department $department) {
         $prop = new Department;
-        
         $objUser = (new UserRepository(new User))->findUserById($department->department_manager);
 
         $prop->id = (int) $department->id;

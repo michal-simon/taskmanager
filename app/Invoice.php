@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\SearchableTrait;
 use App\Task;
+use App\InvoiceStatus;
+use App\PaymentMethod;
 
 class Invoice extends Model {
 
@@ -69,6 +71,24 @@ class Invoice extends Model {
 
     public function tasks() {
         return $this->belongsToMany(Task::class);
+    }
+
+    public function customer() {
+        return $this->belongsTo(Customer::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function invoiceStatus() {
+        return $this->belongsTo(InvoiceStatus::class, 'invoice_status');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function paymentType() {
+        return $this->belongsTo(PaymentMethod::class, 'payment_type');
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Notification extends Model {
 
@@ -18,5 +19,11 @@ class Notification extends Model {
         'data',
         'read_at'
     ];
-
+    
+     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user() {
+        return $this->belongsTo(User::class, 'notifiable_id');
+    }
 }

@@ -33,7 +33,7 @@ export default class Invoice extends Component {
                         <td>{user.due_date}</td>
                         <td>{user.total}</td>
                         <td>{user.invoice_status}</td>
-                        <td>Credit</td>
+                        <td>{user.payment_type}</td>
                         <td><EditInvoice
                             modal={true}
                             add={true}

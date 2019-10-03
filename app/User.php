@@ -95,4 +95,8 @@ class User extends Authenticatable {
         return $this->belongsToMany(Department::class);
     }
 
+    public function department_manager() {
+        return $this->morphTo();
+    }
+
 }

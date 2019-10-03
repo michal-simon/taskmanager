@@ -7,6 +7,7 @@ use App\Project;
 use App\Traits\SearchableTrait;
 use App\Product;
 use App\User;
+use App\TaskStatus;
 
 class Task extends Model {
 
@@ -67,5 +68,9 @@ class Task extends Model {
     
     public function users() {
         return $this->belongsToMany(User::class);
+    }
+    
+    public function taskStatus() {
+        return $this->belongsTo(TaskStatus::class, 'task_status');
     }
 }

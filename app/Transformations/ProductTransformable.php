@@ -16,7 +16,6 @@ trait ProductTransformable {
      */
     protected function transformProduct(Product $product) {
         $prod = new Product;
-        $objBrand = (new BrandRepository(new Brand))->findBrandById($product->brand_id);
         
         $prod->id = (int) $product->id;
         $prod->name = $product->name;
@@ -26,7 +25,7 @@ trait ProductTransformable {
         $prod->price = $product->price;
         $prod->status = $product->status;
         $prod->brand_id = (int) $product->brand_id;
-        $prod->brand = $objBrand->name;
+        $prod->brand = $product->brand->name;
         $prod->category_ids = $product->categories()->pluck('category_id')->all();
 
         return $prod;

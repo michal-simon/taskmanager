@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\SearchableTrait;
 use Kalnoy\Nestedset\NodeTrait;
+use App\User;
 
 class Department extends Model {
 
@@ -32,6 +33,10 @@ class Department extends Model {
      */
     public function searchDepartment($term) {
         return self::search($term);
+    }
+
+    public function departmentManager() {
+        return $this->belongsTo(User::class);
     }
 
 }
