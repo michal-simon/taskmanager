@@ -16,8 +16,8 @@ class CreateDepartmentUser extends Migration {
             $table->bigIncrements('id');
             $table->integer('department_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('department_id')->references('id')->on('departments');
+//            $table->foreign('user_id')->references('id')->on('users');
+//            $table->foreign('department_id')->references('id')->on('departments');
             $table->timestamps();
         });
     }

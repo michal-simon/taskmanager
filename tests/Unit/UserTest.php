@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use App\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Collection;
+use App\Department;
+use App\Role;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase {
@@ -14,7 +16,7 @@ class UserTest extends TestCase {
     use DatabaseTransactions,
         WithFaker;
 
-    public function setUp() : void {
+    public function setUp(): void {
         parent::setUp();
         $this->beginDatabaseTransaction();
     }
@@ -25,7 +27,7 @@ class UserTest extends TestCase {
         $userRepo = new UserRepository(new User);
         $list = $userRepo->getActiveUsers()->toArray();
         $myLastElement = end($list);
-        
+
         // $this->assertInstanceOf(Collection::class, $list);
         $this->assertEquals($myLastElement['first_name'], $inserteduser->first_name);
         $this->assertEquals($myLastElement['last_name'], $inserteduser->last_name);
@@ -94,8 +96,8 @@ class UserTest extends TestCase {
         $user = new UserRepository(new User);
         $user->findUserById(999);
     }
-    
-     /** @test */
+
+    /** @test */
     public function it_can_list_all_users() {
         factory(User::class, 5)->create();
         $userRepo = new UserRepository(new User);
@@ -103,7 +105,25 @@ class UserTest extends TestCase {
         $this->assertInstanceOf(Collection::class, $list);
     }
 
-    public function tearDown() : void {
+    /** @test */
+    public function it_can_attach_a_department() {
+        $user = factory(User::class)->create();
+        $department = factory(Department::class)->create();
+        $userRepo = new UserRepository($user);
+        $result = $userRepo->syncDepartment($department->id);
+        $this->assertArrayHasKey('attached', $result);
+    }
+
+    /** @test */
+    public function it_can_attach_roles() {
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+        $userRepo = new UserRepository($user);
+        $result = $userRepo->syncRoles([0 => [$role->id]]);
+        $this->assertArrayHasKey('attached', $result);
+    }
+
+    public function tearDown(): void {
         parent::tearDown();
     }
 

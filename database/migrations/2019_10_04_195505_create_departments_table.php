@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Kalnoy\Nestedset\NestedSet;
 
 class CreateDepartmentsTable extends Migration
 {
@@ -19,6 +20,7 @@ class CreateDepartmentsTable extends Migration
             $table->string('name');
             $table->foreign('department_manager')->references('id')->on('users');
             $table->timestamps();
+            NestedSet::columns($table);
         });
     }
 

@@ -31,7 +31,7 @@ interface DepartmentRepositoryInterface extends BaseRepositoryInterface {
      * 
      * @param array $data
      */
-    public function updateDepartment(array $data): bool;
+    public function updateDepartment(array $data): Department;
 
     /**
      * 

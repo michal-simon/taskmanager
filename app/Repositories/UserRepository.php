@@ -115,7 +115,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
             $mappedObjects[] = $roleId;
         }
 
-        $this->model->roles()->sync($mappedObjects);
+        return $this->model->roles()->sync($mappedObjects);
     }
 
     /**

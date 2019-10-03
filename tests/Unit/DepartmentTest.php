@@ -55,7 +55,7 @@ class DepartmentUnitTest extends TestCase {
             'name' => $this->faker->name,
             'department_manager' => $user->id,
         ];
-        
+
         $department = new DepartmentRepository(new Department);
         $created = $department->createDepartment($data);
         $found = $department->findDepartmentById($created->id);
@@ -66,15 +66,21 @@ class DepartmentUnitTest extends TestCase {
 
     /** @test */
     public function it_can_update_the_department() {
-        $cust = factory(Department::class)->create();
-        $department = new DepartmentRepository($cust);
-        $update = [
+        $department = factory(Department::class)->create();
+        $user = factory(User::class)->create();
+        //$parent = factory(Category::class)->create();
+        $params = [
             'name' => $this->faker->name,
+            'department_manager' => $user->id,
+            'parent' => 0,
         ];
-        $updated = $department->updateDepartment($update);
-        $this->assertTrue($updated);
-        $this->assertEquals($update['name'], $cust->name);
-        $this->assertDatabaseHas('departments', $update);
+
+        $departmentRepo = new DepartmentRepository($department);
+        $updated = $departmentRepo->updateDepartment($params);
+        $this->assertInstanceOf(Department::class, $updated);
+        $this->assertEquals($params['name'], $updated->name);
+        $this->assertEquals($params['department_manager'], $updated->department_manager);
+        $this->assertEquals($params['parent'], $updated->parent_id);
     }
 
     /** @test */
@@ -107,6 +113,52 @@ class DepartmentUnitTest extends TestCase {
         $departmentRepo = new DepartmentRepository(new Department);
         $list = $departmentRepo->listDepartments();
         $this->assertInstanceOf(Collection::class, $list);
+    }
+
+    /** @test */
+    public function it_can_create_root_department() {
+        $user = factory(User::class)->create();
+
+        $params = [
+            'name' => $this->faker->name,
+            'department_manager' => $user->id,
+        ];
+
+        $department = new DepartmentRepository(new Department);
+        $created = $department->createDepartment($params);
+
+        $this->assertTrue($created->isRoot());
+    }
+
+    /** @test */
+    public function it_can_update_child_department_to_root_category() {
+        // suppose to have a child category
+        $parent = factory(Department::class, 1)->create();
+        $child = factory(Department::class, 1)->create();
+        $child[0]->parent()->associate($parent[0])->save();
+        // send params without parent
+        $department = new DepartmentRepository($child[0]);
+        $updated = $department->updateDepartment([
+            'name' => 'Boys',
+        ]);
+        // check if updated category is root
+        $this->assertTrue($updated->isRoot());
+    }
+
+    /** @test */
+    public function it_can_update_root_category_to_child() {
+        $child = factory(Department::class)->create();
+        $parent = factory(Department::class)->create();
+
+        // set parent category via repository
+        $department = new DepartmentRepository($child);
+        $updated = $department->updateDepartment([
+            'name' => $this->faker->name,
+            'parent_id' => $parent->id
+        ]);
+        
+        // check if updated category is root
+        $this->assertTrue($updated->parent->is($parent));
     }
 
     public function tearDown(): void {

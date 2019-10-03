@@ -64,13 +64,15 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
         if (isset($params['name'])) {
             $slug = str_slug($params['name']);
         }
-
-        $merge = $collection->merge(compact('slug'));
+        if (isset($params['cover']) && ($params['cover'] instanceof UploadedFile)) {
+            $cover = $this->uploadOne($params['cover'], 'categories');
+        }
+        $merge = $collection->merge(compact('slug', 'cover'));
         $category = new Category($merge->all());
-//        if (isset($params['parent'])) {
-//            $parent = $this->findCategoryById($params['parent']);
-//            $category->parent()->associate($parent);
-//        }
+        if (isset($params['parent'])) {
+            $parent = $this->findCategoryById($params['parent']);
+            $category->parent()->associate($parent);
+        }
         $category->save();
         return $category;
     }
@@ -95,10 +97,10 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
         // else we need to find the parent
         // and associate it as child
         if ((int) $params['parent'] == 0) {
-            //$category->saveAsRoot();
+            $category->saveAsRoot();
         } else {
-//            $parent = $this->findCategoryById($params['parent']);
-//            $category->parent()->associate($parent);
+            $parent = $this->findCategoryById($params['parent']);
+            $category->parent()->associate($parent);
         }
         $category->update($merge->all());
 

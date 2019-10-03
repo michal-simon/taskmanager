@@ -21,30 +21,30 @@ class CategoryUnitTest extends TestCase {
     }
 
     /** @test */
-//    public function it_can_get_the_child_categories() {
-//        $parent = factory(Category::class)->create();
-//        $child = factory(Category::class)->create([
-//            'parent_id' => $parent->id
-//        ]);
-//        $categoryRepo = new CategoryRepository($parent);
-//        $children = $categoryRepo->findChildren();
-//        foreach ($children as $c) {
-//            $this->assertInstanceOf(Category::class, $c);
-//            $this->assertEquals($child->id, $c->id);
-//        }
-//    }
+    public function it_can_get_the_child_categories() {
+        $parent = factory(Category::class)->create();
+        $child = factory(Category::class)->create([
+            'parent_id' => $parent->id
+        ]);
+        $categoryRepo = new CategoryRepository($parent);
+        $children = $categoryRepo->findChildren();
+        foreach ($children as $c) {
+            $this->assertInstanceOf(Category::class, $c);
+            $this->assertEquals($child->id, $c->id);
+        }
+    }
 
     /** @test */
-//    public function it_can_get_the_parent_category() {
-//        $parent = factory(Category::class)->create();
-//        $child = factory(Category::class)->create([
-//            'parent_id' => $parent->id
-//        ]);
-//        $categoryRepo = new CategoryRepository($child);
-//        $found = $categoryRepo->findParentCategory();
-//        $this->assertInstanceOf(Category::class, $found);
-//        $this->assertEquals($parent->id, $child->parent_id);
-//    }
+    public function it_can_get_the_parent_category() {
+        $parent = factory(Category::class)->create();
+        $child = factory(Category::class)->create([
+            'parent_id' => $parent->id
+        ]);
+        $categoryRepo = new CategoryRepository($child);
+        $found = $categoryRepo->findParentCategory();
+        $this->assertInstanceOf(Category::class, $found);
+        $this->assertEquals($parent->id, $child->parent_id);
+    }
 
     /** @test */
     public function it_can_return_products_in_the_category() {
@@ -172,8 +172,7 @@ class CategoryUnitTest extends TestCase {
         $this->assertEquals($params['slug'], $updated->slug);
         $this->assertEquals($params['description'], $updated->description);
         $this->assertEquals($params['status'], $updated->status);
-        //$this->assertEquals($params['parent'], $updated->parent_id);
-        //$this->assertEquals($params['cover'], $cover);
+        $this->assertEquals($params['parent'], $updated->parent_id);
     }
 
     /** @test */
@@ -195,49 +194,52 @@ class CategoryUnitTest extends TestCase {
         $this->assertEquals($params['slug'], $created->slug);
         $this->assertEquals($params['description'], $created->description);
         $this->assertEquals($params['status'], $created->status);
-        //$this->assertEquals($params['parent'], $created->parent_id);
-        //$this->assertEquals($params['cover'], $cover);
+        $this->assertEquals($params['parent'], $created->parent_id);
     }
 
     /** @test */
-//    public function it_can_create_root_category() {
-//        $params = [
-//            'name' => 'Boys',
-//            'slug' => 'boys',
-//            'description' => $this->faker->paragraph,
-//            'status' => 1
-//        ];
-//        $category = new CategoryRepository(new Category);
-//        $created = $category->createCategory($params);
-//        $this->assertTrue($created->isRoot());
-//    }
+    public function it_can_create_root_category() {
+        $params = [
+            'name' => 'Boys',
+            'slug' => 'boys',
+            'description' => $this->faker->paragraph,
+            'status' => 1
+        ];
+        $category = new CategoryRepository(new Category);
+        $created = $category->createCategory($params);
+        $this->assertTrue($created->isRoot());
+    }
 
     /** @test */
-//    public function it_can_update_child_category_to_root_category() {
-//        // suppose to have a child category
-//        [$child, $parent] = factory(Category::class, 2)->create();
-//        $child->parent()->associate($parent)->save();
-//        // send params without parent
-//        $category = new CategoryRepository($child);
-//        $updated = $category->updateCategory([
-//            'name' => 'Boys',
-//            'slug' => 'boys'
-//        ]);
-//        // check if updated category is root
-//        $this->assertTrue($updated->isRoot());
-//    }
+    public function it_can_update_child_category_to_root_category() {
+        // suppose to have a child category
+        $parent = factory(Category::class)->create();
+        $child = factory(Category::class)->create();
+        $child->parent()->associate($parent)->save();
+        // send params without parent
+        $category = new CategoryRepository($child);
+        $updated = $category->updateCategory([
+            'name' => 'Boys',
+            'slug' => 'boys'
+        ]);
+        // check if updated category is root
+        $this->assertTrue($updated->isRoot());
+    }
 
     /** @test */
-//    public function it_can_update_root_category_to_child() {
-//        [$child, $parent] = factory(Category::class, 2)->create();
-//        // set parent category via repository
-//        $category = new CategoryRepository($child);
-//        $updated = $category->updateCategory([
-//            'name' => 'Boys',
-//            'slug' => 'boys',
-//            'parent' => $parent->id
-//        ]);
-//        // check if updated category is root
-//        $this->assertTrue($updated->parent->is($parent));
-//    }
+    public function it_can_update_root_category_to_child() {
+        $child = factory(Category::class)->create();
+        $parent = factory(Category::class)->create();
+
+        // set parent category via repository
+        $category = new CategoryRepository($child);
+        $updated = $category->updateCategory([
+            'name' => 'Boys',
+            'slug' => 'boys',
+            'parent' => $parent->id
+        ]);
+        // check if updated category is root
+        $this->assertTrue($updated->parent->is($parent));
+    }
+
 }

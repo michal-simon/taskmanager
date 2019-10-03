@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Kalnoy\Nestedset\NestedSet;
 
 class CreateCategoriesTable extends Migration {
 
@@ -20,6 +21,7 @@ class CreateCategoriesTable extends Migration {
             $table->string('cover')->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();
+            NestedSet::columns($table);
         });
     }
 
