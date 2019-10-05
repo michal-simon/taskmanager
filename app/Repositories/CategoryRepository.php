@@ -175,8 +175,8 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
      *
      * @return Category
      */
-    public function findCategoryBySlug(array $slug): Category {
-        return $this->findOneByOrFail($slug);
+    public function findCategoryBySlug(string $slug): Category {
+        return $this->findOneByOrFail(['slug' => $slug]);
     }
 
     /**

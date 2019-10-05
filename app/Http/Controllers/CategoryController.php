@@ -12,7 +12,7 @@ use App\Category;
 use App\Transformations\CategoryTransformable;
 
 class CategoryController extends Controller {
-    
+
     use CategoryTransformable;
 
     /**
@@ -100,6 +100,20 @@ class CategoryController extends Controller {
      */
     public function removeImage(Request $request) {
         $this->categoryRepo->deleteFile($request->only('category'));
+    }
+
+    public function getRootCategories() {
+
+        $categories = $this->categoryRepo->rootCategories();
+        return response()->json($categories);
+    }
+
+    public function getCategory(string $slug) {
+
+        $category = $this->categoryRepo->findCategoryBySlug($slug);
+        $repo = new CategoryRepository($category);
+        $products = $repo->findProducts()->where('status', 1)->all();
+        return response()->json($products);
     }
 
 }

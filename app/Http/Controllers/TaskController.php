@@ -62,7 +62,7 @@ class TaskController extends Controller {
     public function store(CreateTaskRequest $request) {
         $validatedData = $request->except('project_id', 'contributors');
         $currentUser = auth()->guard('user')->user();
-       
+
         if (!empty($request->project_id)) {
             $objProject = $this->projectRepository->findProjectById($request->project_id);
         }
@@ -135,7 +135,7 @@ class TaskController extends Controller {
      *
      * @return Response
      */
-    public function update(UpdateTaskRequest $request, int $id) {   
+    public function update(UpdateTaskRequest $request, int $id) {
         $task = $this->taskRepository->findTaskById($id);
         $taskRepo = new TaskRepository($task);
         $taskRepo->updateTask($request->except('contributors'));
@@ -184,7 +184,7 @@ class TaskController extends Controller {
      * @param int $task_type
      */
     public function filterTasks(Request $request, int $task_type) {
-        
+
         $list = $this->taskRepository->filterTasks($request->all(), $task_type);
 
         $tasks = $list->map(function (Task $task) {
@@ -240,10 +240,13 @@ class TaskController extends Controller {
      * @param CreateDealRequest $request
      * @return type
      */
-    public function createDeal(CreateDealRequest $request) {
+    public function createDeal(Request $request) {
+
+
+        $currentUser = auth()->guard('user')->user();
+        $userId = !$currentUser ? 9874 : $currentUser->id;
 
         $customer = (new CustomerRepository(new Customer))->createCustomer($request->except('_token', '_method', 'valued_at', 'title', 'description'));
-        $currentUser = auth()->guard('user')->user();
 
         $customer->addresses()->create([
             'company_name' => $request->company_name,
@@ -259,7 +262,7 @@ class TaskController extends Controller {
 
         $task = $this->taskRepository->createTask(
                 [
-                    'created_by' => $currentUser->id,
+                    'created_by' => $userId,
                     'source_type' => $request->source_type,
                     'title' => $request->title,
                     'description' => $request->description,
@@ -298,6 +301,16 @@ class TaskController extends Controller {
 
         $sourceTypes = (new SourceTypeRepository(new SourceType))->getAll();
         return response()->json($sourceTypes);
+    }
+
+    /**
+     * 
+     * @param Request $request
+     */
+    public function handleForm(Request $request) {
+        echo '<pre>';
+        print_r($request->all());
+        die;
     }
 
 }

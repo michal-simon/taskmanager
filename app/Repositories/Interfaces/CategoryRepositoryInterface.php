@@ -73,7 +73,7 @@ interface CategoryRepositoryInterface extends BaseRepositoryInterface {
      * 
      * @param array $slug
      */
-    public function findCategoryBySlug(array $slug): Category;
+    public function findCategoryBySlug(string $slug): Category;
 
     /**
      * 

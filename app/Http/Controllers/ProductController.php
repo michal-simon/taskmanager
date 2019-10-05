@@ -204,4 +204,14 @@ class ProductController extends Controller {
         return response()->json($products);
     }
 
+    /**
+     * 
+     * @param string $slug
+     * @return type
+     */
+    public function getProduct(string $slug) {
+        $product = $this->productRepo->findProductBySlug(['slug' => $slug]);
+        return response()->json($product);
+    }
+
 }
