@@ -12,6 +12,8 @@ use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Product;
 use App\Repositories\ProductRepository;
+use App\Repositories\CategoryRepository;
+use App\Category;
 use App\Repositories\CustomerRepository;
 use App\Customer;
 use App\Transformations\TaskTransformable;
@@ -241,8 +243,6 @@ class TaskController extends Controller {
      * @return type
      */
     public function createDeal(Request $request) {
-
-
         $currentUser = auth()->guard('user')->user();
         $userId = !$currentUser ? 9874 : $currentUser->id;
 
@@ -276,6 +276,15 @@ class TaskController extends Controller {
         if ($request->has('contributors')) {
             $taskRepo = new TaskRepository($task);
             $taskRepo->syncUsers($request->input('contributors'));
+        }
+
+        $taskRepo = new TaskRepository($task);
+
+        if ($request->has('product_id') && !empty($request->product_id)) {
+            $category = (new CategoryRepository(new Category))->findCategoryById($request->product_id);
+            $repo = new CategoryRepository($category);
+            $products = $repo->findProducts()->where('status', 1)->pluck('id')->toArray();
+            $taskRepo->syncProducts($products);
         }
 
         return $task->toJson();

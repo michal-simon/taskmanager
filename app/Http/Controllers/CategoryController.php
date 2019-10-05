@@ -108,12 +108,28 @@ class CategoryController extends Controller {
         return response()->json($categories);
     }
 
+    /**
+     * 
+     * @param string $slug
+     * @return type
+     */
     public function getCategory(string $slug) {
 
         $category = $this->categoryRepo->findCategoryBySlug($slug);
-        $repo = new CategoryRepository($category);
-        $products = $repo->findProducts()->where('status', 1)->all();
-        return response()->json($products);
+        return response()->json($category);
+    }
+
+    /**
+     * 
+     * @param string $slug
+     * @return type
+     */
+    public function getChildCategories(string $slug) {
+
+        $category = $this->categoryRepo->findCategoryBySlug($slug);
+        $categoryRepo = new CategoryRepository($category);
+        $categories = $categoryRepo->findChildren();
+        return response()->json($categories);
     }
 
 }

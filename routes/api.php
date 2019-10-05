@@ -78,6 +78,7 @@ Route::get('categories/{category_id}', 'CategoryController@edit');
 Route::put('categories/{category_id}', 'CategoryController@update');
 Route::get("category/{slug}", 'CategoryController@getCategory');
 Route::get("category-list", 'CategoryController@getRootCategories');
+Route::get("categories/children/{slug}", 'CategoryController@getChildCategories');
 
 // comments
 Route::get('comments/{task_id}', 'CommentController@index');
