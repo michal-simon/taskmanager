@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\BrandRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\ProductRepository;
+use App\Repositories\CategoryRepository;
 use App\Requests\CreateProductRequest;
 use App\Requests\UpdateProductRequest;
 use App\Transformations\ProductTransformable;
@@ -99,16 +100,6 @@ class ProductController extends Controller {
             $productRepo->syncCategories($request->input('category'));
         } else {
             $productRepo->detachCategories();
-        }
-
-        if ($request->has('brand')) {
-            $brand = (new BrandRepository(new Brand))->findBrandById($request->input('brand'));
-
-            echo '<pre>';
-            print_r($brand);
-            die;
-
-            $productRepo->saveBrand($brand);
         }
 
         return $this->transformProduct($product);
@@ -238,9 +229,9 @@ class ProductController extends Controller {
         $interest_rate = $fields['interest_rate'];
 
         $productRepo = new ProductRepository($product);
-        
-        $productAttributes =  new ProductAttribute(compact('range_from', 'range_to', 'monthly_price', 'full_price', 'interest_rate'));
-        
+
+        $productAttributes = new ProductAttribute(compact('range_from', 'range_to', 'monthly_price', 'full_price', 'interest_rate'));
+
         $productRepo->removeProductAttribute($productAttributes);
 
         $productAttribute = $productRepo->saveProductAttributes($productAttributes);
@@ -264,6 +255,22 @@ class ProductController extends Controller {
         if ($validator->fails()) {
             return $validator;
         }
+    }
+
+    /**
+     * 
+     * @param int $id
+     */
+    public function getProductsForCategory(int $id) {
+        $category = $this->categoryRepo->findCategoryById($id);
+        $repo = new CategoryRepository($category);
+        $list = $repo->findProducts()->where('status', 1);
+
+        $products = $list->map(function (Product $product) {
+                    return $this->transformProduct($product);
+                })->all();
+
+        return response()->json($products);
     }
 
 }

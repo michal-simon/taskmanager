@@ -19,7 +19,16 @@ export default class ProductList extends Component {
 
         this.addProductToState = this.addProductToState.bind(this)
         this.userList = this.userList.bind(this)
-        this.ignore = ['brand_id', 'category_ids', 'status']
+        this.ignore = [
+            'brand_id', 
+            'category_ids', 
+            'status', 
+            'range_from', 
+            'range_to', 
+            'monthly_price', 
+            'full_price', 
+            'interest_rate'
+        ]
     }
 
     componentDidMount () {

@@ -207,9 +207,7 @@ class TaskController extends Controller {
      * @param Request $request
      */
     public function addProducts(int $task_id, Request $request) {
-
         $task = $this->taskRepository->findTaskById($task_id);
-
         $taskRepo = new TaskRepository($task);
 
         if ($request->has('products')) {
@@ -278,23 +276,6 @@ class TaskController extends Controller {
             $taskRepo->syncUsers($request->input('contributors'));
         }
 
-        $taskRepo = new TaskRepository($task);
-
-        if ($request->has('product_id') && !empty($request->product_id)) {
-            $category = (new CategoryRepository(new Category))->findCategoryById($request->product_id);
-            $repo = new CategoryRepository($category);
-            $products = $repo->findProducts()->where('status', 1);
-
-            // get attributes
-            $firstProduct = $products->first();
-            $productRepo = new ProductRepository($firstProduct);
-            $productAttributes = $productRepo->listProductAttributes();
-
-            $ids = $products->pluck('id')->toArray();
-            $taskRepo->syncProducts($ids);
-            return response()->json($productAttributes);
-        }
-
         return response()->json($task);
     }
 
@@ -318,16 +299,6 @@ class TaskController extends Controller {
 
         $sourceTypes = (new SourceTypeRepository(new SourceType))->getAll();
         return response()->json($sourceTypes);
-    }
-
-    /**
-     * 
-     * @param Request $request
-     */
-    public function handleForm(Request $request) {
-        echo '<pre>';
-        print_r($request->all());
-        die;
     }
 
 }

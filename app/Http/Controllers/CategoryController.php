@@ -131,5 +131,4 @@ class CategoryController extends Controller {
         $categories = $categoryRepo->findChildren();
         return response()->json($categories);
     }
-
 }

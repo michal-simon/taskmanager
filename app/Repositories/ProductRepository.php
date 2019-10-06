@@ -190,7 +190,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
      * @throws \Exception
      */
     public function removeProductAttribute(ProductAttribute $productAttribute): ?bool {
-        return $productAttribute->delete();
+        return $this->model->attributes()->delete();
     }
 
     /**

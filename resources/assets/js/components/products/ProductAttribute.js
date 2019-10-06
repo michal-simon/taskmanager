@@ -15,6 +15,8 @@ class ProductAttribute extends React.Component {
             loading: false,
             errors: []
         }
+        
+        this.state = {...this.state, ...this.props.values }        
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
     }
@@ -47,7 +49,9 @@ class ProductAttribute extends React.Component {
 
                         <FormGroup>
                             <Label for="range_from">Range From:</Label>
-                            <Input className={this.hasErrorFor('range_from') ? 'is-invalid' : ''} type="number"
+                            <Input value={this.state.range_from} 
+                                className={this.hasErrorFor('range_from') ? 'is-invalid' : ''} 
+                                type="number"
                                 name="range_from" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('range_from')}
                         </FormGroup>
@@ -55,6 +59,7 @@ class ProductAttribute extends React.Component {
                         <FormGroup>
                             <Label for="range_to">Range To:</Label>
                             <Input className={this.hasErrorFor('range_to') ? 'is-invalid' : ''}
+                                value={this.state.range_to}
                                 type="number"
                                 name="range_to"
                                 onChange={this.handleInput.bind(this)}/>
@@ -66,6 +71,7 @@ class ProductAttribute extends React.Component {
                             <Input className={this.hasErrorFor('monthly_price') ? 'is-invalid' : ''}
                                 type="number"
                                 name="monthly_price"
+                                value={this.state.monthly_price}
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('monthly_price')}
                         </FormGroup>
@@ -73,6 +79,7 @@ class ProductAttribute extends React.Component {
                         <FormGroup>
                             <Label for="interest_rate">Interest Rate:</Label>
                             <Input className={this.hasErrorFor('interest_rate') ? 'is-invalid' : ''}
+                                value={this.state.interest_rate}
                                 type="number"
                                 name="interest_rate"
                                 onChange={this.handleInput.bind(this)}/>
@@ -82,6 +89,7 @@ class ProductAttribute extends React.Component {
                 <FormGroup>
                     <Label for="full_price">Full Price:</Label>
                     <Input className={this.hasErrorFor('full_price') ? 'is-invalid' : ''}
+                        value={this.state.full_price}
                         type="number"
                         name="full_price"
                         onChange={this.handleInput.bind(this)}/>

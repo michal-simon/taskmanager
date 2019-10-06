@@ -47,7 +47,6 @@ Route::post('tasks/products/{task_id}', 'TaskController@addProducts');
 Route::get('tasks/products/{task_id}', 'TaskController@getProducts');
 Route::get('tasks/products', 'TaskController@getTasksWithProducts');
 Route::get('tasks/source-types', 'TaskController@getSourceTypes');
-Route::post('tasks/form', 'TaskController@handleForm');
 
 // roles
 Route::get('roles', 'RoleController@index');
@@ -79,6 +78,7 @@ Route::put('categories/{category_id}', 'CategoryController@update');
 Route::get("category/{slug}", 'CategoryController@getCategory');
 Route::get("category-list", 'CategoryController@getRootCategories');
 Route::get("categories/children/{slug}", 'CategoryController@getChildCategories');
+Route::get("categories/products/{id}", 'ProductController@getProductsForCategory');
 
 // comments
 Route::get('comments/{task_id}', 'CommentController@index');

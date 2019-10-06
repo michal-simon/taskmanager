@@ -8,6 +8,15 @@ import ProductAttribute from './ProductAttribute'
 class EditProduct extends React.Component {
     constructor (props) {
         super(props)
+        
+        this.productAttributes = {
+            range_from: this.props.product.range_from ? this.props.product.range_from : 0,
+            range_to: this.props.product.range_to ? this.props.product.range_to : 0,
+            monthly_price: this.props.product.monthly_price ? this.props.product.monthly_price : 0,
+            full_price: this.props.product.full_price ? this.props.product.full_price : 0,
+            interest_rate: this.props.product.interest_rate ? this.props.product.interest_rate : 0,
+        }
+        
         this.state = {
             modal: false,
             loading: false,
@@ -20,12 +29,10 @@ class EditProduct extends React.Component {
             categories: [],
             selectedCategories: this.props.product.category_ids ? this.props.product.category_ids : [],
             brand_id: this.props.product.brand_id,
-            range_from: 0,
-            range_to: 0,
-            monthly_price: 0,
-            full_price: 0,
-            interest_rate: 0,
         }
+        
+        this.state = {...this.state, ...this.productAttributes }
+        
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
@@ -202,7 +209,7 @@ class EditProduct extends React.Component {
                         {brandList}
                         {categoryList}
 
-                        <ProductAttribute product={this.props.product} onChange={this.handleInput} />
+                        <ProductAttribute values={this.productAttributes} product={this.props.product} onChange={this.handleInput} />
                     </ModalBody>
 
                     <ModalFooter>

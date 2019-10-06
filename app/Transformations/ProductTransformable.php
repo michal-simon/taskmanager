@@ -16,7 +16,9 @@ trait ProductTransformable {
      */
     protected function transformProduct(Product $product) {
         $prod = new Product;
-        
+
+        $attributes = $product->attributes->first();
+
         $prod->id = (int) $product->id;
         $prod->name = $product->name;
         $prod->sku = $product->sku;
@@ -28,6 +30,14 @@ trait ProductTransformable {
         $prod->brand = $product->brand->name;
         $prod->category_ids = $product->categories()->pluck('category_id')->all();
 
+        if ($attributes && $attributes->count() > 0) { 
+            $prod->range_from = $attributes->range_from;
+            $prod->range_to = $attributes->range_to;
+            $prod->monthly_price = $attributes->monthly_price;
+            $prod->full_price = $attributes->full_price;
+            $prod->interest_rate = $attributes->interest_rate;
+        }
+        
         return $prod;
     }
 
