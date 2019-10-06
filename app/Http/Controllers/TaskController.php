@@ -283,11 +283,19 @@ class TaskController extends Controller {
         if ($request->has('product_id') && !empty($request->product_id)) {
             $category = (new CategoryRepository(new Category))->findCategoryById($request->product_id);
             $repo = new CategoryRepository($category);
-            $products = $repo->findProducts()->where('status', 1)->pluck('id')->toArray();
-            $taskRepo->syncProducts($products);
+            $products = $repo->findProducts()->where('status', 1);
+
+            // get attributes
+            $firstProduct = $products->first();
+            $productRepo = new ProductRepository($firstProduct);
+            $productAttributes = $productRepo->listProductAttributes();
+
+            $ids = $products->pluck('id')->toArray();
+            $taskRepo->syncProducts($ids);
+            return response()->json($productAttributes);
         }
 
-        return $task->toJson();
+        return response()->json($task);
     }
 
     /**

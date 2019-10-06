@@ -3,6 +3,7 @@ import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
 import PropTypes from 'prop-types'
+import ProductAttribute from './ProductAttribute'
 
 class EditProduct extends React.Component {
     constructor (props) {
@@ -18,7 +19,12 @@ class EditProduct extends React.Component {
             id: this.props.product.id,
             categories: [],
             selectedCategories: this.props.product.category_ids ? this.props.product.category_ids : [],
-            brand_id: this.props.product.brand_id
+            brand_id: this.props.product.brand_id,
+            range_from: 0,
+            range_to: 0,
+            monthly_price: 0,
+            full_price: 0,
+            interest_rate: 0,
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
@@ -26,6 +32,7 @@ class EditProduct extends React.Component {
         this.buildCategoryOptions = this.buildCategoryOptions.bind(this)
         this.buildBrandOptions = this.buildBrandOptions.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
+        this.handleInput = this.handleInput.bind(this)
     }
 
     handleClick () {
@@ -35,7 +42,12 @@ class EditProduct extends React.Component {
             price: this.state.price,
             sku: this.state.sku,
             category: this.state.selectedCategories,
-            brand_id: this.state.brand_id
+            brand_id: this.state.brand_id,
+            range_from: this.state.range_from,
+            range_to: this.state.range_to,
+            monthly_price: this.state.monthly_price,
+            full_price: this.state.full_price,
+            interest_rate: this.state.interest_rate,
         })
             .then((response) => {
                 this.toggle()
@@ -189,6 +201,8 @@ class EditProduct extends React.Component {
 
                         {brandList}
                         {categoryList}
+
+                        <ProductAttribute product={this.props.product} onChange={this.handleInput} />
                     </ModalBody>
 
                     <ModalFooter>

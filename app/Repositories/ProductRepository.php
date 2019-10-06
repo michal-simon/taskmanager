@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Task;
 use App\Brand;
 use App\Category;
+use App\ProductAttribute;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface {
 
@@ -178,6 +179,42 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         ->where('category_product.category_id', $objCategory->id)
                         ->groupBy('products.id')
                         ->get();
+    }
+
+    /**
+     * Delete the attribute from the product
+     *
+     * @param ProductAttribute $productAttribute
+     *
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function removeProductAttribute(ProductAttribute $productAttribute): ?bool {
+        return $productAttribute->delete();
+    }
+
+    /**
+     * List all the product attributes associated with the product
+     *
+     * @return Collection
+     */
+    public function listProductAttributes(): Collection {
+        return $this->model->attributes()->get();
+    }
+
+    /**
+     * Associate the product attribute to the product
+     *
+     * @param ProductAttribute $productAttribute
+     * @return ProductAttribute
+     */
+    public function saveProductAttributes(ProductAttribute $productAttribute): ProductAttribute {
+
+        $this->model->attributes()->updateOrCreate(
+                ['product_id' => $this->model->id], $productAttribute->toArray()
+        );
+
+        return $productAttribute;
     }
 
 }

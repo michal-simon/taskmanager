@@ -15,6 +15,8 @@ use App\Repositories\TaskRepository;
 use App\Task;
 use App\Repositories\BrandRepository;
 use App\Brand;
+use Illuminate\Support\Facades\Validator;
+use App\ProductAttribute;
 
 class ProductController extends Controller {
 
@@ -136,6 +138,8 @@ class ProductController extends Controller {
             $productRepo->detachCategories();
         }
 
+        $this->saveProductCombinations($request, $product);
+
         $productRepo->updateProduct($data);
 
         $list = $this->productRepo->listProducts('created_at', 'desc');
@@ -212,6 +216,54 @@ class ProductController extends Controller {
     public function getProduct(string $slug) {
         $product = $this->productRepo->findProductBySlug(['slug' => $slug]);
         return response()->json($product);
+    }
+
+    /**
+     * @param Request $request
+     * @param Product $product
+     * @return boolean
+     */
+    private function saveProductCombinations(Request $request, Product $product): ProductAttribute {
+        $fields = $request->only(
+                'range_from', 'range_to', 'monthly_price', 'full_price', 'interest_rate'
+        );
+        if ($errors = $this->validateFields($fields)) {
+            return response()->json($errors->errors(), 422);
+        }
+
+        $range_from = $fields['range_from'];
+        $range_to = $fields['range_to'];
+        $monthly_price = $fields['monthly_price'];
+        $full_price = $fields['full_price'];
+        $interest_rate = $fields['interest_rate'];
+
+        $productRepo = new ProductRepository($product);
+        
+        $productAttributes =  new ProductAttribute(compact('range_from', 'range_to', 'monthly_price', 'full_price', 'interest_rate'));
+        
+        $productRepo->removeProductAttribute($productAttributes);
+
+        $productAttribute = $productRepo->saveProductAttributes($productAttributes);
+
+        return $productAttribute;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return
+     */
+    private function validateFields(array $data) {
+        $validator = Validator::make($data, [
+                    'range_from' => 'required',
+                    'range_to' => 'required',
+                    'monthly_price' => 'required',
+                    'full_price' => 'required',
+                    'interest_rate' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return $validator;
+        }
     }
 
 }

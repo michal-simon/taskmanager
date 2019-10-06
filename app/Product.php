@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use App\Traits\SearchableTrait;
 use App\Brand;
 use App\Category;
+use App\ProductAttribute;
 
 class Product extends Model {
 
@@ -60,4 +61,12 @@ class Product extends Model {
     public function categories() {
         return $this->belongsToMany(Category::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attributes() {
+        return $this->hasMany(ProductAttribute::class);
+    }
+
 }

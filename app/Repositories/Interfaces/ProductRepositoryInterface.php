@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Task;
 use App\Brand;
 use App\Category;
+use App\ProductAttribute;
 
 interface ProductRepositoryInterface extends BaseRepositoryInterface {
 
@@ -77,27 +78,44 @@ interface ProductRepositoryInterface extends BaseRepositoryInterface {
      * @param array $params
      */
     public function syncCategories(array $params);
-    
+
     /**
      * 
      * @param Brand $brand
      */
     public function saveBrand(Brand $brand);
-    
+
     /**
      * 
      */
     public function findBrand();
-    
+
     /**
      * 
      * @param Brand $objBrand
      */
     public function filterProductsByBrand(Brand $objBrand): Support;
-    
+
     /**
      * 
      * @param \App\Repositories\Interfaces\Category $objCategory
      */
     public function filterProductsByCategory(Category $objCategory): Support;
+
+    /**
+     * 
+     * @param ProductAttribute $productAttribute
+     */
+    public function saveProductAttributes(ProductAttribute $productAttribute): ProductAttribute;
+
+    /**
+     * 
+     */
+    public function listProductAttributes(): Collection;
+
+    /**
+     * 
+     * @param ProductAttribute $productAttribute
+     */
+    public function removeProductAttribute(ProductAttribute $productAttribute): ?bool;
 }

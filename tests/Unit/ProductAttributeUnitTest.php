@@ -1,0 +1,112 @@
+<?php
+
+namespace Tests\Unit;
+
+use App\ProductAttribute;
+use App\Repositories\ProductAttributeRepository;
+use App\Product;
+use App\Repositories\ProductRepository;
+use Illuminate\Support\Collection;
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+class ProductAttributeUnitTest extends TestCase {
+
+    use WithFaker,
+        DatabaseTransactions;
+
+    public function setUp(): void {
+        parent::setUp();
+        $this->beginDatabaseTransaction();
+    }
+
+    /** @test */
+    public function it_throws_error_when_the_product_attribute_is_not_found() {
+        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+        $productAttributeRepo = new ProductAttributeRepository(new ProductAttribute);
+        $productAttributeRepo->findProductAttributeById(999);
+    }
+
+    /** @test */
+    public function it_can_find_the_product_attribute_by_id() {
+        $product = factory(Product::class)->create();
+        $productAttribute = factory(ProductAttribute::class)->create([
+            'product_id' => $product->id,
+            'range_from' => $this->faker->randomFloat(2),
+            'range_to' => $this->faker->randomFloat(2)
+        ]);
+        $productAttributeRepo = new ProductAttributeRepository(new ProductAttribute);
+        $found = $productAttributeRepo->findProductAttributeById($productAttribute->id);
+        $this->assertEquals($productAttribute->range_from, $found->range_from);
+        $this->assertEquals($productAttribute->range_to, $found->range_to);
+    }
+
+    /** @test */
+//    public function it_can_sync_the_attribute_values_to_product_attributes() {
+//        $attribute = factory(Attribute::class)->create(['name' => 'Color']);
+//        $attributeValueRepo = new AttributeValueRepository(new AttributeValue);
+//        $created = $attributeValueRepo->createAttributeValue($attribute, ['value' => 'green']);
+//        $attributeRepo = new AttributeRepository($attribute);
+//        $associated = $attributeRepo->associateAttributeValue($created);
+//        $this->assertInstanceOf(AttributeValue::class, $created);
+//        $this->assertInstanceOf(AttributeValue::class, $associated);
+//        $this->assertEquals($created->name, $associated->name);
+//    }
+
+    /** @test */
+//    public function it_returns_null_deleting_non_existing_product_attribute() {
+//        $product = factory(Product::class)->create();
+//        $productRepo = new ProductRepository($product);
+//        $deleted = $productRepo->removeProductAttribute(new ProductAttribute);
+//        
+//        var_dump($deleted);
+//        die('Mike');
+//        
+//        $this->assertNull($deleted);
+//    }
+
+    /** @test */
+    public function it_can_remove_product_attribute() {
+        $data = [
+            'range_from' => $this->faker->randomFloat(2),
+            'range_to' => $this->faker->randomFloat(2),
+            'monthly_price' => $this->faker->randomFloat(2),
+            'interest_rate' => $this->faker->randomFloat(2),
+            'full_price' => $this->faker->randomFloat(2)
+        ];
+        $productAttribute = new ProductAttribute($data);
+        $product = factory(Product::class)->create();
+        $productRepo = new ProductRepository($product);
+        $created = $productRepo->saveProductAttributes($productAttribute);
+        $deleted = $productRepo->removeProductAttribute($created);
+        $this->assertTrue($deleted);
+    }
+
+    /** @test */
+    public function it_can_create_product_attribute() {
+        $data = [
+            'range_from' => $this->faker->randomFloat(2),
+            'range_to' => $this->faker->randomFloat(2),
+            'monthly_price' => $this->faker->randomFloat(2),
+            'interest_rate' => $this->faker->randomFloat(2),
+            'full_price' => $this->faker->randomFloat(2)
+        ];
+        $productAttribute = new ProductAttribute($data);
+        $product = factory(Product::class)->create();
+        $productRepo = new ProductRepository($product);
+        $created = $productRepo->saveProductAttributes($productAttribute);
+        $this->assertInstanceOf(ProductAttribute::class, $created);
+        $this->assertInstanceOf(Product::class, $productAttribute->product);
+
+        $this->assertEquals($data['range_from'], $created->range_from);
+        $this->assertEquals($data['range_to'], $created->range_to);
+        $this->assertEquals($data['monthly_price'], $created->monthly_price);
+        $this->assertEquals($data['interest_rate'], $created->interest_rate);
+        $this->assertEquals($data['full_price'], $created->full_price);
+
+        $this->assertEquals($product->name, $created->product->name);
+        $this->assertEquals($product->price, $created->product->price);
+    }
+
+}

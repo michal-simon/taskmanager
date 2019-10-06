@@ -127,10 +127,6 @@ class AddProduct extends React.Component {
         })
     }
 
-    handleChange (event) {
-        this.setState({ name: event.target.value })
-    }
-
     toggle () {
         this.setState({
             modal: !this.state.modal

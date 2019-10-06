@@ -63,14 +63,14 @@ class CategoryUnitTest extends TestCase {
         $category = factory(Category::class)->create();
         $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
         $categoryRepo = new CategoryRepository($category);
-        $categoryRepo->findCategoryBySlug(['slug' => 'unknown']);
+        $categoryRepo->findCategoryBySlug('unknown');
     }
 
     /** @test */
     public function it_can_get_the_category_by_slug() {
         $category = factory(Category::class)->create();
         $categoryRepo = new CategoryRepository($category);
-        $cat = $categoryRepo->findCategoryBySlug(['slug' => $category->slug]);
+        $cat = $categoryRepo->findCategoryBySlug($category->slug);
         $this->assertEquals($category->name, $cat->name);
     }
 

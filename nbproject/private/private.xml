@@ -6,7 +6,7 @@
             <file>file:/C:/xampp3/htdocs/taskman/routes/api.php</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/Interfaces/CategoryRepositoryInterface.php</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/CategoryRepository.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/CategoryController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/TaskController.php</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/ProductController.php</file>
         </group>
     </open-files>
