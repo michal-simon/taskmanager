@@ -246,17 +246,19 @@ class TaskController extends Controller {
 
         $customer = (new CustomerRepository(new Customer))->createCustomer($request->except('_token', '_method', 'valued_at', 'title', 'description'));
 
-        $customer->addresses()->create([
-            'company_name' => $request->company_name,
-            'job_title' => $request->job_title,
-            'phone' => $request->phone,
-            'address_1' => $request->address_1,
-            'address_2' => $request->address_2,
-            'zip' => $request->zip,
-            'city' => $request->city,
-            'country_id' => 225,
-            'status' => 1
-        ]);
+        if ($request->has('address_1') && !empty($request->address_1)) {
+            $customer->addresses()->create([
+                'company_name' => $request->company_name,
+                'job_title' => $request->job_title,
+                'phone' => $request->phone,
+                'address_1' => $request->address_1,
+                'address_2' => $request->address_2,
+                'zip' => $request->zip,
+                'city' => $request->city,
+                'country_id' => 225,
+                'status' => 1
+            ]);
+        }
 
         $task = $this->taskRepository->createTask(
                 [

@@ -131,4 +131,15 @@ class CategoryController extends Controller {
         $categories = $categoryRepo->findChildren();
         return response()->json($categories);
     }
+    
+    /**
+     * 
+     * @param int $category_id
+     * @return type
+     */
+    public function getForm(int $category_id) {
+        $category = $this->categoryRepo->findCategoryById($category_id);
+        $form = (new CategoryRepository($category))->getFormForCategory();
+        return response()->json($form);
+    }
 }

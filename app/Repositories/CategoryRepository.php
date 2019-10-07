@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\Base\BaseRepository;
 use App\Category;
+Use Illuminate\Support\Facades\DB;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Product;
 use App\Transformations\ProductTransformable;
@@ -191,6 +192,10 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
      */
     public function findChildren() {
         return $this->model->children;
+    }
+    
+    public function getFormForCategory() {
+        return DB::table('form_category')->select('*')->where('category_id', $this->model->id)->get();
     }
 
 }

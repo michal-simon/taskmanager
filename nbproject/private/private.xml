@@ -3,8 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/ProductRepository.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/products/EditProduct.js</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/TaskController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/routes/api.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Transformations/ProductTransformable.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/products/ProductList.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/products/ProductAttribute.js</file>
         </group>
     </open-files>
 </project-private>
