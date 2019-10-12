@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
@@ -58,14 +57,8 @@ class EditProduct extends React.Component {
         })
             .then((response) => {
                 this.toggle()
-                const index = this.props.products.findIndex(product => product.id === this.state.id)
-                this.props.products[index].name = this.state.name
-                this.props.products[index].description = this.state.description
-                this.props.products[index].price = this.state.price
-                this.props.products[index].sku = this.state.sku
-                this.props.products[index].brand_id = this.state.brand_id
-                this.props.products[index].category_ids = this.state.selectedCategories
-
+                const index = this.props.products.findIndex(product => parseInt(product.id) === this.state.id)
+                this.props.products[index] = response.data
                 this.props.action(this.props.products)
             })
             .catch((error) => {

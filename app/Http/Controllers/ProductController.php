@@ -130,16 +130,12 @@ class ProductController extends Controller {
         }
 
         $this->saveProductCombinations($request, $product);
-
         $productRepo->updateProduct($data);
+        
+        return response()->json($product);
 
-        $list = $this->productRepo->listProducts('created_at', 'desc');
 
-        $products = $list->map(function (Product $product) {
-                    return $this->transformProduct($product);
-                })->all();
-
-        return collect($products)->toJson();
+        //return collect($products)->toJson();
     }
 
     /**

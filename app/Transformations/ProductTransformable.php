@@ -30,14 +30,22 @@ trait ProductTransformable {
         $prod->brand = $product->brand->name;
         $prod->category_ids = $product->categories()->pluck('category_id')->all();
 
-        if ($attributes && $attributes->count() > 0) { 
-            $prod->range_from = $attributes->range_from;
-            $prod->range_to = $attributes->range_to;
-            $prod->monthly_price = $attributes->monthly_price;
-            $prod->full_price = $attributes->full_price;
-            $prod->interest_rate = $attributes->interest_rate;
+        $range_from = $range_to = $monthly_price = $full_price = $interest_rate = 0;
+
+        if ($attributes && $attributes->count() > 0) {
+            $range_from = $attributes->range_from;
+            $range_to = $attributes->range_to;
+            $monthly_price = $attributes->monthly_price;
+            $full_price = $attributes->full_price;
+            $interest_rate = $attributes->interest_rate;
         }
-        
+
+        $prod->range_from = $range_from;
+        $prod->range_to = $range_to;
+        $prod->monthly_price = $monthly_price;
+        $prod->full_price = $full_price;
+        $prod->interest_rate = $interest_rate;
+
         return $prod;
     }
 

@@ -69,7 +69,6 @@ class EditCustomer extends React.Component {
         axios.put(`/api/customers/${this.state.id}`, customerObj).then(response => {
             this.toggle()
             const index = this.props.customers.findIndex(customer => parseInt(customer.id) === this.props.customer.id)
-            console.log('data', response.data)
             this.props.customers[index] = response.data
             this.props.action(this.props.customers)
             this.setState({ submitSuccess: true, loading: false })
