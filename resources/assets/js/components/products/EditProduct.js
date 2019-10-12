@@ -94,7 +94,9 @@ class EditProduct extends React.Component {
 
     toggle () {
         this.setState({
-            modal: !this.state.modal
+            modal: !this.state.modal,
+            errors: [],
+            loading: true
         })
     }
 

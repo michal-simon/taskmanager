@@ -25,11 +25,7 @@ class AddProduct extends React.Component {
         this.buildCategoryOptions = this.buildCategoryOptions.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
-
-    componentDidMount () {
-
-    }
-
+    
     hasErrorFor (field) {
         return !!this.state.errors[field]
     }
@@ -129,7 +125,9 @@ class AddProduct extends React.Component {
 
     toggle () {
         this.setState({
-            modal: !this.state.modal
+            modal: !this.state.modal,
+            errors: [],
+            loading: true
         })
     }
 

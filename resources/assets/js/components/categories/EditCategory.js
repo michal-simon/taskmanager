@@ -66,7 +66,8 @@ class EditCategory extends React.Component {
 
     toggle () {
         this.setState({
-            modal: !this.state.modal
+            modal: !this.state.modal,
+            errors: []
         })
     }
 
