@@ -13,10 +13,7 @@ trait CustomerTransformable {
         $prop->company = $customer->company_name;
         $prop->email = $customer->email;
         $prop->phone = $customer->phone;
-
-        if ($customer->addresses->count() > 0) {
-            $prop->address = $customer->addresses->first();
-        }
+        $prop->address = $customer->addresses->count() > 0 ? $customer->addresses->first() : '';
 
         return $prop;
     }

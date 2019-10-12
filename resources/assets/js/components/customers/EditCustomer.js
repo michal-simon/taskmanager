@@ -6,10 +6,20 @@ import axios from 'axios'
 class EditCustomer extends React.Component {
     constructor (props) {
         super(props)
+        
         this.state = {
             modal: false,
-            id: this.props.id,
-            customer: {},
+            id: this.props.customer.id,
+            first_name: this.props.customer.name.split(' ').slice(0, -1).join(' '),
+            last_name: this.props.customer.name.split(' ').slice(-1).join(' '),
+            email: this.props.customer.email,
+            job_title: this.props.customer.job_title,
+            company_name: this.props.customer.company_name,
+            address_1: this.props.customer.address.address_1,
+            address_2: this.props.customer.address.address_2,
+            zip: this.props.customer.address.zip,
+            city: this.props.customer.address.city,
+            phone: this.props.customer.phone,
             values: [],
             loading: false,
             submitSuccess: false,
@@ -19,16 +29,7 @@ class EditCustomer extends React.Component {
         this.handleClick = this.handleClick.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.setValues = this.setValues.bind(this)
         this.buildForm = this.buildForm.bind(this)
-    }
-
-    componentDidMount () {
-        axios.get(`/api/customers/${this.state.id}`).then(data => {
-            const customerData = { ...data.data, ...data.data.addresses[0] }
-            delete customerData.addresses
-            this.setState({ customer: customerData })
-        })
     }
 
     hasErrorFor (field) {
@@ -36,14 +37,9 @@ class EditCustomer extends React.Component {
     }
 
     handleInputChanges (e) {
-        this.setValues({ [e.currentTarget.id]: e.currentTarget.value })
+        this.setState({ [e.currentTarget.id]: e.currentTarget.value })
     }
-
-    setValues (values) {
-        this.setState({ customer: { ...this.state.customer, ...values } })
-        console.log(this.state.customer)
-    }
-
+    
     renderErrorFor (field) {
         if (this.hasErrorFor(field)) {
             return (
@@ -56,14 +52,26 @@ class EditCustomer extends React.Component {
 
     handleClick (event) {
         this.setState({ loading: true, submitSuccess: false })
+        
+        const customerObj = {
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            email: this.state.email,
+            job_title: this.state.job_title,
+            company_name: this.state.company_name,
+            address_1: this.state.address_1,
+            address_2: this.state.address_2,
+            zip: this.state.zip,
+            city: this.state.city,
+            phone: this.state.phone,
+        }
 
-        axios.put(`/api/customers/${this.state.id}`, this.state.customer).then(response => {
+        axios.put(`/api/customers/${this.state.id}`, customerObj).then(response => {
             this.toggle()
-
-            if (this.props.action) {
-                this.props.action(response.data)
-            }
-
+            const index = this.props.customers.findIndex(customer => parseInt(customer.id) === this.props.customer.id)
+            console.log('data', response.data)
+            this.props.customers[index] = response.data
+            this.props.action(this.props.customers)
             this.setState({ submitSuccess: true, loading: false })
         })
             .catch((error) => {
@@ -86,7 +94,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label for="first_name"> First Name </Label>
                     <Input className={this.hasErrorFor('first_name') ? 'is-invalid' : ''} type="text"
-                        id="first_name" defaultValue={this.state.customer.first_name}
+                        id="first_name" defaultValue={this.state.first_name}
                         onChange={this.handleInputChanges.bind(this)} name="first_name"
                         placeholder="Enter customer's first name"/>
                     {this.renderErrorFor('first_name')}
@@ -95,7 +103,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label for="last_name"> Last Name </Label>
                     <Input className={this.hasErrorFor('last_name') ? 'is-invalid' : ''} type="text"
-                        id="last_name" defaultValue={this.state.customer.last_name}
+                        id="last_name" defaultValue={this.state.last_name}
                         onChange={this.handleInputChanges.bind(this)} name="last_name"
                         placeholder="Enter customer's last name"/>
                     {this.renderErrorFor('last_name')}
@@ -104,7 +112,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label for="email"> Email </Label>
                     <Input className={this.hasErrorFor('email') ? 'is-invalid' : ''} type="email" id="email"
-                        defaultValue={this.state.customer.email}
+                        defaultValue={this.state.email}
                         onChange={this.handleInputChanges.bind(this)} name="email"
                         placeholder="Enter customer's email address"/>
                     {this.renderErrorFor('email')}
@@ -113,7 +121,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label for="phone"> Phone </Label>
                     <Input className={this.hasErrorFor('phone') ? 'is-invalid' : ''} type="text" id="phone"
-                        defaultValue={this.state.customer.phone}
+                        defaultValue={this.state.phone}
                         onChange={this.handleInputChanges.bind(this)} name="phone"
                         placeholder="Enter customer's phone number"/>
                     {this.renderErrorFor('phone')}
@@ -122,7 +130,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label for="address"> Address 1 </Label>
                     <Input className={this.hasErrorFor('address_1') ? 'is-invalid' : ''} type="text"
-                        id="address_1" defaultValue={this.state.customer.address_1}
+                        id="address_1" defaultValue={this.state.address_1}
                         onChange={this.handleInputChanges.bind(this)} name="address_1"
                         placeholder="Enter customer's address"/>
                     {this.renderErrorFor('address_1')}
@@ -131,7 +139,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label for="address"> Address 2 </Label>
                     <Input className={this.hasErrorFor('address_2') ? 'is-invalid' : ''} type="text"
-                        id="address_2" defaultValue={this.state.customer.address_2}
+                        id="address_2" defaultValue={this.state.address_2}
                         onChange={this.handleInputChanges.bind(this)} name="address_2"
                         placeholder="Enter customer's address"/>
                     {this.renderErrorFor('address_2')}
@@ -140,7 +148,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label for="postcode"> Postcode </Label>
                     <Input className={this.hasErrorFor('zip') ? 'is-invalid' : ''} type="text" id="zip"
-                        defaultValue={this.state.customer.zip}
+                        defaultValue={this.state.zip}
                         onChange={this.handleInputChanges.bind(this)} name="zip"
                         placeholder="Enter customer's postcode"/>
                     {this.renderErrorFor('zip')}
@@ -149,7 +157,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label htmlFor="city"> City </Label>
                     <Input className={this.hasErrorFor('city') ? 'is-invalid' : ''} type="text" id="city"
-                        defaultValue={this.state.customer.city}
+                        defaultValue={this.state.city}
                         onChange={this.handleInputChanges.bind(this)} name="city"
                         placeholder="Enter customer's city"/>
                     {this.renderErrorFor('city')}
@@ -158,7 +166,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label htmlFor="company_name"> Company Name </Label>
                     <Input className={this.hasErrorFor('company_name') ? 'is-invalid' : ''} type="text" id="company_name"
-                        defaultValue={this.state.customer.company_name}
+                        defaultValue={this.state.company_name}
                         onChange={this.handleInputChanges.bind(this)} name="company_name"
                         placeholder="Enter Company Name"/>
                     {this.renderErrorFor('company_name')}
@@ -167,7 +175,7 @@ class EditCustomer extends React.Component {
                 <FormGroup>
                     <Label htmlFor="job_title"> Job Title </Label>
                     <Input className={this.hasErrorFor('job_title') ? 'is-invalid' : ''} type="text" id="job_title"
-                        defaultValue={this.state.customer.job_title}
+                        defaultValue={this.state.job_title}
                         onChange={this.handleInputChanges.bind(this)} name="job_title"
                         placeholder="Enter Job Title"/>
                     {this.renderErrorFor('job_title')}

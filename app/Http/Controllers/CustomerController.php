@@ -71,7 +71,7 @@ class CustomerController extends Controller {
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(int $id) {        
+    public function show(int $id) {
         $customer = $this->customerRepo->findCustomerById($id);
         return collect($customer, $customer->addresses)->toJson();
     }
@@ -95,7 +95,6 @@ class CustomerController extends Controller {
             $addRessRepo = new AddressRepository($address[0]);
 
             $addRessRepo->updateAddress([
-                'phone' => $request->phone,
                 'address_1' => $request->address_1,
                 'address_2' => $request->address_2,
                 'zip' => $request->zip,
@@ -103,13 +102,7 @@ class CustomerController extends Controller {
             ]);
         }
 
-        $list = $this->customerRepo->listCustomers('created_at', 'desc');
-
-        $customers = $list->map(function (Customer $customer) {
-                    return $this->transformCustomer($customer);
-                })->all();
-
-        return collect($customers)->toJson();
+        return response()->json($this->transformCustomer($customer));
     }
 
     /**
@@ -125,7 +118,6 @@ class CustomerController extends Controller {
         $customer->addresses()->create([
             'company_name' => $request->company_name,
             'job_title' => $request->job_title,
-            'phone' => $request->phone,
             'address_1' => $request->address_1,
             'address_2' => $request->address_2,
             'zip' => $request->zip,
@@ -133,9 +125,8 @@ class CustomerController extends Controller {
             'country_id' => 225,
             'status' => $request->customer_type
         ]);
-        
-        return $this->transformCustomer($customer);
 
+        return $this->transformCustomer($customer);
     }
 
     /**
@@ -161,4 +152,5 @@ class CustomerController extends Controller {
 
         return response()->json('Customer deleted!');
     }
+
 }

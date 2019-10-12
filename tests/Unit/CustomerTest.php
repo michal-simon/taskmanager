@@ -82,6 +82,7 @@ class CustomerUnitTest extends TestCase {
             'email' => $this->faker->email,
             'company_name' => $this->faker->company,
             'job_title' => $this->faker->jobTitle,
+            'phone' => $this->faker->phoneNumber
         ];
         $customer = new CustomerRepository(new Customer);
         $created = $customer->createCustomer($data);

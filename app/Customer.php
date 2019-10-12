@@ -23,7 +23,8 @@ class Customer extends Model {
         'email',
         'status',
         'job_title',
-        'company_name'
+        'company_name',
+        'phone'
     ];
 
     /**

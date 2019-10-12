@@ -38,8 +38,7 @@ class Address extends Model {
         'province_id',
         'country_id',
         'customer_id',
-        'status',
-        'phone'
+        'status'
     ];
 
     /**

@@ -17,7 +17,10 @@ export default class Customers extends Component {
 
         this.updateCustomers = this.updateCustomers.bind(this)
         this.customerList = this.customerList.bind(this)
-        this.ignoredColumns = []
+        this.ignoredColumns = [
+            'first_name', 
+            'last_name'
+        ]
     }
 
     updateCustomers (customers) {
@@ -27,13 +30,10 @@ export default class Customers extends Component {
     customerList () {
         if (this.state.customers && this.state.customers.length) {
             return this.state.customers.map(customer => {
-                console.log('columns', Object.keys(customer))
                 const test = Object.keys(customer).map((index, element) => {
                     if (index === 'address') {
                         return (
-                            <React.Fragment>
-                                {this.displayCustomerAddress(customer[index])}
-                            </React.Fragment>
+                            <td>{this.displayCustomerAddress(customer[index])}</td>
                         )
                     } else if (index === 'id') {
                         return <td><Avatar name={customer.name}/></td>
@@ -49,7 +49,7 @@ export default class Customers extends Component {
                         <td>
                             <EditCustomer
                                 customer_type={this.props.customer_type}
-                                id={customer.id}
+                                customer={customer}
                                 action={this.updateCustomers}
                                 customers={this.state.customers}
                                 modal={true}
@@ -87,19 +87,7 @@ export default class Customers extends Component {
 
         return `${address.address_1}, ${address.zip}, ${address.city}`
     }
-
-    displayCustomerPhone (address) {
-        if (!address) {
-            return (<span>&nbsp</span>)
-        }
-        const phone = address.map(function (address) {
-            return (<span key={address.id}>{address.phone}</span>)
-        })
-        return (
-            <td>{phone}</td>
-        )
-    }
-
+    
     render () {
         const fetchUrl = '/api/customers/'
 
@@ -114,6 +102,7 @@ export default class Customers extends Component {
 
                 <DataTable
                     userList={this.customerList}
+                    ignore={this.ignoredColumns}
                     fetchUrl={fetchUrl}
                     updateState={this.updateCustomers}
                 />

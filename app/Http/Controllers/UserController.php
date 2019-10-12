@@ -149,7 +149,7 @@ class UserController extends Controller {
             $userRepo->syncDepartment($request->input('department'));
         }
 
-        return response()->json('Uodated user successfully');
+        return response()->json('Updated user successfully');
     }
 
     public function upload(Request $request) {

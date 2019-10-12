@@ -250,7 +250,6 @@ class TaskController extends Controller {
             $customer->addresses()->create([
                 'company_name' => $request->company_name,
                 'job_title' => $request->job_title,
-                'phone' => $request->phone,
                 'address_1' => $request->address_1,
                 'address_2' => $request->address_2,
                 'zip' => $request->zip,
