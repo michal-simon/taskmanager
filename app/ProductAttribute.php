@@ -10,9 +10,10 @@ class ProductAttribute extends Model {
     protected $fillable = [
         'range_from',
         'range_to',
-        'monthly_price',
-        'full_price',
-        'interest_rate'
+        'interest_rate',
+        'payable_months',
+        'minimum_downpayment',
+        'number_of_years'
     ];
 
     /**

@@ -9,8 +9,9 @@ class ProductAttribute extends React.Component {
             modal: false,
             range_from: 0,
             range_to: 0,
-            monthly_price: 0,
-            full_price: 0,
+            payable_months: 12,
+            minimum_downpayment: 0,
+            number_of_years: 0,
             interest_rate: 0,
             loading: false,
             errors: []
@@ -67,13 +68,33 @@ class ProductAttribute extends React.Component {
                         </FormGroup>
 
                         <FormGroup>
-                            <Label for="monthly_price">Monthly Price:</Label>
-                            <Input className={this.hasErrorFor('monthly_price') ? 'is-invalid' : ''}
+                            <Label for="minimum_downpayment">Minimum Downpayment:</Label>
+                            <Input className={this.hasErrorFor('minimum_downpayment') ? 'is-invalid' : ''}
                                 type="number"
-                                name="monthly_price"
-                                value={this.state.monthly_price}
+                                name="minimum_downpayment"
+                                value={this.state.minimum_downpayment}
                                 onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('monthly_price')}
+                            {this.renderErrorFor('minimum_downpayment')}
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <Label for="number_of_years">Number of years:</Label>
+                            <Input className={this.hasErrorFor('number_of_years') ? 'is-invalid' : ''}
+                                type="number"
+                                name="number_of_years"
+                                value={this.state.number_of_years}
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('number_of_years')}
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <Label for="payable_months">Months to Repay:</Label>
+                            <Input className={this.hasErrorFor('payable_months') ? 'is-invalid' : ''}
+                                type="number"
+                                name="payable_months"
+                                value={this.state.payable_months}
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('payable_months')}
                         </FormGroup>
 
                         <FormGroup>
@@ -85,16 +106,6 @@ class ProductAttribute extends React.Component {
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('interest_rate')}
                         </FormGroup>
-
-                <FormGroup>
-                    <Label for="full_price">Full Price:</Label>
-                    <Input className={this.hasErrorFor('full_price') ? 'is-invalid' : ''}
-                        value={this.state.full_price}
-                        type="number"
-                        name="full_price"
-                        onChange={this.handleInput.bind(this)}/>
-                    {this.renderErrorFor('full_price')}
-                </FormGroup>
             </React.Fragment>
         )
     }

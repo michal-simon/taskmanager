@@ -11,8 +11,9 @@ class EditProduct extends React.Component {
         this.productAttributes = {
             range_from: this.props.product.range_from ? this.props.product.range_from : 0,
             range_to: this.props.product.range_to ? this.props.product.range_to : 0,
-            monthly_price: this.props.product.monthly_price ? this.props.product.monthly_price : 0,
-            full_price: this.props.product.full_price ? this.props.product.full_price : 0,
+            payable_months: this.props.product.payable_months ? this.props.product.payable_months : 12,
+            minimum_downpayment: this.props.product.minimum_downpayment ? this.props.product.minimum_downpayment : 0,
+            number_of_years: this.props.product.number_of_years ? this.props.product.number_of_years : 0,
             interest_rate: this.props.product.interest_rate ? this.props.product.interest_rate : 0,
         }
         
@@ -51,8 +52,9 @@ class EditProduct extends React.Component {
             brand_id: this.state.brand_id,
             range_from: this.state.range_from,
             range_to: this.state.range_to,
-            monthly_price: this.state.monthly_price,
-            full_price: this.state.full_price,
+            payable_months: this.state.payable_months,
+            number_of_years: this.state.number_of_years,
+            minimum_downpayment: this.state.minimum_downpayment,
             interest_rate: this.state.interest_rate,
         })
             .then((response) => {

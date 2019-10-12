@@ -22,9 +22,8 @@ $factory->define(ProductAttribute::class, function (Faker\Generator $faker) {
     return [
         'range_from' => $faker->randomFloat(2),
         'range_to' => $faker->randomFloat(2),
-        'monthly_price' => $faker->randomFloat(2),
+        'payable_months' => 12,
         'interest_rate' => $faker->randomFloat(2),
-        'full_price' => $faker->randomFloat(2),
         'product_id' => $product->id
     ];
 });

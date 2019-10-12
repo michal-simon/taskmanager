@@ -11,17 +11,17 @@ use App\Repositories\CategoryRepository;
 use App\Requests\CreateProductRequest;
 use App\Requests\UpdateProductRequest;
 use App\Transformations\ProductTransformable;
+use App\Transformations\LoanProductTransformable;
 use Illuminate\Http\Request;
 use App\Repositories\TaskRepository;
 use App\Task;
-use App\Repositories\BrandRepository;
-use App\Brand;
 use Illuminate\Support\Facades\Validator;
 use App\ProductAttribute;
 
 class ProductController extends Controller {
 
-    use ProductTransformable;
+    use ProductTransformable,
+        LoanProductTransformable;
 
     /**
      * @var ProductRepositoryInterface
@@ -131,7 +131,7 @@ class ProductController extends Controller {
 
         $this->saveProductCombinations($request, $product);
         $productRepo->updateProduct($data);
-        
+
         return response()->json($product);
 
 
@@ -212,7 +212,7 @@ class ProductController extends Controller {
      */
     private function saveProductCombinations(Request $request, Product $product): ProductAttribute {
         $fields = $request->only(
-                'range_from', 'range_to', 'monthly_price', 'full_price', 'interest_rate'
+                'range_from', 'range_to', 'payable_months', 'number_of_years', 'minimum_downpayment', 'interest_rate'
         );
         if ($errors = $this->validateFields($fields)) {
             return response()->json($errors->errors(), 422);
@@ -220,13 +220,14 @@ class ProductController extends Controller {
 
         $range_from = $fields['range_from'];
         $range_to = $fields['range_to'];
-        $monthly_price = $fields['monthly_price'];
-        $full_price = $fields['full_price'];
+        $payable_months = $fields['payable_months'];
+        $number_of_years = $fields['number_of_years'];
+        $minimum_downpayment = $fields['minimum_downpayment'];
         $interest_rate = $fields['interest_rate'];
 
         $productRepo = new ProductRepository($product);
 
-        $productAttributes = new ProductAttribute(compact('range_from', 'range_to', 'monthly_price', 'full_price', 'interest_rate'));
+        $productAttributes = new ProductAttribute(compact('range_from', 'range_to', 'payable_months', 'number_of_years', 'minimum_downpayment', 'interest_rate'));
 
         $productRepo->removeProductAttribute($productAttributes);
 
@@ -244,8 +245,9 @@ class ProductController extends Controller {
         $validator = Validator::make($data, [
                     'range_from' => 'required',
                     'range_to' => 'required',
-                    'monthly_price' => 'required',
-                    'full_price' => 'required',
+                    'payable_months' => 'required',
+                    'number_of_years' => 'nullable',
+                    'minimum_downpayment' => 'nullable',
                     'interest_rate' => 'required'
         ]);
         if ($validator->fails()) {
@@ -258,17 +260,24 @@ class ProductController extends Controller {
      * @param int $id
      */
     public function getProductsForCategory(int $id, Request $request) {
-        
+
         $category = $this->categoryRepo->findCategoryById($id);
+
         $repo = new CategoryRepository($category);
+        $parentCategory = $repo->findParentCategory();
 
         $list = $request->has('valued_at') ? $this->productRepo->getProductsByDealValueAndCategory($category, $request) : $repo->findProducts()->where('status', 1);
         
-        $products = $list->map(function (Product $product) {
-                    return $this->transformProduct($product);
+        $products = $list->map(function (Product $product) use ($request, $parentCategory) {
+                    return $this->transformLoanProduct($product, $parentCategory, $request);
                 })->all();
 
-        return response()->json($products);
+        return response()->json(
+                        [
+                            'products' => $products,
+                            'parent_category' => $parentCategory
+                        ]
+        );
     }
 
 }

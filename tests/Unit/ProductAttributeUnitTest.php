@@ -56,9 +56,8 @@ class ProductAttributeUnitTest extends TestCase {
         $data = [
             'range_from' => $this->faker->randomFloat(2),
             'range_to' => $this->faker->randomFloat(2),
-            'monthly_price' => $this->faker->randomFloat(2),
-            'interest_rate' => $this->faker->randomFloat(2),
-            'full_price' => $this->faker->randomFloat(2)
+            'payable_months' => 12,
+            'interest_rate' => $this->faker->randomFloat(2)
         ];
         $productAttribute = new ProductAttribute($data);
         $product = factory(Product::class)->create();
@@ -73,21 +72,19 @@ class ProductAttributeUnitTest extends TestCase {
         $data = [
             'range_from' => $this->faker->randomFloat(2),
             'range_to' => $this->faker->randomFloat(2),
-            'monthly_price' => $this->faker->randomFloat(2),
+            'payable_months' => 12,
             'interest_rate' => $this->faker->randomFloat(2),
-            'full_price' => $this->faker->randomFloat(2)
         ];
         $productAttribute = new ProductAttribute($data);
         $product = factory(Product::class)->create();
         $productRepo = new ProductRepository($product);
         $created = $productRepo->saveProductAttributes($productAttribute);
-        
+
         $this->assertInstanceOf(ProductAttribute::class, $created);
         $this->assertEquals($data['range_from'], $created->range_from);
         $this->assertEquals($data['range_to'], $created->range_to);
-        $this->assertEquals($data['monthly_price'], $created->monthly_price);
+        $this->assertEquals($data['payable_months'], $created->payable_months);
         $this->assertEquals($data['interest_rate'], $created->interest_rate);
-        $this->assertEquals($data['full_price'], $created->full_price);
     }
 
 }
