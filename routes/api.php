@@ -78,7 +78,7 @@ Route::put('categories/{category_id}', 'CategoryController@update');
 Route::get("category/{slug}", 'CategoryController@getCategory');
 Route::get("category-list", 'CategoryController@getRootCategories');
 Route::get("categories/children/{slug}", 'CategoryController@getChildCategories');
-Route::get("categories/products/{id}", 'ProductController@getProductsForCategory');
+Route::post("categories/products/{id}", 'ProductController@getProductsForCategory');
 Route::get("category/form/{id}", 'CategoryController@getForm');
 
 // comments

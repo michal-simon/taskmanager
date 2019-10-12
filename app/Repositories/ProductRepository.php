@@ -12,6 +12,7 @@ use App\Task;
 use App\Brand;
 use App\Category;
 use App\ProductAttribute;
+use Illuminate\Http\Request;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface {
 
@@ -215,6 +216,21 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         );
 
         return $productAttribute;
+    }
+
+    /**
+     * 
+     * @param Category $category
+     * @param type $value
+     */
+    public function getProductsByDealValueAndCategory(Category $category, Request $request): Support {
+        return $this->model->join('product_attributes', 'product_attributes.product_id', '=', 'products.id')
+                        ->join('category_product', 'category_product.product_id', '=', 'products.id')
+                        ->select('products.*')
+                        ->where('product_attributes.range_from', '<', $request->valued_at)->where('product_attributes.range_to', '>', $request->valued_at)
+                        ->where('products.status', '=', 1)
+                        ->where('category_product.category_id', '=', $category->id)
+                        ->get();
     }
 
 }

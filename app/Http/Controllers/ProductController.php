@@ -257,11 +257,13 @@ class ProductController extends Controller {
      * 
      * @param int $id
      */
-    public function getProductsForCategory(int $id) {
+    public function getProductsForCategory(int $id, Request $request) {
+        
         $category = $this->categoryRepo->findCategoryById($id);
         $repo = new CategoryRepository($category);
-        $list = $repo->findProducts()->where('status', 1);
 
+        $list = $request->has('valued_at') ? $this->productRepo->getProductsByDealValueAndCategory($category, $request) : $repo->findProducts()->where('status', 1);
+        
         $products = $list->map(function (Product $product) {
                     return $this->transformProduct($product);
                 })->all();

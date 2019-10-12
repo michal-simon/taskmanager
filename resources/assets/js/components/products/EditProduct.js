@@ -7,7 +7,7 @@ import ProductAttribute from './ProductAttribute'
 class EditProduct extends React.Component {
     constructor (props) {
         super(props)
-        
+                
         this.productAttributes = {
             range_from: this.props.product.range_from ? this.props.product.range_from : 0,
             range_to: this.props.product.range_to ? this.props.product.range_to : 0,

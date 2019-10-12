@@ -14,7 +14,8 @@ class VerifyCsrfToken extends Middleware {
     protected $except = [
         '/api/tasks/deal',
         '/api/tasks/form',
-        '/api/tasks/*'
+        '/api/tasks/*',
+        '/api/categories/products/*'
     ];
 
 }

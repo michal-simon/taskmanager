@@ -10,6 +10,7 @@ use App\Task;
 use App\Brand;
 use App\Category;
 use App\ProductAttribute;
+use Illuminate\Http\Request;
 
 interface ProductRepositoryInterface extends BaseRepositoryInterface {
 
@@ -118,4 +119,11 @@ interface ProductRepositoryInterface extends BaseRepositoryInterface {
      * @param ProductAttribute $productAttribute
      */
     public function removeProductAttribute(ProductAttribute $productAttribute): ?bool;
+    
+    /**
+     * 
+     * @param Category $category
+     * @param type $value
+     */
+    public function getProductsByDealValueAndCategory(Category $category, Request $request);
 }

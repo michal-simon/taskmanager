@@ -14,7 +14,7 @@ export default class ProductList extends Component {
             per_page: 5,
             products: [],
             brands: [],
-            categories: []
+            categories: [],
         }
 
         this.addProductToState = this.addProductToState.bind(this)
@@ -180,7 +180,7 @@ export default class ProductList extends Component {
         const fetchUrl = '/api/products/'
         const brandOptions = this.buildBrandOptions()
         const categoryOptions = this.buildCategoryOptions()
-
+        
         return (
             <div className="data-table m-md-3 m-0">
 
