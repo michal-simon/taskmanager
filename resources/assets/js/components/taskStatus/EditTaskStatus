@@ -1,0 +1,131 @@
+import React from 'react'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import axios from 'axios'
+
+class EditTaskStatus extends React.Component {
+    constructor (props) {
+        super(props)
+        this.state = {
+            modal: false,
+            loading: false,
+            errors: [],
+            name: this.props.status.name,
+            task_type: this.props.status.task_type,
+            icon: this.props.status.icon,
+            color: this.props.status.color
+            role: []
+        }
+        this.toggle = this.toggle.bind(this)
+        this.hasErrorFor = this.hasErrorFor.bind(this)
+        this.renderErrorFor = this.renderErrorFor.bind(this)
+        this.handleMultiSelect = this.handleMultiSelect.bind(this);
+
+    handleInput (e) {
+        this.setState({ [e.target.name]: e.target.value })
+    }
+
+    handleMultiSelect (e) {
+        this.setState({ attachedPermissions: Array.from(e.target.selectedOptions, (item) => item.value) })
+    }
+
+    hasErrorFor (field) {
+        return !!this.state.errors[field]
+    }
+
+    renderErrorFor (field) {
+        if (this.hasErrorFor(field)) {
+            return (
+                <span className='invalid-feedback'>
+                    <strong>{this.state.errors[field][0]}</strong>
+                </span>
+            )
+        }
+    }
+
+    handleClick () {
+        axios.put(`/api/taskStatus/${this.state.status.id}`, {
+            name: this.state.name,
+            task_type: this.state.task_type,
+            icon: this.state.icon,
+            color: this.state.color
+        })
+            .then((response) => {
+                this.toggle()
+                const index = this.props.roles.findIndex(status => status.id === this.props.status.id)
+                this.props.statuses[index].name = this.state.name
+                this.props.statuses[index].task_type = this.state.task_type
+                this.props.action(this.props.statuses)
+            })
+            .catch((error) => {
+                this.setState({
+                    errors: error.response.data.errors
+                })
+            })
+    }
+
+    toggle () {
+        this.setState({
+            modal: !this.state.modal,
+            errors: []
+        })
+    }
+
+    render () {
+        let permissionsList = null
+        console.log('state', this.state)
+        if (!this.state.permissions.length) {
+            permissionsList = <option value="">Loading...</option>
+        } else {
+            permissionsList = this.state.permissions.map((permission, index) => {
+                const selected = this.state.attachedPermissions.indexOf(permission.id) > -1 ? 'selected' : ''
+                return (
+                    <option selected={selected} key={index} value={permission.id}>{permission.name}</option>
+                )
+            })
+        }
+        return (
+            <React.Fragment>
+                <Button color="success" onClick={this.toggle}>Update</Button>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                    <ModalHeader toggle={this.toggle}>
+                        Edit Task Status
+                    </ModalHeader>
+                    <ModalBody>
+                        <FormGroup>
+                            <Label for="name">Name(*):</Label>
+                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
+                                value={this.state.name} onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('name')}
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label for="icon">Icon(*):</Label>
+                            <Input className={this.hasErrorFor('icon') ? 'is-invalid' : ''} type="text"
+                                name="description" value={this.state.icon}
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('icon')}
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label for="color">Color(*):</Label>
+                            <Input className={this.hasErrorFor('color') ? 'is-invalid' : ''} type="text"
+                                name="description" value={this.state.color}
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('color')}
+                        </FormGroup>
+
+              
+
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button color="primary" onClick={this.handleClick.bind(this)}>Update</Button>
+                        <Button color="secondary" onClick={this.toggle}>Close</Button>
+                    </ModalFooter>
+                </Modal>
+            </React.Fragment>
+        )
+    }
+}
+
+export default EditRole
