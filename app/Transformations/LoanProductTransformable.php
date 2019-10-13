@@ -12,6 +12,16 @@ trait LoanProductTransformable {
 
     use MonthlyPayments;
 
+    private function calculateMonthlyCost($new_total, $number_of_months) {
+        $monthly_rate = $new_total / $number_of_months;
+        return $monthly_rate;
+    }
+
+    private function calculateTotal($value, $interest_rate) {
+        $new_total = $value + (($interest_rate / 100) * $value);
+        return $new_total;
+    }
+
     /**
      * Transform the product
      *
@@ -60,9 +70,11 @@ trait LoanProductTransformable {
             $downpayment_cost = ($downpayment / 100) * $value;
             $prod->downpayment = $downpayment_cost;
 
-            $new_total = $newprice + (($interest_rate / 100) * $newprice);
+            //$new_total = $newprice + (($interest_rate / 100) * $newprice);
+
+            $new_total = $this->calculateTotal($newprice, $interest_rate);
             $number_of_months = $years * 12;
-            $monthly_rate = $new_total / $number_of_months;
+            $monthly_rate = $this->calculateMonthlyCost($number_of_months, $new_total);
             $prod->monthly_payment = number_format((float) $monthly_rate, 2, '.', '');
             $prod->total = number_format((float) $new_total, 2, '.', '');
 
@@ -70,10 +82,11 @@ trait LoanProductTransformable {
         }
 
 
-        $new_total = $value + (($interest_rate / 100) * $value);
+        $new_total = $this->calculateTotal($value, $interest_rate);
         $prod->total = number_format((float) $new_total, 2, '.', '');
 
-        $monthly_payment = $new_total / $months;
+        $monthly_payment = $this->calculateMonthlyCost($months, $new_total);
+
         $prod->monthly_payment = number_format((float) $monthly_payment, 2, '.', '');
 
         return $prod;
