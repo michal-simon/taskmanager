@@ -211,9 +211,9 @@ class TaskController extends Controller {
         $taskRepo = new TaskRepository($task);
 
         if ($request->has('products')) {
-            $taskRepo->syncProducts($request->input('products'));
+            $taskRepo->buildOrderDetails($request->input('products'));
         }
-
+        
         return response()->json('added products to task successfully');
     }
 

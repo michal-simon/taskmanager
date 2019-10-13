@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Interfaces\TaskStatusRepositoryInterface;
+use App\Repositories\TaskStatusRepository;
+use App\Requests\CreateTaskStatusRequest;
+use App\Requests\UpdateTaskStatusRequest;
 
 class TaskStatusController extends Controller
 {
@@ -14,7 +17,7 @@ class TaskStatusController extends Controller
     }
 
     public function index(int $task_type)
-    {
+    {        
         $statuses = $this->taskStatusRepository->getAllStatusForTaskType($task_type);
 
         return $statuses->toJson();
@@ -28,7 +31,7 @@ class TaskStatusController extends Controller
      */
     public function store(CreateTaskStatusRequest $request)
     {
-        $status = $this->taskStatuses->createTaskStatus($request->except('_token', '_method'));
+        $status = $this->taskStatusRepository->createTaskStatus($request->except('_token', '_method'));
     }
 
     
@@ -41,7 +44,7 @@ class TaskStatusController extends Controller
      */
     public function update(UpdateTaskStatusRequest $request, int $id)
     {
-        $taskStatus = $this->taskStatuses->findTaskStatusById($id);
+        $taskStatus = $this->taskStatusRepository->findTaskStatusById($id);
         $update = new TaskStatusRepository($taskStatus);
         $update->updateTaskStatus($request->all());
     }
@@ -54,6 +57,6 @@ class TaskStatusController extends Controller
      */
     public function destroy(int $id)
     {
-        $this->taskStatuses->findTaskStatusById($id)->delete();
+        $this->taskStatusRepository->findTaskStatusById($id)->delete();
     }
 }

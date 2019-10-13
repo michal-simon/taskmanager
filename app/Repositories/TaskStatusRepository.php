@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\TaskStatus;
 use App\Repositories\Interfaces\TaskStatusRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Collection;
 
 class TaskStatusRepository extends BaseRepository implements TaskStatusRepositoryInterface {
     
@@ -43,7 +44,7 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
      * @return OrderStatus
      * @throws OrderStatusInvalidArgumentException
      */
-    public function createTaskStatus(array $params) : OrderStatus
+    public function createTaskStatus(array $params) : TaskStatus
     {
          return $this->create($params);
     }
@@ -74,7 +75,7 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
     /**
      * @return mixed
      */
-    public function listOrderStatuses()
+    public function listTaskStatuses()
     {
         return $this->all();
     }
@@ -83,7 +84,7 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
      * @return bool
      * @throws \Exception
      */
-    public function deleteOrderStatus() : bool
+    public function deleteTaskStatus() : bool
     {
         return $this->delete();
     }

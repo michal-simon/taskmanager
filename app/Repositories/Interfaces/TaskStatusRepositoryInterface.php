@@ -2,6 +2,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\TaskStatus;
+use Illuminate\Support\Collection;
 
 interface TaskStatusRepositoryInterface
 {
@@ -13,11 +14,10 @@ interface TaskStatusRepositoryInterface
      */
     public function getAllStatusForTaskType(int $task_type);
     
-    public function createOrderStatus(array $orderStatusData) : TaskStatus;
-    public function updateOrderStatus(array $data) : bool;
-    public function findOrderStatusById(int $id) : TaskStatus:
-    public function listOrderStatuses();
-    public function deleteOrderStatus() : bool;
-    public function findOrders(): Collection;
+    public function createTaskStatus(array $orderStatusData) : TaskStatus;
+    public function updateTaskStatus(array $data) : bool;
+    public function listTaskStatuses();
+    public function deleteTaskStatus() : bool;
+    public function findTasks(): Collection;
     public function findByName(string $name);
 }

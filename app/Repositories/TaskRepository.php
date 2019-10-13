@@ -11,6 +11,8 @@ use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Product;
+use App\Repositories\ProductRepository;
 
 class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
 
@@ -148,8 +150,8 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
 
         foreach ($arrFilters as $arrFilter) {
             $query->where($arrFilter['column'], '=', $arrFilter['value']);
-            
-            if(!empty($arrFilter['project_id'])) {
+
+            if (!empty($arrFilter['project_id'])) {
                 $query->where('project_id', $arrFilter['project_id']);
             }
         }
@@ -255,6 +257,52 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     public function getTotalEarnt(int $task_type) {
 
         return $this->model->where('task_type', $task_type)->sum('valued_at');
+    }
+
+    /**
+     * 
+     * @param array $items
+     * @return boolean
+     */
+    public function buildOrderDetails(array $items) {
+        
+         $this->model->products()->detach();
+
+        foreach ($items as $item) {
+            $productRepo = new ProductRepository(new Product);
+            $product = $productRepo->find($item);
+
+            $this->associateProduct($product);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param Product $product
+     * @param int $quantity
+     * @param array $data
+     */
+    public function associateProduct(Product $product, array $data = []) {
+
+        if ($product->attributes->count() === 0) {
+            return false;
+        }
+
+        $attributes = $product->attributes->first();
+
+        $this->model->products()->attach($product, [
+            'interest_rate' => $attributes->interest_rate,
+            'minimum_downpayment' => $attributes->minimum_downpayment,
+            'payable_months' => $attributes->payable_months,
+            'number_of_years' => $attributes->number_of_years,
+            'range_from' => $attributes->range_from,
+            'range_to' => $attributes->range_to,
+            'name' => $product->name,
+            'sku' => $product->sku,
+        ]);
+
+        return true;
     }
 
 }
