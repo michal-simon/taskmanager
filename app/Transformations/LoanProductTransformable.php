@@ -56,7 +56,7 @@ trait LoanProductTransformable {
             $months = 0;
             $prod->frequency = 'Monthly';
 
-            $newprice = (684000 * ((100 - $downpayment) / 100));
+            $newprice = ($value * ((100 - $downpayment) / 100));
             $downpayment_cost = ($downpayment / 100) * $value;
             $prod->downpayment = $downpayment_cost;
 
