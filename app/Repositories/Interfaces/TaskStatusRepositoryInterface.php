@@ -13,9 +13,11 @@ interface TaskStatusRepositoryInterface
      */
     public function getAllStatusForTaskType(int $task_type);
     
-    /**
-     * 
-     * @param int $id
-     */
-    public function findStatusById(int $id): TaskStatus;
+    public function createOrderStatus(array $orderStatusData) : TaskStatus;
+    public function updateOrderStatus(array $data) : bool;
+    public function findOrderStatusById(int $id) : TaskStatus:
+    public function listOrderStatuses();
+    public function deleteOrderStatus() : bool;
+    public function findOrders(): Collection;
+    public function findByName(string $name);
 }
