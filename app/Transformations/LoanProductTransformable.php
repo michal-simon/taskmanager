@@ -14,12 +14,17 @@ trait LoanProductTransformable {
 
     private function calculateMonthlyCost($new_total, $number_of_months) {
         $monthly_rate = $new_total / $number_of_months;
-        return $monthly_rate;
+        return number_format((float) $monthly_rate, 2, '.', '');
     }
 
     private function calculateTotal($value, $interest_rate) {
         $new_total = $value + (($interest_rate / 100) * $value);
-        return $new_total;
+        return number_format((float) $new_total, 2, '.', '');
+    }
+
+    private function calculateDownpayment($downpayment, $value) {
+        $downpayment_cost = ($downpayment / 100) * $value;
+        return $downpayment_cost;
     }
 
     /**
@@ -67,27 +72,25 @@ trait LoanProductTransformable {
             $prod->frequency = 'Monthly';
 
             $newprice = ($value * ((100 - $downpayment) / 100));
-            $downpayment_cost = ($downpayment / 100) * $value;
+            $downpayment_cost = $this->calculateDownpayment($downpayment, $value);
             $prod->downpayment = $downpayment_cost;
-
-            //$new_total = $newprice + (($interest_rate / 100) * $newprice);
 
             $new_total = $this->calculateTotal($newprice, $interest_rate);
             $number_of_months = $years * 12;
+          
             $monthly_rate = $this->calculateMonthlyCost($number_of_months, $new_total);
-            $prod->monthly_payment = number_format((float) $monthly_rate, 2, '.', '');
-            $prod->total = number_format((float) $new_total, 2, '.', '');
+            $prod->monthly_payment = $monthly_rate;
+            $prod->total = $new_total;
 
             return $prod;
         }
 
 
         $new_total = $this->calculateTotal($value, $interest_rate);
-        $prod->total = number_format((float) $new_total, 2, '.', '');
+        $prod->total = $new_total;
 
         $monthly_payment = $this->calculateMonthlyCost($months, $new_total);
-
-        $prod->monthly_payment = number_format((float) $monthly_payment, 2, '.', '');
+        $prod->monthly_payment = $monthly_payment;
 
         return $prod;
     }
