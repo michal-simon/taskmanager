@@ -12,27 +12,6 @@ trait LoanProductTransformable {
 
     use MonthlyPayments;
 
-    private function calculateMonthlyCost($new_total, $number_of_months) {
-        $new_total = (float) $new_total;
-        $monthly_rate = $new_total / $number_of_months;
-        return number_format((float) $monthly_rate, 2, '.', '');
-    }
-
-    private function calculateTotal($value, $interest_rate) {
-        
-        $value = (float) $value;
-        $interest_rate = (float) $interest_rate;
-
-        $new_total = $value + (($interest_rate / 100) * $value);
-        return number_format((float) $new_total, 2, '.', '');
-    }
-
-    private function calculateDownpayment($downpayment, $value) {
-        $value = (float) $value;
-        $downpayment_cost = ($downpayment / 100) * $value;
-        return $downpayment_cost;
-    }
-
     /**
      * Transform the product
      *
