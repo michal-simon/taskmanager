@@ -285,19 +285,25 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      */
     public function associateProduct(Product $product, array $data = []) {
 
-        if ($product->attributes->count() === 0) {
-            return false;
-        }
-
+        $range_from = $range_to = $payable_months = $minimum_downpayment = $number_of_years = $interest_rate = 0;
         $attributes = $product->attributes->first();
 
+        if ($attributes && $attributes->count() > 0) {
+            $range_from = $attributes->range_from;
+            $range_to = $attributes->range_to;
+            $payable_months = $attributes->payable_months;
+            $minimum_downpayment = $attributes->minimum_downpayment;
+            $number_of_years = $attributes->number_of_years;
+            $interest_rate = $attributes->interest_rate;
+        }
+
         $this->model->products()->attach($product, [
-            'interest_rate' => $attributes->interest_rate,
-            'minimum_downpayment' => $attributes->minimum_downpayment,
-            'payable_months' => $attributes->payable_months,
-            'number_of_years' => $attributes->number_of_years,
-            'range_from' => $attributes->range_from,
-            'range_to' => $attributes->range_to,
+            'interest_rate' => $interest_rate,
+            'minimum_downpayment' => $minimum_downpayment,
+            'payable_months' => $payable_months,
+            'number_of_years' => $number_of_years,
+            'range_from' => $range_from,
+            'range_to' => $range_to,
             'name' => $product->name,
             'sku' => $product->sku,
         ]);
