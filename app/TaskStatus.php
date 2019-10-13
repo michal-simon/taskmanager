@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App/Task;
 use Illuminate\Database\Eloquent\Model;
 
 class TaskStatus extends Model
@@ -14,6 +15,19 @@ class TaskStatus extends Model
     protected $fillable = [
         'title', 
         'description', 
-        'icon'
+        'icon',
+        'color',
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [];
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
