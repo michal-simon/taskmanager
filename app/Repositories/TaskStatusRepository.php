@@ -67,7 +67,7 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
      * @return OrderStatus
      * @throws OrderStatusNotFoundException
      */
-    public function findTaskStatusById(int $id) : OrderStatus
+    public function findTaskStatusById(int $id) : TaskStatus
     {
         return $this->findOneOrFail($id);
     }
@@ -75,9 +75,8 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
     /**
      * @return mixed
      */
-    public function listTaskStatuses()
-    {
-        return $this->all();
+    public function listTaskStatuses(string $order = 'id', string $sort = 'desc', array $columns = ['*']): Collection {
+        return $this->all($columns, $order, $sort);
     }
 
     /**

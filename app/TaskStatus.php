@@ -16,7 +16,8 @@ class TaskStatus extends Model
         'title', 
         'description', 
         'icon',
-        'color',
+        'column_color',
+        'task_type'
     ];
 
     /**

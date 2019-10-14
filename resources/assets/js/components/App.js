@@ -15,6 +15,7 @@ import Login from './Login'
 import Dashboard from './Dashboard'
 import MessageContainer from './activity/MessageContainer'
 import UserProfile from './users/UserProfile'
+import TaskStatus from './taskStatus/statusList'
 
 
 class App extends Component {
@@ -90,6 +91,7 @@ class App extends Component {
                         />
 
                         <Route path='/roles' component={Roles}/>
+                        <Route path='/statuses' component={TaskStatus}/>
                         <Route
                             path='/leads'
                             render={(props) => <Kanban {...props} task_type={2} />}

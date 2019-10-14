@@ -25,7 +25,7 @@ export default class statusList extends Component {
 
     userList () {
         if (this.state.statuses && this.state.statuses.length) {
-            return this.state.statuses.map(role => {
+            return this.state.statuses.map(status => {
                 const columnList = Object.keys(status).map(key => {
                     return <td key={key}>{status[key]}</td>
                 })
@@ -61,7 +61,7 @@ export default class statusList extends Component {
     }
 
     render () {
-        const fetchUrl = '/api/taskStatus/'
+        const fetchUrl = '/api/taskStatus/search/'
 
         return (
             <div className="data-table m-md-3 m-0">

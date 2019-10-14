@@ -7,7 +7,8 @@ class AddTaskStatus extends React.Component {
         super(props)
         this.state = {
             modal: false,
-            name: '',
+            title: '',
+            description: '',
             icon: '',
             task_type: 0,
             color: '',
@@ -19,11 +20,7 @@ class AddTaskStatus extends React.Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
     }
 
-    handleChange (event) {
-        this.setState({ name: event.target.value })
-    }
-
-    handleInput (e) {
+    handleInput (e) {        
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -45,8 +42,9 @@ class AddTaskStatus extends React.Component {
 
     handleClick () {
         axios.post('/api/taskStatus', {
-            name: this.state.name,
-            color: this.state.color,
+            title: this.state.title,
+            description: this.state.description,
+            column_color: this.state.column_color,
             task_type: this.state.task_type,
             icon: this.state.icon,
         })
@@ -81,27 +79,48 @@ class AddTaskStatus extends React.Component {
                 <Button color="success" onClick={this.toggle}>Add Role</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
-                        Add Role
+                        Add Status
                     </ModalHeader>
                     <ModalBody>
                         <FormGroup>
-                            <Label for="username">Name(*):</Label>
-                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
+                            <Label for="title">Name(*):</Label>
+                            <Input className={this.hasErrorFor('title') ? 'is-invalid' : ''} type="text" name="title"
                                 onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('name')}
+                            {this.renderErrorFor('title')}
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <Label for="description">Description(*):</Label>
+                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
+                                name="description" value={this.state.description}
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('description')}
                         </FormGroup>
 
                         <FormGroup>
-                            <Label for="email">Color(*):</Label>
-                            <Input className={this.hasErrorFor('color') ? 'is-invalid' : ''} type="text"
-                                name="color" onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('color')}
+                            <Label for="column_color">Color(*):</Label>
+                            <Input className={this.hasErrorFor('column_color') ? 'is-invalid' : ''} type="text"
+                                name="column_color" onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('column_color')}
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <Label for="task_type">Task Type(*):</Label>
+                            <Input className={this.hasErrorFor('task_type') ? 'is-invalid' : ''} type="select"
+                                name="task_type" value={this.state.task_type}
+                                onChange={this.handleInput.bind(this)}>
+                                <option value="">Select...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </Input>
+                            {this.renderErrorFor('task_type')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="icon">Icon(*):</Label>
                             <Input className={this.hasErrorFor('icon') ? 'is-invalid' : ''} type="text"
-                                name="color" onChange={this.handleInput.bind(this)}/>
+                                name="icon" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('icon')}
                         </FormGroup>
                     </ModalBody>

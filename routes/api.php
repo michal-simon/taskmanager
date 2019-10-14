@@ -132,3 +132,10 @@ Route::get('logout', 'LoginController@doLogout');
 Route::post('uploads', 'UploadController@store');
 Route::get('uploads/{task_id}', 'UploadController@index');
 Route::delete('uploads/{file_id}', 'UploadController@destroy');
+
+// task status
+Route::get('taskStatus/search', 'TaskStatusController@search');
+Route::get('taskStatus', 'TaskStatusController@index');
+Route::post('taskStatus', 'TaskStatusController@store');
+Route::put('taskStatus/{project}', 'TaskStatusController@update');
+Route::delete('taskStatus/{status_id}', 'TaskStatusController@destroy');

@@ -16,7 +16,7 @@ interface TaskStatusRepositoryInterface
     
     public function createTaskStatus(array $orderStatusData) : TaskStatus;
     public function updateTaskStatus(array $data) : bool;
-    public function listTaskStatuses();
+     public function listTaskStatuses(string $order = 'id', string $sort = 'desc', array $columns = ['*']): Collection;
     public function deleteTaskStatus() : bool;
     public function findTasks(): Collection;
     public function findByName(string $name);

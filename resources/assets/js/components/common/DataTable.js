@@ -94,6 +94,7 @@ export default class DataTable extends Component {
             cancelToken: this.cancel.token
         })
             .then(response => {
+                console.log('res', response.data.data);
                 if(response.data && Object.keys(response.data).length) {
                     this.setState({ entities: response.data, loading: false })
                     const columns = this.props.columns && this.props.columns.length ? this.props.columns : Object.keys(response.data.data[0])

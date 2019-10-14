@@ -9,16 +9,19 @@ class EditTaskStatus extends React.Component {
             modal: false,
             loading: false,
             errors: [],
-            name: this.props.status.name,
+            id: this.props.status.id,
+            title: this.props.status.title,
+            description: this.props.status.description,
             task_type: this.props.status.task_type,
             icon: this.props.status.icon,
-            color: this.props.status.color
+            column_color: this.props.status.column_color,
             role: []
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this);
+    }
 
     handleInput (e) {
         this.setState({ [e.target.name]: e.target.value })
@@ -43,17 +46,17 @@ class EditTaskStatus extends React.Component {
     }
 
     handleClick () {
-        axios.put(`/api/taskStatus/${this.state.status.id}`, {
-            name: this.state.name,
+        axios.put(`/api/taskStatus/${this.state.id}`, {
+            title: this.state.title,
+            description: this.state.description,
             task_type: this.state.task_type,
             icon: this.state.icon,
-            color: this.state.color
+            column_color: this.state.column_color
         })
             .then((response) => {
                 this.toggle()
                 const index = this.props.roles.findIndex(status => status.id === this.props.status.id)
-                this.props.statuses[index].name = this.state.name
-                this.props.statuses[index].task_type = this.state.task_type
+                this.props.statuses[index] = response.data
                 this.props.action(this.props.statuses)
             })
             .catch((error) => {
@@ -71,18 +74,6 @@ class EditTaskStatus extends React.Component {
     }
 
     render () {
-        let permissionsList = null
-        console.log('state', this.state)
-        if (!this.state.permissions.length) {
-            permissionsList = <option value="">Loading...</option>
-        } else {
-            permissionsList = this.state.permissions.map((permission, index) => {
-                const selected = this.state.attachedPermissions.indexOf(permission.id) > -1 ? 'selected' : ''
-                return (
-                    <option selected={selected} key={index} value={permission.id}>{permission.name}</option>
-                )
-            })
-        }
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Update</Button>
@@ -92,26 +83,47 @@ class EditTaskStatus extends React.Component {
                     </ModalHeader>
                     <ModalBody>
                         <FormGroup>
-                            <Label for="name">Name(*):</Label>
-                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
-                                value={this.state.name} onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('name')}
+                            <Label for="title">Name(*):</Label>
+                            <Input className={this.hasErrorFor('title') ? 'is-invalid' : ''} type="text" name="title"
+                                value={this.state.title} onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('title')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="icon">Icon(*):</Label>
                             <Input className={this.hasErrorFor('icon') ? 'is-invalid' : ''} type="text"
-                                name="description" value={this.state.icon}
+                                name="icon" value={this.state.icon}
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('icon')}
                         </FormGroup>
+                        
+                        <FormGroup>
+                            <Label for="description">Description(*):</Label>
+                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
+                                name="description" value={this.state.description}
+                                onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('description')}
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <Label for="task_type">Task Type(*):</Label>
+                            <Input className={this.hasErrorFor('task_type') ? 'is-invalid' : ''} type="select"
+                                name="task_type" value={this.state.task_type}
+                                onChange={this.handleInput.bind(this)}>
+                                <option value="">Select...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </Input>
+                            {this.renderErrorFor('task_type')}
+                        </FormGroup>
 
                         <FormGroup>
-                            <Label for="color">Color(*):</Label>
-                            <Input className={this.hasErrorFor('color') ? 'is-invalid' : ''} type="text"
-                                name="description" value={this.state.color}
+                            <Label for="column_color">Color(*):</Label>
+                            <Input className={this.hasErrorFor('column_color') ? 'is-invalid' : ''} type="text"
+                                name="column_color" value={this.state.column_color}
                                 onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('color')}
+                            {this.renderErrorFor('column_color')}
                         </FormGroup>
 
               
@@ -128,4 +140,4 @@ class EditTaskStatus extends React.Component {
     }
 }
 
-export default EditRole
+export default EditTaskStatus

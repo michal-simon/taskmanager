@@ -63,6 +63,10 @@
                         <li>
                             <a href="/users"> <i class="menu-icon fa fa-dashboard"></i>Employees </a>
                         </li>
+                        
+                          <li>
+                            <a href="/statuses"> <i class="menu-icon fa fa-dashboard"></i>Task Statuses </a>
+                        </li>
 
                          <li>
                                                     <a href="/roles"> <i class="menu-icon fa fa-book"></i>Role </a>
