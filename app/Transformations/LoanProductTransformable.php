@@ -70,7 +70,6 @@ trait LoanProductTransformable {
             return $prod;
         }
 
-
         $new_total = $this->calculateTotal($value, $interest_rate);
         $prod->total = $new_total;
 

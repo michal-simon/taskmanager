@@ -54,7 +54,7 @@ trait MonthlyPayments {
         }
     }
 
-    public function calculateMonthlyCost($new_total, $number_of_months) {
+    public function calculateMonthlyCost($number_of_months, $new_total) {
         $new_total = (float) $new_total;
         $monthly_rate = $new_total / $number_of_months;
         return number_format((float) $monthly_rate, 2, '.', '');
