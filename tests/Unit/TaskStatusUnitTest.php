@@ -44,7 +44,7 @@ class TaskStatusUnitTest extends TestCase
     }
     
     /** @test */
-    public function it_lists_all_the_order_statuses()
+    public function it_lists_all_the_task_statuses()
     {
         $create = [
             'title' => $this->faker->name,
@@ -52,11 +52,11 @@ class TaskStatusUnitTest extends TestCase
         ];
         $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
         $taskStatusRepo->createTaskStatus($create);
-        $taskStatusRepo = new OrderStatusRepository(new OrderStatus);
-        $lists = $orderStatusRepo->listOrderStatuses();
+        $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
+        $lists = $taskStatusRepo->listTaskStatuses();
         foreach ($lists as $list) {
-            $this->assertDatabaseHas('order_statuses', ['name' => $list->name]);
-            $this->assertDatabaseHas('order_statuses', ['color' => $list->color]);
+            $this->assertDatabaseHas('task_statuses', ['title' => $list->title]);
+            $this->assertDatabaseHas('task_statuses', [column_color' => $list->column_color]);
         }
     }
     
@@ -65,56 +65,56 @@ class TaskStatusUnitTest extends TestCase
     {
         $this->expectException(OrderStatusNotFoundException::class);
         $this->expectExceptionMessage('Order status not found.');
-        $orderStatusRepo = new OrderStatusRepository(new OrderStatus);
-        $orderStatusRepo->findOrderStatusById(999);
+        $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
+        $taskStatusRepo->findTaskStatusById(999);
     }
     
     /** @test */
-    public function it_can_get_the_order_status()
+    public function it_can_get_the_task_status()
     {
         $create = [
-            'name' => $this->faker->name,
-            'color' => $this->faker->word
+            'title' => $this->faker->name,
+            'column_color' => $this->faker->word
         ];
-        $orderStatusRepo = new OrderStatusRepository(new OrderStatus);
-        $orderStatus = $orderStatusRepo->createOrderStatus($create);
-        $os = $orderStatusRepo->findOrderStatusById($orderStatus->id);
-        $this->assertEquals($create['name'], $os->name);
-        $this->assertEquals($create['color'], $os->color);
+        $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
+        $taskStatus = $taskStatusRepo->createTaskStatus($create);
+        $os = $taskStatusRepo->findTaskStatusById($taskStatus->id);
+        $this->assertEquals($create['title'], $os->title);
+        $this->assertEquals($create['column_color'], $os->column_color);
     }
     
     /** @test */
-    public function it_can_update_the_order_status()
+    public function it_can_update_the_task_status()
     {
-        $orderStatusRepo = new OrderStatusRepository($this->orderStatus);
+        $taskStatusRepo = new TaskStatusRepository($this->taskStatus);
         $data = [
-            'name' => $this->faker->name,
-            'color' => $this->faker->word
+            'title' => $this->faker->name,
+            'column_color' => $this->faker->word
         ];
-        $updated = $orderStatusRepo->updateOrderStatus($data);
+        $updated = $taskStatusRepo->updateTaskStatus($data);
         $this->assertTrue($updated);
-        $this->assertEquals($data['name'], $this->orderStatus->name);
-        $this->assertEquals($data['color'], $this->orderStatus->color);
+        $this->assertEquals($data['title'], $this->taskStatus->title);
+        $this->assertEquals($data['column_color'], $this->taskStatus->column_color);
     }
     
     /** @test */
-    public function it_errors_when_creating_the_order_status()
+    public function it_errors_when_creating_the_task_status()
     {
         $this->expectException(OrderStatusInvalidArgumentException::class);
-        $orderStatusRepo = new OrderStatusRepository(new OrderStatus);
-        $orderStatusRepo->createOrderStatus([]);
+        $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
+        $taskStatusRepo->createTaskStatus([]);
     }
     
     /** @test */
-    public function it_can_create_the_order_status()
+    public function it_can_create_the_task_status()
     {
         $create = [
-            'name' => $this->faker->name,
-            'color' => $this->faker->word
+            'title' => $this->faker->name,
+            'column_color' => $this->faker->word
         ];
-        $orderStatusRepo = new OrderStatusRepository(new OrderStatus);
-        $orderStatus = $orderStatusRepo->createOrderStatus($create);
-        $this->assertEquals($create['name'], $orderStatus->name);
-        $this->assertEquals($create['color'], $orderStatus->color);
+        $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
+        $taskStatus = $taskStatusRepo->createTaskStatus($create);
+        $this->assertEquals($create['title'], $taskStatus->title);
+        $this->assertEquals($create['column_color'], $taskStatus->column_color);
     }
 }
