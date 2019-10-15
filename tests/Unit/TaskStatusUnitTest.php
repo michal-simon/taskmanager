@@ -9,14 +9,14 @@ use Tests\TestCase;
 class TaskStatusUnitTest extends TestCase
 {
     /** @test */
-    public function it_can_return_all_orders_on_a_specific_order_status()
+    public function it_can_return_all_tasks_on_a_specific_order_status()
     {
-        $orderStatus = factory(OrderStatus::class)->create();
-        $order = factory(Order::class)->create([
-            'order_status_id' => $orderStatus->id
+        $taskStatus = factory(TaskStatus::class)->create();
+        $task = factory(Task::class)->create([
+            'task_status_id' => $taskStatus->id
         ]);
-        $repo = new OrderStatusRepository($orderStatus);
-        $collection = $repo->findOrders();
+        $repo = new TaskStatusRepository($taskStatus);
+        $collection = $repo->findTasks();
         $this->assertCount(1, $collection->all());
         $collection->each(function ($item) use ($order) {
             $this->assertEquals($item->reference, $order->reference);
