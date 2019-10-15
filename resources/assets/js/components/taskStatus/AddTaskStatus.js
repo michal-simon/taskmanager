@@ -110,9 +110,9 @@ class AddTaskStatus extends React.Component {
                                 name="task_type" value={this.state.task_type}
                                 onChange={this.handleInput.bind(this)}>
                                 <option value="">Select...</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
+                                <option value="1">Task</option>
+                                <option value="2">Lead</option>
+                                <option value="3">Deal</option>
                             </Input>
                             {this.renderErrorFor('task_type')}
                         </FormGroup>
