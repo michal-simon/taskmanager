@@ -18,7 +18,7 @@ class TaskStatusUnitTest extends TestCase
         $repo = new TaskStatusRepository($taskStatus);
         $collection = $repo->findTasks();
         $this->assertCount(1, $collection->all());
-        $collection->each(function ($item) use ($order) {
+        $collection->each(function ($item) use ($task) {
             $this->assertEquals($item->reference, $order->reference);
             $this->assertEquals($item->courier_id, $order->courier_id);
             $this->assertEquals($item->customer_id, $order->customer_id);
@@ -27,31 +27,32 @@ class TaskStatusUnitTest extends TestCase
     }
     
     /** @test */
-    public function it_errors_when_updating_the_order_status()
+    public function it_errors_when_updating_the_task_status()
     {
+        $taskStatus = factory(TaskStatus::class)->create();
         $this->expectException(OrderStatusInvalidArgumentException::class);
-        $orderStatusRepo = new OrderStatusRepository($this->orderStatus);
-        $orderStatusRepo->updateOrderStatus(['name' => null]);
+        $taskStatusRepo = new TaskStatusRepository($taskStatus);
+        $taskStatusRepo->updateTaskStatus(['name' => null]);
     }
     /** @test */
     public function it_can_delete_the_order_status()
     {
-        $os = factory(OrderStatus::class)->create();
-        $orderStatusRepo = new OrderStatusRepository($os);
-        $orderStatusRepo->deleteOrderStatus($os);
-        $this->assertDatabaseMissing('order_statuses', $os->toArray());
+        $os = factory(TaskStatus::class)->create();
+        $taskStatusRepo = new TaskStatusRepository($os);
+        $taskStatusRepo->deleteTaskStatus($os);
+        $this->assertDatabaseMissing('task_statuses', $os->toArray());
     }
     
     /** @test */
     public function it_lists_all_the_order_statuses()
     {
         $create = [
-            'name' => $this->faker->name,
-            'color' => $this->faker->word
+            'title' => $this->faker->name,
+            'column_color' => $this->faker->word
         ];
-        $orderStatusRepo = new OrderStatusRepository(new OrderStatus);
-        $orderStatusRepo->createOrderStatus($create);
-        $orderStatusRepo = new OrderStatusRepository(new OrderStatus);
+        $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
+        $taskStatusRepo->createTaskStatus($create);
+        $taskStatusRepo = new OrderStatusRepository(new OrderStatus);
         $lists = $orderStatusRepo->listOrderStatuses();
         foreach ($lists as $list) {
             $this->assertDatabaseHas('order_statuses', ['name' => $list->name]);
