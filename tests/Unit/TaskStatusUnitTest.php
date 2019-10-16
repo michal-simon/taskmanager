@@ -5,35 +5,21 @@ use App\Shop\Orders\Order;
 use App\TaskStatus;
 use App\Repositories\TaskStatusRepository;
 use Tests\TestCase;
+use App\Task;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class TaskStatusUnitTest extends TestCase
 {
-    /** @test */
-    public function it_can_return_all_tasks_on_a_specific_order_status()
-    {
-        $taskStatus = factory(TaskStatus::class)->create();
-        $task = factory(Task::class)->create([
-            'task_status_id' => $taskStatus->id
-        ]);
-        $repo = new TaskStatusRepository($taskStatus);
-        $collection = $repo->findTasks();
-        $this->assertCount(1, $collection->all());
-        $collection->each(function ($item) use ($task) {
-            $this->assertEquals($item->reference, $order->reference);
-            $this->assertEquals($item->courier_id, $order->courier_id);
-            $this->assertEquals($item->customer_id, $order->customer_id);
-            $this->assertEquals($item->address_id, $order->address_id);
-        });
+    
+    use DatabaseTransactions,
+        WithFaker;
+
+    public function setUp(): void {
+        parent::setUp();
+        $this->beginDatabaseTransaction();
     }
     
-    /** @test */
-    public function it_errors_when_updating_the_task_status()
-    {
-        $taskStatus = factory(TaskStatus::class)->create();
-        $this->expectException(OrderStatusInvalidArgumentException::class);
-        $taskStatusRepo = new TaskStatusRepository($taskStatus);
-        $taskStatusRepo->updateTaskStatus(['name' => null]);
-    }
     /** @test */
     public function it_can_delete_the_order_status()
     {
@@ -56,15 +42,14 @@ class TaskStatusUnitTest extends TestCase
         $lists = $taskStatusRepo->listTaskStatuses();
         foreach ($lists as $list) {
             $this->assertDatabaseHas('task_statuses', ['title' => $list->title]);
-            $this->assertDatabaseHas('task_statuses', [column_color' => $list->column_color]);
+            $this->assertDatabaseHas('task_statuses', ['column_color' => $list->column_color]);
         }
     }
     
     /** @test */
     public function it_errors_getting_not_existing_order_status()
     {
-        $this->expectException(OrderStatusNotFoundException::class);
-        $this->expectExceptionMessage('Order status not found.');
+        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
         $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
         $taskStatusRepo->findTaskStatusById(999);
     }
@@ -86,23 +71,17 @@ class TaskStatusUnitTest extends TestCase
     /** @test */
     public function it_can_update_the_task_status()
     {
-        $taskStatusRepo = new TaskStatusRepository($this->taskStatus);
+        $os = factory(TaskStatus::class)->create();
+        $taskStatusRepo = new TaskStatusRepository($os);
         $data = [
             'title' => $this->faker->name,
             'column_color' => $this->faker->word
         ];
         $updated = $taskStatusRepo->updateTaskStatus($data);
         $this->assertTrue($updated);
-        $this->assertEquals($data['title'], $this->taskStatus->title);
-        $this->assertEquals($data['column_color'], $this->taskStatus->column_color);
-    }
-    
-    /** @test */
-    public function it_errors_when_creating_the_task_status()
-    {
-        $this->expectException(OrderStatusInvalidArgumentException::class);
-        $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
-        $taskStatusRepo->createTaskStatus([]);
+        $found = $taskStatusRepo->findTaskStatusById($os->id);
+        $this->assertEquals($data['title'], $found->title);
+        $this->assertEquals($data['column_color'], $found->column_color);
     }
     
     /** @test */
@@ -110,11 +89,19 @@ class TaskStatusUnitTest extends TestCase
     {
         $create = [
             'title' => $this->faker->name,
+            'task_type' => 1,
+            'description' => $this->faker->sentence,
             'column_color' => $this->faker->word
         ];
         $taskStatusRepo = new TaskStatusRepository(new TaskStatus);
         $taskStatus = $taskStatusRepo->createTaskStatus($create);
         $this->assertEquals($create['title'], $taskStatus->title);
         $this->assertEquals($create['column_color'], $taskStatus->column_color);
+    }
+    
+     public function it_errors_creating_the_task_when_required_fields_are_not_passed() {
+        $this->expectException(\Illuminate\Database\QueryException::class);
+        $task = new TaskStatusRepository(new TaskStatus);
+        $task->createTaskStatus([]);
     }
 }

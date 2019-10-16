@@ -65,6 +65,9 @@ class TaskStatusController extends Controller {
         $status = $this->taskStatusRepository->findTaskStatusById($id);
         $update = new TaskStatusRepository($status);
         $update->updateTaskStatus($request->all());
+        
+        $status = $this->taskStatusRepository->findTaskStatusById($id);
+        
         return response()->json($status);
     }
 

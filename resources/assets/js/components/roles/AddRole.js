@@ -11,15 +11,25 @@ class AddRole extends React.Component {
             name: '',
             description: '',
             loading: false,
-            errors: []
+            errors: [],
+            attachedPermissions: [],
+            selectedPermissions: [],
+            permissions: []
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
+        this.handleMultiSelect = this.handleMultiSelect.bind(this)
+        this.buildPermissionList = this.buildPermissionList.bind(this)
+    }
+    
+    componentDidMount () {
+        this.getPermissions()
     }
 
-    handleChange (event) {
-        this.setState({ name: event.target.value })
+    
+    handleMultiSelect (e) {
+        this.setState({ attachedPermissions: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
     handleInput (e) {
@@ -41,11 +51,24 @@ class AddRole extends React.Component {
             )
         }
     }
+    
+    getPermissions () {
+        axios.get('/api/permissions')
+            .then((r) => {
+                this.setState({
+                    permissions: r.data.data,
+                })
+            })
+            .catch((e) => {
+                console.error(e)
+            })
+    }
 
     handleClick () {
         axios.post('/api/roles', {
             name: this.state.name,
-            description: this.state.description
+            description: this.state.description,
+            permissions: this.state.attachedPermissions
         })
             .then((response) => {
                 this.toggle()
@@ -71,8 +94,28 @@ class AddRole extends React.Component {
             errors: []
         })
     }
+    
+    buildPermissionList () {
+        let permissionsList = null
+        console.log('state', this.state)
+        if (!this.state.permissions.length) {
+            permissionsList = <option value="">Loading...</option>
+        } else {
+            permissionsList = this.state.permissions.map((permission, index) => {
+                const selected = this.state.attachedPermissions.indexOf(permission.id) > -1 ? 'selected' : ''
+                return (
+                    <option selected={selected} key={index} value={permission.id}>{permission.name}</option>
+                )
+            })
+        }
+        
+        return permissionsList
+    }
 
     render () {
+        
+        let permissionsList = this.buildPermissionList()
+        
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Add Role</Button>
@@ -94,6 +137,11 @@ class AddRole extends React.Component {
                                 name="description" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('description')}
                         </FormGroup>
+                        
+                        <Input onChange={this.handleMultiSelect} type="select" multiple>
+                            {permissionsList}
+                        </Input>
+                        
                     </ModalBody>
 
                     <ModalFooter>

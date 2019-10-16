@@ -46,16 +46,18 @@ class EditTaskStatus extends React.Component {
     }
 
     handleClick () {
-        axios.put(`/api/taskStatus/${this.state.id}`, {
+        const objTaskStatus = {
             title: this.state.title,
             description: this.state.description,
             task_type: this.state.task_type,
             icon: this.state.icon,
             column_color: this.state.column_color
-        })
+        }
+           
+        axios.put(`/api/taskStatus/${this.state.id}`, objTaskStatus)
             .then((response) => {
                 this.toggle()
-                const index = this.props.roles.findIndex(status => status.id === this.props.status.id)
+                const index = this.props.statuses.findIndex(status => status.id === this.props.status.id)
                 this.props.statuses[index] = response.data
                 this.props.action(this.props.statuses)
             })

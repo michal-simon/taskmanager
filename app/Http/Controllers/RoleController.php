@@ -73,6 +73,12 @@ class RoleController extends Controller {
      */
     public function store(CreateRoleRequest $request) {
         $roleObj = $this->roleRepo->createRole($request->except('_method', '_token'));
+
+        if ($request->has('permissions')) {
+            $roleRepo = new RoleRepository($roleObj);
+            $roleRepo->syncPermissions($request->input('permissions'));
+        }
+
         $role = $this->transformRole($roleObj);
         return $role->toJson();
     }
@@ -93,7 +99,7 @@ class RoleController extends Controller {
             'role' => $role->toArray(),
             'attachedPermissions' => $attachedPermissionsArrayIds
         ];
-        
+
         return response()->json($arrData);
     }
 
@@ -105,12 +111,12 @@ class RoleController extends Controller {
      */
     public function update(UpdateRoleRequest $request, $id) {
         $role = $this->roleRepo->findRoleById($id);
-        
-        if ($request->has('permissions')) {            
+
+        if ($request->has('permissions')) {
             $roleRepo = new RoleRepository($role);
             $roleRepo->syncPermissions($request->input('permissions'));
         }
-        
+
         $update = new RoleRepository($role);
         $data = $request->except('_method', '_token', 'permissions');
         $update->updateRole($data);

@@ -48,6 +48,13 @@ Route::get('tasks/products/{task_id}', 'TaskController@getProducts');
 Route::get('tasks/products', 'TaskController@getTasksWithProducts');
 Route::get('tasks/source-types', 'TaskController@getSourceTypes');
 
+// permissions
+Route::get('permissions', 'PermissionController@index');
+Route::post('permissions', 'PermissionController@store');
+Route::delete('permissions/{permission_id}', 'PermissionController@destroy');
+Route::get('permissions/{permission_id}', 'PermissionController@edit');
+Route::put('permissions/{permission_id}', 'PermissionController@update');
+
 // roles
 Route::get('roles', 'RoleController@index');
 Route::post('roles', 'RoleController@store');

@@ -17,6 +17,13 @@ export default class statusList extends Component {
 
         this.addUserToState = this.addUserToState.bind(this)
         this.userList = this.userList.bind(this)
+        
+         this.ignoredColumns = [
+            'task_type',
+            'is_active',
+            'created_at',
+            'updated_at'
+        ]
     }
 
     addUserToState (statuses) {
@@ -26,8 +33,12 @@ export default class statusList extends Component {
     userList () {
         if (this.state.statuses && this.state.statuses.length) {
             return this.state.statuses.map(status => {
-                const columnList = Object.keys(status).map(key => {
-                    return <td key={key}>{status[key]}</td>
+                const columns = Object.keys(this.state.statuses[0])
+                
+                const columnList = columns.map(key => {
+                    if (this.ignoredColumns && !this.ignoredColumns.includes(key)) {
+                        return <td key={key}>{status[key]}</td>
+                    }
                 })
                 return <tr key={status.id}>
 
@@ -69,6 +80,7 @@ export default class statusList extends Component {
                 <AddTaskStatus statuses={this.state.statuses} action={this.addUserToState}/>
 
                 <DataTable
+                    ignore={this.ignoredColumns}
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}

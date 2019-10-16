@@ -14,7 +14,7 @@ class UpdateTaskStatusRequest extends BaseFormRequest {
      */
     public function rules() {
         return [
-            'title' => ['required', Rule::unique('task_statuses')->ignore($this->segment('4'))],
+            'title' => ['required'],
             'task_type' => ['required'],
             'description' => ['required']
         ];

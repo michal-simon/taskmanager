@@ -21,6 +21,7 @@ class EditRole extends React.Component {
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
+        this.buildPermissionList = this.buildPermissionList.bind(this)
     }
 
     componentDidMount () {
@@ -89,8 +90,8 @@ class EditRole extends React.Component {
             errors: []
         })
     }
-
-    render () {
+    
+    buildPermissionList () {
         let permissionsList = null
         console.log('state', this.state)
         if (!this.state.permissions.length) {
@@ -103,6 +104,14 @@ class EditRole extends React.Component {
                 )
             })
         }
+        
+        return permissionsList
+    }
+
+    render () {
+        
+        let permissionsList = this.buildPermissionList()
+       
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Update</Button>
