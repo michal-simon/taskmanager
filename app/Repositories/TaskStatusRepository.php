@@ -8,8 +8,8 @@ use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Collection;
 
 class TaskStatusRepository extends BaseRepository implements TaskStatusRepositoryInterface {
-    
-     /**
+
+    /**
      * TaskStatusRepository constructor.
      *
      * @param TaskStatus $taskStatus
@@ -36,7 +36,7 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
                         ->orderBy('id', 'asc')
                         ->get();
     }
-    
+
     /**
      * Create the order status
      *
@@ -44,9 +44,8 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
      * @return OrderStatus
      * @throws OrderStatusInvalidArgumentException
      */
-    public function createTaskStatus(array $params) : TaskStatus
-    {
-         return $this->create($params);
+    public function createTaskStatus(array $params): TaskStatus {
+        return $this->create($params);
     }
 
     /**
@@ -57,8 +56,7 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
      * @return bool
      * @throws OrderStatusInvalidArgumentException
      */
-    public function updateTaskStatus(array $data) : bool
-    {
+    public function updateTaskStatus(array $data): bool {
         return $this->update($data);
     }
 
@@ -67,8 +65,7 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
      * @return OrderStatus
      * @throws OrderStatusNotFoundException
      */
-    public function findTaskStatusById(int $id) : TaskStatus
-    {
+    public function findTaskStatusById(int $id): TaskStatus {
         return $this->findOneOrFail($id);
     }
 
@@ -83,16 +80,14 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
      * @return bool
      * @throws \Exception
      */
-    public function deleteTaskStatus() : bool
-    {
+    public function deleteTaskStatus(): bool {
         return $this->delete();
     }
 
     /**
      * @return Collection
      */
-    public function findTasks() : Collection
-    {
+    public function findTasks(): Collection {
         return $this->model->tasks()->get();
     }
 
@@ -101,9 +96,15 @@ class TaskStatusRepository extends BaseRepository implements TaskStatusRepositor
      *
      * @return mixed
      */
-    public function findByName(string $name)
-    {
+    public function findByName(string $name) {
         return $this->model->where('name', $name)->first();
+    }
+
+    public function searchTaskStatus(string $text = null) {
+        if (is_null($text)) {
+            return $this->all();
+        }
+        return $this->model->searchTaskStatus($text)->get();
     }
 
 }

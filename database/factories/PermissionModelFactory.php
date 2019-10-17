@@ -17,7 +17,6 @@ use App\Permission;
 $factory->define(Permission::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
-        'display_name' => '',
-        'description' => ''
+        'description' => $faker->sentence
     ];
 });

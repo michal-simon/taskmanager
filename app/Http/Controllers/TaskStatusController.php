@@ -7,8 +7,12 @@ use App\Repositories\TaskStatusRepository;
 use App\Requests\CreateTaskStatusRequest;
 use App\Requests\UpdateTaskStatusRequest;
 use Illuminate\Http\Request;
+use App\Transformations\TaskStatusTransformable;
+use App\TaskStatus;
 
 class TaskStatusController extends Controller {
+
+    use TaskStatusTransformable;
 
     private $taskStatusRepository;
 
@@ -33,10 +37,18 @@ class TaskStatusController extends Controller {
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
-        $statuses = $this->taskStatusRepository->listTaskStatuses($orderBy, $orderDir);
+        if (request()->has('search_term') && !empty($request->search_term)) {
+            $list = $this->taskStatusRepository->searchTaskStatus(request()->input('search_term'));
+        } else {
+            $list = $this->taskStatusRepository->listTaskStatuses($orderBy, $orderDir);
+        }
+
+        $statuses = $list->map(function (TaskStatus $taskStatus) {
+                    return $this->transformTaskStatus($taskStatus);
+                })->all();
 
         if ($recordsPerPage > 0) {
-            $paginatedResults = $this->taskStatusRepository->paginateArrayResults($statuses->toArray(), $recordsPerPage);
+            $paginatedResults = $this->taskStatusRepository->paginateArrayResults($statuses, $recordsPerPage);
             return $paginatedResults->toJson();
         }
 
@@ -65,9 +77,9 @@ class TaskStatusController extends Controller {
         $status = $this->taskStatusRepository->findTaskStatusById($id);
         $update = new TaskStatusRepository($status);
         $update->updateTaskStatus($request->all());
-        
+
         $status = $this->taskStatusRepository->findTaskStatusById($id);
-        
+
         return response()->json($status);
     }
 

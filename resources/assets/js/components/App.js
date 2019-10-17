@@ -16,6 +16,7 @@ import Dashboard from './Dashboard'
 import MessageContainer from './activity/MessageContainer'
 import UserProfile from './users/UserProfile'
 import TaskStatus from './taskStatus/statusList'
+import Permissions from './permissions/Permissions'
 
 
 class App extends Component {
@@ -72,6 +73,7 @@ class App extends Component {
                         <Route path='/departments' component={Departments}/>
                         <Route path='/brands' component={Brands}/>
                         <Route path='/categories' component={Categories}/>
+                        <Route path='/permissions' component={Permissions}/>
                         <Route path='/invoice' component={Invoice}/>
                         <Route path='/users' component={UserList}/>
                         <Route path='/calendar' component={Calendar}/>

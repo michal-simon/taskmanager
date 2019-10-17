@@ -10,14 +10,15 @@ class EditPermission extends React.Component {
             modal: false,
             loading: false,
             errors: [],
+            id: this.props.permission.id,
             name: this.props.permission.name,
             description: this.props.permission.description,
             role: []
         }
+                
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
     handleInput (e) {
@@ -39,7 +40,7 @@ class EditPermission extends React.Component {
     }
 
     handleClick () {
-        axios.put(`/api/permissions/${this.state.permission.id}`, {
+        axios.put(`/api/permissions/${this.state.id}`, {
             name: this.state.name,
             description: this.state.description,
         })

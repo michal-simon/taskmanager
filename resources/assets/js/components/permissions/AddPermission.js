@@ -16,7 +16,6 @@ class AddPermission extends React.Component {
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
 
     handleInput (e) {

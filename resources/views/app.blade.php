@@ -71,6 +71,10 @@
                          <li>
                                                     <a href="/roles"> <i class="menu-icon fa fa-book"></i>Role </a>
                                                 </li>
+                                                
+                                                 <li>
+                                                    <a href="/permissions"> <i class="menu-icon fa fa-book"></i>Permissions </a>
+                                                </li>
 
                         <li>
                             <a href="/leads"> <i class="menu-icon fa fa-laptop"></i>Leads </a>

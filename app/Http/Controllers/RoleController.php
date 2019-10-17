@@ -130,7 +130,7 @@ class RoleController extends Controller {
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy($id) {
+    public function destroy(int $id) {
 
         $role = $this->roleRepo->findRoleById($id);
 

@@ -18,11 +18,8 @@ export default class statusList extends Component {
         this.addUserToState = this.addUserToState.bind(this)
         this.userList = this.userList.bind(this)
         
-         this.ignoredColumns = [
-            'task_type',
-            'is_active',
-            'created_at',
-            'updated_at'
+        this.ignoredColumns = [
+            'task_type_id'
         ]
     }
 
