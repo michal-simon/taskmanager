@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\CommentCreated;
 use App\Repositories\CommentRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller {
 
@@ -51,25 +52,26 @@ class CommentController extends Controller {
     public function store(CommentRequest $request) {
 
         $validatedData = $request->validated();
-        $objUser = (new UserRepository(new User))->findUserById($request->user_id);
-       
+
+        $user = Auth::user();
+
         $comment = $this->commentRepository->createComment([
             'parent_id' => !empty($validatedData['parent_id']) ? $validatedData['parent_id'] : 0,
             'task_id' => !empty($validatedData['task_id']) ? $validatedData['task_id'] : 0,
             'comment' => $validatedData['comment'],
-            'user_id' => $validatedData['user_id']
+            'user_id' => $user->id
         ]);
 
         $arrResponse[0] = $comment;
-        $arrResponse[0]['user'] = $objUser->toArray();
-        
+        $arrResponse[0]['user'] = $user->toArray();
+
         //send notification
-        $user = auth()->guard('user')->user();
+
         Notification::send($user, new CommentCreated($comment));
 
         return collect($arrResponse)->toJson();
     }
-    
+
     /**
      * 
      * @param int $id
@@ -82,7 +84,7 @@ class CommentController extends Controller {
 
         return response()->json('Comment deleted!');
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -96,4 +98,5 @@ class CommentController extends Controller {
         $update->updateComment($request->all());
         return response()->json('Comment updated!');
     }
+
 }

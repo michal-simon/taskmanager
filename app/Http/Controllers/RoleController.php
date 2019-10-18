@@ -71,7 +71,7 @@ class RoleController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateRoleRequest $request) {
+    public function store(CreateRoleRequest $request) {        
         $roleObj = $this->roleRepo->createRole($request->except('_method', '_token'));
 
         if ($request->has('permissions')) {

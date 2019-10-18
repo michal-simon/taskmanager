@@ -10,6 +10,7 @@ use App\Transformations\InvoiceTransformable;
 use App\Invoice;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\InvoiceCreated;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller {
 
@@ -73,7 +74,7 @@ class InvoiceController extends Controller {
         }
 
         //send notification
-        $user = auth()->guard('user')->user();
+        $user =  $currentUser =  $user = Auth::user();
         Notification::send($user, new InvoiceCreated($invoice));
 
         $invoice = $this->transformInvoice($invoice);

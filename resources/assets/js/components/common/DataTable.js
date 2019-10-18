@@ -92,7 +92,7 @@ export default class DataTable extends Component {
 
         axios.get(fetchUrl, {
             cancelToken: this.cancel.token
-        })
+        },{ headers: {"Authorization" : `Bearer ${localStorage.getItem('access_token')}`} })
             .then(response => {
                 console.log('res', response.data.data);
                 if(response.data && Object.keys(response.data).length) {

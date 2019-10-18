@@ -13,7 +13,9 @@ import EditInvoice from '../invoice/EditInvoice'
 export default class TabContent extends Component {
     render () {
         const userId = sessionStorage.getItem('user_id')
-
+        
+        console.log('customer for task', this.props.task.customer)
+        
         return (
             <div className="container mt-5">
                 <TabList>
@@ -30,7 +32,7 @@ export default class TabContent extends Component {
 
                     <div label="Customer" className="tab-content">
                         <EditCustomer
-                            id={this.props.task.customer_id}
+                            customer={this.props.task.customer}
                             modal={false}
                             task={this.props.task}
                         />

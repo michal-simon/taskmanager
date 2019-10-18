@@ -13,7 +13,7 @@ return [
      */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
     /*
@@ -37,12 +37,8 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'user' => [
-            'driver' => 'session',
-            'provider' => 'user',
-        ],
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt', // By default is token, please change it by jwt
             'provider' => 'users',
         ],
     ],

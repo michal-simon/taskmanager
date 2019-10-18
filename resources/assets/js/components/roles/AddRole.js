@@ -56,7 +56,7 @@ class AddRole extends React.Component {
         axios.get('/api/permissions')
             .then((r) => {
                 this.setState({
-                    permissions: r.data.data,
+                    permissions: r.data,
                 })
             })
             .catch((e) => {

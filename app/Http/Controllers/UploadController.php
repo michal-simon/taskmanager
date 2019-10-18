@@ -10,6 +10,7 @@ use App\Repositories\FileRepository;
 use App\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AttachmentCreated;
+use Illuminate\Support\Facades\Auth;
 
 class UploadController extends Controller
 {
@@ -34,7 +35,7 @@ class UploadController extends Controller
 
     public function store(UploadRequest $request) {
 
-        $objUser = (new UserRepository(new User))->findUserById($request->user_id);
+        $user = Auth::user();
         $arrAddedFiles = [];
 
         if($request->hasFile('file')) {
@@ -47,16 +48,15 @@ class UploadController extends Controller
                     'task_id' => $request->task_id,
                     'filename' => $filename,
                     'file_path' => $file_path,
-                    'user_id' => $objUser->id
+                    'user_id' => $user->id
                 ]);
 
                 $arrAddedFiles[$count] = $file;
-                $arrAddedFiles[$count]['user'] = $objUser->toArray();
+                $arrAddedFiles[$count]['user'] = $user->toArray();
 
             }
             
             //send notification
-        $user = auth()->guard('user')->user();
         Notification::send($user, new AttachmentCreated($file));
 
             return collect($arrAddedFiles)->toJson();

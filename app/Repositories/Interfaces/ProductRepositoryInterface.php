@@ -56,7 +56,7 @@ interface ProductRepositoryInterface extends BaseRepositoryInterface {
      * @param string $text
      * @return mixed
      */
-    public function searchProduct(string $text = null): Collection;
+    public function searchProduct(string $text = null): Support;
 
     /**
      * 

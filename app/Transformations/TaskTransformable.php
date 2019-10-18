@@ -7,11 +7,14 @@ use App\User;
 use App\Repositories\UserRepository;
 use App\Repositories\TaskStatusRepository;
 use App\TaskStatus;
+use App\Transformations\CustomerTransformable;
 
 trait TaskTransformable {
+    
+    use CustomerTransformable;
 
     protected function transformTask(Task $task) {
-
+        
         $prop = new Task;
         $prop->id = (int) $task->id;
         $prop->title = $task->title;
@@ -23,6 +26,7 @@ trait TaskTransformable {
         $prop->status_name = $task->taskStatus->title;
         $prop->task_type = $task->task_type;
         $prop->rating = $task->rating;
+        $prop->customer = $this->transformCustomer($task->customer);
         $prop->customer_id = $task->customer_id;
         $prop->valued_at = $task->valued_at;
         $prop->source_type = $task->source_type;

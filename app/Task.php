@@ -8,6 +8,7 @@ use App\Traits\SearchableTrait;
 use App\Product;
 use App\User;
 use App\TaskStatus;
+use App\Customer;
 
 class Task extends Model {
 
@@ -72,5 +73,9 @@ class Task extends Model {
     
     public function taskStatus() {
         return $this->belongsTo(TaskStatus::class, 'task_status');
+    }
+    
+    public function customer() {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 }

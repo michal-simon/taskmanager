@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Repositories\ProjectRepository;
 use App\Requests\CreateProjectRequest;
 use App\Requests\UpdateProjectRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller {
 
@@ -34,7 +35,7 @@ class ProjectController extends Controller {
     public function store(CreateProjectRequest $request) {
 
         $validatedData = $request->validated();
-        $currentUser = auth()->guard('user')->user();
+        $currentUser =  $user = Auth::user();
 
         $project = $this->projectRepository->create([
             'title' => $validatedData['title'],

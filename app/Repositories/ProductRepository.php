@@ -98,10 +98,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
      * @param string $text
      * @return mixed
      */
-    public function searchProduct(string $text = null): Collection {
+    public function searchProduct(string $text = null): Support {
         if (is_null($text)) {
             return $this->all();
         }
+
         return $this->model->searchProduct($text)->get();
     }
 

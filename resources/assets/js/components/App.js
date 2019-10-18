@@ -44,18 +44,23 @@ class App extends Component {
         return false
     }
 
-    setAuthenticated (objUser) {
+    setAuthenticated (token) {
         this.setState({ authenticated: true })
-        window.sessionStorage.setItem('authenticated', true)
-        window.sessionStorage.setItem('username', objUser.username)
-        window.sessionStorage.setItem('user_id', objUser.user_id)
+        
+        //const JsonAppState = localStorage.getItem('appState')
+        //const appState = JSON.parse(JsonAppState);
+        //const user = appState.user
+        //window.axios.defaults.headers.common['Authorization'] = token;
+//        window.sessionStorage.setItem('authenticated', true)
+//        window.sessionStorage.setItem('username', objUser.username)
+//        window.sessionStorage.setItem('user_id', objUser.user_id)
     }
 
     render () {
         if (!this.state.authenticated && !window.sessionStorage.getItem('authenticated')) {
             return <Login action={this.setAuthenticated}/>
         }
-
+        
         const projectId = this.getQueryVariable('project_id')
         const taskId = this.getQueryVariable('task_id')
         const userId = this.getQueryVariable('user_id')
@@ -122,5 +127,27 @@ class App extends Component {
             </main>
         )
     }
+    
+//     _logoutUser = () => {
+//    let appState = {
+//      isLoggedIn: false,
+//      user: {}
+//    };
+//    // save app state with user date in local storage
+//    localStorage["appState"] = JSON.stringify(appState);
+//    this.setState(appState);
+//  };
 }
 export default App
+
+if(localStorage.getItem('appState')) {
+    const user = JSON.parse(localStorage.getItem('appState'))['user']
+    localStorage.setItem("access_token", user.auth_token)
+            
+    const axios = require('axios');
+    axios.defaults.headers.common = {'Authorization': `Bearer ${user.auth_token}`}
+}
+
+
+    
+

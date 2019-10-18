@@ -46,7 +46,7 @@ class EditUser extends React.Component {
     }
 
     getUser () {
-        axios.get(`/api/users/edit/${this.props.user_id}`)
+        axios.get(`/api/users/edit/${this.props.user_id}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem('access_token')}`} })
             .then((r) => {
                 this.setState({
                     roles: r.data.roles,

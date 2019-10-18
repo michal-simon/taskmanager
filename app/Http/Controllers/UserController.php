@@ -76,7 +76,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(CreateUserRequest $request) {
-
+        
         $validatedData = $request->validated();
 
         $user = $this->userRepository->createUser($validatedData);
@@ -131,7 +131,7 @@ class UserController extends Controller {
      *
      * @return Response
      */
-    public function update(UpdateUserRequest $request, int $id) {
+    public function update(UpdateUserRequest $request, int $id) {        
         $user = $this->userRepository->findUserById($id);
         $userRepo = new UserRepository($user);
         $userRepo->updateUser($request->except('_token', '_method', 'password'));

@@ -14,6 +14,7 @@ use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\EventCreated;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller {
 
@@ -58,7 +59,7 @@ class EventController extends Controller {
      */
     public function store(CreateEventRequest $request) {
 
-        $user = auth()->guard('user')->user();
+        $user = Auth::user();
 
         $arrData = [
             'created_by' => $user->id,

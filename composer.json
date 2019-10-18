@@ -11,7 +11,8 @@
         "kalnoy/nestedset": "^5.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "~1.0",
-        "santigarcor/laratrust": "4.0.*"
+        "santigarcor/laratrust": "4.0.*",
+        "tymon/jwt-auth": "1.0.0-rc.4.1"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -34,7 +35,7 @@
             "Tests\\": "tests/"
         }
     },
-   
+
     "scripts": {
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

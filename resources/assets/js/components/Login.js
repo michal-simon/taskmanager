@@ -7,6 +7,8 @@ export default class Login extends Component {
     constructor (props) {
         super(props)
         this.state = {
+            isLoggedIn: false,
+            user: {},
             email: '',
             password: ''
         }
@@ -28,13 +30,38 @@ export default class Login extends Component {
         event.preventDefault()
 
         axios.post('/api/login', { email: this.state.email, password: this.state.password })
-            .then((r) => {
-                const userData = {
-                    username: r.data.username,
-                    user_id: r.data.id
-                }
+            .then((json) => {
+                
+                if (json.data.success) {
+                    alert("Login Successful!");
 
-                this.props.action(userData)
+                    let userData = {
+                      name: json.data.data.name,
+                      id: json.data.data.id,
+                      email: json.data.data.email,
+                      auth_token: json.data.data.auth_token,
+                      timestamp: new Date().toString()
+                    };
+                    
+                    let appState = {
+                        isLoggedIn: true,
+                        user: userData
+                    };
+          
+                    window.sessionStorage.setItem('authenticated', true)
+                    window.sessionStorage.setItem('username', json.data.data.username)
+                    window.sessionStorage.setItem('user_id', json.data.data.id)
+          
+                    // save app state with user date in local storage
+                    localStorage["appState"] = JSON.stringify(appState);
+                    this.setState({
+                      isLoggedIn: appState.isLoggedIn,
+                      user: appState.user
+                    });
+          
+                    this.props.action(json.data.data.auth_token)
+          
+                } else alert("Login Failed!");
             })
             .catch((e) => {
                 alert(e)

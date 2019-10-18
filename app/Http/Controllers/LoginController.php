@@ -3,40 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Requests\LoginRequest;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use App\User;
+use JWTAuth;
+use JWTAuthException;
 
 class LoginController extends Controller {
 
-    use AuthenticatesUsers;
+    private function getToken($email, $password) {
+        $token = null;
+        //$credentials = $request->only('email', 'password');
+        try {
+            if (!$token = JWTAuth::attempt(['email' => $email, 'password' => $password])) {
+                return response()->json([
+                            'response' => 'error',
+                            'message' => 'Password or email is invalid',
+                            'token' => $token
+                ]);
+            }
+        } catch (JWTAuthException $e) {
+            return response()->json([
+                        'response' => 'error',
+                        'message' => 'Token creation failed',
+            ]);
+        }
+        return $token;
+    }
 
     public function doLogin(LoginRequest $request) {
 
-        $this->validateLogin($request);
-                
-        // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
-        // the IP address of the client making these requests into this application.
-        if ($this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
-            return $this->sendLockoutResponse($request);
-        }
-        
-        $details = $request->only('email', 'password');
-        $details['is_active'] = 1;
-        if (auth()->guard('user')->attempt($details)) {
-            
-            $this->sendLoginResponse($request);
-           
-            $user = auth()->guard('user')->user();
-            
-            return $user->toJson();
-        }
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login and redirect the user back to the login form. Of course, when this
-        // user surpasses their maximum number of attempts they will get locked out.
-        $this->incrementLoginAttempts($request);
-        return $this->sendFailedLoginResponse($request);
+        $user = \App\User::where('email', $request->email)->get()->first();
+        if ($user && \Hash::check($request->password, $user->password)) { // The passwords match...
+            $token = self::getToken($request->email, $request->password);
+            $user->auth_token = $token;
+            $user->save();
+            $response = ['success' => true, 'data' => ['id' => $user->id, 'auth_token' => $user->auth_token, 'name' => $user->name, 'email' => $user->email]];
+        } else
+            $response = ['success' => false, 'data' => 'Record doesnt exists'];
+
+        return response()->json($response, 201);
     }
 
     public function showLogin() {

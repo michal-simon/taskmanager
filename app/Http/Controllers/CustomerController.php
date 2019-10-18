@@ -83,7 +83,7 @@ class CustomerController extends Controller {
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCustomerRequest $request, $id) {
+    public function update(UpdateCustomerRequest $request, $id) {        
         $customer = $this->customerRepo->findCustomerById($id);
         $address = $customer->addresses;
 
@@ -112,7 +112,7 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(CreateCustomerRequest $request) {
-
+        
         $customer = $this->customerRepo->createCustomer($request->except('_token', '_method'));
 
         $customer->addresses()->create([
@@ -138,7 +138,6 @@ class CustomerController extends Controller {
      * @throws \Exception
      */
     public function destroy($id) {
-
         $customer = $this->customerRepo->findCustomerById($id);
         $address = $customer->addresses;
 

@@ -6,7 +6,7 @@ import axios from 'axios'
 class EditCustomer extends React.Component {
     constructor (props) {
         super(props)
-        
+                
         this.state = {
             modal: false,
             id: this.props.customer.id,

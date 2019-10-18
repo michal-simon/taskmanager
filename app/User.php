@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Event;
 use App\Traits\SearchableTrait;
 use Laratrust\Traits\LaratrustUserTrait;
@@ -11,7 +12,7 @@ use App\Message;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Department;
 
-class User extends Authenticatable {
+class User extends Authenticatable implements JWTSubject {
 
     use LaratrustUserTrait;
     use Notifiable,
@@ -34,7 +35,8 @@ class User extends Authenticatable {
         'job_description',
         'dob',
         'phone_number',
-        'gender'
+        'gender',
+        'auth_token'
     ];
 
     /**
@@ -97,6 +99,14 @@ class User extends Authenticatable {
 
     public function department_manager() {
         return $this->morphTo();
+    }
+
+    public function getJWTIdentifier() {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims() {
+        return [];
     }
 
 }
