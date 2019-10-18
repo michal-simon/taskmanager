@@ -6,7 +6,7 @@ import axios from 'axios'
 class EditCustomer extends React.Component {
     constructor (props) {
         super(props)
-                
+                        
         this.state = {
             modal: false,
             id: this.props.customer.id,
@@ -52,7 +52,7 @@ class EditCustomer extends React.Component {
 
     handleClick (event) {
         this.setState({ loading: true, submitSuccess: false })
-        
+                
         const customerObj = {
             first_name: this.state.first_name,
             last_name: this.state.last_name,

@@ -58,7 +58,7 @@ class CreateEvent extends React.Component {
 
     handleClick (event) {
         this.setState({ submitSuccess: false, loading: true })
-
+                
         axios.post('/api/events', {
             customer_id: this.state.customer_id,
             users: this.state.selectedUsers,

@@ -88,13 +88,12 @@ export default class DataTable extends Component {
         }
 
         this.cancel = axios.CancelToken.source()
-        const fetchUrl = `${this.props.fetchUrl}?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`
+        const fetchUrl = `${this.props.fetchUrl}?token=${localStorage.getItem('access_token')}&page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`
 
         axios.get(fetchUrl, {
             cancelToken: this.cancel.token
-        },{ headers: {"Authorization" : `Bearer ${localStorage.getItem('access_token')}`} })
+        })
             .then(response => {
-                console.log('res', response.data.data);
                 if(response.data && Object.keys(response.data).length) {
                     this.setState({ entities: response.data, loading: false })
                     const columns = this.props.columns && this.props.columns.length ? this.props.columns : Object.keys(response.data.data[0])

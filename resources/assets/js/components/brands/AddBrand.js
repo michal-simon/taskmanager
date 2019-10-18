@@ -55,7 +55,8 @@ class AddBrand extends React.Component {
             address_2: this.state.address_2,
             town: this.state.town,
             city: this.state.city,
-            postcode: this.state.postcode
+            postcode: this.state.postcode,
+            token: localStorage.getItem('access_token')
         })
             .then((response) => {
                 this.toggle()

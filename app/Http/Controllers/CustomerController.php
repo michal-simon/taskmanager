@@ -11,6 +11,7 @@ use App\Repositories\Interfaces\AddressRepositoryInterface;
 use App\Transformations\CustomerTransformable;
 use App\Requests\UpdateCustomerRequest;
 use App\Requests\CreateCustomerRequest;
+use App\Address;
 
 class CustomerController extends Controller {
 
@@ -83,7 +84,7 @@ class CustomerController extends Controller {
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCustomerRequest $request, $id) {        
+    public function update(UpdateCustomerRequest $request, $id) {
         $customer = $this->customerRepo->findCustomerById($id);
         $address = $customer->addresses;
 
@@ -91,16 +92,14 @@ class CustomerController extends Controller {
         $data = $request->except('_method', '_token');
         $update->updateCustomer($data);
 
-        if (!empty($address) && $address->count() > 0) {
-            $addRessRepo = new AddressRepository($address[0]);
-
-            $addRessRepo->updateAddress([
-                'address_1' => $request->address_1,
-                'address_2' => $request->address_2,
-                'zip' => $request->zip,
-                'city' => $request->city,
-            ]);
-        }
+        $update->addAddressForCustomer([
+            'address_1' => $request->address_1,
+            'address_2' => $request->address_2,
+            'zip' => $request->zip,
+            'city' => $request->city,
+            'country_id' => 225,
+            'status' => 1
+        ]);
 
         return response()->json($this->transformCustomer($customer));
     }
@@ -112,7 +111,7 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(CreateCustomerRequest $request) {
-        
+
         $customer = $this->customerRepo->createCustomer($request->except('_token', '_method'));
 
         $customer->addresses()->create([

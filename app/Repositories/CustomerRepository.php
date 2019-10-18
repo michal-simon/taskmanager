@@ -115,6 +115,12 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
         return !empty($result[0]) ? $result[0]['total'] : 0;
     }
 
+    public function addAddressForCustomer(array $arrData) {
+        $this->model->addresses()->updateOrCreate(
+                ['customer_id' => $this->model->id], $arrData
+        );
+    }
+
     /**
      * Find the address attached to the customer
      *

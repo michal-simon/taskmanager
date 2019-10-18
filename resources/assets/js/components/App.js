@@ -143,9 +143,10 @@ export default App
 if(localStorage.getItem('appState')) {
     const user = JSON.parse(localStorage.getItem('appState'))['user']
     localStorage.setItem("access_token", user.auth_token)
-            
+        
     const axios = require('axios');
     axios.defaults.headers.common = {'Authorization': `Bearer ${user.auth_token}`}
+    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }
 
 

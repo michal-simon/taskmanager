@@ -48,7 +48,7 @@ class EditCategory extends React.Component {
             name: this.state.name,
             description: this.state.description,
             status: this.state.status,
-            parent: this.state.parent,
+            parent: this.state.parent
         })
             .then((response) => {
                 this.toggle()

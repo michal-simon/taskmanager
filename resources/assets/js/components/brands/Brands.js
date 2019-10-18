@@ -17,7 +17,7 @@ export default class Brands extends Component {
 
         this.addUserToState = this.addUserToState.bind(this)
         this.userList = this.userList.bind(this)
-        this.ignoredColumns = ['address_1', 'address_2', 'postcode', 'town', 'city']
+        this.ignoredColumns = ['address_1', 'address_2', 'postcode', 'town', 'city', 'token']
     }
 
     componentDidMount () {

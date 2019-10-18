@@ -3,18 +3,57 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/PermissionRepository.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/TaskStatus.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Role.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/CompleteProject.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/TaskController.php</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/CustomerRepository.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/database/migrations/2019_10_17_200336_delete_permission_column.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/Login.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/common/DataTable.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Task.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/CommentController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/config/jwt.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/Interfaces/ProductRepositoryInterface.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/users/AddUser.js</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/PermissionController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/User.php</file>
             <file>file:/C:/xampp3/htdocs/taskman/database/migrations/2019_10_13_133145_add_columns_to_product_task.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Middleware/Api.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/ProductController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Transformations/TaskTransformable.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/config/app.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/routes/api.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/UserController.php</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/CustomerController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Middleware/jwtMiddleware.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/EventController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/LoginController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/InvoiceController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/database/migrations/2019_10_18_180600_add_token_column_to_users.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/App.js</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Customer.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Product.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/users/EditUser.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/brands/Brands.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Role.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/database/migrations/2019_10_17_200336_delete_permission_column.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/RoleController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/ProjectController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/tabs/TabContent.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/MessageController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/bootstrap.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Permission.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/composer.json</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/app.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/ActivityController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/roles/AddRole.js</file>
+            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/customers/EditCustomer.js</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/TaskStatusController.php</file>
             <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/TaskStatusRepository.php</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Permission.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/PermissionRepository.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/TaskStatus.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/ProductRepository.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Kernel.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/config/auth.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/UploadController.php</file>
         </group>
     </open-files>
 </project-private>

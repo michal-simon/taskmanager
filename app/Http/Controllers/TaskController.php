@@ -64,8 +64,8 @@ class TaskController extends Controller {
      */
     public function store(CreateTaskRequest $request) {
         $validatedData = $request->except('project_id', 'contributors');
-        $currentUser =  $user = Auth::user();
-
+        $currentUser = Auth::user();
+        
         if (!empty($request->project_id)) {
             $objProject = $this->projectRepository->findProjectById($request->project_id);
         }
