@@ -88,7 +88,7 @@ export default class DataTable extends Component {
         }
 
         this.cancel = axios.CancelToken.source()
-        const fetchUrl = `${this.props.fetchUrl}?token=${localStorage.getItem('access_token')}&page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`
+        const fetchUrl = `${this.props.fetchUrl}?page=${this.state.current_page}&search_term=${this.state.query}&column=${this.state.sorted_column}&order=${this.state.order}&per_page=${this.state.entities.per_page}`
 
         axios.get(fetchUrl, {
             cancelToken: this.cancel.token

@@ -64,6 +64,7 @@ class Kernel extends HttpKernel {
         'user' => \App\Http\Middleware\RedirectIfNotUser::class,
         'jwt-auth' => \App\Http\Middleware\jwtMiddleware::class,
         'api-header' => \App\Http\Middleware\API::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
     ];
 
 }

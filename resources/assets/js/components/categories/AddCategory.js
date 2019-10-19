@@ -46,7 +46,6 @@ class AddCategory extends React.Component {
         axios.post('/api/categories', {
             parent: this.state.parent,
             name: this.state.name,
-            token: localStorage.getItem('access_token'),
             description: this.state.description,
             status: this.state.status
         })

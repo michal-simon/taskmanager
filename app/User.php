@@ -7,17 +7,21 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Event;
 use App\Traits\SearchableTrait;
+use App\Traits\HasPermissionsTrait;
 use Laratrust\Traits\LaratrustUserTrait;
 use App\Message;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Department;
+use App\Role;
+use App\Permission;
 
 class User extends Authenticatable implements JWTSubject {
 
     use LaratrustUserTrait;
     use Notifiable,
         SearchableTrait,
-        SoftDeletes;
+        SoftDeletes,
+        HasPermissionsTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -107,6 +111,14 @@ class User extends Authenticatable implements JWTSubject {
 
     public function getJWTCustomClaims() {
         return [];
+    }
+
+    public function roles() {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+
+    public function permissions() {
+        return $this->belongsToMany(Permission::class, 'permission_user');
     }
 
 }

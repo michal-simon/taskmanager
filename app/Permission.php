@@ -4,9 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\SearchableTrait;
+use App\Role;
 
 class Permission extends Model {
-    
+
     use SearchableTrait;
 
     protected $fillable = [
@@ -14,8 +15,7 @@ class Permission extends Model {
         'display_name',
         'description'
     ];
-    
-     protected $searchable = [
+    protected $searchable = [
         /**
          * Columns and their priority in search results.
          * Columns with higher values are more important.
@@ -35,6 +35,10 @@ class Permission extends Model {
      */
     public function searchPermission($term) {
         return self::search($term);
+    }
+
+    public function roles() {
+        return $this->belongsToMany(Role::class, 'permission_role');
     }
 
 }

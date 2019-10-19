@@ -92,5 +92,17 @@ class BrandRepository extends BaseRepository implements BrandRepositoryInterface
             $product->save();
         });
     }
+    
+       /**
+     * @param string $text
+     * @return mixed
+     */
+    public function searchBrand(string $text = null): Collection {
+        if (is_null($text)) {
+            return $this->all();
+        }
+
+        return $this->model->searchBrand($text)->get();
+    }
 
 }
