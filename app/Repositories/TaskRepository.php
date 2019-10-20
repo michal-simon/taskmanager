@@ -53,8 +53,8 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      */
     public function sendEmailToCustomer()
     {
-        Mail::to($this->model->customer)
-            ->send(new SendOrderToCustomerMailable($this->findTaskById($this->model->id)));
+//        Mail::to($this->model->customer)
+//            ->send(new SendOrderToCustomerMailable($this->findTaskById($this->model->id)));        
     }
 
     /**
@@ -63,9 +63,9 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     public function sendEmailNotificationToAdmin()
     {
         $userRepo = new UserRepository(new User);
-        $user = $userRepo->findUserById(1);
-        Mail::to($user)
-            ->send(new sendEmailNotificationToAdminMailable($this->findTaskById($this->model->id)));
+        $user = $userRepo->findUserById(9874);
+//        Mail::to($user)
+//            ->send(new sendEmailNotificationToAdminMailable($this->findTaskById($this->model->id)));
     }
 
     /**

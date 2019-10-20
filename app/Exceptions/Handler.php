@@ -46,6 +46,7 @@ class Handler extends ExceptionHandler {
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception) {
+                
         if ($request->is('api/*') || $request->wantsJson()) {
             $json = [
                 'success' => false,

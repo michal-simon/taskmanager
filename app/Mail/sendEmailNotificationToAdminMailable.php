@@ -2,11 +2,11 @@
 namespace App\Mail;
 
 use App\Transformations\AddressTransformable;
-use App\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Task;
 
 class sendEmailNotificationToAdminMailable extends Mailable
 {

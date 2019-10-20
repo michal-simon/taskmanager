@@ -2,7 +2,7 @@
 namespace App\Listeners;
 
 use App\Events\OrderCreateEvent;
-use App\Repositories\OrderRepository;
+use App\Repositories\TaskRepository;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -23,11 +23,11 @@ class OrderCreateEventListener
      * @return void
      */
     public function handle(OrderCreateEvent $event)
-    {
+    {        
         // send email to customer
-        $orderRepo = new OrderRepository($event->order);
+        $orderRepo = new TaskRepository($event->task);
         $orderRepo->sendEmailToCustomer();
-        $orderRepo = new OrderRepository($event->order);
+        $orderRepo = new TaskRepository($event->task);
         $orderRepo->sendEmailNotificationToAdmin();
     }
 }

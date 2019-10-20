@@ -15,26 +15,25 @@
     <body>
         <section class="container">
             <div class="col-md-12">
-                <h2>Hi {{config('app.name')}}! <br />An order has been created! </h2>
-                <p>Here are the details of the order below: </p>
-
+                <h2>Hello {{$customer->first_name}} {{$customer->last_name}} !</h2>
+                
                 <table class="table table-striped" width="100%" border="0" cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>
                             <td>
                                 Title
                             </td>
-
+                            
                             <td>
                                 Content
                             </td>
-
+                            
                             <td>
                                 Due Date
                             </td>
                         </tr>
                     </thead>
-
+                    
                     <tbody>
                         <tr>
                             <td>{{ $task->title }}</td>
@@ -44,6 +43,8 @@
                     </tbody>
                 </table>
 
+                <p>This order is for deliver to your: <strong>{{ ucfirst($address->alias) }} <br /></strong></p>
+                <p>Address: {{$address->address_1}} {{$address->address_2}} {{$address->city}} {{$address->state_code}}, UK</p>
                 <table class="table table-striped" width="100%" border="0" cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>

@@ -48,7 +48,7 @@ export default class Login extends Component {
                         user: userData
                     };
           
-                    window.localStorage.setItem('authenticated', true)
+                    window.sessionStorage.setItem('authenticated', true)
           
                     // save app state with user date in local storage
                     localStorage["appState"] = JSON.stringify(appState);
