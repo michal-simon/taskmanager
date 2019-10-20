@@ -15,7 +15,7 @@
 <body>
 <section class="container">
     <div class="col-md-12">
-        <h2>Hello {{$customer->name}}!</h2>
+        <h2>Hello {{$customer->first_name}} {{$customer->last_name}} !</h2>
        
         <p>This order is for deliver to your: <strong>{{ ucfirst($address->alias) }} <br /></strong></p>
         <p>Address: {{$address->address_1}} {{$address->address_2}} {{$address->city}} {{$address->state_code}}, UK</p>
