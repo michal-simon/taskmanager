@@ -76,7 +76,8 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
     }
 
     public function getAllCommentsForTask(Task $objTask) : Collection {
-        return $this->model->where('task_id', $objTask->id)
+        return $this->model->join('task_comment', 'comments.id', '=', 'task_comment.comment_id')
+                        ->where('task_comment.task_id', $objTask->id)
                         ->orderBy('created_at', 'desc')
                         ->with('user')
                         ->get();
