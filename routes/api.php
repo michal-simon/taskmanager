@@ -34,11 +34,6 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
         Route::delete('categories/{category_id}', 'CategoryController@destroy');
         Route::get('categories/{category_id}', 'CategoryController@edit');
         Route::put('categories/{category_id}', 'CategoryController@update');
-        Route::get("category/{slug}", 'CategoryController@getCategory');
-        Route::get("category-list", 'CategoryController@getRootCategories');
-        Route::get("categories/children/{slug}", 'CategoryController@getChildCategories');
-        Route::post("categories/products/{id}", 'ProductController@getProductsForCategory');
-        Route::get("category/form/{id}", 'CategoryController@getForm');
 
 // comments
         Route::get('comments/{task_id}', 'CommentController@index');
@@ -113,10 +108,8 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::put('tasks/status/{task_id}', 'TaskController@updateStatus')->middleware('role:null,taskcontroller.updatestatus');
     Route::get('leads', 'TaskController@getLeads')->middleware('role:null,taskcontroller.getleads');
     Route::get('deals', 'TaskController@getDeals')->middleware('role:null,taskcontroller.getdeals');
-    Route::post('tasks/deal', 'TaskController@createDeal')->middleware('role:null,taskcontroller.createdeal');
     Route::get('tasks', 'TaskController@index')->middleware('role:null,taskcontroller.index');
     Route::get('tasks/subtasks/{task_id}', 'TaskController@getSubtasks')->middleware('role:null,taskcontroller.getsubtasks');
-    Route::post('tasks/products/{task_id}', 'TaskController@addProducts')->middleware('role:null,taskcontroller.addproducts');
     Route::get('tasks/products/{task_id}', 'TaskController@getProducts')->middleware('role:null,taskcontroller.getproducts');
     Route::get('tasks/products', 'TaskController@getTasksWithProducts')->middleware('role:null,view-invoice');
     Route::get('tasks/source-types', 'TaskController@getSourceTypes')->middleware('role:null,view-invoice');
@@ -163,5 +156,15 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::get('login', 'LoginController@showLogin');
     Route::post('login', 'LoginController@doLogin');
     Route::get('logout', 'LoginController@doLogout');
+
+
+    // unprotected routes for website
+    Route::get("category-list", 'CategoryController@getRootCategories');
+    Route::get("categories/children/{slug}", 'CategoryController@getChildCategories');
+    Route::get("category/form/{id}", 'CategoryController@getForm');
+    Route::get("category/{slug}", 'CategoryController@getCategory');
+    Route::post('tasks/products/{task_id}', 'TaskController@addProducts');
+    Route::post("categories/products/{id}", 'ProductController@getProductsForCategory');
+    Route::post('tasks/deal', 'TaskController@createDeal');
 });
 

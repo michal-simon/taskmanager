@@ -3,8 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp3/htdocs/taskman/resources/assets/js/components/App.js</file>
-            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Middleware/Api.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/DashboardController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Traits/HasPermissionsTrait.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/InvoiceController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Role.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/routes/api.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Middleware/RoleMiddleware.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/User.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Http/Controllers/CategoryController.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Repositories/UserRepository.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/database/seeds/RoleTableSeeder.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/app/Permission.php</file>
+            <file>file:/C:/xampp3/htdocs/taskman/routes/web.php</file>
         </group>
     </open-files>
 </project-private>
