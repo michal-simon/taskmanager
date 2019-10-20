@@ -58,6 +58,7 @@ class CommentController extends Controller {
         $comment = $this->commentRepository->createComment([
             'parent_id' => !empty($validatedData['parent_id']) ? $validatedData['parent_id'] : 0,
             'comment' => $validatedData['comment'],
+            'has_task' => (int) !empty($validatedData['task_id']),
             'user_id' => $user->id
         ]);
 
