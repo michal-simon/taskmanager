@@ -57,10 +57,14 @@ class CommentController extends Controller {
 
         $comment = $this->commentRepository->createComment([
             'parent_id' => !empty($validatedData['parent_id']) ? $validatedData['parent_id'] : 0,
-            'task_id' => !empty($validatedData['task_id']) ? $validatedData['task_id'] : 0,
             'comment' => $validatedData['comment'],
             'user_id' => $user->id
         ]);
+
+        if(!empty($validatedData['task_id'])) {
+            $task = $this->taskRepository->findTaskById($validatedData['task_id']);
+            $comment->task()->associate($task);
+        }
 
         $arrResponse[0] = $comment;
         $arrResponse[0]['user'] = $user->toArray();
