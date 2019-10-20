@@ -9,6 +9,7 @@ use App\Product;
 use App\User;
 use App\TaskStatus;
 use App\Customer;
+use App\Comment;
 
 class Task extends Model {
 
@@ -77,5 +78,13 @@ class Task extends Model {
     
     public function customer() {
         return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+     /**
+     * Get the comments for the blog post.
+     */
+    public function comments()
+    {
+        return $this->hasMany('Comment');
     }
 }
