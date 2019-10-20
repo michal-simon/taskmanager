@@ -23,7 +23,6 @@
                 <th class="col-md-2">SKU</th>
                 <th class="col-md-2">Name</th>
                 <th class="col-md-3">Description</th>
-                <th class="col-md-1">Quantity</th>
                 <th class="col-md-4 text-right">Price</th>
             </tr>
             </thead>
@@ -41,7 +40,6 @@
                         @endforeach
                         @endif
                     </td>
-                    <td>{{$product->pivot->quantity}}</td>
                     <td class="text-right">{{config('cart.currency')}} {{number_format($product->price * $product->pivot->quantity, 2)}}</td>
                 </tr>
             @endforeach
@@ -53,28 +51,7 @@
                 <td></td>
                 <td>Subtotal:</td>
                 <td class="text-right">{{config('cart.currency')}} {{number_format($order->total_products, 2)}}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Shipping:</td>
-                <td class="text-right">{{config('cart.currency')}} {{number_format($order->total_shipping, 2)}}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Discounts:</td>
-                <td class="text-right">({{config('cart.currency')}} {{number_format($order->discounts, 2)}})</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Tax:</td>
-                <td class="text-right">{{config('cart.currency')}} {{number_format($order->tax, 2)}}</td>
-            </tr>
+            
             <tr class="bg-warning">
                 <td></td>
                 <td></td>
