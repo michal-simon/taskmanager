@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Task;
 use App\Project;
+use App\User;
+use App\Repositories\UserRepository;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 use App\Exceptions\CreateTaskErrorException;
@@ -11,7 +13,11 @@ use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Mail\sendEmailNotificationToAdminMailable;
+use App\Mail\SendOrderToCustomerMailable;
 use App\Product;
+use Illuminate\Support\Facades\Mail;
+use App\Events\OrderCreateEvent;
 use App\Repositories\ProductRepository;
 
 class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
@@ -34,10 +40,32 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      */
     public function createTask(array $data): Task {
         try {
-            return $this->create($data);
+            $task = $this->create($data);
+            event(new OrderCreateEvent($task));
+            return $task;
         } catch (QueryException $e) {
             throw new CreateTaskErrorException($e);
         }
+    }
+
+    /**
+     * Send email to customer
+     */
+    public function sendEmailToCustomer()
+    {
+        Mail::to($this->model->customer)
+            ->send(new SendOrderToCustomerMailable($this->findTaskById($this->model->id)));
+    }
+
+    /**
+     * Send email notification to the admin
+     */
+    public function sendEmailNotificationToAdmin()
+    {
+        $userRepo = new UserRepository(new User);
+        $user = $userRepo->findUserById(1);
+        Mail::to($user)
+            ->send(new sendEmailNotificationToAdminMailable($this->findTaskById($this->model->id)));
     }
 
     /**
