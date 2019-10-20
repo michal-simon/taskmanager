@@ -88,7 +88,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
      * @return Collection
      */
     public function getCommentsForActivityFeed() : Collection {
-        return $this->model->where('task_id', 0)
+        return $this->model->where('has_task', 0)
                         ->orderBy('created_at', 'desc')
                         ->with('user')
                         ->get();
