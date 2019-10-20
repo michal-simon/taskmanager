@@ -85,6 +85,6 @@ class Task extends Model {
      */
     public function comments()
     {
-        return $this->hasMany('Comment');
+        return $this->belongsToMany(Comment::class);
     }
 }

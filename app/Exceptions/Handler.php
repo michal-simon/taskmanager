@@ -47,16 +47,16 @@ class Handler extends ExceptionHandler {
      */
     public function render($request, Exception $exception) {
                 
-        if ($request->is('api/*') || $request->wantsJson()) {
-            $json = [
-                'success' => false,
-                'error' => [
-                    'code' => $exception->getCode(),
-                    'message' => $exception->getMessage(),
-                ],
-            ];
-            return response()->json($json, 401);
-        }
+//        if ($request->is('api/*') || $request->wantsJson()) {
+//            $json = [
+//                'success' => false,
+//                'error' => [
+//                    'code' => $exception->getCode(),
+//                    'message' => $exception->getMessage(),
+//                ],
+//            ];
+//            return response()->json($json, 401);
+//        }
         return parent::render($request, $exception);
     }
 

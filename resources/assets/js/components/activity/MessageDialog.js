@@ -12,7 +12,7 @@ class MessageDialog extends React.Component {
 
     onChange (e) {
         this.setState({
-            messageText: e.target.value.trim()
+            messageText: e.target.value
         })
     }
 

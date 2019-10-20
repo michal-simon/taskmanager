@@ -9,17 +9,17 @@ use App\User;
 class Comment extends Model {
 
     protected $fillable = [
-        'task_id',
         'comment',
         'user_id',
-        'parent_id'
+        'parent_id',
+        'has_task'
     ];
 
     public function task() {
-        return $this->belongsTo('App\Task');
+        return $this->belongsTo(Task::class);
     }
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 }

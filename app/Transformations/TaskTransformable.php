@@ -19,6 +19,7 @@ trait TaskTransformable {
         $prop->id = (int) $task->id;
         $prop->title = $task->title;
         $prop->content = $task->content;
+        $prop->comments = $task->comments;
         $prop->due_date = $task->due_date;
         $prop->start_date = $task->start_date;
         $prop->is_completed = $task->is_completed;

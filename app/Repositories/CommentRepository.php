@@ -39,6 +39,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
      * @throws CreateCommentErrorException
      */
     public function createComment(array $data): Comment {
+        
         try {
             return $this->create($data);
         } catch (QueryException $e) {
@@ -76,8 +77,8 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
     }
 
     public function getAllCommentsForTask(Task $objTask) : Collection {
-        return $this->model->join('task_comment', 'comments.id', '=', 'task_comment.comment_id')
-                        ->where('task_comment.task_id', $objTask->id)
+        return $this->model->join('comment_task', 'comments.id', '=', 'comment_task.comment_id')
+                        ->where('comment_task.task_id', $objTask->id)
                         ->orderBy('created_at', 'desc')
                         ->with('user')
                         ->get();

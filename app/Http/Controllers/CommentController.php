@@ -52,7 +52,7 @@ class CommentController extends Controller {
     public function store(CommentRequest $request) {
 
         $validatedData = $request->validated();
-
+        
         $user = Auth::user();
 
         $comment = $this->commentRepository->createComment([
@@ -61,10 +61,9 @@ class CommentController extends Controller {
             'has_task' => (int) !empty($validatedData['task_id']),
             'user_id' => $user->id
         ]);
-
-        if(!empty($validatedData['task_id'])) {
+        if(!empty($validatedData['task_id'])) {            
             $task = $this->taskRepository->findTaskById($validatedData['task_id']);
-            $comment->task()->associate($task);
+            $task->comments()->attach($comment);
         }
 
         $arrResponse[0] = $comment;
