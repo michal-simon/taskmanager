@@ -45,6 +45,7 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
      *
      */
     public function deleteAddress() {
+        $this->model->customer()->dissociate();
         return $this->model->delete();
     }
 

@@ -90,7 +90,7 @@ class Task extends Component {
                         }
 
                         return (
-                            <div style={divStyle} data-task={i.id} id={i.id} className="mcell-task card" key={index}>
+                            <div style={divStyle} data-task={i.id} id={i.id} className="col-12 col-md-12 mcell-task card" key={index}>
 
                                 <span className="task-name">
                                     <ViewTask

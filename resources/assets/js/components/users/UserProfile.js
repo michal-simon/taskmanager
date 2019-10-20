@@ -92,11 +92,11 @@ class UserProfile extends React.Component {
         }
 
         if (this.state.user && this.state.user.id) {
-            button = parseInt(sessionStorage.getItem('user_id')) === this.state.user.id
+            button = parseInt(JSON.parse(localStorage.getItem('appState'))['user']['id']) === this.state.user.id
                 ? <EditUser user={this.state.user} user_id={this.state.user.id}/>
                 : ''
 
-            uploadButton = parseInt(sessionStorage.getItem('user_id')) === this.state.user.id
+            uploadButton = parseInt(JSON.parse(localStorage.getItem('appState'))['user']['id']) === this.state.user.id
                 ? <label className="btn btn-default btn-file">
                     Browse <input onChange={this.fileChangedHandler.bind(this)} type="file"
                         style={{ display: 'none' }}/>

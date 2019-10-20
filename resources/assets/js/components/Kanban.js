@@ -17,7 +17,8 @@ class Kanban extends Component {
             err: '',
             err2: '',
             loading: true,
-            loadingStory: true
+            loadingStory: true,
+            hideNav: false
         }
         this.project_id = this.props.project_id
         this.updateTasks = this.updateTasks.bind(this)
@@ -26,6 +27,8 @@ class Kanban extends Component {
         this.getTaskUrl = this.getTaskUrl.bind(this)
         this.getUsers = this.getUsers.bind(this)
         this.getCustomers = this.getCustomers.bind(this)
+        this.hideMenu = this.hideMenu.bind(this)
+        this.resize = this.resize.bind(this)
         this.cachedTasks = []
     }
 
@@ -33,6 +36,17 @@ class Kanban extends Component {
         this.getTasks()
         this.getUsers()
         this.getCustomers()
+        this.resize()
+        
+        window.addEventListener("resize", this.resize());
+    }
+    
+    resize() {
+        const currentHideNav = (window.innerWidth <= 760);
+
+        if (currentHideNav !== this.state.hideNav) {
+            this.setState({hideNav: currentHideNav});
+        }
     }
 
     getCustomers () {
@@ -123,10 +137,17 @@ class Kanban extends Component {
         })
     }
 
-    hideMenu () {
+    hideMenu () {        
         const body = document.body
-        body.classList.add('open')
-        document.getElementsByClassName('navbar-toggler')[0].style.display = 'block'
+        
+        if(this.state.hideNav) {
+            body.classList.remove('open')
+            return
+        }
+        
+       
+        //body.classList.add('open')
+        //document.getElementsByClassName('navbar-toggler')[0].style.display = 'block'
     }
 
     render () {
@@ -138,36 +159,41 @@ class Kanban extends Component {
         this.hideMenu()
 
         return (
-            <React.Fragment>
-                <KanbanFilter
-                    customers={this.state.customers}
-                    users={this.state.users}
-                    reset={this.resetFilters}
-                    action={this.updateTasks}
-                    task_type={this.props.task_type}
-                    addProject={this.addProject}
-                    project_id={this.props.project_id}
-                />
+            <div className="kanban container">
+                <div className="row m-0 m-md-2">
+                    <KanbanFilter
+                        customers={this.state.customers}
+                        users={this.state.users}
+                        reset={this.resetFilters}
+                        action={this.updateTasks}
+                        task_type={this.props.task_type}
+                        addProject={this.addProject}
+                        project_id={this.props.project_id}
+                    />
+                </div>
+                
+                <div className="row">
+        
+                    <div id="board" className="board">
 
-                <div id="board" className="board">
-
-                    <div style={divStyle}>
-                        <aside>
-                            <Story
-                                customers={this.state.customers}
-                                users={this.state.users}
-                                tasks={this.state.tasks}
-                                action={this.updateTasks}
-                                storyName={this.state.stories.filter(i => i.id === parseInt(this.project_id))}
-                                storyType={this.project_id}
-                                loading={this.state.loading}
-                                task_type={this.props.task_type}
-                                project_id={this.props.project_id}
-                            />
-                        </aside>
+                        <div style={divStyle}>
+                            <aside>
+                                <Story
+                                    customers={this.state.customers}
+                                    users={this.state.users}
+                                    tasks={this.state.tasks}
+                                    action={this.updateTasks}
+                                    storyName={this.state.stories.filter(i => i.id === parseInt(this.project_id))}
+                                    storyType={this.project_id}
+                                    loading={this.state.loading}
+                                    task_type={this.props.task_type}
+                                    project_id={this.props.project_id}
+                                />
+                            </aside>
+                        </div>
                     </div>
                 </div>
-            </React.Fragment>
+            </div>
         )
     }
 }

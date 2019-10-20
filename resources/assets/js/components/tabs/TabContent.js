@@ -12,10 +12,8 @@ import EditInvoice from '../invoice/EditInvoice'
 
 export default class TabContent extends Component {
     render () {
-        const userId = sessionStorage.getItem('user_id')
-        
-        console.log('customer for task', this.props.task.customer)
-        
+        const userId = JSON.parse(localStorage.getItem('appState'))['user']['id']
+                        
         return (
             <div className="container mt-5">
                 <TabList>

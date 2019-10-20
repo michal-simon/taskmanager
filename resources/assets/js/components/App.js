@@ -46,18 +46,10 @@ class App extends Component {
 
     setAuthenticated (token) {
         this.setState({ authenticated: true })
-        
-        //const JsonAppState = localStorage.getItem('appState')
-        //const appState = JSON.parse(JsonAppState);
-        //const user = appState.user
-        //window.axios.defaults.headers.common['Authorization'] = token;
-//        window.sessionStorage.setItem('authenticated', true)
-//        window.sessionStorage.setItem('username', objUser.username)
-//        window.sessionStorage.setItem('user_id', objUser.user_id)
     }
 
     render () {
-        if (!this.state.authenticated && !window.sessionStorage.getItem('authenticated')) {
+        if (!this.state.authenticated && !window.localStorage.getItem('authenticated')) {
             return <Login action={this.setAuthenticated}/>
         }
         

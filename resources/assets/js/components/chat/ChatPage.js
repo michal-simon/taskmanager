@@ -12,7 +12,7 @@ class ChatPage extends Component {
         this.sendMessage = this.sendMessage.bind(this)
         this.loadMessages = this.loadMessages.bind(this)
         this.state = {
-            userID: sessionStorage.getItem('user_id'),
+            userID: JSON.parse(localStorage.getItem('appState'))['user']['id'],
             friends: [],
             messages: [],
             customer_id: 0

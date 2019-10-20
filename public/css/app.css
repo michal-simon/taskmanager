@@ -2351,9 +2351,9 @@ input::placeholder {
   list-style-type: none;
 }
 
-.ui-draggable {
-  width: 308px;
-}
+/* .ui-draggable {
+	width: 308px;
+} */
 
 .ui-droppable-hover {
   background: #ebeff3;
@@ -3385,13 +3385,31 @@ li .active:before {
   top: 0;
 }
 
-.mcell-task {
-  max-width: 288px;
-}
+/* .mcell-task {
+	max-width: 288px;
+} */
 
-@media (min-width: 800px) {
+@media (min-width: 992px) {
   .tasks {
     width: 23% !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .tasks {
+    width: 46.5% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .kanban {
+    padding: 0 !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .tasks {
+    width: 31% !important;
   }
 }
 

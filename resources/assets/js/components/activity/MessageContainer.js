@@ -84,7 +84,7 @@ class MessageContainer extends React.Component {
         const newMessage = {
             comment: messageText,
             parent_id: null,
-            user_id: sessionStorage.getItem('user_id')
+            user_id: JSON.parse(localStorage.getItem('appState'))['user']['id']
         }
         this.newMessage(newMessage)
     }
@@ -152,7 +152,7 @@ class MessageContainer extends React.Component {
             id: messageId,
             comment: messageText,
             parent_id: activeMessage.id,
-            user_id: sessionStorage.getItem('user_id')
+            user_id: JSON.parse(localStorage.getItem('appState'))['user']['id']
         }
         this.newMessage(newMessage)
     }

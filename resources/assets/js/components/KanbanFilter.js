@@ -141,7 +141,7 @@ export default class KanbanFilter extends Component {
         const editButton = this.props.project_id ? <EditProject customers={this.props.customers} project_id={this.props.project_id} /> : ''
 
         return (
-            <Card style={{ margin: '10px' }}>
+            <Card className="col-12 p-0">
                 <CardBody>
                     <CardTitle>Filter</CardTitle>
                     <Form inline onSubmit={this.handleSubmit}>
@@ -150,7 +150,7 @@ export default class KanbanFilter extends Component {
                         {projectContent}
                         {customerContent}
                         {userContent}
-                        <Button className="mr-2" color="success">Submit</Button>
+                        <Button className="mr-2 ml-2" color="success">Submit</Button>
                         <Button onClick={this.resetFilters} color="primary">Reset</Button>
                     </Form>
                 </CardBody>

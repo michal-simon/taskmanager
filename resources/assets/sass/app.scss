@@ -55,6 +55,97 @@ $color_oyster_pink_approx: #ebccd1;
 $color_apple_blossom_approx: #a94442;
 $color_vanilla_ice_approx: #f2dede;
 
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 576px;
+
+// Small tablets (portrait view)
+$screen-md-min: 768px;
+
+// Tablets and small desktops
+$screen-lg-min: 992px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+$breakpoints: (
+  xs: 576px,
+  sm: 768px,
+  md: 992px,
+  lg: 1200px
+);
+
+
+// Respond above.
+@mixin respond-above($breakpoint) {
+
+  // If the breakpoint exists in the map.
+  @if map-has-key($breakpoints, $breakpoint) {
+
+    // Get the breakpoint value.
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+
+    // Write the media query.
+    @media (min-width: $breakpoint-value) {
+      @content;
+    }
+
+  // If the breakpoint doesn't exist in the map.
+  } @else {
+
+    // Log a warning.
+    @warn 'Invalid breakpoint: #{$breakpoint}.';
+  }
+}
+
+@mixin respond-below($breakpoint) {
+
+  // If the breakpoint exists in the map.
+  @if map-has-key($breakpoints, $breakpoint) {
+
+    // Get the breakpoint value.
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+
+    // Write the media query.
+    @media (max-width: ($breakpoint-value - 1)) {
+      @content;
+    }
+
+  // If the breakpoint doesn't exist in the map.
+  } @else {
+
+    // Log a warning.
+    @warn 'Invalid breakpoint: #{$breakpoint}.';
+  }
+}
+
+// Small devices
+@mixin sm {
+   @media (min-width: #{$screen-sm-min}) {
+       @content;
+   }
+}
+
+// Medium devices
+@mixin md {
+   @media (min-width: #{$screen-md-min}) {
+       @content;
+   }
+}
+
+// Large devices
+@mixin lg {
+   @media (min-width: #{$screen-lg-min}) {
+       @content;
+   }
+}
+
+// Extra large devices
+@mixin xl {
+   @media (min-width: #{$screen-xl-min}) {
+       @content;
+   }
+}
+
 //@extend-elements
 //original selectors
 //.panel >.list-group:first-child .list-group-item:first-child, .panel >.panel-collapse >.list-group:first-child .list-group-item:first-child
@@ -329,9 +420,9 @@ input[type=time] {
 	box-shadow: 2px 2px 8px #8080800d;
 	list-style-type: none;
 }
-.ui-draggable {
+/* .ui-draggable {
 	width: 308px;
-}
+} */
 .ui-droppable-hover {
 	background: $color_athens_gray_approx;
 	min-height: 186px;
@@ -1380,31 +1471,33 @@ $color_celeste_approx: #ccc;
 	}
 }
 
-.mcell-task {
+/* .mcell-task {
 	max-width: 288px;
+} */
+
+@include lg {
+    .tasks {
+	width: 23% !important;
+    }
 }
 
-@media(min-width: 800px) {
-	.tasks {
-		width: 23% !important;
-	}
-
-
-//	.board {
-//		padding-right: 2rem;
-//		padding-left: 2rem;
-//	}
-//}
-//
-//.board {
-//	display: block;
-//	padding: 1.5rem 1rem;
-//	white-space: nowrap;
-//	overflow-x: scroll;
-//	height: calc(100vh - 7rem);
+@include md {
+    .tasks {
+        width: 46.5% !important;
+    }
 }
 
+@include respond-below(sm) {
+    .kanban {
+        padding: 0 !important;
+    }
+}
 
+@include respond-above(lg) {
+    .tasks {
+        width: 31% !important;
+    }
+}
 
 
 .task-body {
