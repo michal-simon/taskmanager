@@ -54,20 +54,7 @@
                 <td>Subtotal:</td>
                 <td class="text-right">{{config('cart.currency')}} {{number_format($order->total_products, 2)}}</td>
             </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Shipping:</td>
-                <td class="text-right">{{config('cart.currency')}} {{number_format($order->total_shipping, 2)}}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>Discounts:</td>
-                <td class="text-right">({{config('cart.currency')}} {{number_format($order->discounts, 2)}})</td>
-            </tr>
+           
             <tr>
                 <td></td>
                 <td></td>
