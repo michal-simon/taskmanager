@@ -77,7 +77,7 @@ class Task extends Component {
                     .map((i, index) => {
                         let contributors = ''
 
-                        if (i.users.length) {
+                        if (i.users && i.users.length) {
                             contributors = i.users.map((user, index) => {
                                 return (
                                     <Avatar key={index} inline={true} name={user.first_name + ' ' + user.last_name} />

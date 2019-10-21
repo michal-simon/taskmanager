@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Transformations\CustomerTransformable;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
+use App\Brand;
 
 class CustomerUnitTest extends TestCase {
 
@@ -76,11 +77,14 @@ class CustomerUnitTest extends TestCase {
 
     /** @test */
     public function it_can_create_a_customer() {
+        
+        $company = factory(Brand::class)->create();
+        
         $data = [
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
-            'company_name' => $this->faker->company,
+            'company_id' => $company->id,
             'job_title' => $this->faker->jobTitle,
             'phone' => $this->faker->phoneNumber
         ];

@@ -131,8 +131,21 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @param type $limit
      * @return Support
      */
-    public function getLeads(int $task_type, $limit = null): Support {
-        $query = $this->model->where('task_type', $task_type)
+    public function getLeads($limit = null): Support {
+        $query = $this->model->where('task_type', 2)
+                ->where('is_completed', 0)
+                ->where('parent_id', 0)
+                ->orderBy('created_at', 'desc');
+
+        if ($limit !== null) {
+            $query->limit($limit);
+        }
+
+        return $query->get();
+    }
+    
+     public function getDeals($limit = null): Support {
+        $query = $this->model->where('task_type', 3)
                 ->where('is_completed', 0)
                 ->where('parent_id', 0)
                 ->orderBy('created_at', 'desc');

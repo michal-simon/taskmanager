@@ -115,7 +115,7 @@ class CustomerController extends Controller {
         $customer = $this->customerRepo->createCustomer($request->except('_token', '_method'));
 
         $customer->addresses()->create([
-            'company_name' => $request->company_name,
+            'company_id' => $request->company_id,
             'job_title' => $request->job_title,
             'address_1' => $request->address_1,
             'address_2' => $request->address_2,

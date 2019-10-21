@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\SearchableTrait;
 use App\Message;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Brand;
+use App\CustomerType;
 
 class Customer extends Model {
 
@@ -23,8 +25,9 @@ class Customer extends Model {
         'email',
         'status',
         'job_title',
-        'company_name',
-        'phone'
+        'company_id',
+        'phone',
+        'customer_type'
     ];
 
     /**
@@ -52,6 +55,14 @@ class Customer extends Model {
      */
     public function addresses() {
         return $this->hasMany(Address::class)->whereStatus(true);
+    }
+    
+    public function company() {
+        return $this->belongsTo(Brand::class, 'company_id');
+    }
+    
+    public function customerType() {
+        return $this->belongsTo(CustomerType::class, 'customer_type');
     }
 
     /**

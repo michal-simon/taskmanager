@@ -15,7 +15,7 @@ class AddCustomer extends React.Component {
             address_1: '',
             address_2: '',
             job_title: '',
-            company_name: '',
+            company__id: '',
             zip: '',
             city: '',
             description: '',
@@ -65,7 +65,7 @@ class AddCustomer extends React.Component {
             zip: this.state.zip,
             city: this.state.city,
             job_title: this.state.job_title,
-            company_name: this.state.company_name,
+            company_id: this.state.company_id,
             description: this.state.description,
             customer_type: this.props.customer_type
         }
@@ -86,7 +86,7 @@ class AddCustomer extends React.Component {
                     zip: null,
                     city: null,
                     job_title: null,
-                    company_name: null,
+                    company_id: null,
                     description: null
                 })
             })
@@ -103,9 +103,34 @@ class AddCustomer extends React.Component {
             errors: []
         })
     }
+    
+    getCompanyList () {        
+        let companyList = null
+        if (!this.props.companies.length) {
+            companyList = <option value="">Loading...</option>
+        } else {
+            companyList = this.props.companies.map((company, index) => (
+                <option key={index} value={company.id}>{company.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="company_id">Company</Label>
+                <Input defaultValue={this.state.company_id} onChange={this.handleInputChanges.bind(this)} type="select"
+                    name="company_id" id="company_id">
+                    <option value="">Select Company</option>
+                    {companyList}
+                </Input>
+                {this.renderErrorFor('company_id')}
+            </FormGroup>
+        )
+    }
 
     render () {
         const { submitSuccess, loading } = this.state
+        const companyList = this.getCompanyList()
+        
         return (
             <React.Fragment>
                 <Button color="success" onClick={this.toggle}>Add Customer</Button>
@@ -192,17 +217,8 @@ class AddCustomer extends React.Component {
                                     placeholder="Enter customer's city"/>
                                 {this.renderErrorFor('city')}
                             </FormGroup>
-
-                            <FormGroup>
-                                <Label htmlFor="company_name"> Company Name </Label>
-                                <Input className={this.hasErrorFor('company_name') ? 'is-invalid' : ''}
-                                    type="text"
-                                    id="company_name"
-                                    onChange={this.handleInputChanges.bind(this)}
-                                    name="company_name"
-                                    placeholder="Company Name"/>
-                                {this.renderErrorFor('company_name')}
-                            </FormGroup>
+                            
+                            {companyList}
 
                             <FormGroup>
                                 <Label htmlFor="job_title"> Job Title </Label>

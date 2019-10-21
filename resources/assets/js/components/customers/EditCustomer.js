@@ -14,7 +14,7 @@ class EditCustomer extends React.Component {
             last_name: this.props.customer.name.split(' ').slice(-1).join(' '),
             email: this.props.customer.email,
             job_title: this.props.customer.job_title,
-            company_name: this.props.customer.company_name,
+            company_id: this.props.customer.company_id,
             address_1: this.props.customer.address.address_1,
             address_2: this.props.customer.address.address_2,
             zip: this.props.customer.address.zip,
@@ -23,7 +23,9 @@ class EditCustomer extends React.Component {
             values: [],
             loading: false,
             submitSuccess: false,
-            errors: []
+            errors: [],
+            companies: []
+            
         }
         this.toggle = this.toggle.bind(this)
         this.handleClick = this.handleClick.bind(this)
@@ -58,7 +60,7 @@ class EditCustomer extends React.Component {
             last_name: this.state.last_name,
             email: this.state.email,
             job_title: this.state.job_title,
-            company_name: this.state.company_name,
+            company_id: this.state.company_id,
             address_1: this.state.address_1,
             address_2: this.state.address_2,
             zip: this.state.zip,
@@ -89,6 +91,9 @@ class EditCustomer extends React.Component {
     }
 
     buildForm () {
+        
+        const companyList = this.getCompanyList()
+        
         return (
             <Form id={'create-post-form'} onSubmit={this.processFormSubmission} noValidate={true}>
                 <FormGroup>
@@ -162,15 +167,8 @@ class EditCustomer extends React.Component {
                         placeholder="Enter customer's city"/>
                     {this.renderErrorFor('city')}
                 </FormGroup>
-
-                <FormGroup>
-                    <Label htmlFor="company_name"> Company Name </Label>
-                    <Input className={this.hasErrorFor('company_name') ? 'is-invalid' : ''} type="text" id="company_name"
-                        defaultValue={this.state.company_name}
-                        onChange={this.handleInputChanges.bind(this)} name="company_name"
-                        placeholder="Enter Company Name"/>
-                    {this.renderErrorFor('company_name')}
-                </FormGroup>
+                
+                {companyList}
 
                 <FormGroup>
                     <Label htmlFor="job_title"> Job Title </Label>
@@ -181,6 +179,29 @@ class EditCustomer extends React.Component {
                     {this.renderErrorFor('job_title')}
                 </FormGroup>
             </Form>
+        )
+    }
+    
+    getCompanyList () {
+        let companyList = null
+        if (!this.props.companies.length) {
+            companyList = <option value="">Loading...</option>
+        } else {
+            companyList = this.props.companies.map((company, index) => (
+                <option key={index} value={company.id}>{company.name}</option>
+            ))
+        }
+
+        return (
+            <FormGroup>
+                <Label for="company_id">Company</Label>
+                <Input defaultValue={this.state.company_id} onChange={this.handleInputChanges.bind(this)} type="select"
+                    name="company_id" id="company_id">
+                    <option value="">Select Company</option>
+                    {companyList}
+                </Input>
+                {this.renderErrorFor('company_id')}
+            </FormGroup>
         )
     }
 

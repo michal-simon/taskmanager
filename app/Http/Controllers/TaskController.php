@@ -151,7 +151,7 @@ class TaskController extends Controller {
     }
 
     public function getLeads() {
-        $list = $this->taskRepository->getLeads(2);
+        $list = $this->taskRepository->getLeads();
 
         $tasks = $list->map(function (Task $task) {
                     return $this->transformTask($task);
@@ -161,7 +161,7 @@ class TaskController extends Controller {
     }
 
     public function getDeals() {
-        $list = $this->taskRepository->getLeads(3);
+        $list = $this->taskRepository->getDeals();
 
         $tasks = $list->map(function (Task $task) {
                     return $this->transformTask($task);
@@ -244,12 +244,13 @@ class TaskController extends Controller {
     public function createDeal(Request $request) {
         $currentUser = Auth::user();
         $userId = !$currentUser ? 9874 : $currentUser->id;
+        $request->customer_type = 2;
 
         $customer = (new CustomerRepository(new Customer))->createCustomer($request->except('_token', '_method', 'valued_at', 'title', 'description'));
 
         if ($request->has('address_1') && !empty($request->address_1)) {
             $customer->addresses()->create([
-                'company_name' => $request->company_name,
+                'company_id' => $request->company_id,
                 'job_title' => $request->job_title,
                 'address_1' => $request->address_1,
                 'address_2' => $request->address_2,

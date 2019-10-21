@@ -13,11 +13,15 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\Customer;
+use App\Brand;
 
 $factory->define(Customer::class, function (Faker\Generator $faker) {
+
+    $company = factory(Brand::class)->create();
+
     return [
         'phone' => $faker->phoneNumber,
-        'company_name' => $faker->company,
+        'company_id' => $company->id,
         'job_title' => $faker->jobTitle,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,

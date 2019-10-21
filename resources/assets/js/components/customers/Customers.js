@@ -12,19 +12,42 @@ export default class Customers extends Component {
         super(props)
         this.state = {
             per_page: 5,
-            customers: []
+            customers: [],
+            companies: []
         }
 
         this.updateCustomers = this.updateCustomers.bind(this)
         this.customerList = this.customerList.bind(this)
+        this.getCompanies = this.getCompanies.bind(this)
+        
         this.ignoredColumns = [
             'first_name', 
-            'last_name'
+            'last_name',
+            'company',
+            'customer_type',
+            'company_id',
+            'customer_type'
         ]
     }
 
     updateCustomers (customers) {
         this.setState({ customers: customers })
+    }
+    
+    componentDidMount () {
+        this.getCompanies()
+    }
+    
+    getCompanies () {
+        axios.get('/api/brands')
+            .then((r) => {                
+                this.setState({
+                    companies: r.data
+                })
+            })
+            .catch((e) => {
+                console.error(e)
+            })
     }
 
     customerList () {
@@ -37,7 +60,7 @@ export default class Customers extends Component {
                         )
                     } else if (index === 'id') {
                         return <td><Avatar name={customer.name}/></td>
-                    } else {
+                    } else if(this.ignoredColumns && !this.ignoredColumns.includes(index)) {
                         return (
                             <td>{customer[index]}</td>
                         )
@@ -53,6 +76,7 @@ export default class Customers extends Component {
                                 action={this.updateCustomers}
                                 customers={this.state.customers}
                                 modal={true}
+                                companies={this.state.companies}
                             />
                             <Button color="danger" onClick={() => this.deleteCustomer(customer.id)}>Delete</Button>
 
@@ -98,6 +122,7 @@ export default class Customers extends Component {
                     customer_type={this.props.customer_type}
                     action={this.updateCustomers}
                     customers={this.state.customers}
+                    companies={this.state.companies}
                 />
 
                 <DataTable

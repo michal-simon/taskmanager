@@ -20,7 +20,7 @@ class CommentTest extends TestCase {
     private $user;
     private $task;
 
-    public function setUp() : void {
+    public function setUp(): void {
         parent::setUp();
         $this->beginDatabaseTransaction();
         $this->user = factory(User::class)->create();
@@ -69,9 +69,18 @@ class CommentTest extends TestCase {
     }
 
     /** @test */
+    public function it_can_attach_a_task() {
+        $task = factory(Task::class)->create();
+        $comment = factory(Comment::class)->create();
+        $response = $task->comments()->attach($comment);
+        $this->assertDatabaseHas('comments', [
+            'comment' => $comment->comment
+        ]);
+    }
+
+    /** @test */
     public function it_can_create_a_comment() {
         $data = [
-            'task_id' => $this->task->id,
             'user_id' => $this->user->id,
             'comment' => $this->faker->sentence,
         ];
@@ -98,7 +107,7 @@ class CommentTest extends TestCase {
         $comment->findCommentById(999);
     }
 
-    public function tearDown() : void {
+    public function tearDown(): void {
         parent::tearDown();
     }
 
