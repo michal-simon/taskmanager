@@ -21,7 +21,7 @@ export default class DataTable extends Component {
             },
             first_page: 1,
             current_page: 1,
-            sorted_column: [],
+            sorted_column: this.props.defaultColumn ? this.props.defaultColumn : [],
             data: [],
             columns: [],
             offset: 4,
