@@ -81,7 +81,7 @@ class EditBrand extends React.Component {
     render () {
         return (
             <React.Fragment>
-                <Button color="success" onClick={this.toggle}>Edit</Button>
+                <Button className="ml-2" color="success" onClick={this.toggle}>Edit</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Edit Brand
