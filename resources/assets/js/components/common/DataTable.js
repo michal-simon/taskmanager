@@ -112,20 +112,21 @@ export default class DataTable extends Component {
             })
     }
 
-    tableHeads () {
+     tableHeads () {
         let icon
         if (this.state.order === 'asc') {
-            icon = <i className="fa fa-arrow-up" />
+            icon = <i className="fa fa-arrow-up"/>
         } else {
-            icon = <i className="fa fa-arrow-down" />
+            icon = <i className="fa fa-arrow-down"/>
         }
 
-        if(this.state.columns && this.state.columns.length) {
+        if (this.state.columns && this.state.columns.length) {
             return this.state.columns.map(column => {
+                const sortedClass = (this.props.disableSorting && this.props.disableSorting.includes(column)) ? ('') : ((column === this.state.sorted_column) ? (`th-sm sorting_${this.state.order}`) : ('sorting_asc_disabled'))
+
                 if (!this.props.ignore || (this.props.ignore.length && !this.props.ignore.includes(column))) {
-                    return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
+                    return <th className={`table-head ${sortedClass} th-lg`} key={column} onClick={() => this.sortByColumn(column)}>
                         {this.columnHead(column)}
-                        {icon}
                     </th>
                 }
             })
