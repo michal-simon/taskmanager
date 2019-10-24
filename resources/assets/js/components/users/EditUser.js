@@ -15,7 +15,8 @@ class EditUser extends React.Component {
             user: [],
             roles: [],
             selectedRoles: [],
-            department: 0
+            department: 0,
+            message: ''
         }
 
         this.defaultValues = {
@@ -77,12 +78,17 @@ class EditUser extends React.Component {
                 const index = this.props.users.findIndex(user => parseInt(user.id) === this.props.user_id)
                 this.props.users[index] = this.state.user
                 this.props.action(this.props.users)
+                this.setState({message: ''})
                 this.toggle()
             })
-            .catch((error) => {
-                this.setState({
-                    errors: error.response.data.errors
-                })
+             .catch((error) => {
+                if (error.response.data.errors) {
+                    this.setState({
+                        errors: error.response.data.errors
+                    })
+                } else {
+                    this.setState({message: error.response.data})
+                }
             })
     }
 
@@ -115,7 +121,8 @@ class EditUser extends React.Component {
     toggle () {
         this.setState({
             modal: !this.state.modal,
-            errors: []
+            errors: [],
+            message: ''
         })
     }
 
@@ -194,6 +201,7 @@ class EditUser extends React.Component {
         const genderList = this.buildGenderDropdown()
         const departmentList = this.buildDepartmentOptions()
         const roleList = this.getRoleList()
+        const {message} = this.state
 
         return (
             <React.Fragment>
@@ -203,6 +211,11 @@ class EditUser extends React.Component {
                         Edit User
                     </ModalHeader>
                     <ModalBody>
+            
+                        {message && <div className="alert alert-danger" role="alert">
+                            {message}
+                        </div>}
+            
                         <FormGroup>
                             <Label for="username">Username(*):</Label>
                             <Input className={this.hasErrorFor('username') ? 'is-invalid' : ''}
