@@ -74,9 +74,13 @@ class AddBrand extends React.Component {
                 })
             })
             .catch((error) => {
-                this.setState({
-                    errors: error.response.data.errors
-                })
+                if (error.response.data.errors) {
+                    this.setState({
+                        errors: error.response.data.errors
+                    })
+                } else {
+                    this.setState({message: error.response.data})
+                }
             })
     }
 
