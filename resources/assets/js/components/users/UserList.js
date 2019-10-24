@@ -148,12 +148,14 @@ export default class UserList extends Component {
 
                 {departmentOptions}
 
-                <DataTable
+               <DataTable
+                    disableSorting={['id']}
+                    defaultColumn='last_name'
                     ignore={this.ignoredColumns}
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}
-                />
+               />
 
             </div>
         )
