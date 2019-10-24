@@ -117,9 +117,11 @@ class AddUser extends React.Component {
             })
     }
 
-    handleInput (e) {
+    handleInput (event) {
+      const { name, value } = event.target
+
         this.setState({
-            [e.target.name]: e.target.value
+            [name]: value
         })
     }
 
