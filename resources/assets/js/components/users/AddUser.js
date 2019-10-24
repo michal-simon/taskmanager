@@ -23,7 +23,8 @@ class AddUser extends React.Component {
             loading: false,
             errors: [],
             roles: [],
-            selectedRoles: []
+            selectedRoles: [],
+            message: ''
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
@@ -111,9 +112,13 @@ class AddUser extends React.Component {
                 })
             })
             .catch((error) => {
-                this.setState({
-                    errors: error.response.data.errors
-                })
+                if (error.response.data.errors) {
+                    this.setState({
+                        errors: error.response.data.errors
+                    })
+                } else {
+                    this.setState({message: error.response.data})
+                }
             })
     }
 
@@ -210,6 +215,7 @@ class AddUser extends React.Component {
         const roleList = this.getRoleList()
         const genderList = this.buildGenderDropdown()
         const departmentList = this.buildDepartmentOptions()
+        const {message} = this.state
 
         return (
             <React.Fragment>
@@ -219,6 +225,11 @@ class AddUser extends React.Component {
                        Add User
                     </ModalHeader>
                     <ModalBody>
+                    
+                     {message && <div className="alert alert-danger" role="alert">
+                            {message}
+                        </div>}
+            
                         <FormGroup>
                             <Label for="username">Username(*):</Label>
                             <Input className={this.hasErrorFor('username') ? 'is-invalid' : ''}
