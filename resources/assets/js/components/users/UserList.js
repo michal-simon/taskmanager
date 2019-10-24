@@ -14,7 +14,7 @@ export default class UserList extends Component {
         this.state = {
             users: [],
             departments: [],
-            errors: []
+            error: ''
         }
 
         this.cachedResults = []
@@ -124,16 +124,25 @@ export default class UserList extends Component {
                 self.addUserToState(arrUsers)
             })
             .catch(function (error) {
-                console.log(error)
+                self.setState(
+                    {
+                        error: error.response.data
+                    }
+                )
             })
     }
 
     render () {
         const fetchUrl = '/api/users/'
         const departmentOptions = this.buildDepartmentOptions()
+         const {error} = this.state
 
         return (
             <div className="data-table m-md-3 m-0">
+            
+            {error && <div className="alert alert-danger" role="alert">
+                          {error}
+                        </div>}
 
                 <AddUser departments={this.state.departments} users={this.state.users} action={this.addUserToState}/>
 
