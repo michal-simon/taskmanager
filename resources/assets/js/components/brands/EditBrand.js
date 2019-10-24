@@ -30,10 +30,6 @@ class EditBrand extends React.Component {
         this.setState({ [e.target.name]: e.target.value })
     }
 
-    handleMultiSelect (e) {
-        this.setState({ attachedPermissions: Array.from(e.target.selectedOptions, (item) => item.value) })
-    }
-
     hasErrorFor (field) {
         return !!this.state.errors[field]
     }
