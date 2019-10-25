@@ -12,6 +12,7 @@ class AddPermission extends React.Component {
             description: '',
             loading: false,
             errors: [],
+            message: ''
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
@@ -54,10 +55,13 @@ class AddPermission extends React.Component {
                 })
             })
             .catch((error) => {
-                alert(error)
-                this.setState({
-                    errors: error.response.data.errors
-                })
+                if (error.response.data.errors) {
+                    this.setState({
+                        errors: error.response.data.errors
+                    })
+                } else {
+                    this.setState({message: error.response.data})
+                }
             })
     }
 
@@ -69,6 +73,7 @@ class AddPermission extends React.Component {
     }
 
     render () {
+        const {message} = this.state
                 
         return (
             <React.Fragment>
@@ -78,6 +83,11 @@ class AddPermission extends React.Component {
                         Add Permission
                     </ModalHeader>
                     <ModalBody>
+            
+                         {message && <div className="alert alert-danger" role="alert">
+                            {message}
+                        </div>}
+            
                         <FormGroup>
                             <Label for="username">Name(*):</Label>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
