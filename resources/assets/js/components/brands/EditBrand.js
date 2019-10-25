@@ -21,6 +21,8 @@ class EditBrand extends React.Component {
             postcode: this.props.brand.postcode,
             id: this.props.brand.id
         }
+        
+        this.initialState = this.state
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
@@ -61,6 +63,7 @@ class EditBrand extends React.Component {
 
         axios.put(`/api/brands/${this.state.id}`, this.props.brands[index])
             .then((response) => {
+                this.initialState = this.state
                 this.toggle()
                 this.props.action(this.props.brands)
             })
@@ -72,6 +75,10 @@ class EditBrand extends React.Component {
     }
 
     toggle () {
+        if (this.state.modal) {
+            this.setState({...this.initialState})
+        }
+
         this.setState({
             modal: !this.state.modal,
             errors: []
