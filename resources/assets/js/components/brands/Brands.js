@@ -12,7 +12,8 @@ export default class Brands extends Component {
 
         this.state = {
             brands: [],
-            errors: []
+            errors: [],
+            error: ''
         }
 
         this.addUserToState = this.addUserToState.bind(this)
@@ -69,7 +70,11 @@ export default class Brands extends Component {
                 self.addUserToState(arrBrands)
             })
             .catch(function (error) {
-                console.log(error)
+                self.setState(
+                    {
+                        error: error.response.data
+                    }
+                )
             })
     }
 
@@ -90,9 +95,14 @@ export default class Brands extends Component {
 
     render () {
         const fetchUrl = '/api/brands/'
+        const {error} = this.state
 
         return (
             <div className="data-table m-md-3 m-0">
+            
+             {error && <div className="alert alert-danger" role="alert">
+                    {error}
+                </div>}
 
                 <AddBrand users={this.state.users} brands={this.state.brands} action={this.addUserToState}/>
 
