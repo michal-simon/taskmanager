@@ -18,7 +18,8 @@ class AddBrand extends React.Component {
             city: '',
             postcode: '',
             loading: false,
-            errors: []
+            errors: [],
+            message: ''
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
@@ -88,6 +89,7 @@ class AddBrand extends React.Component {
         this.setState({
             modal: !this.state.modal,
             errors: [],
+            message: '',
             loading: true
         })
     }
