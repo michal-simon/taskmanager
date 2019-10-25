@@ -9,7 +9,8 @@ import {
     Input,
     InputGroupAddon,
     InputGroupText,
-    InputGroup
+    InputGroup,
+    Label
 } from 'reactstrap'
 import axios from 'axios'
 
@@ -144,7 +145,8 @@ class AddRole extends React.Component {
                         {message && <div className="alert alert-danger" role="alert">
                             {message}
                         </div>}
-            
+
+                        <Label>Name</Label>
                         <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
@@ -157,6 +159,7 @@ class AddRole extends React.Component {
                             {this.renderErrorFor('name')}
                         </InputGroup>
 
+                        <Label>Description</Label>
                          <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
@@ -168,7 +171,8 @@ class AddRole extends React.Component {
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('description')}
                         </InputGroup>
-                        
+
+                        <Label>Assign Permissions</Label>
                         <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>

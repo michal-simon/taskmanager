@@ -117,6 +117,8 @@ class AddUser extends React.Component {
                         errors: error.response.data.errors
                     })
                 } else {
+                    alert('yes')
+                    console.log('error', error.response.data)
                     this.setState({message: error.response.data})
                 }
             })

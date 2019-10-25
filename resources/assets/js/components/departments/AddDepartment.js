@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
 import { 
     Button, 
@@ -101,19 +100,22 @@ class AddDepartment extends React.Component {
         }
 
         return (
-             <InputGroup className="mb-3">
-                <InputGroupAddon addonType="prepend">
-                    <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
-                </InputGroupAddon>
-                <Input className={this.hasErrorFor('parent') ? 'is-invalid' : ''}
-                       type="select"
-                       name="parent"
-                       onChange={this.handleInput.bind(this)}>
-                    <option value="">Select Parent</option>
-                    {departmentList}
-                </Input>
-                {this.renderErrorFor('parent')}
-            </InputGroup>
+            <React.Fragment>
+                <Label>Parent</Label>
+                 <InputGroup className="mb-3">
+                    <InputGroupAddon addonType="prepend">
+                        <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                    </InputGroupAddon>
+                    <Input className={this.hasErrorFor('parent') ? 'is-invalid' : ''}
+                           type="select"
+                           name="parent"
+                           onChange={this.handleInput.bind(this)}>
+                        <option value="">Select Parent</option>
+                        {departmentList}
+                    </Input>
+                    {this.renderErrorFor('parent')}
+                </InputGroup>
+            </React.Fragment>
         )
     }
 
@@ -128,20 +130,23 @@ class AddDepartment extends React.Component {
         }
 
         return (
-             <InputGroup className="mb-3">
-                <InputGroupAddon addonType="prepend">
-                    <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
-                </InputGroupAddon>
-                <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
-                    type="select"
-                    name="department_manager"
-                    id="department_manager"
-                    onChange={this.handleInput.bind(this)}>
-                    <option value="">Choose Department Manager</option>
-                    {userContent}
-                </Input>
-                {this.renderErrorFor('department_manager')}
-            </InputGroup>
+            <React.Fragment>
+                <Label>Department Manager</Label>
+                 <InputGroup className="mb-3">
+                    <InputGroupAddon addonType="prepend">
+                        <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                    </InputGroupAddon>
+                    <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
+                        type="select"
+                        name="department_manager"
+                        id="department_manager"
+                        onChange={this.handleInput.bind(this)}>
+                        <option value="">Choose Department Manager</option>
+                        {userContent}
+                    </Input>
+                    {this.renderErrorFor('department_manager')}
+                </InputGroup>
+            </React.Fragment>
         )
     }
 
@@ -162,7 +167,8 @@ class AddDepartment extends React.Component {
                         {message && <div className="alert alert-danger" role="alert">
                             {message}
                         </div>}
-            
+
+                        <Label>Name</Label>
                        <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
