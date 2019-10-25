@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, InputGroup,
+    InputGroupAddon, InputGroupText } from 'reactstrap'
 import axios from 'axios'
 
 class EditPermission extends React.Component {
@@ -92,20 +93,24 @@ class EditPermission extends React.Component {
                             {message}
                         </div>}
             
-                        <FormGroup>
-                            <Label for="name">Name(*):</Label>
+                        <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                                <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                            </InputGroupAddon>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
                                 value={this.state.name} onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
-                        </FormGroup>
+                        </InputGroup>
 
-                        <FormGroup>
-                            <Label for="email">Description(*):</Label>
+                        <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                                <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                            </InputGroupAddon>
                             <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
                                 name="description" value={this.state.description}
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('description')}
-                        </FormGroup>
+                        </InputGroup>
                     </ModalBody>
 
                     <ModalFooter>
