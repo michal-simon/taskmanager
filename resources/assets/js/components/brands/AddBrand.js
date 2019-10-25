@@ -93,6 +93,8 @@ class AddBrand extends React.Component {
     }
 
     render () {
+        const {message} = this.state
+         
         return (
             <React.Fragment>
                 <Button className="pull-right" color="success" onClick={this.toggle}>Add Company</Button>
@@ -101,6 +103,11 @@ class AddBrand extends React.Component {
                         Add Company
                     </ModalHeader>
                     <ModalBody>
+            
+                         {message && <div className="alert alert-danger" role="alert">
+                            {message}
+                        </div>}
+            
                         <FormGroup>
                             <Label for="username">Name(*):</Label>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''}
