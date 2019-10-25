@@ -1,6 +1,18 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import { 
+        Button, 
+        Modal, 
+        ModalHeader, 
+        ModalBody, 
+        ModalFooter, 
+        Input, 
+        FormGroup, 
+        Label,
+        InputGroupAddon, 
+        InputGroupText, 
+        InputGroup
+} from 'reactstrap'
 import axios from 'axios'
 
 class EditDepartment extends React.Component {
@@ -58,7 +70,6 @@ class EditDepartment extends React.Component {
 
         return (
             <FormGroup>
-                <Label for="contributors">Department Manager:</Label>
                 <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
                     type="select"
                     value={this.state.department_manager}
@@ -85,7 +96,6 @@ class EditDepartment extends React.Component {
 
         return (
             <FormGroup>
-                <Label for="gender">Parent:</Label>
                 <Input className={this.hasErrorFor('parent') ? 'is-invalid' : ''}
                        value={this.state.parent}
                        type="select"
@@ -143,12 +153,18 @@ class EditDepartment extends React.Component {
                         Edit Department
                     </ModalHeader>
                     <ModalBody>
-                        <FormGroup>
-                            <Label for="name">Name(*):</Label>
-                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
-                                value={this.state.name} onChange={this.handleInput.bind(this)}/>
+                        <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                                <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                            </InputGroupAddon>
+                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} 
+                                placeholder="Name"
+                                type="text" 
+                                name="name"
+                                value={this.state.name} 
+                                onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
-                        </FormGroup>
+                        </InputGroup>
 
                         {parentDropdown}
                         {userOptions}
