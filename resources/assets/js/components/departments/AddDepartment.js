@@ -159,7 +159,7 @@ class AddDepartment extends React.Component {
                             {message}
                         </div>}
             
-                       <InputGroup>
+                       <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
                             </InputGroupAddon>
