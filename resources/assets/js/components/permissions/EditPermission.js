@@ -16,6 +16,7 @@ class EditPermission extends React.Component {
             role: []
         }
                 
+        this.initialState = this.state
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
@@ -45,6 +46,7 @@ class EditPermission extends React.Component {
             description: this.state.description,
         })
             .then((response) => {
+                this.initialState = this.state
                 const index = this.props.permissions.findIndex(permission => permission.id === this.props.permission.id)
                 this.props.permissions[index].name = this.state.name
                 this.props.permissions[index].description = this.state.description
@@ -59,6 +61,10 @@ class EditPermission extends React.Component {
     }
 
     toggle () {
+        if (this.state.modal) {
+            this.setState({...this.initialState})
+        }
+        
         this.setState({
             modal: !this.state.modal,
             errors: []
