@@ -1471,6 +1471,116 @@ $color_celeste_approx: #ccc;
 	}
 }
 
+/************************** TAbles **********************************/
+//@extend-elements
+%extend_table_1 {
+  position: absolute;
+  bottom: .8em;
+  display: block;
+  opacity: .3;
+}
+
+%extend_table_2 {
+  position: absolute;
+  bottom: 1.2em;
+  display: block;
+  opacity: .3;
+}
+
+%extend_table_3 {
+  right: 1em;
+  content: "\f0de";
+  font: normal normal normal 14px/1 FontAwesome;
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+%extend_table_4 {
+  content: "\f0dd";
+  font: normal normal normal 14px/1 FontAwesome;
+  font-weight: 900;
+  right: 16px;
+  font-size: 1rem;
+}
+
+
+thead {
+  .sorting_asc {
+    cursor: pointer;
+    position: relative;
+
+    &:after {
+      @extend %extend_table_1;
+    }
+
+    &:before {
+      @extend %extend_table_1;
+      @extend %extend_table_3;
+      opacity: 1;
+    }
+  }
+
+  .sorting_asc_disabled {
+    cursor: pointer;
+    position: relative;
+
+    &:after {
+      @extend %extend_table_1;
+    }
+
+    &:before {
+      @extend %extend_table_1;
+      @extend %extend_table_3;
+    }
+  }
+
+  .sorting_desc {
+    cursor: pointer;
+    position: relative;
+
+    &:after {
+      @extend %extend_table_2;
+      @extend %extend_table_4;
+      opacity: 1;
+    }
+
+    &:before {
+      @extend %extend_table_2;
+    }
+  }
+
+  .sorting_desc_disabled {
+    cursor: pointer;
+    position: relative;
+
+    &:after {
+      @extend %extend_table_2;
+      @extend %extend_table_4;
+    }
+
+    &:before {
+      @extend %extend_table_2;
+    }
+  }
+}
+
+th.sorting_asc {
+  padding-right: 30px;
+}
+
+th.sorting_desc {
+  padding-right: 30px;
+}
+
+table .th-lg {
+  min-width: 9rem;
+}
+
+table tbody tr td:last-child {
+  width: 12%;
+  text-align: center;
+}
+
 /* .mcell-task {
 	max-width: 288px;
 } */
