@@ -102,7 +102,6 @@ class AddDepartment extends React.Component {
 
         return (
             <FormGroup>
-                <Label for="gender">Parent:</Label>
                 <Input className={this.hasErrorFor('parent') ? 'is-invalid' : ''}
                        type="select"
                        name="parent"
@@ -127,7 +126,6 @@ class AddDepartment extends React.Component {
 
         return (
             <FormGroup>
-                <Label for="contributors">Department Manager:</Label>
                 <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
                     type="select"
                     name="department_manager"
@@ -163,11 +161,15 @@ class AddDepartment extends React.Component {
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
                             </InputGroupAddon>
-                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
+                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} 
+                                placeholder="Name"
+                                type="text" name="name"
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
                         </InputGroup>
+
                         {parentDropdown}
+
                         {userOptions}
                     </ModalBody>
 
