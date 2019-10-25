@@ -72,7 +72,7 @@ class AddPermission extends React.Component {
                 
         return (
             <React.Fragment>
-                <Button color="success" onClick={this.toggle}>Add Permission</Button>
+                <Button className="pull-right" color="success" onClick={this.toggle}>Add Permission</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Add Permission
