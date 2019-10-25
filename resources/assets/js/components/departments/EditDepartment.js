@@ -69,7 +69,10 @@ class EditDepartment extends React.Component {
         }
 
         return (
-            <FormGroup>
+            <InputGroup className="mb-3">
+                <InputGroupAddon addonType="prepend">
+                    <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                </InputGroupAddon>
                 <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
                     type="select"
                     value={this.state.department_manager}
@@ -80,7 +83,7 @@ class EditDepartment extends React.Component {
                     {userContent}
                 </Input>
                 {this.renderErrorFor('department_manager')}
-            </FormGroup>
+            </InputGroup>
         )
     }
 
@@ -95,7 +98,10 @@ class EditDepartment extends React.Component {
         }
 
         return (
-            <FormGroup>
+            <InputGroup className="mb-3">
+                <InputGroupAddon addonType="prepend">
+                    <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                </InputGroupAddon>
                 <Input className={this.hasErrorFor('parent') ? 'is-invalid' : ''}
                        value={this.state.parent}
                        type="select"
@@ -105,7 +111,7 @@ class EditDepartment extends React.Component {
                     {departmentList}
                 </Input>
                 {this.renderErrorFor('parent')}
-            </FormGroup>
+            </InputGroup>
         )
     }
 
