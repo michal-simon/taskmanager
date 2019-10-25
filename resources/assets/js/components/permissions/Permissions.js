@@ -69,6 +69,8 @@ export default class Permissions extends Component {
                 <AddPermission permissions={this.state.permissions} action={this.addUserToState}/>
 
                 <DataTable
+                    disableSorting={['id']}
+                    defaultColumn='name'
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}
