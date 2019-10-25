@@ -19,6 +19,8 @@ class EditDepartment extends React.Component {
             selectedPermissions: [],
             department: []
         }
+        
+        this.initialState = this.state
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
@@ -104,11 +106,12 @@ class EditDepartment extends React.Component {
             parent: this.state.parent
         })
             .then((response) => {
-                this.toggle()
+                this.initialState = this.state
                 const index = this.props.departments.findIndex(department => department.id === this.props.department.id)
                 this.props.departments[index].name = this.state.name
                 this.props.departments[index].department_manager = this.state.department_manager
                 this.props.action(this.props.departments)
+                this.toggle()
             })
             .catch((error) => {
                 this.setState({
@@ -118,6 +121,10 @@ class EditDepartment extends React.Component {
     }
 
     toggle () {
+        if (this.state.modal) {
+            this.setState({...this.initialState})
+        }
+
         this.setState({
             modal: !this.state.modal,
             errors: []
