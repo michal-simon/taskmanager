@@ -1,6 +1,18 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import { 
+    Button, 
+    Modal,
+    ModalHeader, 
+    ModalBody, 
+    ModalFooter, 
+    Input, 
+    FormGroup, 
+    Label,
+    InputGroup,
+    InputGroupAddon, 
+    InputGroupText
+} from 'reactstrap'
 import axios from 'axios'
 
 class AddDepartment extends React.Component {
