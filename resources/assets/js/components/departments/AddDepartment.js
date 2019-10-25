@@ -73,7 +73,8 @@ class AddDepartment extends React.Component {
     toggle () {
         this.setState({
             modal: !this.state.modal,
-            errors: []
+            errors: [],
+            message: ''
         })
     }
 
