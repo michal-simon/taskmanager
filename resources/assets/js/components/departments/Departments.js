@@ -97,6 +97,8 @@ export default class Departments extends Component {
                 <AddDepartment users={this.state.users} departments={this.state.departments} action={this.addUserToState}/>
 
                 <DataTable
+                    disableSorting={['id']}
+                    defaultColumn='name'
                     ignore={this.ignoredColumns}
                     userList={this.userList}
                     fetchUrl={fetchUrl}
