@@ -79,6 +79,8 @@ export default class Roles extends Component {
                 <AddRole roles={this.state.roles} action={this.addUserToState}/>
 
                 <DataTable
+                    disableSorting={['id']}
+                    defaultColumn='name'
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addUserToState}
