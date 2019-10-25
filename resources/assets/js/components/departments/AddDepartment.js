@@ -147,12 +147,14 @@ class AddDepartment extends React.Component {
                             {message}
                         </div>}
             
-                        <FormGroup>
-                            <Label for="username">Name(*):</Label>
+                       <InputGroup>
+                            <InputGroupAddon addonType="prepend">
+                                <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                            </InputGroupAddon>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
-                        </FormGroup>
+                        </InputGroup>
                         {parentDropdown}
                         {userOptions}
                     </ModalBody>
