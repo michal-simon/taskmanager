@@ -12,7 +12,8 @@ export default class Roles extends Component {
 
         this.state = {
             roles: [],
-            errors: []
+            errors: [],
+            error: ''
         }
 
         this.addUserToState = this.addUserToState.bind(this)
@@ -56,15 +57,24 @@ export default class Roles extends Component {
                 self.addUserToState(arrRoles)
             })
             .catch(function (error) {
-                console.log(error)
+                self.setState(
+                    {
+                        error: error.response.data
+                    }
+                )
             })
     }
 
     render () {
         const fetchUrl = '/api/roles/'
+        const {error} = this.state
 
         return (
             <div className="data-table m-md-3 m-0">
+            
+                {error && <div className="alert alert-danger" role="alert">
+                    {error}
+                </div>}
 
                 <AddRole roles={this.state.roles} action={this.addUserToState}/>
 
