@@ -13,7 +13,8 @@ export default class Departments extends Component {
         this.state = {
             departments: [],
             errors: [],
-            users: []
+            users: [],
+            error: ''
         }
 
         this.addUserToState = this.addUserToState.bind(this)
@@ -68,8 +69,12 @@ export default class Departments extends Component {
                 arrDepartments.splice(index, 1)
                 self.addUserToState(arrDepartments)
             })
-            .catch(function (error) {
-                console.log(error)
+           .catch(function (error) {
+                self.setState(
+                    {
+                        error: error.response.data
+                    }
+                )
             })
     }
 
@@ -90,9 +95,14 @@ export default class Departments extends Component {
 
     render () {
         const fetchUrl = '/api/departments/'
+        const {error} = this.state
 
         return (
             <div className="data-table m-md-3 m-0">
+            
+                 {error && <div className="alert alert-danger" role="alert">
+                    {error}
+                </div>}
 
                 <AddDepartment users={this.state.users} departments={this.state.departments} action={this.addUserToState}/>
 
