@@ -32,6 +32,7 @@ class EditUser extends React.Component {
             dayContainer: 'col-md-4 mb-3'
         }
 
+        this.initialState = this.state
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
@@ -75,6 +76,7 @@ class EditUser extends React.Component {
             gender: this.state.user.gender
         })
             .then((response) => {
+                this.initialState = this.state
                 const index = this.props.users.findIndex(user => parseInt(user.id) === this.props.user_id)
                 this.props.users[index] = this.state.user
                 this.props.action(this.props.users)
@@ -119,6 +121,10 @@ class EditUser extends React.Component {
     }
 
     toggle () {
+        if (this.state.modal) {
+            this.setState({...this.initialState})
+        }
+        
         this.setState({
             modal: !this.state.modal,
             errors: [],
