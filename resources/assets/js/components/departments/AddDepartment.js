@@ -101,7 +101,10 @@ class AddDepartment extends React.Component {
         }
 
         return (
-            <FormGroup>
+             <InputGroup className="mb-3">
+                <InputGroupAddon addonType="prepend">
+                    <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                </InputGroupAddon>
                 <Input className={this.hasErrorFor('parent') ? 'is-invalid' : ''}
                        type="select"
                        name="parent"
@@ -110,7 +113,7 @@ class AddDepartment extends React.Component {
                     {departmentList}
                 </Input>
                 {this.renderErrorFor('parent')}
-            </FormGroup>
+            </InputGroup>
         )
     }
 
@@ -125,7 +128,10 @@ class AddDepartment extends React.Component {
         }
 
         return (
-            <FormGroup>
+             <InputGroup className="mb-3">
+                <InputGroupAddon addonType="prepend">
+                    <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                </InputGroupAddon>
                 <Input className={this.hasErrorFor('department_manager') ? 'is-invalid' : ''}
                     type="select"
                     name="department_manager"
@@ -135,7 +141,7 @@ class AddDepartment extends React.Component {
                     {userContent}
                 </Input>
                 {this.renderErrorFor('department_manager')}
-            </FormGroup>
+            </InputGroup>
         )
     }
 
