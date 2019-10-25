@@ -12,7 +12,8 @@ export default class Permissions extends Component {
 
         this.state = {
             permissions: [],
-            errors: []
+            errors: [],
+            error: ''
         }
 
         this.addUserToState = this.addUserToState.bind(this)
@@ -55,16 +56,25 @@ export default class Permissions extends Component {
                 arrPermissions.splice(index, 1)
                 self.addUserToState(arrPermissions)
             })
-            .catch(function (error) {
-                console.log(error)
+           .catch(function (error) {
+                self.setState(
+                    {
+                        error: error.response.data
+                    }
+                )
             })
     }
 
     render () {
         const fetchUrl = '/api/permissions/'
+        const {error} = this.state
 
         return (
             <div className="data-table m-md-3 m-0">
+            
+                 {error && <div className="alert alert-danger" role="alert">
+                    {error}
+                </div>}
 
                 <AddPermission permissions={this.state.permissions} action={this.addUserToState}/>
 
