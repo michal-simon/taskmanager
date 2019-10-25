@@ -15,7 +15,8 @@ class EditRole extends React.Component {
             permissions: [],
             attachedPermissions: [],
             selectedPermissions: [],
-            role: []
+            role: [],
+            message: ''
         }
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
@@ -64,9 +65,13 @@ class EditRole extends React.Component {
                 this.props.action(this.props.roles)
             })
             .catch((error) => {
-                this.setState({
-                    errors: error.response.data.errors
-                })
+                if (error.response.data.errors) {
+                    this.setState({
+                        errors: error.response.data.errors
+                    })
+                } else {
+                    this.setState({message: error.response.data})
+                }
             })
     }
 
@@ -87,7 +92,8 @@ class EditRole extends React.Component {
     toggle () {
         this.setState({
             modal: !this.state.modal,
-            errors: []
+            errors: [],
+            message: ''
         })
     }
     
@@ -109,8 +115,8 @@ class EditRole extends React.Component {
     }
 
     render () {
-        
         let permissionsList = this.buildPermissionList()
+        const {message} = this.state
        
         return (
             <React.Fragment>
@@ -120,6 +126,11 @@ class EditRole extends React.Component {
                         Update Role
                     </ModalHeader>
                     <ModalBody>
+            
+                         {message && <div className="alert alert-danger" role="alert">
+                            {message}
+                        </div>}
+            
                          <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
