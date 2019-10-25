@@ -45,11 +45,11 @@ class EditPermission extends React.Component {
             description: this.state.description,
         })
             .then((response) => {
-                this.toggle()
                 const index = this.props.permissions.findIndex(permission => permission.id === this.props.permission.id)
                 this.props.permissions[index].name = this.state.name
                 this.props.permissions[index].description = this.state.description
                 this.props.action(this.props.permissions)
+                this.toggle()
             })
             .catch((error) => {
                 this.setState({
