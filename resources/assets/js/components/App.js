@@ -141,13 +141,22 @@ if(localStorage.getItem('appState')) {
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }
 
-axios.interceptors.response.use(response => {
-  return response;
-}, error => {
-  if (error.response.status === 401) {
-    window.location.href = '/login'
-  }
-});
+const UNAUTHORIZED = 401;
+axios.interceptors.response.use(
+    response => response,
+    error => {
+      const {status} = error.response;
+      if (status === UNAUTHORIZED) {
+       userSignOut();
+      }
+      return Promise.reject(error);
+    }
+);
+
+function userSignOut() {
+  window.location.href = '/login'
+}
+
 
 
     
