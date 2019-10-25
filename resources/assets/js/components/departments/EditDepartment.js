@@ -146,7 +146,7 @@ class EditDepartment extends React.Component {
                         <FormGroup>
                             <Label for="name">Name(*):</Label>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
-                                defaultValue={this.state.name} onChange={this.handleInput.bind(this)}/>
+                                value={this.state.name} onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
                         </FormGroup>
 
