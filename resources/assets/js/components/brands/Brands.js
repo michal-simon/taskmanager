@@ -61,7 +61,7 @@ export default class Brands extends Component {
 
     deleteBrand (id) {
         const self = this
-        axios.delete('/api/brands/' + id)
+        axios.delete(`/api/brands/${id}`)
             .then(function (response) {
                 const arrBrands = [...self.state.brands]
                 const index = arrBrands.findIndex(brand => brand.id === id)
