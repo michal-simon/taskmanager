@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, InputGroupAddon, InputGroupText, InputGroup } from 'reactstrap'
 import axios from 'axios'
 
 class AddPermission extends React.Component {
@@ -88,19 +88,23 @@ class AddPermission extends React.Component {
                             {message}
                         </div>}
             
-                        <FormGroup>
-                            <Label for="username">Name(*):</Label>
+                        <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                                <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                            </InputGroupAddon>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
-                        </FormGroup>
+                        </InputGroup>
 
-                        <FormGroup>
-                            <Label for="email">Description(*):</Label>
+                        <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                                <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
+                            </InputGroupAddon>
                             <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
                                 name="description" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('description')}
-                        </FormGroup>
+                        </InputGroup>
                         
                     </ModalBody>
 
