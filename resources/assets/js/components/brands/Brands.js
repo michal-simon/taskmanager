@@ -97,6 +97,8 @@ export default class Brands extends Component {
                 <AddBrand users={this.state.users} brands={this.state.brands} action={this.addUserToState}/>
 
                 <DataTable
+                    disableSorting={['id']}
+                    defaultColumn='name'
                     ignore={this.ignoredColumns}
                     userList={this.userList}
                     fetchUrl={fetchUrl}
