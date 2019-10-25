@@ -12,7 +12,8 @@ class AddDepartment extends React.Component {
             department_manager: '',
             parent: 0,
             loading: false,
-            errors: []
+            errors: [],
+            message: ''
         }
 
         this.toggle = this.toggle.bind(this)
@@ -58,11 +59,14 @@ class AddDepartment extends React.Component {
                     department_manager: null
                 })
             })
-            .catch((error) => {
-                alert(error)
-                this.setState({
-                    errors: error.response.data.errors
-                })
+             .catch((error) => {
+                if (error.response.data.errors) {
+                    this.setState({
+                        errors: error.response.data.errors
+                    })
+                } else {
+                    this.setState({message: error.response.data})
+                }
             })
     }
 
@@ -127,6 +131,7 @@ class AddDepartment extends React.Component {
     render () {
         const userOptions = this.buildUserOptions()
         const parentDropdown = this.buildParentOptions()
+        const {message} = this.state
 
         return (
             <React.Fragment>
@@ -136,6 +141,11 @@ class AddDepartment extends React.Component {
                         Add Department
                     </ModalHeader>
                     <ModalBody>
+            
+                        {message && <div className="alert alert-danger" role="alert">
+                            {message}
+                        </div>}
+            
                         <FormGroup>
                             <Label for="username">Name(*):</Label>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
