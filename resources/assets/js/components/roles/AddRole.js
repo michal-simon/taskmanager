@@ -138,7 +138,10 @@ class AddRole extends React.Component {
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
                             </InputGroupAddon>
-                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
+                            <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''}
+                                placeholder="Name"
+                                type="text" 
+                                name="name"
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
                         </InputGroup>
@@ -147,8 +150,11 @@ class AddRole extends React.Component {
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
                             </InputGroupAddon>
-                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
-                                name="description" onChange={this.handleInput.bind(this)}/>
+                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} 
+                                placeholder="Description"
+                                type="text"
+                                name="description" 
+                                onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('description')}
                         </InputGroup>
                         
