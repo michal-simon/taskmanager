@@ -13,7 +13,8 @@ class EditPermission extends React.Component {
             id: this.props.permission.id,
             name: this.props.permission.name,
             description: this.props.permission.description,
-            role: []
+            role: [],
+            message: ''
         }
                 
         this.initialState = this.state
@@ -54,9 +55,13 @@ class EditPermission extends React.Component {
                 this.toggle()
             })
             .catch((error) => {
-                this.setState({
-                    errors: error.response.data.errors
-                })
+                if (error.response.data.errors) {
+                    this.setState({
+                        errors: error.response.data.errors
+                    })
+                } else {
+                    this.setState({message: error.response.data})
+                }
             })
     }
 
@@ -72,6 +77,7 @@ class EditPermission extends React.Component {
     }
     
     render () {
+         const {message} = this.state
                
         return (
             <React.Fragment>
@@ -81,6 +87,11 @@ class EditPermission extends React.Component {
                         Edit Permission
                     </ModalHeader>
                     <ModalBody>
+            
+                        {message && <div className="alert alert-danger" role="alert">
+                            {message}
+                        </div>}
+            
                         <FormGroup>
                             <Label for="name">Name(*):</Label>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text" name="name"
