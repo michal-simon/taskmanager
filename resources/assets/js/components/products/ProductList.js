@@ -196,6 +196,8 @@ export default class ProductList extends Component {
 
                 <DataTable
                     ignore={this.ignore}
+                    disableSorting={['id']}
+                    defaultColumn='name'
                     userList={this.userList}
                     fetchUrl={fetchUrl}
                     updateState={this.addProductToState}
