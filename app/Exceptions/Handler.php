@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler {
      */
     public function render($request, Exception $exception) {
 
-        if ($request->is('api/*') || $request->wantsJson()) {
+        if (($request->is('api/*') || $request->wantsJson()) && ! $exception instanceof \Illuminate\Validation\ValidationException) {
             $json = $exception->getMessage();
 
             // Default response of 400
@@ -59,10 +59,7 @@ class Handler extends ExceptionHandler {
                 $status = $exception->getStatusCode();
             }
 
-            if($status !== 400) {
-                 return response()->json($json, $status);
-            }
-           
+            return response()->json($json, $status);
         }
         return parent::render($request, $exception);
     }

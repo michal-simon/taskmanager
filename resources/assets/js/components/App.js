@@ -1,143 +1,44 @@
-import React, { Component } from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import UserList from './users/Userlist'
-import ProductList from './products/ProductList'
-import Kanban from './Kanban'
-import Calendar from './calendar/Calendars'
-import Roles from './roles/Roles'
-import Invoice from './invoice/Invoice'
-import Brands from './brands/Brands'
-import Categories from './categories/Categories'
-import Customers from './customers/Customers'
-import Departments from './departments/Departments'
-import ChatPage from './chat/ChatPage'
-import Login from './Login'
-import Dashboard from './Dashboard'
-import MessageContainer from './activity/MessageContainer'
-import UserProfile from './users/UserProfile'
-import TaskStatus from './taskStatus/statusList'
-import Permissions from './permissions/Permissions'
+import React, { Suspense, lazy, Component } from 'react';
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import './App.scss';
+import DefaultLayout from "./containers/DefaultLayout";
+import Login from "./Login";
 
+const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
 class App extends Component {
-    constructor (props, context) {
-        super(props, context)
+    constructor(props) {
 
+        super(props)
         this.state = {
             authenticated: false
         }
-
-        this.setAuthenticated = this.setAuthenticated.bind(this)
     }
 
-    getQueryVariable (variable) {
-        const query = window.location.search.substring(1)
-        const vars = query.split('&')
-        for (let i = 0; i < vars.length; i++) {
-            const pair = vars[i].split('=')
-
-            if (pair[0] === variable) {
-                return pair[1]
-            }
-        }
-
-        return false
-    }
-
-    setAuthenticated (token) {
-        this.setState({ authenticated: true })
-    }
-
-    render () {
-        if (!this.state.authenticated && !window.sessionStorage.getItem('authenticated')) {
-            return <Login action={this.setAuthenticated}/>
-        }
-        
-        const projectId = this.getQueryVariable('project_id')
-        const taskId = this.getQueryVariable('task_id')
-        const userId = this.getQueryVariable('user_id')
-        const username = this.getQueryVariable('username')
+    render() {
 
         return (
-            <main>
-                <BrowserRouter>
+            <HashRouter>
+                <React.Suspense fallback={loading()}>
                     <Switch>
-                        <Route exact path='/' component={Dashboard}/>
-                        <Route path='/products' component={ProductList}/>
-                        <Route path='/activity' component={MessageContainer}/>
-                        <Route path='/chat' component={ChatPage}/>
-                        <Route path='/customers' render={(props) => <Customers {...props} customer_type={1} />}/>
-                        <Route path='/departments' component={Departments}/>
-                        <Route path='/brands' component={Brands}/>
-                        <Route path='/categories' component={Categories}/>
-                        <Route path='/permissions' component={Permissions}/>
-                        <Route path='/invoice' component={Invoice}/>
-                        <Route path='/users' component={UserList}/>
-                        <Route path='/calendar' component={Calendar}/>
-                        <Route
-                            path='/calendar-users'
-                            render={(props) => <Calendar {...props} user_id={userId} />}
-                        />
-
-                        <Route
-                            path='/user-profile'
-                            render={(props) => <UserProfile {...props} username={username} />}
-                        />
-
-                        <Route
-                            path='/calendar-tasks'
-                            render={(props) => <Calendar {...props} task_id={taskId} />}
-                        />
-
-                        <Route path='/roles' component={Roles}/>
-                        <Route path='/statuses' component={TaskStatus}/>
-                        <Route
-                            path='/leads'
-                            render={(props) => <Kanban {...props} task_type={2} />}
-                        />
-                        <Route
-                            path='/deals'
-                            render={(props) => <Kanban {...props} task_type={3} />}
-                        />
-
-                        <Route
-                            path='/lead-subtasks'
-                            render={(props) => <Kanban {...props} task_type={2} task_id={taskId} />}
-                        />
-
-                        <Route
-                            path='/deal-subtasks'
-                            render={(props) => <Kanban {...props} task_type={2} task_id={taskId} />}
-                        />
-
-                        <Route
-                            path='/projects'
-                            render={(props) => <Kanban {...props} task_type={1} project_id={projectId} />}
-                        />
+                        <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
+                        <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
+                        <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
+                        <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
+                        <Route path="/" name="Home" render={props => <DefaultLayout {...props}/>} />
                     </Switch>
-                </BrowserRouter>
-            </main>
-        )
+                </React.Suspense>
+            </HashRouter>
+        );
     }
-    
-//     _logoutUser = () => {
-//    let appState = {
-//      isLoggedIn: false,
-//      user: {}
-//    };
-//    // save app state with user date in local storage
-//    localStorage["appState"] = JSON.stringify(appState);
-//    this.setState(appState);
-//  };
 }
-export default App
-    
+
+export default App;
 const axios = require('axios');
-    
-if(localStorage.getItem('appState')) {
-    const user = JSON.parse(localStorage.getItem('appState'))['user']
-    localStorage.setItem("access_token", user.auth_token)
-    axios.defaults.headers.common = {'Authorization': `Bearer ${user.auth_token}`}
+
+if(localStorage.getItem('access_token')) {
+    const accessToken = localStorage.getItem('access_token')
+    axios.defaults.headers.common = {'Authorization': `Bearer ${accessToken}`}
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }
 
@@ -145,19 +46,14 @@ const UNAUTHORIZED = 401;
 axios.interceptors.response.use(
     response => response,
     error => {
-      const {status} = error.response;
-      if (status === UNAUTHORIZED) {
-       userSignOut();
-      }
-      return Promise.reject(error);
+        const {status} = error.response;
+        if (status === UNAUTHORIZED) {
+            userSignOut();
+        }
+        return Promise.reject(error);
     }
 );
 
 function userSignOut() {
-  window.location.href = '/login'
+    window.location.href = '/Login#/login'
 }
-
-
-
-    
-

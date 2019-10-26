@@ -7,6 +7,7 @@ import KanbanFilter from './KanbanFilter'
 class Kanban extends Component {
     constructor (props, context) {
         super(props, context)
+
         this.state = {
             open: false,
             show: true,
@@ -18,10 +19,15 @@ class Kanban extends Component {
             err2: '',
             loading: true,
             loadingStory: true,
-            hideNav: false
+            hideNav: false,
+            project_id: 0,
+            task_type: this.getTaskType()
+
         }
-        this.project_id = this.props.project_id
+
         this.updateTasks = this.updateTasks.bind(this)
+        this.getTaskType = this.getTaskType.bind(this)
+        this.setProjectId = this.setProjectId.bind(this)
         this.addProject = this.addProject.bind(this)
         this.resetFilters = this.resetFilters.bind(this)
         this.getTaskUrl = this.getTaskUrl.bind(this)
@@ -39,6 +45,29 @@ class Kanban extends Component {
         this.resize()
         
         window.addEventListener("resize", this.resize());
+    }
+
+    getTaskType() {
+
+        switch(true) {
+            case(window.location.href.indexOf("projects") > -1):
+               return 1
+
+            case(window.location.href.indexOf("leads") > -1):
+                return 2
+
+            case(window.location.href.indexOf("deals") > -1):
+                return 3
+        }
+
+        if (window.location.href.indexOf("franky") > -1) {
+            alert("your url contains the name franky");
+        }
+    }
+
+    setProjectId (project_id) {
+        this.setState({project_id: project_id})
+        this.getTasks()
     }
     
     resize() {
@@ -84,14 +113,14 @@ class Kanban extends Component {
             case (typeof this.props.task_id !== 'undefined' && this.props.task_id !== null):
                 return `/api/tasks/subtasks/${this.props.task_id}`
 
-            case this.props.task_type === 2:
+            case this.state.task_type === 2:
                 return '/api/leads'
 
-            case this.props.task_type === 3:
+            case this.state.task_type === 3:
                 return '/api/deals'
 
             default:
-                return `/api/tasks/getTasksForProject/${this.project_id}`
+                return `/api/tasks/getTasksForProject/${this.state.project_id}`
         }
     }
 
@@ -151,7 +180,7 @@ class Kanban extends Component {
     }
 
     render () {
-        const divStyle = this.props.task_type === 2 || this.props.task_type === 3 ? {
+        const divStyle = this.state.task_type === 2 || this.state.task_type === 3 ? {
             left: 0,
             width: '100%'
         } : {}
@@ -166,9 +195,10 @@ class Kanban extends Component {
                         users={this.state.users}
                         reset={this.resetFilters}
                         action={this.updateTasks}
-                        task_type={this.props.task_type}
+                        task_type={this.state.task_type}
+                        updateProjectId={this.setProjectId}
                         addProject={this.addProject}
-                        project_id={this.props.project_id}
+                        project_id={this.state.project_id}
                     />
                 </div>
                 
@@ -183,11 +213,11 @@ class Kanban extends Component {
                                     users={this.state.users}
                                     tasks={this.state.tasks}
                                     action={this.updateTasks}
-                                    storyName={this.state.stories.filter(i => i.id === parseInt(this.project_id))}
-                                    storyType={this.project_id}
+                                    storyName={this.state.stories.filter(i => i.id === parseInt(this.state.project_id))}
+                                    storyType={this.state.project_id}
                                     loading={this.state.loading}
-                                    task_type={this.props.task_type}
-                                    project_id={this.props.project_id}
+                                    task_type={this.state.task_type}
+                                    project_id={this.state.project_id}
                                 />
                             </aside>
                         </div>

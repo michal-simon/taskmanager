@@ -36,8 +36,7 @@ export default class KanbanFilter extends Component {
 
     handleProjectChange (event) {
         const projectId = event.target.value
-        const url = this.props.task_type === 1 ? `?project_id=${projectId}` : `/leads?project_id=${projectId}`
-        window.location.href = url
+        this.props.updateProjectId(projectId)
     }
 
     handleChange (event) {

@@ -25,9 +25,11 @@ export default class ProductList extends Component {
             'status', 
             'range_from', 
             'range_to', 
-            'monthly_price', 
-            'full_price', 
-            'interest_rate'
+            'payable_months',
+            'minimum_downpayment',
+            'number_of_years',
+            'interest_rate',
+            'price'
         ]
     }
 
@@ -67,7 +69,7 @@ export default class ProductList extends Component {
         }
 
         return (
-            <div className="col-4">
+            <div className="col-3">
                 <FormGroup>
                     <Input onChange={this.filter.bind(this)} type="select" name="brand" id="brand">
                         <option value="">Select Brand</option>
@@ -89,7 +91,7 @@ export default class ProductList extends Component {
         }
 
         return (
-            <div className="col-4">
+            <div className="col-3">
                 <FormGroup>
                     <Input onChange={this.filter.bind(this)} type="select" name="category" id="category">
                         <option value="">Select Category</option>
@@ -190,9 +192,10 @@ export default class ProductList extends Component {
                     products={this.state.products}
                     action={this.addProductToState}
                 />
-
+                <div>
                 {brandOptions}
                 {categoryOptions}
+                </div>
 
                 <DataTable
                     ignore={this.ignore}

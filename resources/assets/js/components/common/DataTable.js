@@ -162,7 +162,7 @@ export default class DataTable extends Component {
 
         return (
             <React.Fragment>
-                <div className="col-8 col-lg-6 p-0">
+                <div className="col-4 p-0">
                     <Input
                         type="text"
                         name="query"

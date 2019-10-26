@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col } from 'reactstrap'
 import { CardModule } from './common/Card.jsx'
 import ReactEcharts from 'echarts-for-react'
 import { StatsCard } from './common/StatsCard.jsx'

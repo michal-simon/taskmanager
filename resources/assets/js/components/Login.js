@@ -1,102 +1,170 @@
-/* eslint-disable no-unused-vars */
-import React, { Component } from 'react'
-import { Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 
-export default class Login extends Component {
+import {
+    Button,
+    Card,
+    CardBody,
+    CardGroup,
+    Col,
+    Container,
+    Form,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText,
+    Row
+} from 'reactstrap';
+
+class Login extends Component {
+
     constructor (props) {
-        super(props)
+        super(props);
         this.state = {
-            isLoggedIn: false,
-            user: {},
             email: '',
-            password: ''
+            password: '',
+            error: ''
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.dismissError = this.dismissError.bind(this);
+    }
+
+    dismissError () {
+        this.setState({error: ''});
+    }
+
+    handleSubmit (evt) {
+        evt.preventDefault();
+
+        if (!this.state.email) {
+            return this.setState({error: 'Email is required'});
         }
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
-    }
 
-    validateForm () {
-        return this.state.email.length > 0 && this.state.password.length > 0
-    }
+        if (!this.state.password) {
+            return this.setState({error: 'Password is required'});
+        }
 
-    handleChange (event) {
-        this.setState({
-            [event.target.id]: event.target.value
+        axios.post('/api/login', {
+            email: this.state.email,
+            password: this.state.password
         })
-    }
-
-    handleSubmit (event) {
-        event.preventDefault()
-
-        axios.post('/api/login', { email: this.state.email, password: this.state.password })
-            .then((json) => {
-                
-                if (json.data.success) {
+            .then((response) => {
+                if (response.data.success === true) {
                     alert("Login Successful!");
 
                     let userData = {
-                      name: json.data.data.name,
-                      id: json.data.data.id,
-                      email: json.data.data.email,
-                      auth_token: json.data.data.auth_token,
-                      timestamp: new Date().toString()
+                        name: response.data.data.name,
+                        id: response.data.data.id,
+                        email: response.data.data.email,
+                        auth_token: response.data.data.auth_token,
+                        timestamp: new Date().toString()
                     };
-                    
+
                     let appState = {
                         isLoggedIn: true,
                         user: userData
                     };
-          
+
                     window.sessionStorage.setItem('authenticated', true)
-          
+
                     // save app state with user date in local storage
                     localStorage["appState"] = JSON.stringify(appState);
+                    localStorage.setItem('access_token', userData.auth_token)
                     this.setState({
-                      isLoggedIn: appState.isLoggedIn,
-                      user: appState.user
+                        isLoggedIn: appState.isLoggedIn,
+                        user: appState.user
                     });
-          
-                    this.props.action(json.data.data.auth_token)
-          
-                } else alert("Login Failed!");
-            })
-            .catch((e) => {
-                alert(e)
+                    window.location.href = "/";
+                } else {
+                    return this.setState({error: 'Unable to log in'});
+                }
             })
     }
 
+    handleChange (e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    };
+
     render () {
         return (
-            <div className="Login">
-                <form onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="email" bsSize="large">
-                        <ControlLabel>Email</ControlLabel>
-                        <FormControl
-                            autoFocus
-                            type="email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="password" bsSize="large">
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            type="password"
-                        />
-                    </FormGroup>
-                    <Button
-                        block
-                        bsSize="large"
-                        disabled={!this.validateForm()}
-                        type="submit"
-                    >
-                        Login
-                    </Button>
-                </form>
+            <div className="app flex-row align-items-center">
+                <Container>
+                    <Row className="justify-content-center">
+                        <Col md="8">
+                            <CardGroup>
+                                <Card className="p-4">
+                                    <CardBody>
+                                        <Form onSubmit={this.handleSubmit}>
+
+                                            {
+                                                this.state.error &&
+                                                <div className="alert alert-danger alert-dismissible" data-test="error"
+                                                     onClick={this.dismissError}>
+                                                    <button type="button" className="close" aria-label="Close"><span
+                                                        aria-hidden="true">×</span></button>
+                                                    {this.state.error}
+                                                </div>
+                                            }
+
+                                            <h1>Login</h1>
+                                            <p className="text-muted">Sign In to your account</p>
+                                            <InputGroup className="mb-3">
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>
+                                                        <i className="icon-user"></i>
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <Input type="text" name="email" placeholder="Email"
+                                                       autoComplete="email" onChange={this.handleChange.bind(this)}/>
+                                            </InputGroup>
+                                            <InputGroup className="mb-4">
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>
+                                                        <i className="icon-lock"></i>
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <Input type="password" name="password" placeholder="Password"
+                                                       autoComplete="current-password"
+                                                       onChange={this.handleChange.bind(this)}/>
+                                            </InputGroup>
+                                            <Row>
+                                                <Col xs="6">
+                                                    <Button type="submit" color="primary"
+                                                            className="px-4">Login</Button>
+                                                </Col>
+                                                <Col xs="6" className="text-right">
+                                                    <Button color="link" className="px-0">Forgot password?</Button>
+                                                </Col>
+                                            </Row>
+                                        </Form>
+                                    </CardBody>
+                                </Card>
+                                <Card className="text-white bg-primary py-5 d-md-down-none" style={{width: '44%'}}>
+                                    <CardBody className="text-center">
+                                        <div>
+                                            <h2>Sign up</h2>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                tempor incididunt ut
+                                                labore et dolore magna aliqua.</p>
+                                            <Link to="/register">
+                                                <Button color="primary" className="mt-3" active tabIndex={-1}>Register
+                                                    Now!</Button>
+                                            </Link>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </CardGroup>
+                        </Col>
+                    </Row>
+                </Container>
             </div>
-        )
+        );
     }
 }
+
+export default Login;

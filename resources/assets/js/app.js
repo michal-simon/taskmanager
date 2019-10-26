@@ -1,12 +1,8 @@
+
 import React from 'react';
-import App from './components/App'
 import ReactDOM from 'react-dom';
+import './components/index.css';
+import App from './components/App';
+import { BrowserRouter } from 'react-router-dom'
 
-//https://pixinvent.com/bootstrap-admin-template/robust/html/ltr/vertical-multi-level-menu-template/
-
-
-ReactDOM.render(<App />, document.getElementById('app'));
-
-
-
-
+ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));
