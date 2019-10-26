@@ -11,6 +11,7 @@ use App\Transformations\MessageUserTransformable;
 use App\Transformations\MessageTransformable;
 use App\Customer;
 use App\Message;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller {
 
@@ -47,12 +48,10 @@ class MessageController extends Controller {
     public function getCustomers() {
 
         $customerList = $this->customerRepo->listCustomers();
-        $user = auth()->guard('user')->user();
+        $user = Auth::user();
 
-        $currentUser = $this->userRepo->findUserById($user->id);
-
-        $customers = $customerList->map(function (Customer $customer) use ($currentUser) {
-                    return $this->transformUser($customer, $currentUser);
+        $customers = $customerList->map(function (Customer $customer) use ($user) {
+                    return $this->transformUser($customer, $user);
                 })->all();
 
         return response()->json($customers);
@@ -64,14 +63,13 @@ class MessageController extends Controller {
      * @return type
      */
     public function index(int $customer_id) {
-        $user = auth()->guard('user')->user();
-        $currentUser = $this->userRepo->findUserById($user->id);
+        $user = Auth::user();
         $customer = $this->customerRepo->findCustomerById($customer_id);
-        $messageList = $this->messageRepo->getMessagesForCustomer($customer, $currentUser);
+        $messageList = $this->messageRepo->getMessagesForCustomer($customer, $user);
 
 
-        $messages = $messageList->map(function (Message $message) use ($currentUser, $customer) {
-                    return $this->transformMessage($message, $currentUser, $customer);
+        $messages = $messageList->map(function (Message $message) use ($user, $customer) {
+                    return $this->transformMessage($message, $user, $customer);
                 })->all();
 
         return response()->json($messages);

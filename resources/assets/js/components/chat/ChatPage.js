@@ -15,6 +15,7 @@ class ChatPage extends Component {
             userID: JSON.parse(localStorage.getItem('appState'))['user']['id'],
             friends: [],
             messages: [],
+            chatActive: false,
             customer_id: 0
         }
     }
@@ -28,7 +29,8 @@ class ChatPage extends Component {
             .then((r) => {
                 this.setState({
                     customer_id: customer_id,
-                    messages: r.data
+                    messages: r.data,
+                    chatActive: true
                 })
             })
             .catch((e) => {
@@ -77,8 +79,7 @@ class ChatPage extends Component {
     }
 
     render () {
-        const showMessageBox = !!this.state.messages.length
-        return (<Card className="grey lighten-3 chat-room">
+        return (<Card className="chat-room">
             <CardBody>
                 <Row className="px-lg-2 px-2">
                     <Col md="6" xl="4" className="px-0 mb-4 mb-md-0 scrollable-friends-list"
@@ -86,7 +87,7 @@ class ChatPage extends Component {
                         <h6 className="font-weight-bold mb-3 text-lg-left">Member</h6>
 
                         <div className="overflow-auto">
-                            <div className="white z-depth-1 p-3">
+                            <div className="z-depth-1 p-3">
                                 <ListGroup className="friend-list">
                                     {this.state.friends.map(friend => (
                                         <Friend
@@ -118,7 +119,7 @@ class ChatPage extends Component {
 
                         <ChatInput
                             customer_id={this.state.customer_id}
-                            display={showMessageBox}
+                            display={this.state.chatActive}
                             userID={this.state.userID}
                             sendMessage={this.sendMessage}
                         />

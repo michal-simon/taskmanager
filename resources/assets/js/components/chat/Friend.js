@@ -13,7 +13,7 @@ class Friend extends Component {
         return (
             <ListGroupItem
                 href="#!"
-                className="d-flex justify-content-between p-2 border-light"
+                className={`d-flex justify-content-between p-2 border-light ${active === true ? 'list-active' : ''}`}
                 style={{ backgroundColor: active ? '#eeeeee' : '' }}
                 onClick={() => this.props.loadMessages(customer_id)}
             >
