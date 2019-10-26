@@ -26,6 +26,13 @@ import DefaultHeader from "./DefaultHeader";
 
 class DefaultLayout extends Component {
 
+    constructor (props) {
+        super(props)
+        this.loading = <div className="animated fadeIn pt-1 text-center">Loading...</div>
+    }
+
+
+
     signOut(e) {
         e.preventDefault()
         this.props.history.push('/login')
@@ -35,7 +42,7 @@ class DefaultLayout extends Component {
         return (
             <div className="app">
                 <AppHeader fixed>
-                    <Suspense>
+                    <Suspense fallback={this.loading}>
                         <DefaultHeader onLogout={e=>this.signOut(e)}/>
                     </Suspense>
                 </AppHeader>
@@ -52,7 +59,7 @@ class DefaultLayout extends Component {
                     <main className="main">
                         <AppBreadcrumb appRoutes={routes} router={router}/>
                         <Container fluid>
-                            <Suspense>
+                            <Suspense fallback={this.loading}>
                                 <Switch>
                                     {routes.map((route, idx) => {
                                         return route.component ? (
@@ -73,7 +80,7 @@ class DefaultLayout extends Component {
                         </Container>
                     </main>
                     <AppAside fixed>
-                        <Suspense>
+                        <Suspense fallback={this.loading}>
                             <DefaultAside />
                         </Suspense>
                     </AppAside>

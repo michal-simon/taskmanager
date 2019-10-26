@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Button, Collapse, ListGroup, ListGroupItem } from 'reactstrap'
+import { Card, CardHeader, CardBody, CardFooter, Button, Collapse, ListGroup, ListGroupItem, Media } from 'reactstrap'
 import Avatar from '../common/Avatar'
 
 const messageListCardStyles = ({
@@ -58,94 +58,110 @@ class MessageCard extends React.Component {
             (message) => message.parent_id === currentMessage.id
         )
         return (
-            <Card style={messageListCardStyles.card}>
-                <CardHeader>
-                    <Avatar name={`${firstName2}  ${lastName2}`}/>
-                    {`${firstName2}  ${lastName2}`}
-                </CardHeader>
-                <CardBody>
-                    <p style={messageListCardStyles.messageText}>
-                        {currentMessage.comment}
-                    </p>
-                </CardBody>
+            <Media tag="li">
+                <Media href="#" className="pull-left">
+                    <Media className="img-circle" object src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="Generic placeholder image" />
+                </Media>
 
-                <CardFooter style={messageListCardStyles.actions}>
-                    {activeUser && currentMessage.author === activeUser.id ? (
-                        <React.Fragment>
-                            <Button
-                                aria-label="Edit message"
-                                onClick={() => {
-                                    setActiveMessage(currentMessage)
-                                    setMode('Edit')
-                                }}
-                            >
-                                <i className="fa fa-edit"/>
-                            </Button>
+                <Media body>
+                    <div className="well well-lg ml-4">
+                        <Media className="text-uppercase reviews" heading>
+                            {`${firstName2}  ${lastName2}`}
+                        </Media>
 
-                            <Button
-                                aria-label="Delete message"
-                                onClick={() => deleteMessage(currentMessage.id)}
-                            >
-                                <i className="fa fa-times"/>
-                            </Button>
+                        <ul className="media-date text-uppercase reviews list-inline">
+                            <li className="dd">22</li>
+                            <li className="mm">09</li>
+                            <li className="aaaa">2014</li>
+                        </ul>
 
-                        </React.Fragment>
-                    ) : (
-                        <React.Fragment>
-                            {activeUser ? (
-                                <Button
-                                    aria-label="Comment message"
+                        <p className="mb-2">
+                            {currentMessage.comment}
+                        </p>
+
+                        {activeUser && currentMessage.author === activeUser.id ? (
+                            <React.Fragment>
+                                <Button color="success"
+                                    aria-label="Edit message"
                                     onClick={() => {
                                         setActiveMessage(currentMessage)
-                                        setMode('Comment')
+                                        setMode('Edit')
                                     }}
-                                >
-                                    <i className="fa fa-comment"/>
+                                >Edit</Button>
+
+                                <Button className="ml-2" color="danger"
+                                    aria-label="Delete message"
+                                    onClick={() => deleteMessage(currentMessage.id)}
+                                >Delete</Button>
+
+                            </React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                {activeUser ? (
+                                    <Button color="info"
+                                        aria-label="Comment message"
+                                        onClick={() => {
+                                            setActiveMessage(currentMessage)
+                                            setMode('Comment')
+                                        }}
+                                    >Reply</Button>
+                                ) : null}
+                            </React.Fragment>
+                        )
+                        }
+                        {childMessages.length ? (
+                            <React.Fragment>
+                                <Button color="warning"
+                                    className="open"
+                                    onClick={this.handleExpandClick}
+                                    aria-expanded={this.state.expanded}
+                                    aria-label="Display comments"
+                                > Comments
                                 </Button>
-                            ) : null}
-                        </React.Fragment>
-                    )
-                    }
-                    {childMessages.length ? (
-                        <React.Fragment>
-                            <Button
-                                className="open"
-                                onClick={this.handleExpandClick}
-                                aria-expanded={this.state.expanded}
-                                aria-label="Display comments"
-                            >
-                                <i className="fa fa-plus"/>
-                            </Button>
-                        </React.Fragment>
-                    ) : null}
-                </CardFooter>
+                            </React.Fragment>
+                        ) : null}
+
+                    </div>
+                </Media>
 
                 <Collapse
                     isOpen={this.state.expanded}
                     timeout="auto"
                 >
-                    <CardBody>
-                        <h6>Comments</h6>
-                        <ListGroup>
-                            {childMessages.map((message) => {
-                                const author = users.find(
-                                    (user) => user.id === message.user_id
-                                )
-                                const firstName = author ? author.first_name : 'Michael'
-                                const lastName = author ? author.last_name : 'Hampton'
-                                return (<ListGroupItem key={user.id}>
-                                    <Avatar name={`${firstName}  ${lastName}`}/>
-                                    {`${firstName}  ${lastName}`}
-                                    <p>
-                                        {message.comment}
-                                    </p>
-                                </ListGroupItem>)
-                            })}
-                        </ListGroup>
-                    </CardBody>
-                </Collapse>
+                    {childMessages.map((message) => {
+                        const author = users.find(
+                            (user) => user.id === message.user_id
+                        )
+                        const firstName = author ? author.first_name : 'Michael'
+                        const lastName = author ? author.last_name : 'Hampton'
+                        return (
+                            <Media tag="li">
+                                <Media href="#" className="pull-left">
+                                    <Media className="img-circle" object src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="Generic placeholder image" />
+                                </Media>
 
-            </Card>
+                                <Media body>
+                                    <div className="well well-lg">
+                                        <Media className="text-uppercase reviews" heading>
+                                            {`${firstName}  ${lastName}`}
+                                        </Media>
+
+                                        <ul className="media-date text-uppercase reviews list-inline">
+                                            <li className="dd">22</li>
+                                            <li className="mm">09</li>
+                                            <li className="aaaa">2014</li>
+                                        </ul>
+
+                                        <p className="mb-2">
+                                            {message.comment}
+                                        </p>
+                                    </div>
+                                </Media>
+                            </Media>
+                        )
+                    })}
+                </Collapse>
+            </Media>
         )
     }
 }
