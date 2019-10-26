@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import { Badge, ListGroupItem } from 'reactstrap'
+import Avatar from "../common/Avatar";
 
 class Friend extends Component {
     constructor (props) {
@@ -11,30 +12,13 @@ class Friend extends Component {
         const { customer_id, name, avatar, message, when, toRespond, seen } = this.props.friend
         const active = this.props.selected_friend === customer_id
         return (
-            <ListGroupItem
-                href="#!"
-                className={`d-flex justify-content-between p-2 border-light ${active === true ? 'list-active' : ''}`}
-                style={{ backgroundColor: active ? '#eeeeee' : '' }}
-                onClick={() => this.props.loadMessages(customer_id)}
-            >
+            <div className={`chat_list ${active === true ? 'active_chat' : ''}`} onClick={() => this.props.loadMessages(customer_id)}>
+                <div className="chat_people">
+                    <div className="chat_img">
+                        {/*<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">*/}
+                       <Avatar name={name} />
+                    </div>
 
-                <img
-                    tag="img"
-                    src={avatar}
-                    alt="avatar"
-                    width="50px"
-                    className="mr-2 z-depth-1 rounded-circle"
-                />
-
-                <div style={{ fontSize: '0.95rem' }}>
-                    <strong>{name}</strong>
-                    <p className="text-muted">{message}</p>
-                </div>
-
-                <div>
-                    <p className="text-muted mb-0" style={{ fontSize: '0.75rem' }}>
-                        {when ? this.props.formatDate(when) : ''}
-                    </p>
                     {seen ? (
                         <span className="text-muted float-right">
                             <i className="fa fa-check" aria-hidden="true"/>
@@ -48,9 +32,13 @@ class Friend extends Component {
                             <i icon="reply" aria-hidden="true"/>
                         </span>
                     )}
-                </div>
 
-            </ListGroupItem>
+                    <div className="chat_ib">
+                        <h5>{name} <span className="chat_date">{when ? this.props.formatDate(when) : ''}</span></h5>
+                        <p>{message}</p>
+                    </div>
+                </div>
+            </div>
         )
     }
 }

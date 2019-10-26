@@ -30,28 +30,18 @@ class ChatInput extends Component {
     }
 
     render () {
-        const inputClass = `form-group basic-textarea ${(this.props.display ? 'd-block' : 'd-none')}`
+        const inputClass = `write_msg ${(this.props.display ? 'd-block' : 'd-none')}`
 
         return (
             <form onSubmit={this.onSubmit}>
-
-                <div className={inputClass}>
-                    <textarea
-                        className="form-control pl-2 my-0"
-                        id="exampleFormControlTextarea2"
-                        rows="3"
-                        placeholder="Type your message here..."
-                        onChange={this.handleInputChanges.bind(this)}
-                        value={this.state.message}
-                    />
-                    <Button
-                        color="info"
-                        rounded
-                        size="sm"
-                        className="float-right mt-4"
-                    >
-                        Send
-                    </Button>
+                <div className="type_msg">
+                    <div className="input_msg_write">
+                        <input type="text" className={inputClass} placeholder="Type a message" onChange={this.handleInputChanges.bind(this)}
+                               value={this.state.message} />
+                            <button className="msg_send_btn" type="submit">
+                                <i className="fa fa-paper-plane-o" aria-hidden="true"></i>
+                            </button>
+                    </div>
                 </div>
             </form>
         )

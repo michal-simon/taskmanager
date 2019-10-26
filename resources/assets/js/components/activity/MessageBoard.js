@@ -13,7 +13,7 @@ class MessageBoard extends React.Component {
     render() {
         const {messages, activeUser, deleteMessage, submitMessage, setMode, setActiveMessage, users} = this.props
         return (
-            <div className="d-flex align-items-center justify-content-center flex-column">
+            <div style={{'backgroundColor': 'white'}} className="d-flex align-items-center justify-content-center flex-column">
                 <h5 style={{marginTop: 16}}>
                     Messages
                 </h5>

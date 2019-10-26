@@ -39,6 +39,26 @@ class MessageCard extends React.Component {
         this.setState(state => ({ expanded: !state.expanded }))
     }
 
+    formatDate(dateString) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June',
+            'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'
+        ]
+        const d = new Date(dateString)
+        const dayName = days[d.getDay()]
+        const monthName = monthNames[d.getMonth()]
+        //const formattedDate = `${dayName} ${d.getDate()} ${monthName} ${d.getFullYear()}`
+        //return formattedDate
+
+        return (
+            <ul className="media-date text-uppercase reviews list-inline">
+                <li className="dd">{d.getDate()}</li>
+                <li className="mm">{monthName}</li>
+                <li className="aaaa">{d.getFullYear()}</li>
+            </ul>
+        )
+    }
+
     render () {
         const {
             activeUser,
@@ -57,6 +77,7 @@ class MessageCard extends React.Component {
         const childMessages = messages.filter(
             (message) => message.parent_id === currentMessage.id
         )
+
         return (
             <Media tag="li">
                 <Media href="#" className="pull-left">
@@ -69,11 +90,7 @@ class MessageCard extends React.Component {
                             {`${firstName2}  ${lastName2}`}
                         </Media>
 
-                        <ul className="media-date text-uppercase reviews list-inline">
-                            <li className="dd">22</li>
-                            <li className="mm">09</li>
-                            <li className="aaaa">2014</li>
-                        </ul>
+                        {this.formatDate(currentMessage.created_at)}
 
                         <p className="mb-2">
                             {currentMessage.comment}
