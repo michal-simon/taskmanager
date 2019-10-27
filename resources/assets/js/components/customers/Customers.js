@@ -33,14 +33,14 @@ export default class Customers extends Component {
     updateCustomers (customers) {
         this.setState({ customers: customers })
     }
-    
+
     componentDidMount () {
         this.getCompanies()
     }
-    
+
     getCompanies () {
         axios.get('/api/brands')
-            .then((r) => {                
+            .then((r) => {
                 this.setState({
                     companies: r.data
                 })
@@ -126,6 +126,8 @@ export default class Customers extends Component {
                 />
 
                 <DataTable
+                    disableSorting={['id']}
+                    defaultColumn='name'
                     userList={this.customerList}
                     ignore={this.ignoredColumns}
                     fetchUrl={fetchUrl}

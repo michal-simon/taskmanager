@@ -2,6 +2,7 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form } from 'reactstrap'
 import axios from 'axios'
+import CompanyDropdown from '../common/CompanyDropdown'
 
 class AddCustomer extends React.Component {
     constructor (props) {
@@ -103,37 +104,13 @@ class AddCustomer extends React.Component {
             errors: []
         })
     }
-    
-    getCompanyList () {        
-        let companyList = null
-        if (!this.props.companies.length) {
-            companyList = <option value="">Loading...</option>
-        } else {
-            companyList = this.props.companies.map((company, index) => (
-                <option key={index} value={company.id}>{company.name}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="company_id">Company</Label>
-                <Input defaultValue={this.state.company_id} onChange={this.handleInputChanges.bind(this)} type="select"
-                    name="company_id" id="company_id">
-                    <option value="">Select Company</option>
-                    {companyList}
-                </Input>
-                {this.renderErrorFor('company_id')}
-            </FormGroup>
-        )
-    }
 
     render () {
         const { submitSuccess, loading } = this.state
-        const companyList = this.getCompanyList()
-        
+
         return (
             <React.Fragment>
-                <Button color="success" onClick={this.toggle}>Add Customer</Button>
+                <Button className="pull-right" color="success" onClick={this.toggle}>Add Customer</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
                         Add Customer
@@ -157,7 +134,7 @@ class AddCustomer extends React.Component {
                             <FormGroup>
                                 <Label for="first_name"> First Name </Label>
                                 <Input className={this.hasErrorFor('first_name') ? 'is-invalid' : ''} type="text"
-                                    id="first_name" onChange={this.handleInputChanges.bind(this)} name="first_name"
+                                    id="first_name" onChange={this.handleInputChanges} name="first_name"
                                     placeholder="Enter customer's first name"/>
                                 {this.renderErrorFor('first_name')}
                             </FormGroup>
@@ -165,7 +142,7 @@ class AddCustomer extends React.Component {
                             <FormGroup>
                                 <Label for="last_name"> Last Name </Label>
                                 <Input className={this.hasErrorFor('last_name') ? 'is-invalid' : ''} type="text"
-                                    id="last_name" onChange={this.handleInputChanges.bind(this)} name="last_name"
+                                    id="last_name" onChange={this.handleInputChanges} name="last_name"
                                     placeholder="Enter customer's last name"/>
                                 {this.renderErrorFor('last_name')}
                             </FormGroup>
@@ -173,7 +150,7 @@ class AddCustomer extends React.Component {
                             <FormGroup>
                                 <Label for="email"> Email </Label>
                                 <Input className={this.hasErrorFor('email') ? 'is-invalid' : ''} type="email" id="email"
-                                    onChange={this.handleInputChanges.bind(this)} name="email"
+                                    onChange={this.handleInputChanges} name="email"
                                     placeholder="Enter customer's email address"/>
                                 {this.renderErrorFor('email')}
                             </FormGroup>
@@ -181,7 +158,7 @@ class AddCustomer extends React.Component {
                             <FormGroup>
                                 <Label for="phone"> Phone </Label>
                                 <Input className={this.hasErrorFor('phone') ? 'is-invalid' : ''} type="text" id="phone"
-                                    onChange={this.handleInputChanges.bind(this)} name="phone"
+                                    onChange={this.handleInputChanges} name="phone"
                                     placeholder="Enter customer's phone number"/>
                                 {this.renderErrorFor('phone')}
                             </FormGroup>
@@ -189,7 +166,7 @@ class AddCustomer extends React.Component {
                             <FormGroup>
                                 <Label for="address"> Address 1 </Label>
                                 <Input className={this.hasErrorFor('address_1') ? 'is-invalid' : ''} type="text"
-                                    id="address_1" onChange={this.handleInputChanges.bind(this)} name="address_1"
+                                    id="address_1" onChange={this.handleInputChanges} name="address_1"
                                     placeholder="Enter customer's address"/>
                                 {this.renderErrorFor('address_1')}
                             </FormGroup>
@@ -197,7 +174,7 @@ class AddCustomer extends React.Component {
                             <FormGroup>
                                 <Label for="address"> Address 2 </Label>
                                 <Input className={this.hasErrorFor('address_2') ? 'is-invalid' : ''} type="text"
-                                    id="address_2" onChange={this.handleInputChanges.bind(this)} name="address_2"
+                                    id="address_2" onChange={this.handleInputChanges} name="address_2"
                                     placeholder="Enter customer's address"/>
                                 {this.renderErrorFor('address_2')}
                             </FormGroup>
@@ -205,7 +182,7 @@ class AddCustomer extends React.Component {
                             <FormGroup>
                                 <Label for="postcode"> Postcode </Label>
                                 <Input className={this.hasErrorFor('zip') ? 'is-invalid' : ''} type="text" id="zip"
-                                    onChange={this.handleInputChanges.bind(this)} name="zip"
+                                    onChange={this.handleInputChanges} name="zip"
                                     placeholder="Enter customer's postcode"/>
                                 {this.renderErrorFor('zip')}
                             </FormGroup>
@@ -213,19 +190,23 @@ class AddCustomer extends React.Component {
                             <FormGroup>
                                 <Label htmlFor="city"> City </Label>
                                 <Input className={this.hasErrorFor('city') ? 'is-invalid' : ''} type="text" id="city"
-                                    onChange={this.handleInputChanges.bind(this)} name="city"
+                                    onChange={this.handleInputChanges} name="city"
                                     placeholder="Enter customer's city"/>
                                 {this.renderErrorFor('city')}
                             </FormGroup>
-                            
-                            {companyList}
+
+                            <CompanyDropdown
+                                company_id={this.state.company_id}
+                                renderErrorFor={this.renderErrorFor}
+                                handleInputChanges={this.handleInputChanges}
+                            />
 
                             <FormGroup>
                                 <Label htmlFor="job_title"> Job Title </Label>
                                 <Input className={this.hasErrorFor('job_title') ? 'is-invalid' : ''}
                                     type="text"
                                     id="job_title"
-                                    onChange={this.handleInputChanges.bind(this)}
+                                    onChange={this.handleInputChanges}
                                     name="job_title"
                                     placeholder="Job Title"/>
                                 {this.renderErrorFor('job_title')}

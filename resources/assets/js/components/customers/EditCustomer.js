@@ -2,6 +2,7 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form } from 'reactstrap'
 import axios from 'axios'
+import CompanyDropdown from '../common/CompanyDropdown'
 
 class EditCustomer extends React.Component {
     constructor (props) {
@@ -32,6 +33,7 @@ class EditCustomer extends React.Component {
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.buildForm = this.buildForm.bind(this)
+        this.handleInputChanges = this.handleInputChanges.bind(this)
     }
 
     hasErrorFor (field) {
@@ -70,9 +72,12 @@ class EditCustomer extends React.Component {
 
         axios.put(`/api/customers/${this.state.id}`, customerObj).then(response => {
             this.toggle()
-            const index = this.props.customers.findIndex(customer => parseInt(customer.id) === this.props.customer.id)
-            this.props.customers[index] = response.data
-            this.props.action(this.props.customers)
+            if(this.props.customers && this.props.customers.length) {
+                const index = this.props.customers.findIndex(customer => parseInt(customer.id) === this.props.customer.id)
+                this.props.customers[index] = response.data
+                this.props.action(this.props.customers)
+            }
+
             this.setState({ submitSuccess: true, loading: false })
         })
             .catch((error) => {
@@ -91,9 +96,7 @@ class EditCustomer extends React.Component {
     }
 
     buildForm () {
-        
-        const companyList = this.getCompanyList()
-        
+
         return (
             <Form id={'create-post-form'} onSubmit={this.processFormSubmission} noValidate={true}>
                 <FormGroup>
@@ -168,7 +171,11 @@ class EditCustomer extends React.Component {
                     {this.renderErrorFor('city')}
                 </FormGroup>
                 
-                {companyList}
+               <CompanyDropdown
+                   company_id={this.state.company_id}
+                   renderErrorFor={this.renderErrorFor}
+                   handleInputChanges={this.handleInputChanges}
+               />
 
                 <FormGroup>
                     <Label htmlFor="job_title"> Job Title </Label>
@@ -182,28 +189,7 @@ class EditCustomer extends React.Component {
         )
     }
     
-    getCompanyList () {
-        let companyList = null
-        if (!this.props.companies.length) {
-            companyList = <option value="">Loading...</option>
-        } else {
-            companyList = this.props.companies.map((company, index) => (
-                <option key={index} value={company.id}>{company.name}</option>
-            ))
-        }
 
-        return (
-            <FormGroup>
-                <Label for="company_id">Company</Label>
-                <Input defaultValue={this.state.company_id} onChange={this.handleInputChanges.bind(this)} type="select"
-                    name="company_id" id="company_id">
-                    <option value="">Select Company</option>
-                    {companyList}
-                </Input>
-                {this.renderErrorFor('company_id')}
-            </FormGroup>
-        )
-    }
 
     render () {
         const { submitSuccess, loading } = this.state
@@ -213,10 +199,10 @@ class EditCustomer extends React.Component {
         if (this.props.modal) {
             return (
                 <div>
-                    <Button color="primary" onClick={this.toggle}>Edit</Button>
+                    <Button className="ml-2" color="primary" onClick={this.toggle}>Edit</Button>
                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                         <ModalHeader toggle={this.toggle}>
-                            Edit Customer
+                            Update Customer
                         </ModalHeader>
 
                         <ModalBody>

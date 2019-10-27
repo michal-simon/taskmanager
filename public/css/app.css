@@ -3943,3 +3943,7 @@ img {
   width: 100%;
 }
 
+.tab-content {
+  border: none !important;
+}
+
