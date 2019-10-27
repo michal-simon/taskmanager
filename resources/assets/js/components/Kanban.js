@@ -67,7 +67,10 @@ class Kanban extends Component {
 
     setProjectId (project_id) {
         this.setState({project_id: project_id})
-        this.getTasks()
+
+        setTimeout(() => {
+            this.getTasks()
+        });
     }
     
     resize() {
@@ -126,7 +129,7 @@ class Kanban extends Component {
 
     getTasks () {
         const url = this.getTaskUrl()
-
+        
         axios.get(url)
             .then((r) => {
                 this.setState({
