@@ -9,6 +9,7 @@ use App\Requests\UpdateTaskStatusRequest;
 use Illuminate\Http\Request;
 use App\Transformations\TaskStatusTransformable;
 use App\TaskStatus;
+use App\Requests\SearchRequest;
 
 class TaskStatusController extends Controller {
 
@@ -31,7 +32,7 @@ class TaskStatusController extends Controller {
      * @param Request $request
      * @return type
      */
-    public function search(Request $request) {
+    public function search(SearchRequest $request) {
 
         $orderBy = !$request->column ? 'title' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;

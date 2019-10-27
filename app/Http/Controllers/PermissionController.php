@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repositories\PermissionRepository;
 use App\Transformations\PermissionTransformable;
-use Illuminate\Http\Request;
 use App\Permission;
 use App\Requests\CreatePermissionRequest;
 use App\Requests\UpdatePermissionRequest;
+use App\Requests\SearchRequest;
 
 class PermissionController extends Controller {
 
@@ -31,7 +31,7 @@ class PermissionController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request) {
+    public function index(SearchRequest $request) {
 
         $orderBy = !$request->column ? 'name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;

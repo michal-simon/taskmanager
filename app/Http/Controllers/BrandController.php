@@ -8,8 +8,8 @@ use App\Repositories\Interfaces\BrandRepositoryInterface;
 use App\Requests\CreateBrandRequest;
 use App\Requests\UpdateBrandRequest;
 use App\Transformations\BrandTransformable;
-use Illuminate\Http\Request;
 use App\Brand;
+use App\Requests\SearchRequest;
 
 class BrandController extends Controller {
 
@@ -32,7 +32,7 @@ class BrandController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request) {
+    public function index(SearchRequest $request) {
         $orderBy = !$request->column ? 'name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;

@@ -7,9 +7,9 @@ use App\Repositories\DepartmentRepository;
 use App\Repositories\Interfaces\DepartmentRepositoryInterface;
 use App\Requests\CreateDepartmentRequest;
 use App\Requests\UpdateDepartmentRequest;
-use Illuminate\Http\Request;
 use App\Department;
 use App\Transformations\DepartmentTransformable;
+use App\Requests\SearchRequest;
 
 class DepartmentController extends Controller {
 
@@ -34,7 +34,7 @@ class DepartmentController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request) {
+    public function index(SearchRequest $request) {
         $orderBy = !$request->column ? 'name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;

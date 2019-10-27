@@ -11,6 +11,7 @@ use App\Invoice;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\InvoiceCreated;
 use Illuminate\Support\Facades\Auth;
+use App\Requests\SearchRequest;
 
 class InvoiceController extends Controller {
 
@@ -28,7 +29,7 @@ class InvoiceController extends Controller {
      * @param Request $request
      * @return type
      */
-    public function index(Request $request) {
+    public function index(SearchRequest $request) {
 
         $orderBy = !$request->column ? 'due_date' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;

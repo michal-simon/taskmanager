@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\UploadedFile;
 use App\Repositories\DepartmentRepository;
 use App\Department;
+use App\Requests\SearchRequest;
 
 class UserController extends Controller {
 
@@ -40,7 +41,7 @@ class UserController extends Controller {
         $this->roleRepo = $roleRepository;
     }
 
-    public function index(Request $request) {
+    public function index(SearchRequest $request) {
         $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;

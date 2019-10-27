@@ -17,6 +17,7 @@ use App\Repositories\TaskRepository;
 use App\Task;
 use Illuminate\Support\Facades\Validator;
 use App\ProductAttribute;
+use App\Requests\SearchRequest;
 
 class ProductController extends Controller {
 
@@ -58,7 +59,7 @@ class ProductController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(SearchRequest $request) {
         $orderBy = !$request->column ? 'name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;

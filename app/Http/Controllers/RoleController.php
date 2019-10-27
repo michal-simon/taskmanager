@@ -8,9 +8,9 @@ use App\Repositories\RoleRepository;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Requests\CreateRoleRequest;
 use App\Requests\UpdateRoleRequest;
-use Illuminate\Http\Request;
 use App\Role;
 use App\Transformations\RoleTransformable;
+use App\Requests\SearchRequest;
 
 class RoleController extends Controller {
 
@@ -42,7 +42,7 @@ class RoleController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request) {
+    public function index(SearchRequest $request) {
 
         $orderBy = !$request->column ? 'name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;

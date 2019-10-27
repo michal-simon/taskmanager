@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Customer;
 use App\Repositories\CustomerRepository;
 use App\Repositories\AddressRepository;
@@ -11,6 +10,7 @@ use App\Repositories\Interfaces\AddressRepositoryInterface;
 use App\Transformations\CustomerTransformable;
 use App\Requests\UpdateCustomerRequest;
 use App\Requests\CreateCustomerRequest;
+use App\Requests\SearchRequest;
 use App\Address;
 
 class CustomerController extends Controller {
@@ -42,7 +42,7 @@ class CustomerController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request) {
+    public function index(SearchRequest $request) {
 
         $orderBy = !$request->column || $request->column === 'name' ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
