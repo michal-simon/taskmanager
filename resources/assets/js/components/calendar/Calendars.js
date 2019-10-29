@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Calendar from './Calendar'
 import CreateEvent from './CreateEvent'
 import axios from 'axios'
-import { Input, FormGroup, Label, Form } from 'reactstrap'
+import {Input, FormGroup, Label, Form, Card, CardHeader, CardBody} from 'reactstrap'
+import WeekCalendar from './WeekCalendar'
+import CalendarEvent from "./CalendarEvent";
 
 const Container = styled.div`
   display: flex;
@@ -25,7 +27,7 @@ const Button = styled.button`
 `
 
 class Calendars extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             year: new Date().getFullYear(),
@@ -34,6 +36,8 @@ class Calendars extends React.Component {
             tasks: [],
             users: []
         }
+
+        this.calendar_type = 'week'
         this.loadPrevMonth = this.loadPrevMonth.bind(this)
         this.loadNextMonth = this.loadNextMonth.bind(this)
         this.setEvents = this.setEvents.bind(this)
@@ -41,23 +45,24 @@ class Calendars extends React.Component {
         this.buildUserOptions = this.buildUserOptions.bind(this)
         this.buildTaskOptions = this.buildTaskOptions.bind(this)
         this.filterEvents = this.filterEvents.bind(this)
+        this.eventRender = this.eventRender.bind(this)
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.getEvents()
         this.getUsers()
         this.getTasks()
     }
 
-    setEvents (events) {
-        this.setState({ events: events })
+    setEvents(events) {
+        this.setState({events: events})
     }
 
-    setMonth (month) {
-        this.setState({ month: month })
+    setMonth(month) {
+        this.setState({month: month})
     }
 
-    getEvents () {
+    getEvents() {
         const url = (this.props.user_id) ? `/api/events/users/${this.props.user_id}` : (this.props.task_id) ? `/api/events/tasks/${this.props.task_id}` : '/api/events'
         axios.get(url)
             .then((r) => {
@@ -70,7 +75,7 @@ class Calendars extends React.Component {
             })
     }
 
-    getTasks () {
+    getTasks() {
         const url = '/api/tasks'
         axios.get(url)
             .then((r) => {
@@ -83,7 +88,7 @@ class Calendars extends React.Component {
             })
     }
 
-    getUsers () {
+    getUsers() {
         const url = '/api/users'
         axios.get(url)
             .then((r) => {
@@ -96,7 +101,7 @@ class Calendars extends React.Component {
             })
     }
 
-    filterEvents (e) {
+    filterEvents(e) {
         const url = (!e.target.value) ? '/api/events' : (e.target.name === 'user') ? `/api/events/users/${e.target.value}` : `/api/events/tasks/${e.target.value}`
 
         axios.get(url)
@@ -110,7 +115,7 @@ class Calendars extends React.Component {
             })
     }
 
-    buildUserOptions () {
+    buildUserOptions() {
         let userContent
         if (!this.state.users.length) {
             userContent = <option value="">Loading...</option>
@@ -121,8 +126,8 @@ class Calendars extends React.Component {
         }
         return (
             <Input type="select"
-                value={this.props.user_id} name="user" id="contributors"
-                onChange={this.filterEvents.bind(this)}
+                   value={this.props.user_id} name="user" id="contributors"
+                   onChange={this.filterEvents.bind(this)}
             >
                 <option value="">Choose:</option>
                 {userContent}
@@ -130,7 +135,7 @@ class Calendars extends React.Component {
         )
     }
 
-    buildTaskOptions () {
+    buildTaskOptions() {
         let taskContent
         if (!this.state.tasks.length) {
             taskContent = <option value="">Loading...</option>
@@ -141,7 +146,7 @@ class Calendars extends React.Component {
         }
         return (
             <Input type="select"
-                value={this.props.task_id} name="task" id="tasks" onChange={this.filterEvents.bind(this)}
+                   value={this.props.task_id} name="task" id="tasks" onChange={this.filterEvents.bind(this)}
             >
                 <option value="">Choose:</option>
                 {taskContent}
@@ -153,11 +158,11 @@ class Calendars extends React.Component {
      *
      * @param year
      */
-    setYear (year) {
-        this.setState({ year: year })
+    setYear(year) {
+        this.setState({year: year})
     }
 
-    loadPrevMonth () {
+    loadPrevMonth() {
         let prevMonth = this.state.month - 1
         if (prevMonth < 1) {
             this.setYear(this.state.year - 1)
@@ -166,7 +171,7 @@ class Calendars extends React.Component {
         this.setMonth(prevMonth)
     }
 
-    loadNextMonth () {
+    loadNextMonth() {
         let nextMonth = this.state.month + 1
         if (nextMonth > 12) {
             this.setYear(this.state.year + 1)
@@ -175,11 +180,11 @@ class Calendars extends React.Component {
         this.setMonth(nextMonth)
     }
 
-    getFilters () {
+    getFilters() {
         const usersList = this.buildUserOptions()
         const taskList = this.buildTaskOptions()
         return (
-            <Form inline className="ml-5">
+            <Form inline className="pull-right">
 
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                     <CreateEvent
@@ -200,26 +205,56 @@ class Calendars extends React.Component {
         )
     }
 
-    render () {
-        const filters = this.getFilters()
+    eventRender(event, i) {
         return (
+            <CalendarEvent
+                calendar_type="week"
+                allEvents={this.state.events}
+                events={this.state.events}
+                event={event}
+                action={this.setEvents}
+                key={event.id}
+            />
+        )
+    }
+
+    render() {
+        const filters = this.getFilters()
+        const {events} = this.state
+
+        const calendar = this.calendar_type === 'month' ?
             <React.Fragment>
-
-                {filters}
-
-                <Container>
-                    <Controls>
-                        <Button onClick={this.loadPrevMonth}>&laquo; Prev Month</Button>
-                        <Button onClick={this.loadNextMonth}>Next Month &raquo;</Button>
-                    </Controls>
-                    <Calendar
-                        year={this.state.year}
-                        month={this.state.month}
-                        events={this.state.events}
-                        action={this.setEvents}
-                    />
-                </Container>
+                <Controls>
+                    <Button onClick={this.loadPrevMonth}>&laquo; Prev Month</Button>
+                    <Button onClick={this.loadNextMonth}>Next Month &raquo;</Button>
+                </Controls>
+                <Calendar
+                    year={this.state.year}
+                    month={this.state.month}
+                    events={events}
+                    action={this.setEvents}
+                />
             </React.Fragment>
+            : <WeekCalendar
+                calendar_type="week"
+                events={events}
+                emptyRender={this.emptyRender}
+                eventRender={this.eventRender}
+                past={true}
+            />
+
+        return (
+            <div>
+                <Card>
+                    <CardHeader>
+                        <h2>Calendar</h2> Week|Month
+                        {filters}
+                    </CardHeader>
+                    <CardBody>
+                        {calendar}
+                    </CardBody>
+                </Card>
+            </div>
         )
     }
 }

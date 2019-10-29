@@ -164,18 +164,6 @@ $font_1: sans-serif;
 	padding: 2px;
 }
 
-//original selectors
-//.side-menu li:hover:before, li .active:before
-%extend_2 {
-	content: '';
-	width: 4px;
-	background: $color_azure_radiance_approx;
-	height: 46px;
-	margin-top: 5px;
-	position: absolute;
-	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-	box-shadow: 1px 0 6px #0000002e;
-}
 
 //original selectors
 //.colorBlue, .colorGreen, .colorGrey

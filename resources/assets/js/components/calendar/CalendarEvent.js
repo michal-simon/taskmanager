@@ -215,11 +215,15 @@ class CalendarEvent extends React.Component {
 
         const beginDate = this.convertDate(this.state.beginDate)
         const endDate = this.convertDate(this.state.endDate)
+
+        const editLabel = this.props.calendar_type === 'day' ?
+            <div className="mike" onClick={this.toggle}>{this.state.title}</div> :
+            <Label2 col={col} colSpan={colSpan} onClick={this.toggle}>
+            {this.state.title}
+        </Label2>
         return (
             <React.Fragment>
-                <Label2 col={col} colSpan={colSpan} onClick={this.toggle}>
-                    {this.state.title}
-                </Label2>
+                {editLabel}
 
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>

@@ -3943,6 +3943,200 @@ img {
   width: 100%;
 }
 
+/***** week calendar ******/
+
+@media (max-width: 992px) {
+  #react-week-calendar .show-sm {
+    display: block !important;
+  }
+
+  #react-week-calendar .hidden-sm {
+    display: none !important;
+  }
+
+  #react-week-calendar .week {
+    display: block !important;
+    width: 100%;
+  }
+
+  #react-week-calendar .day {
+    max-width: 100% !important;
+    width: 100%;
+    margin-top: 10px !important;
+    margin: 0 !important;
+  }
+
+  #react-week-calendar .event-list {
+    margin: 10px 0;
+  }
+}
+
+#react-week-calendar .row {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#react-week-calendar .row.event-list {
+  width: 100%;
+}
+
+#react-week-calendar .event-list-parent {
+  padding: 0 !important;
+}
+
+#react-week-calendar .hidden-lg {
+  display: none;
+}
+
+#react-week-calendar .hidden-sm {
+  display: none;
+}
+
+#react-week-calendar .show-lg {
+  display: -webkit-box;
+  display: flex;
+}
+
+#react-week-calendar .week {
+  display: -webkit-box;
+  display: flex;
+}
+
+#react-week-calendar .day {
+  flex-basis: 0;
+  -webkit-box-flex: 1;
+          flex: 1 1 0;
+  margin: 0 2.5px;
+}
+
+#react-week-calendar .day:last-child {
+  margin-right: 0 !important;
+}
+
+#react-week-calendar .day:first-child {
+  margin-left: 0 !important;
+}
+
+#react-week-calendar .day-row {
+  background-color: #337ddf;
+  color: #fff;
+}
+
+#react-week-calendar .calendar-container {
+  min-height: 200px;
+}
+
+#react-week-calendar .day-event {
+  background: #e8e8e8;
+  padding: 10px;
+  margin: 2.5px 0;
+  width: 100%;
+  word-break: break-all;
+  cursor: pointer;
+}
+
+#react-week-calendar .day-event:last-child {
+  margin-bottom: 0 !important;
+}
+
+#react-week-calendar .day-event:first-child {
+  margin-top: 0 !important;
+}
+
+#react-week-calendar .today {
+  border: 1px solid #337ddf;
+  border-top: none;
+}
+
+#react-week-calendar .week-header {
+  background: #337ddf;
+  padding: 20px 0;
+  width: 100%;
+}
+
+#react-week-calendar .box-button {
+  border-radius: 0 !important;
+}
+
+#react-week-calendar .col-12 {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+#react-week-calendar .empty-state {
+  color: #e8e8e8;
+}
+
+#react-week-calendar .btn {
+  border-color: #337ddf;
+  padding: 7px 20px;
+  background-color: #337ddf;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 0;
+  outline: none;
+  border: none;
+  -webkit-transition-duration: .2s;
+          transition-duration: .2s;
+}
+
+#react-week-calendar .btn:active {
+  border-style: outset;
+  border: none;
+  background-color: #7ea8df;
+}
+
+#react-week-calendar .fade {
+  -webkit-animation: fade;
+          animation: fade;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+}
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes btn-click {
+  from {
+    background-color: #fff;
+  }
+
+  to {
+    background-clip: #337ddf;
+  }
+}
+
+@keyframes btn-click {
+  from {
+    background-color: #fff;
+  }
+
+  to {
+    background-clip: #337ddf;
+  }
+}
+
 .tab-content {
   border: none !important;
 }
