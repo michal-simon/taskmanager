@@ -2,20 +2,26 @@
 import React, { Component } from 'react'
 import {
     Card, CardBody,
-    CardHeader, Label, Input, Button, FormGroup
+    CardHeader, Label, Input, Button, FormGroup, Form
 } from 'reactstrap'
 import axios from 'axios'
 import AddLead from './AddLead'
+import 'react-dates/initialize'; // necessary for latest version
+import 'react-dates/lib/css/_datepicker.css';
+import { DateRangePicker } from 'react-dates';
+import moment from "moment";
 
 class EditTask extends Component {
     constructor (props) {
         super(props)
 
+        const start_date = moment(this.props.task.start_date,'YYYY-MM-DD').format('YYYY-MM-DD')
+
         this.state = {
             title: this.props.task.title,
             description: this.props.task.content,
-            due_date: this.props.task.due_date,
-            start_date: this.props.task.start_date,
+            due_date: moment(this.props.task.due_date),
+            start_date: moment(start_date),
             contributors: this.props.task.contributors,
             rating: this.props.task.rating,
             source_type: this.props.task.source_type,
@@ -63,8 +69,8 @@ class EditTask extends Component {
             title: this.state.title,
             content: this.state.description,
             contributors: this.state.selectedUsers,
-            due_date: this.state.due_date,
-            start_date: this.state.start_date
+            due_date: moment(this.state.due_date).format('YYYY-MM-DD'),
+            start_date: moment(this.state.start_date).format('YYYY-MM-DD'),
         })
             .then((response) => {
                 this.setState({
@@ -190,6 +196,7 @@ class EditTask extends Component {
             </div>
         )
         let panelBody = null
+        
         if (this.state.editMode) {
             const leadForm = parseInt(this.props.task_type) === 2 ? this.getFormForLead() : ''
             panelBody = (
@@ -201,19 +208,16 @@ class EditTask extends Component {
                             onChange={this.handleChange}/>
                     </FormGroup>
 
-                    <FormGroup>
-                        <Label>Start Date</Label>
-                        <Input type="text" name="start_date"
-                            value={this.state.start_date}
-                            onChange={this.handleChange}/>
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Label>Due Date</Label>
-                        <Input type="text" name="due_date"
-                            value={this.state.due_date}
-                            onChange={this.handleChange}/>
-                    </FormGroup>
+                    <DateRangePicker
+                        startDate={this.state.start_date} // momentPropTypes.momentObj or null,
+                        startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                        endDate={this.state.due_date} // momentPropTypes.momentObj or null,
+                        endDateId="due_date" // PropTypes.string.isRequired,
+                        displayFormat="DD-MM-YYYY"
+                        onDatesChange={({ startDate, endDate }) => this.setState({ start_date: startDate, due_date: endDate })} // PropTypes.func.isRequired,
+                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                        onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                    />
 
                     <FormGroup>
                         <Label>Assigned To</Label>
@@ -245,20 +249,17 @@ class EditTask extends Component {
                             onDoubleClick={this.handleDoubleClick}/>
                     </FormGroup>
 
-                    <FormGroup>
-                        <Label>Start Date</Label>
-                        <Input readOnly type="text" name="start_date" placeholder={this.state.start_date}
-                            value={this.state.start_date}
-                            onDoubleClick={this.handleDoubleClick}/>
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Label>Due Date</Label>
-                        <Input readOnly type="text" name="due_date" placeholder={this.state.due_date}
-                            value={this.state.due_date}
-                            onDoubleClick={this.handleDoubleClick}
-                        />
-                    </FormGroup>
+                    <DateRangePicker
+                        disabled={true}
+                        startDate={this.state.start_date} // momentPropTypes.momentObj or null,
+                        startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                        displayFormat="DD-MM-YYYY"
+                        endDate={this.state.due_date} // momentPropTypes.momentObj or null,
+                        endDateId="due_date" // PropTypes.string.isRequired,
+                        onDatesChange={({ startDate, endDate }) => this.setState({ start_date: startDate, due_date: endDate })} // PropTypes.func.isRequired,
+                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                        onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                    />
 
                     <FormGroup>
                         <Label>Assigned To</Label>

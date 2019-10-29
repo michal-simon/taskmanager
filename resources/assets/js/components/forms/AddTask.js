@@ -4,6 +4,9 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, L
 import moment from 'moment'
 import axios from 'axios'
 import AddLead from './AddLead'
+import 'react-dates/initialize'; // necessary for latest version
+import 'react-dates/lib/css/_datepicker.css';
+import { DateRangePicker } from 'react-dates';
 
 class AddModal extends React.Component {
     constructor (props) {
@@ -93,8 +96,8 @@ class AddModal extends React.Component {
             content: this.state.content,
             task_status: parseInt(this.props.status),
             contributors: this.state.selectedUsers,
-            due_date: this.state.due_date,
-            start_date: this.state.start_date,
+            due_date: moment(this.state.due_date).format('YYYY-MM-DD'),
+            start_date: moment(this.state.start_date).format('YYYY-MM-DD'),
             project_id: parseInt(this.props.project_id),
             created_by: this.state.created_by,
             task_type: this.props.task_type,
@@ -156,19 +159,15 @@ class AddModal extends React.Component {
 
                 <i className="fa fa-calendar-alt" /> Created Date: {moment().format('L, h:mm:ss')} <br/>
 
-                <FormGroup>
-                    <Label for="start_date">Start Date:</Label>
-                    <Input className={this.hasErrorFor('start_date') ? 'is-invalid' : ''} type="datetime-local"
-                        name="start_date" id="start_date" onChange={this.handleInput.bind(this)}/>
-                    {this.renderErrorFor('start_date')}
-                </FormGroup>
-
-                <FormGroup>
-                    <Label for="due_date"> <i className="fa fa-clock" />Due Date:</Label>
-                    <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''} type="datetime-local"
-                        name="due_date" id="due_date" onChange={this.handleInput.bind(this)}/>
-                    {this.renderErrorFor('due_date')}
-                </FormGroup>
+                <DateRangePicker
+                    startDate={this.state.start_date} // momentPropTypes.momentObj or null,
+                    startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                    endDate={this.state.due_date} // momentPropTypes.momentObj or null,
+                    endDateId="due_date" // PropTypes.string.isRequired,
+                    onDatesChange={({ startDate, endDate }) => this.setState({ start_date: startDate, due_date: endDate })} // PropTypes.func.isRequired,
+                    focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                    onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                />
 
             </Form>
         )
