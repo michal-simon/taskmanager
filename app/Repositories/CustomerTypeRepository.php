@@ -1,19 +1,19 @@
 <?php
 namespace App\Repositories;
 use App\ContactType;
-use App\Repositories\Interfaces\ContactTypeRepositoryInterface;
+use App\Repositories\Interfaces\CustomerTypeRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 
 class CustomerTypeRepository extends BaseRepository implements ContactTypeRepositoryInterface {
     
     /**
-     * ContactTypeRepository constructor.
+     * CustomerTypeRepository constructor.
      *
-     * @param ContactType $contactType
+     * @param CustomerType $customerType
      */
-    public function __construct(ContactType $contactType) {
-        parent::__construct($contactType);
-        $this->model = $contactType;
+    public function __construct(CustomerType $customerType) {
+        parent::__construct($customerType);
+        $this->model = $customerType;
     }
     public function getAll() {
         return $this->model->orderBy('name', 'asc')
@@ -23,10 +23,10 @@ class CustomerTypeRepository extends BaseRepository implements ContactTypeReposi
     /**
      * @param int $id
      *
-     * @return ContactType
+     * @return CustomerType
      * @throws \Exception
      */
-    public function findContactType(int $id): ContactType {
+    public function findCustomerTypeById(int $id): CustomerType {
         return $this->findOneOrFail($id);
     }
 }
