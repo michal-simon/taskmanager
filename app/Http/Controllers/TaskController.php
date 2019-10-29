@@ -299,9 +299,13 @@ class TaskController extends Controller {
     }
 
     public function getSourceTypes() {
-
         $sourceTypes = (new SourceTypeRepository(new SourceType))->getAll();
         return response()->json($sourceTypes);
+    }
+
+    public function getTaskTypes() {
+        $taskTypes = (new TaskTypeRepository(new TaskType))->getAll();
+        return response()->json($taskTypes);
     }
 
 }
