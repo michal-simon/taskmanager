@@ -1,7 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form } from 'reactstrap'
 import axios from 'axios'
+import DateTime from 'react-datetime'
 
 class CreateEvent extends React.Component {
     constructor (props) {
@@ -175,6 +175,14 @@ class CreateEvent extends React.Component {
         )
     }
 
+    handleStartDate (date){
+        this.setState({beginDate: date._d})
+    };
+
+    handleEndDate (date){
+        this.setState({endDate: date._d})
+    };
+
     buildForm () {
         const customerList = this.getCustomerList()
         const userList = this.getUserList()
@@ -198,25 +206,21 @@ class CreateEvent extends React.Component {
                     {this.renderErrorFor('location')}
                 </FormGroup>
 
-                {customerList}
-
-                {userList}
-
                 <FormGroup>
-                    <Label for="beginDate">Begin Date:</Label>
-                    <Input className={this.hasErrorFor('beginDate') ? 'is-invalid' : ''} type="date"
-                        name="beginDate" id="beginDate" onChange={this.handleInput.bind(this)}/>
-
+                    <Label for="beginDate">Start Date:</Label>
+                    <DateTime dateFormat="YYYY-MM-DD" inputProps={{name:'beginDate'}} className={this.hasErrorFor('beginDate') ? 'is-invalid' : ''} onChange={this.handleStartDate.bind(this)} />
                     {this.renderErrorFor('beginDate')}
                 </FormGroup>
 
                 <FormGroup>
                     <Label for="endDate">End Date:</Label>
-                    <Input className={this.hasErrorFor('endDate') ? 'is-invalid' : ''} type="date"
-                        name="endDate" id="endDate" onChange={this.handleInput.bind(this)}/>
-
+                    <DateTime dateFormat="YYYY-MM-DD" inputProps={{name:'endDate'}} className={this.hasErrorFor('endDate') ? 'is-invalid' : ''} onChange={this.handleEndDate.bind(this)} />
                     {this.renderErrorFor('endDate')}
                 </FormGroup>
+
+                {customerList}
+
+                {userList}
             </Form>
         )
     }

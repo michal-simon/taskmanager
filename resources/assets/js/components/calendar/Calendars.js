@@ -34,10 +34,10 @@ class Calendars extends React.Component {
             month: new Date().getMonth() + 1,
             events: [],
             tasks: [],
-            users: []
+            users: [],
+            calendar_type: 'month'
         }
 
-        this.calendar_type = 'week'
         this.loadPrevMonth = this.loadPrevMonth.bind(this)
         this.loadNextMonth = this.loadNextMonth.bind(this)
         this.setEvents = this.setEvents.bind(this)
@@ -212,17 +212,22 @@ class Calendars extends React.Component {
                 allEvents={this.state.events}
                 events={this.state.events}
                 event={event}
-                action={this.setEvents}
+
                 key={event.id}
             />
         )
     }
 
-    render() {
+    setCalendarType (event) {
+        const type = event.target.getAttribute('data-type')
+        this.setState({ calendar_type: type })
+    }
+
+    render () {
         const filters = this.getFilters()
         const {events} = this.state
 
-        const calendar = this.calendar_type === 'month' ?
+        const calendar = this.state.calendar_type === 'month' ?
             <React.Fragment>
                 <Controls>
                     <Button onClick={this.loadPrevMonth}>&laquo; Prev Month</Button>
@@ -236,7 +241,7 @@ class Calendars extends React.Component {
                 />
             </React.Fragment>
             : <WeekCalendar
-                calendar_type="week"
+                calendar_type={this.state.calendar_type}
                 events={events}
                 emptyRender={this.emptyRender}
                 eventRender={this.eventRender}
@@ -247,7 +252,7 @@ class Calendars extends React.Component {
             <div>
                 <Card>
                     <CardHeader>
-                        <h2>Calendar</h2> Week|Month
+                        <h2>Calendar</h2> <a data-type="week" onClick={this.setCalendarType.bind(this)}> Week </a> | <a data-type="month" onClick={this.setCalendarType.bind(this)}> Month </a>
                         {filters}
                     </CardHeader>
                     <CardBody>

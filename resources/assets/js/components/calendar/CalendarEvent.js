@@ -1,9 +1,10 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import styled from 'styled-components'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
+import DateTime from 'react-datetime'
 
 const Label2 = styled.span`
   display: flex;
@@ -148,11 +149,12 @@ class CalendarEvent extends React.Component {
     }
 
     convertDate (inputFormat) {
-        function pad (s) {
-            return (s < 10) ? '0' + s : s
-        }
-        const d = new Date(inputFormat)
-        return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/')
+        // function pad (s) {
+        //     return (s < 10) ? '0' + s : s
+        // }
+        // const d = new Date(inputFormat)
+        // return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/')
+        return moment(inputFormat).format('YYYY-MM-DD hh:mm A')
     }
 
     handleMultiSelect (e) {
@@ -208,6 +210,14 @@ class CalendarEvent extends React.Component {
         )
     }
 
+    handleStartDate (date){
+        this.setState({beginDate: date._d})
+    };
+
+    handleEndDate (date){
+        this.setState({endDate: date._d})
+    };
+
     render () {
         const { col, colSpan } = this.props
         const userList = this.getUserList()
@@ -250,27 +260,22 @@ class CalendarEvent extends React.Component {
                             {this.renderErrorFor('location')}
                         </FormGroup>
 
-                        {customerList}
-
-                        {userList}
-
                         <FormGroup>
                             <Label for="beginDate">Begin Date:</Label>
-                            <Input defaultValue={beginDate}
-                                className={this.hasErrorFor('beginDate') ? 'is-invalid' : ''} type="date"
-                                name="beginDate" id="beginDate" onChange={this.handleInput.bind(this)}/>
-
+                            <DateTime viewDate={new Date()} value={beginDate} dateFormat="YYYY-MM-DD" inputProps={{name:'beginDate'}} className={this.hasErrorFor('beginDate') ? 'is-invalid' : ''} onChange={this.handleStartDate.bind(this)} />
                             {this.renderErrorFor('beginDate')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="endDate">End Date:</Label>
-                            <Input defaultValue={endDate} className={this.hasErrorFor('endDate') ? 'is-invalid' : ''}
-                                type="date"
-                                name="endDate" id="endDate" onChange={this.handleInput.bind(this)}/>
+                            <DateTime value={endDate} dateFormat="YYYY-MM-DD" inputProps={{name:'endDate'}} className={this.hasErrorFor('endDate') ? 'is-invalid' : ''} onChange={this.handleEndDate.bind(this)} />
 
                             {this.renderErrorFor('endDate')}
                         </FormGroup>
+
+                        {customerList}
+
+                        {userList}
 
                     </ModalBody>
 
