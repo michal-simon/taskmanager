@@ -2062,6 +2062,154 @@ img {
 	width: 100%;
 }
 
+/***** week calendar ******/
+$color_royal_blue_approx: #337ddf;
+$color_gray_nurse_approx: #e8e8e8;
+$color_portage_approx: #7ea8df;
+
+@media(max-width: 992px) {
+	#react-week-calendar {
+		.show-sm {
+			display: block !important;
+		}
+		.hidden-sm {
+			display: none !important;
+		}
+		.week {
+			display: block !important;
+			width: 100%;
+		}
+		.day {
+			max-width: 100% !important;
+			width: 100%;
+			margin-top: 10px !important;
+			margin: 0 !important;
+		}
+		.event-list {
+			margin: 10px 0;
+		}
+	}
+}
+#react-week-calendar {
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		&.event-list {
+			width: 100%;
+		}
+	}
+	.event-list-parent {
+		padding: 0 !important;
+	}
+	.hidden-lg {
+		display: none;
+	}
+	.hidden-sm {
+		display: none;
+	}
+	.show-lg {
+		display: flex;
+	}
+	.week {
+		display: flex;
+	}
+	.day {
+		flex-basis: 0;
+		flex: 1 1 0;
+		margin: 0 2.5px;
+		&:last-child {
+			margin-right: 0 !important;
+		}
+		&:first-child {
+			margin-left: 0 !important;
+		}
+	}
+	.day-row {
+		background-color: $color_royal_blue_approx;
+		color: $white;
+	}
+	.calendar-container {
+		min-height: 200px;
+	}
+	.day-event {
+		background: $color_gray_nurse_approx;
+		padding: 10px;
+		margin: 2.5px 0;
+		width: 100%;
+		//Instead of the line below you could use @include word-break($value)
+		word-break: break-all;
+		cursor: pointer;
+		&:last-child {
+			margin-bottom: 0 !important;
+		}
+		&:first-child {
+			margin-top: 0 !important;
+		}
+	}
+	.today {
+		border: 1px solid $color_royal_blue_approx;
+		border-top: none;
+	}
+	.week-header {
+		background: $color_royal_blue_approx;
+		padding: 20px 0;
+		width: 100%;
+	}
+	.box-button {
+		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+		border-radius: 0 !important;
+	}
+	.col-12 {
+		position: relative;
+		width: 100%;
+		min-height: 1px;
+		padding-right: 15px;
+		padding-left: 15px;
+	}
+	.empty-state {
+		color: $color_gray_nurse_approx;
+	}
+	.btn {
+		border-color: $color_royal_blue_approx;
+		padding: 7px 20px;
+		background-color: $color_royal_blue_approx;
+		color: $white;
+		cursor: pointer;
+		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+		border-radius: 0;
+		outline: none;
+		border: none;
+		//Instead of the line below you could use @include transition-duration($duration-1, $duration-2, $duration-3, $duration-4, $duration-5, $duration-6, $duration-7, $duration-8, $duration-9, $duration-10)
+		transition-duration: .2s;
+		&:active {
+			border-style: outset;
+			border: none;
+			background-color: $color_portage_approx;
+		}
+	}
+	.fade {
+		animation: fade;
+		animation-duration: 1s;
+	}
+}
+@keyframes fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes btn-click {
+	from {
+		background-color: $white;
+	}
+	to {
+		//Instead of the line below you could use @include background-clip($clip)
+		background-clip: $color_royal_blue_approx;
+	}
+}
+
 .tab-content {
 	border: none !important;
 }
