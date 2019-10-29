@@ -97,6 +97,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::put('customers/{customer_id}', 'CustomerController@update')->middleware('role:null,customercontroller.update');
     Route::post('customers', 'CustomerController@store')->middleware('role:null,customercontroller.store');
     Route::delete('customers/{customer_id}', 'CustomerController@destroy')->middleware('role:null,customercontroller.destroy');
+    Route::get('customers/customer-types', 'CustomerController@getCustomerTypes')->middleware('role:null,customercontroller.show');
 
 // tasks
     Route::put('tasks/{task_id}', 'TaskController@update')->middleware('role:null,taskcontroller.update');
@@ -167,4 +168,3 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::post("categories/products/{id}", 'ProductController@getProductsForCategory');
     Route::post('tasks/deal', 'TaskController@createDeal');
 });
-
