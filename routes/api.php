@@ -114,6 +114,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::get('tasks/products/{task_id}', 'TaskController@getProducts')->middleware('role:null,taskcontroller.getproducts');
     Route::get('tasks/products', 'TaskController@getTasksWithProducts')->middleware('role:null,view-invoice');
     Route::get('tasks/source-types', 'TaskController@getSourceTypes')->middleware('role:null,view-invoice');
+    Route::get('tasks/task-types', 'TaskController@getTaskTypes')->middleware('role:null,view-invoice');
 
     Route::group(['middleware' => ['role:Manager']], function () {
 
