@@ -151,4 +151,9 @@ class CustomerController extends Controller {
         return response()->json('Customer deleted!');
     }
 
+    public function getCustomerTypes() {
+        $customerTypes = (new CustomerTypeRepository(new CustomerType))->getAll();
+        return response()->json($customerTypes);
+    }
+
 }
