@@ -12,6 +12,7 @@ class AddCustomer extends React.Component {
             first_name: '',
             last_name: '',
             email: '',
+            customer_type: this.props.customer_type,
             phone: '',
             address_1: '',
             address_2: '',
@@ -68,7 +69,7 @@ class AddCustomer extends React.Component {
             job_title: this.state.job_title,
             company_id: this.state.company_id,
             description: this.state.description,
-            customer_type: this.props.customer_type
+            customer_type: this.state.customer_type
         }
         this.setState({ submitSuccess: true, values: [...this.state.values, formData], loading: false })
         axios.post('/api/customers', formData)
@@ -87,6 +88,7 @@ class AddCustomer extends React.Component {
                     zip: null,
                     city: null,
                     job_title: null,
+                    customer_type: null,
                     company_id: null,
                     description: null
                 })
