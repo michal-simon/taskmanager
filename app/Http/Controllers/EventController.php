@@ -149,4 +149,9 @@ class EventController extends Controller {
         return $events->toJson();
     }
 
+    public function getEventTypes() {
+        $eventTypes = (new EventTypeRepository(new EventType))->getAll();
+        return response()->json($eventTypes);
+    }
+
 }
