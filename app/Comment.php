@@ -12,7 +12,7 @@ class Comment extends Model {
         'comment',
         'user_id',
         'parent_id',
-        'has_task'
+        'parent_type'
     ];
 
     public function task() {
