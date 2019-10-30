@@ -39,6 +39,8 @@ class CalendarEvent extends React.Component {
             endDate: this.props.event.endDate,
             customer_id: this.props.event.customer_id,
             location: this.props.event.location,
+            description: this.props.event.description,
+            event_type: this.props.event.event_type,
             loading: false,
             customers: [],
             users: [],
@@ -83,6 +85,8 @@ class CalendarEvent extends React.Component {
             customer_id: this.state.customer_id,
             users: this.state.attendees,
             title: this.state.title,
+            description: this.state.description,
+            event_type: this.state.event_type,
             location: this.state.location,
             beginDate: this.state.beginDate,
             endDate: this.state.endDate
@@ -248,6 +252,15 @@ class CalendarEvent extends React.Component {
                                 type="text" name="title"
                                 id="taskTitle" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('title')}
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label for="description">Description(*):</Label>
+                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''}
+                                value={this.state.description}
+                                type="text" name="description"
+                                id="description" onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('description')}
                         </FormGroup>
 
                         <FormGroup>
