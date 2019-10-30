@@ -22,7 +22,8 @@ class Event extends Authenticatable {
         'beginDate',
         'endDate',
         'customer_id',
-        'location'
+        'location',
+        'event_type',
     ];
 
     /**
