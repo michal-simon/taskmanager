@@ -79,11 +79,13 @@ class EventUnitTest extends TestCase {
     /** @test */
     public function it_can_create_a_event() {
         $data = [
-            'title' => $this->faker->sentence,
+            'title' => $this->faker->word,
+            'description' => $this->faker->sentence,
             'location' => $this->faker->sentence,
             'beginDate' => $this->faker->dateTime(),
             'endDate' => $this->faker->dateTime(),
-            'customer_id' => 1
+            'customer_id' => 1,
+            'event_type' => 2
         ];
         
         $event = new EventRepository(new Event);

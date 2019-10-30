@@ -15,6 +15,8 @@ use App\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\EventCreated;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\EventTypeRepository;
+use App\EventType;
 
 class EventController extends Controller {
 
@@ -67,7 +69,9 @@ class EventController extends Controller {
             'title' => $request->title,
             'location' => $request->location,
             'beginDate' => date('Y-m-d H:i:s', strtotime($request->beginDate)),
-            'endDate' => date('Y-m-d H:i:s', strtotime($request->endDate))
+            'endDate' => date('Y-m-d H:i:s', strtotime($request->endDate)),
+            'event_type' => $request->event_type,
+            'description' => $request->description
         ];
 
         $event = $this->eventRepository->createEvent($arrData);
@@ -117,7 +121,9 @@ class EventController extends Controller {
             'title' => $request->title,
             'location' => $request->location,
             'beginDate' => date('Y-m-d H:i:s', strtotime($request->beginDate)),
-            'endDate' => date('Y-m-d H:i:s', strtotime($request->endDate))
+            'endDate' => date('Y-m-d H:i:s', strtotime($request->endDate)),
+            'event_type' => $request->event_type,
+            'description' => $request->description
         ];
 
         $eventRepo = new EventRepository($event);

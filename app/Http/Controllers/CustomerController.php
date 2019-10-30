@@ -11,7 +11,8 @@ use App\Transformations\CustomerTransformable;
 use App\Requests\UpdateCustomerRequest;
 use App\Requests\CreateCustomerRequest;
 use App\Requests\SearchRequest;
-use App\Address;
+use App\Repositories\CustomerTypeRepository;
+use App\CustomerType;
 
 class CustomerController extends Controller {
 

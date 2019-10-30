@@ -3,6 +3,7 @@ import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form } from 'reactstrap'
 import axios from 'axios'
 import CompanyDropdown from '../common/CompanyDropdown'
+import CustomerTypeDropdown from '../common/CustomerTypeDropdown'
 
 class EditCustomer extends React.Component {
     constructor (props) {
@@ -178,6 +179,12 @@ class EditCustomer extends React.Component {
                    renderErrorFor={this.renderErrorFor}
                    handleInputChanges={this.handleInputChanges}
                />
+
+                <CustomerTypeDropdown
+                    customer_type={this.state.customer_type}
+                    renderErrorFor={this.renderErrorFor}
+                    handleInputChanges={this.handleInputChanges}
+                />
 
                 <FormGroup>
                     <Label htmlFor="job_title"> Job Title </Label>

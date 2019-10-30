@@ -2,9 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import styled from 'styled-components'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form} from 'reactstrap'
 import axios from 'axios'
 import DateTime from 'react-datetime'
+import EventTypeDropdown from '../common/EventTypeDropdown'
+import CustomerTypeDropdown from "../common/CustomerTypeDropdown";
 
 const Label2 = styled.span`
   display: flex;
@@ -32,6 +34,8 @@ class CalendarEvent extends React.Component {
             arrAttendees.push(attendee.id)
         })
 
+        console.log('props', this.props)
+
         this.state = {
             modal: false,
             title: this.props.event.title,
@@ -53,6 +57,7 @@ class CalendarEvent extends React.Component {
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
         this.getUserList = this.getUserList.bind(this)
         this.getCustomerList = this.getCustomerList.bind(this)
+        this.handleInput = this.handleInput.bind(this)
     }
 
     componentDidMount () {
@@ -153,11 +158,6 @@ class CalendarEvent extends React.Component {
     }
 
     convertDate (inputFormat) {
-        // function pad (s) {
-        //     return (s < 10) ? '0' + s : s
-        // }
-        // const d = new Date(inputFormat)
-        // return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/')
         return moment(inputFormat).format('YYYY-MM-DD hh:mm A')
     }
 
@@ -285,6 +285,12 @@ class CalendarEvent extends React.Component {
 
                             {this.renderErrorFor('endDate')}
                         </FormGroup>
+
+                        <EventTypeDropdown
+                            event_type={this.state.event_type}
+                            renderErrorFor={this.renderErrorFor}
+                            handleInputChanges={this.handleInput}
+                        />
 
                         {customerList}
 

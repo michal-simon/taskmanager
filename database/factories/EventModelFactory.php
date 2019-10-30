@@ -19,10 +19,12 @@ $factory->define(Event::class, function (Faker\Generator $faker) {
     $customer = factory(Customer::class)->create();
 
     return [
-        'title' => 'Test Event',
-        'location' => 'Test Location',
+        'title' => $faker->word,
+        'description' => $faker->sentence,
+        'location' => $faker->word,
         'beginDate' => $faker->dateTime()->format('Y-m-d H:i:s'),
         'endDate' => $faker->dateTime()->format('Y-m-d H:i:s'),
-        'customer_id' => $customer->id
+        'customer_id' => $customer->id,
+        'event_type' => 2
     ];
 });

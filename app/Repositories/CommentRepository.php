@@ -79,6 +79,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
     public function getAllCommentsForTask(Task $objTask) : Collection {
         return $this->model->join('comment_task', 'comments.id', '=', 'comment_task.comment_id')
                         ->where('comment_task.task_id', $objTask->id)
+                        ->where('comments.parent_type', '=', 1)
                         ->orderBy('created_at', 'desc')
                         ->with('user')
                         ->get();
@@ -89,7 +90,7 @@ class CommentRepository extends BaseRepository implements CommentRepositoryInter
      * @return Collection
      */
     public function getCommentsForActivityFeed() : Collection {
-        return $this->model->where('has_task', 0)
+        return $this->model->where('parent_type', 2)
                         ->orderBy('created_at', 'desc')
                         ->with('user')
                         ->get();

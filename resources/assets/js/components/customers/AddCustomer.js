@@ -3,6 +3,7 @@ import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form } from 'reactstrap'
 import axios from 'axios'
 import CompanyDropdown from '../common/CompanyDropdown'
+import CustomerTypeDropdown from '../common/CustomerTypeDropdown'
 
 class AddCustomer extends React.Component {
     constructor (props) {
@@ -199,6 +200,12 @@ class AddCustomer extends React.Component {
 
                             <CompanyDropdown
                                 company_id={this.state.company_id}
+                                renderErrorFor={this.renderErrorFor}
+                                handleInputChanges={this.handleInputChanges}
+                            />
+
+                            <CustomerTypeDropdown
+                                customer_type={this.state.customer_type}
                                 renderErrorFor={this.renderErrorFor}
                                 handleInputChanges={this.handleInputChanges}
                             />

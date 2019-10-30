@@ -25,7 +25,7 @@ $factory->define(Comment::class, function (Faker $faker) {
         'parent_id' => 0,
         'is_active' => 1,
         'user_id' => $user->id,
-        'has_task' => 0,
+        'parent_type' => 1,
         'comment' => $faker->text,
     ];
 });

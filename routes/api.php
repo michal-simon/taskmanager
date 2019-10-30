@@ -49,6 +49,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
         Route::post('events', 'EventController@store');
         Route::get('events/tasks/{task_id}', 'EventController@getEventsForTask');
         Route::get('events/users/{user_id}', 'EventController@getEventsForUser');
+         Route::get('event-types', 'EventController@getEventTypes');
 
 // products
         Route::get('products', 'ProductController@index');
@@ -97,7 +98,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::put('customers/{customer_id}', 'CustomerController@update')->middleware('role:null,customercontroller.update');
     Route::post('customers', 'CustomerController@store')->middleware('role:null,customercontroller.store');
     Route::delete('customers/{customer_id}', 'CustomerController@destroy')->middleware('role:null,customercontroller.destroy');
-    Route::get('customers/customer-types', 'CustomerController@getCustomerTypes')->middleware('role:null,customercontroller.show');
+    Route::get('customer-types', 'CustomerController@getCustomerTypes')->middleware('role:null,customercontroller.show');
 
 // tasks
     Route::put('tasks/{task_id}', 'TaskController@update')->middleware('role:null,taskcontroller.update');

@@ -25,6 +25,7 @@ class Event extends Authenticatable {
         'location',
         'event_type',
         'description',
+        'created_by'
     ];
 
     /**

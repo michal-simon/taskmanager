@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, Form } from 'reactstrap'
 import axios from 'axios'
 import DateTime from 'react-datetime'
+import EventTypeDropdown from '../common/EventTypeDropdown'
 
 class CreateEvent extends React.Component {
     constructor (props) {
@@ -31,6 +32,7 @@ class CreateEvent extends React.Component {
         this.getUserList = this.getUserList.bind(this)
         this.getCustomerList = this.getCustomerList.bind(this)
         this.buildForm = this.buildForm.bind(this)
+        this.handleInput = this.handleInput.bind(this)
     }
 
     componentDidMount () {
@@ -230,6 +232,12 @@ class CreateEvent extends React.Component {
                     <DateTime dateFormat="YYYY-MM-DD" inputProps={{name:'endDate'}} className={this.hasErrorFor('endDate') ? 'is-invalid' : ''} onChange={this.handleEndDate.bind(this)} />
                     {this.renderErrorFor('endDate')}
                 </FormGroup>
+
+                <EventTypeDropdown
+                    event_type={this.state.event_type}
+                    renderErrorFor={this.renderErrorFor}
+                    handleInputChanges={this.handleInput}
+                />
 
                 {customerList}
 

@@ -28,6 +28,8 @@ trait EventTransformable {
         $prop->beginDate = date("D M d Y H:i:s", strtotime($event->beginDate));
         $prop->endDate = date("D M d Y H:i:s", strtotime($event->endDate));
         $prop->attendees = $event->users;
+        $prop->event_type = $event->event_type;
+        $prop->description = $event->description;
        
         return $prop;
     }

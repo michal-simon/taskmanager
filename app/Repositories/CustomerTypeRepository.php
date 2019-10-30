@@ -1,10 +1,10 @@
 <?php
 namespace App\Repositories;
-use App\ContactType;
+use App\CustomerType;
 use App\Repositories\Interfaces\CustomerTypeRepositoryInterface;
 use App\Repositories\Base\BaseRepository;
 
-class CustomerTypeRepository extends BaseRepository implements ContactTypeRepositoryInterface {
+class CustomerTypeRepository extends BaseRepository implements CustomerTypeRepositoryInterface {
     
     /**
      * CustomerTypeRepository constructor.

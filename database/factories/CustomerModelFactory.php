@@ -20,6 +20,7 @@ $factory->define(Customer::class, function (Faker\Generator $faker) {
     $company = factory(Brand::class)->create();
 
     return [
+        'customer_type' => 1,
         'phone' => $faker->phoneNumber,
         'company_id' => $company->id,
         'job_title' => $faker->jobTitle,
