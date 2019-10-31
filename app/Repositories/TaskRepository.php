@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 namespace App\Repositories;
 
@@ -125,7 +125,8 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
                         ->where('parent_id', 0);
 
         if($objUser !== null) {
-
+            $query->join('task_user', 'tasks.id', '=', 'task_user.task_id')
+                  ->where('task_user.user_id', $objUser->id);
         }
                         
 
@@ -146,7 +147,8 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
 
 
         if($objUser !== null) {
-
+                $query->join('task_user', 'tasks.id', '=', 'task_user.task_id')
+                  ->where('task_user.user_id', $objUser->id);
         }
 
         if ($limit !== null) {
@@ -163,7 +165,8 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
                 ->orderBy('created_at', 'desc');
 
         if($objUser !== null) {
-
+                $query->join('task_user', 'tasks.id', '=', 'task_user.task_id')
+                  ->where('task_user.user_id', $objUser->id);
         }
 
         if ($limit !== null) {
