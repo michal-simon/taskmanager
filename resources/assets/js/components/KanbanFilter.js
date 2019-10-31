@@ -52,6 +52,14 @@ export default class KanbanFilter extends Component {
         this.setState(prevState => ({
             filters: [...prevState.filters, { column: column, value: value, project_id: project_id }]
         }))
+
+        /* this.setState(prevState => ({
+        items: {
+            ...prevState.items,
+            [prevState.items[1].name]: e.target.value,
+        },
+        })); */
+
         return true
     }
 
