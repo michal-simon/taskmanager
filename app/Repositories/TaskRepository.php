@@ -113,16 +113,23 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     /**
      * 
      * @param Project $objProject
+     * @param User $objUser 
      * @return type
      */
-    public function getTasksForProject(Project $objProject): Support {
+    public function getTasksForProject(Project $objProject, User $objUser = null): Support {
 
-        return $this->model->join('project_task', 'tasks.id', '=', 'project_task.task_id')
+        $query = $this->model->join('project_task', 'tasks.id', '=', 'project_task.task_id')
                         ->select('tasks.id as id', 'tasks.*')
                         ->where('project_id', $objProject->id)
                         ->where('is_completed', 0)
-                        ->where('parent_id', 0)
-                        ->get();
+                        ->where('parent_id', 0);
+
+        if($objUser !== null) {
+
+        }
+                        
+
+        return $query->get();
     }
 
     /**
@@ -131,11 +138,16 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @param type $limit
      * @return Support
      */
-    public function getLeads($limit = null): Support {
+    public function getLeads($limit = null, User $objUser = null): Support {
         $query = $this->model->where('task_type', 2)
                 ->where('is_completed', 0)
                 ->where('parent_id', 0)
                 ->orderBy('created_at', 'desc');
+
+
+        if($objUser !== null) {
+
+        }
 
         if ($limit !== null) {
             $query->limit($limit);
@@ -144,11 +156,15 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
         return $query->get();
     }
     
-     public function getDeals($limit = null): Support {
+     public function getDeals($limit = null, User $objUser = null): Support {
         $query = $this->model->where('task_type', 3)
                 ->where('is_completed', 0)
                 ->where('parent_id', 0)
                 ->orderBy('created_at', 'desc');
+
+        if($objUser !== null) {
+
+        }
 
         if ($limit !== null) {
             $query->limit($limit);
