@@ -130,4 +130,8 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
                         ->get();
     }
 
+    public function updateInvitationResponseForUser(User $objUser, $status) {
+        $this->model->users()->updateExistingPivot($objUser->id, ['status' => $status]);
+    }
+
 }
