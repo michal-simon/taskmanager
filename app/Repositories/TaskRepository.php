@@ -195,6 +195,10 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
             if (!empty($arrFilter['project_id'])) {
                 $query->where('project_id', $arrFilter['project_id']);
             }
+
+            /* whereHas('user', function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->name}%");
+            }); */
         }
 
         return $query->get();
