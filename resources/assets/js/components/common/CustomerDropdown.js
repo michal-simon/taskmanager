@@ -1,42 +1,56 @@
-/* eslint-disable no-unused-vars */
-import React, { Component } from 'react'
-import axios from 'axios'
+import React, {Component} from 'react'
+import axios from "axios";
+import {Input, FormGroup, Label, Form} from 'reactstrap'
 
-class CustomerList extends Component {
-    constructor (props, context) {
-        super(props, context)
+
+export default class CustomerDropdownn extends Component {
+    constructor(props) {
+        super(props)
         this.state = {
-            customers: [],
-            errors: []
+            customers: []
+        }
+
+        this.getCustomers = this.getCustomers.bind(this)
+    }
+
+    componentDidMount() {
+        if (!this.props.customers || !this.props.customers.length) {
+            this.getCustomers()
         }
     }
 
-    componentDidMount () {
-        this.loadCustomers()
-    }
-
-    loadCustomers () {
-        axios.get('/api/customers/')
+    getCustomers() {
+        axios.get('/api/customers')
             .then((r) => {
-                this.setState({ customers: r.data })
+                this.setState({
+                    customers: r.data
+                })
             })
             .catch((e) => {
-                alert(e)
+                console.error(e)
             })
     }
 
-    render () {
-        let customerContent
+    render() {
+        let customerList = null
         if (!this.state.customers.length) {
-            customerContent = <option value="">Loading...</option>
+            customerList = <option value="">Loading...</option>
         } else {
-            customerContent = this.state.customers.map((customer, index) => (
+            customerList = this.state.customers.map((customer, index) => (
                 <option key={index} value={customer.id}>{customer.name}</option>
             ))
         }
 
-        return customerContent
+        return (
+            <FormGroup>
+                <Label for="customer_id">Customer</Label>
+                <Input value={this.props.customer} onChange={this.props.handleInputChanges} type="select"
+                       name="customer_id" id="customer_id">
+                    <option value="">Select Customer</option>
+                    {customerList}
+                </Input>
+                {this.props.renderErrorFor('customer_id')}
+            </FormGroup>
+        )
     }
 }
-
-export default CustomerList
