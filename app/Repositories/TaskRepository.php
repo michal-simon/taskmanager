@@ -1,4 +1,4 @@
- <?php
+<?php
 
 namespace App\Repositories;
 
@@ -51,8 +51,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     /**
      * Send email to customer
      */
-    public function sendEmailToCustomer()
-    {
+    public function sendEmailToCustomer() {
 //        Mail::to($this->model->customer)
 //            ->send(new SendOrderToCustomerMailable($this->findTaskById($this->model->id)));        
     }
@@ -60,8 +59,7 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     /**
      * Send email notification to the admin
      */
-    public function sendEmailNotificationToAdmin()
-    {
+    public function sendEmailNotificationToAdmin() {
         $userRepo = new UserRepository(new User);
         $user = $userRepo->findUserById(9874);
 //        Mail::to($user)
@@ -119,16 +117,16 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
     public function getTasksForProject(Project $objProject, User $objUser = null): Support {
 
         $query = $this->model->join('project_task', 'tasks.id', '=', 'project_task.task_id')
-                        ->select('tasks.id as id', 'tasks.*')
-                        ->where('project_id', $objProject->id)
-                        ->where('is_completed', 0)
-                        ->where('parent_id', 0);
+                ->select('tasks.id as id', 'tasks.*')
+                ->where('project_id', $objProject->id)
+                ->where('is_completed', 0)
+                ->where('parent_id', 0);
 
-        if($objUser !== null) {
+        if ($objUser !== null) {
             $query->join('task_user', 'tasks.id', '=', 'task_user.task_id')
-                  ->where('task_user.user_id', $objUser->id);
+                    ->where('task_user.user_id', $objUser->id);
         }
-                        
+
 
         return $query->get();
     }
@@ -143,12 +141,12 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
         $query = $this->model->where('task_type', 2)
                 ->where('is_completed', 0)
                 ->where('parent_id', 0)
-                ->orderBy('created_at', 'desc');
+                ->orderBy('tasks.created_at', 'desc');
 
 
-        if($objUser !== null) {
-                $query->join('task_user', 'tasks.id', '=', 'task_user.task_id')
-                  ->where('task_user.user_id', $objUser->id);
+        if ($objUser !== null) {
+            $query->join('task_user', 'tasks.id', '=', 'task_user.task_id')
+                    ->where('task_user.user_id', $objUser->id);
         }
 
         if ($limit !== null) {
@@ -157,16 +155,16 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
 
         return $query->get();
     }
-    
-     public function getDeals($limit = null, User $objUser = null): Support {
+
+    public function getDeals($limit = null, User $objUser = null): Support {
         $query = $this->model->where('task_type', 3)
                 ->where('is_completed', 0)
                 ->where('parent_id', 0)
-                ->orderBy('created_at', 'desc');
+                ->orderBy('tasks.created_at', 'desc');
 
-        if($objUser !== null) {
-                $query->join('task_user', 'tasks.id', '=', 'task_user.task_id')
-                  ->where('task_user.user_id', $objUser->id);
+        if ($objUser !== null) {
+            $query->join('task_user', 'tasks.id', '=', 'task_user.task_id')
+                    ->where('task_user.user_id', $objUser->id);
         }
 
         if ($limit !== null) {
@@ -207,17 +205,12 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
                     ->where('task_type', $task_type);
         }
 
-
-        foreach ($arrFilters as $arrFilter) {
-            $query->where($arrFilter['column'], '=', $arrFilter['value']);
+        foreach ($arrFilters as $column => $value) {
+            $query->where($column, '=', $value);
 
             if (!empty($arrFilter['project_id'])) {
                 $query->where('project_id', $arrFilter['project_id']);
             }
-
-            /* whereHas('user', function ($query) use ($request) {
-                $query->where('name', 'like', "%{$request->name}%");
-            }); */
         }
 
         return $query->get();
@@ -329,8 +322,8 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface {
      * @return boolean
      */
     public function buildOrderDetails(array $items) {
-        
-         $this->model->products()->detach();
+
+        $this->model->products()->detach();
 
         foreach ($items as $item) {
             $productRepo = new ProductRepository(new Product);

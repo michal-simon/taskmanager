@@ -2,6 +2,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\Task;
+use App\User;
 use App\Project;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
@@ -58,20 +59,20 @@ interface TaskRepositoryInterface extends BaseRepositoryInterface
      * @param int $task_type
      * @param type $limit
      */
-    public function getLeads($limit = null) : Support;
+    public function getLeads($limit = null,  User $objUser = null) : Support;
     
     /**
      * 
      * @param int $task_type
      * @param type $limit
      */
-    public function getDeals($limit = null) : Support;
+    public function getDeals($limit = null, User $objUser = null) : Support;
     
     /**
      * 
      * @param Project $objProject
      */
-    public function getTasksForProject(Project $objProject) : Support;
+    public function getTasksForProject(Project $objProject, User $objUser = null) : Support;
     
     /**
      * 

@@ -49,7 +49,8 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
         Route::post('events', 'EventController@store');
         Route::get('events/tasks/{task_id}', 'EventController@getEventsForTask');
         Route::get('events/users/{user_id}', 'EventController@getEventsForUser');
-         Route::get('event-types', 'EventController@getEventTypes');
+        Route::get('event-types', 'EventController@getEventTypes');
+        Route::post('events/filterEvents', 'EventController@filterEvents')->middleware('role:null,taskcontroller.filtertasks');
 
 // products
         Route::get('products', 'ProductController@index');

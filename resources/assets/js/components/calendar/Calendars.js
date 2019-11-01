@@ -1,12 +1,15 @@
-/* eslint-disable no-unused-vars */
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Calendar from './Calendar'
 import CreateEvent from './CreateEvent'
 import axios from 'axios'
-import {Input, FormGroup, Label, Form, Card, CardHeader, CardBody} from 'reactstrap'
+import { FormGroup, Form, Card, CardHeader, CardBody} from 'reactstrap'
 import WeekCalendar from './WeekCalendar'
 import CalendarEvent from "./CalendarEvent";
+import TaskDropdown from "../common/TaskDropdown";
+import UserDropdown from "../common/UserDropdown";
+import CustomerDropdown from "../common/CustomerDropdown";
+import EventTypeDropdown from "../common/EventTypeDropdown";
 
 const Container = styled.div`
   display: flex;
@@ -33,25 +36,21 @@ class Calendars extends React.Component {
             year: new Date().getFullYear(),
             month: new Date().getMonth() + 1,
             events: [],
-            tasks: [],
-            users: [],
+            filters: [],
             calendar_type: 'month'
         }
 
         this.loadPrevMonth = this.loadPrevMonth.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
         this.loadNextMonth = this.loadNextMonth.bind(this)
         this.setEvents = this.setEvents.bind(this)
         this.getEvents = this.getEvents.bind(this)
-        this.buildUserOptions = this.buildUserOptions.bind(this)
-        this.buildTaskOptions = this.buildTaskOptions.bind(this)
         this.filterEvents = this.filterEvents.bind(this)
         this.eventRender = this.eventRender.bind(this)
     }
 
     componentDidMount() {
         this.getEvents()
-        this.getUsers()
-        this.getTasks()
     }
 
     setEvents(events) {
@@ -75,83 +74,39 @@ class Calendars extends React.Component {
             })
     }
 
-    getTasks() {
-        const url = '/api/tasks'
-        axios.get(url)
-            .then((r) => {
-                this.setState({
-                    tasks: r.data
-                })
-            })
-            .catch((e) => {
-                alert(e)
-            })
-    }
-
-    getUsers() {
-        const url = '/api/users'
-        axios.get(url)
-            .then((r) => {
-                this.setState({
-                    users: r.data
-                })
-            })
-            .catch((e) => {
-                alert(e)
-            })
-    }
-
     filterEvents(e) {
-        const url = (!e.target.value) ? '/api/events' : (e.target.name === 'user') ? `/api/events/users/${e.target.value}` : `/api/events/tasks/${e.target.value}`
 
-        axios.get(url)
-            .then((r) => {
-                this.setState({
-                    events: r.data
-                })
-            })
-            .catch((e) => {
-                console.warn(e)
-            })
+        const column = event.target.id
+        const value = event.target.value
+        const project_id = this.props.project_id ? this.props.project_id : 0
+
+        if (value === 'all') {
+            const updatedRowState = this.state.filters.filter(filter => filter.column !== column)
+            this.setState({filters: updatedRowState})
+            return true
+        }
+
+        this.setState(prevState => ({
+            filters: {
+                ...prevState.filters,
+                [column]: value,
+            },
+        }));
+
+        return true
     }
 
-    buildUserOptions() {
-        let userContent
-        if (!this.state.users.length) {
-            userContent = <option value="">Loading...</option>
-        } else {
-            userContent = this.state.users.map((user, index) => (
-                <option key={index} value={user.id}>{user.first_name + ' ' + user.last_name}</option>
-            ))
-        }
-        return (
-            <Input type="select"
-                   value={this.props.user_id} name="user" id="contributors"
-                   onChange={this.filterEvents.bind(this)}
-            >
-                <option value="">Choose:</option>
-                {userContent}
-            </Input>
-        )
-    }
+    handleSubmit(event) {
+        event.preventDefault()
 
-    buildTaskOptions() {
-        let taskContent
-        if (!this.state.tasks.length) {
-            taskContent = <option value="">Loading...</option>
-        } else {
-            taskContent = this.state.tasks.map((task, index) => (
-                <option key={index} value={task.id}>{task.title}</option>
-            ))
-        }
-        return (
-            <Input type="select"
-                   value={this.props.task_id} name="task" id="tasks" onChange={this.filterEvents.bind(this)}
-            >
-                <option value="">Choose:</option>
-                {taskContent}
-            </Input>
-        )
+        axios.post('/api/events/filterEvents',
+            this.state.filters)
+            .then((response) => {
+                this.setState({events: response.data})
+            })
+            .catch((error) => {
+                alert(error)
+            })
     }
 
     /**
@@ -180,11 +135,17 @@ class Calendars extends React.Component {
         this.setMonth(nextMonth)
     }
 
+    renderErrorFor () {
+
+    }
+
+    resetFilters() {
+        this.props.reset()
+    }
+
     getFilters() {
-        const usersList = this.buildUserOptions()
-        const taskList = this.buildTaskOptions()
         return (
-            <Form inline className="pull-right">
+            <Form inline className="pull-right" onSubmit={this.handleSubmit}>
 
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                     <CreateEvent
@@ -194,13 +155,28 @@ class Calendars extends React.Component {
                     />
                 </FormGroup>
 
-                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                    {usersList}
-                </FormGroup>
+              <TaskDropdown
+                  name="event_task.task_id"
+                  renderErrorFor={this.renderErrorFor}
+                  handleInputChanges={this.filterEvents}
+              />
+              <UserDropdown
+                  name="event_user.user_id"
+                  renderErrorFor={this.renderErrorFor}
+                  handleInputChanges={this.filterEvents}
+              />
+              <CustomerDropdown
+                  renderErrorFor={this.renderErrorFor}
+                  handleInputChanges={this.filterEvents}
+              />
+              <EventTypeDropdown
+                  renderErrorFor={this.renderErrorFor}
+                  handleInputChanges={this.filterEvents}
+                  customers={this.props.customers}
+              />
 
-                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                    {taskList}
-                </FormGroup>
+                <button className="mr-2 ml-2 btn btn-success">Submit</button>
+                <button onClick={this.resetFilters} className="btn btn-primary">Reset</button>
             </Form>
         )
     }

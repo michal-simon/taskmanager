@@ -16,6 +16,8 @@ export default class UserDropdown extends Component {
     componentDidMount() {
         if (!this.props.users || !this.props.users.length) {
             this.getUsers()
+        } else {
+            this.setState({users: this.props.users})
         }
     }
 
@@ -37,15 +39,16 @@ export default class UserDropdown extends Component {
             userList = <option value="">Loading...</option>
         } else {
             userList = this.state.users.map((user, index) => (
-                <option key={index} value={user.id}>{user.first_name}</option>
+                <option key={index} value={user.id}>{user.first_name} {user.last_name}</option>
             ))
         }
 
+        const name = this.props.name && this.props.name ? this.props.name : 'user_id'
+
         return (
-            <FormGroup>
-                <Label for="user_id">User</Label>
+            <FormGroup className="ml-2">
                 <Input value={this.props.user} onChange={this.props.handleInputChanges} type="select"
-                       name="user_id" id="user_id">
+                       name={name} id={name}>
                     <option value="">Select User</option>
                     {userList}
                 </Input>

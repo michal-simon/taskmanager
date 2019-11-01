@@ -3,7 +3,7 @@ import axios from "axios";
 import {Input, FormGroup, Label, Form} from 'reactstrap'
 
 
-export default class CustomerDropdownn extends Component {
+export default class CustomerDropdown extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -16,6 +16,8 @@ export default class CustomerDropdownn extends Component {
     componentDidMount() {
         if (!this.props.customers || !this.props.customers.length) {
             this.getCustomers()
+        } else {
+            this.setState({customers: this.props.customers})
         }
     }
 
@@ -33,7 +35,7 @@ export default class CustomerDropdownn extends Component {
 
     render() {
         let customerList = null
-        if (!this.state.customers.length) {
+        if (this.state.customers && !this.state.customers.length) {
             customerList = <option value="">Loading...</option>
         } else {
             customerList = this.state.customers.map((customer, index) => (
@@ -42,8 +44,7 @@ export default class CustomerDropdownn extends Component {
         }
 
         return (
-            <FormGroup>
-                <Label for="customer_id">Customer</Label>
+            <FormGroup className="ml-2">
                 <Input value={this.props.customer} onChange={this.props.handleInputChanges} type="select"
                        name="customer_id" id="customer_id">
                     <option value="">Select Customer</option>

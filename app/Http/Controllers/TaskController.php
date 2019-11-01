@@ -187,7 +187,6 @@ class TaskController extends Controller {
      * @param int $task_type
      */
     public function filterTasks(Request $request, int $task_type) {
-
         $list = $this->taskRepository->filterTasks($request->all(), $task_type);
 
         $tasks = $list->map(function (Task $task) {

@@ -134,32 +134,24 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
         $this->model->users()->updateExistingPivot($objUser->id, ['status' => $status]);
     }
 
-        /**
+      /**
      * 
      * @param array $arrFilters
      * @param type $task_type
      * @return Support
      */
-    public function filterEvents(array $arrFilters): Support {
-        $query = $this->model->select('tasks.id as id', 'tasks.*')
-                ->leftJoin('task_user', 'tasks.id', '=', 'task_user.task_id');
-        if ($task_type === 1) {
-            $query = $query->join('project_task', 'tasks.id', '=', 'project_task.task_id')
-                    ->where('is_completed', 0)
-                    ->where('parent_id', 0);
-        } else {
-            $query = $query->where('is_completed', 0)
-                    ->where('task_type', $task_type);
+    public function filterEvents(array $arrFilters): Collection {
+
+        $query = $this->model->select('events.id as id', 'events.*')
+                ->leftJoin('event_user', 'events.id', '=', 'event_user.event_id')
+                ->leftJoin('event_task', 'events.id', '=', 'event_task.event_id');
+
+        foreach ($arrFilters as $column => $value) {
+            $query->where($column, '=', $value);
         }
-        foreach ($arrFilters as $arrFilter) {
-            $query->where($arrFilter['column'], '=', $arrFilter['value']);
-            if (!empty($arrFilter['project_id'])) {
-                $query->where('project_id', $arrFilter['project_id']);
-            }
-            /* whereHas('user', function ($query) use ($request) {
-                $query->where('name', 'like', "%{$request->name}%");
-            }); */
-        }
+        
+        $query->groupBy('events.id');
+
         return $query->get();
     }
 }

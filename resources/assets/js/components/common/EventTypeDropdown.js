@@ -43,7 +43,6 @@ export default class EventTypeDropdown extends Component {
 
         return (
             <FormGroup>
-                <Label for="event_type">Event Type</Label>
                 <Input value={this.props.event_type} onChange={this.props.handleInputChanges} type="select"
                        name="event_type" id="event_type">
                     <option value="">Select Event Type</option>

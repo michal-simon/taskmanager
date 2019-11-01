@@ -71,7 +71,7 @@ class Task extends Component {
             content = <div className="loader">
                 <Loader/>
             </div>
-        } else {
+        } else if(tasks && tasks.length) {
             content =
                 tasks.filter(i => i.task_status === Number(filter))
                     .map((i, index) => {

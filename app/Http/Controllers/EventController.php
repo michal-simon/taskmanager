@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use Illuminate\Http\Request;
 use App\Requests\CreateEventRequest;
 use App\Requests\UpdateEventRequest;
 use App\Repositories\Interfaces\EventRepositoryInterface;
@@ -158,6 +159,21 @@ class EventController extends Controller {
     public function getEventTypes() {
         $eventTypes = (new EventTypeRepository(new EventType))->getAll();
         return response()->json($eventTypes);
+    }
+
+    /**
+     * 
+     * @param \App\Http\Controllers\Request $request
+     * @return type
+     */
+    public function filterEvents(Request $request) {
+        $list = $this->eventRepository->filterEvents($request->all());
+
+        $events = $list->map(function (Event $event) {
+                    return $this->transformEvent($event);
+                })->all();
+
+        return response()->json($events);
     }
 
 }
