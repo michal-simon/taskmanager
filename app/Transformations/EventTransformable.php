@@ -30,6 +30,8 @@ trait EventTransformable {
         $prop->attendees = $event->users;
         $prop->event_type = $event->event_type;
         $prop->description = $event->description;
+        $prop->status = isset($event->status) ? $event->status : null;
+        $prop->owner = $event->createdBy;
        
         return $prop;
     }

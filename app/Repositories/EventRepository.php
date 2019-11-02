@@ -125,13 +125,13 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
      */
     public function getEventsForUser(User $objUser): Collection {
         return $this->model->join('event_user', 'event_user.event_id', '=', 'events.id')
-                        ->select('events.*')
+                        ->select('events.*', 'event_user.status')
                         ->where('event_user.user_id', $objUser->id)
                         ->get();
     }
 
     public function updateInvitationResponseForUser(User $objUser, $status) {
-        $this->model->users()->updateExistingPivot($objUser->id, ['status' => $status]);
+        $this->model->users()->updateExistingPivot($objUser->id, $status);
     }
 
       /**

@@ -42,4 +42,8 @@ class Event extends Authenticatable {
     public function customer() {
         return $this->belongsTo(Customer::class);
     }
+    
+    public function createdBy() {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

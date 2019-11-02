@@ -50,6 +50,7 @@
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.2",
     "react-test-renderer": "^16.11.0",
+    "react-timeago": "^4.4.0",
     "react-toastify": "^5.4.0",
     "reactstrap": "^8.1.1",
     "simple-line-icons": "^2.4.1",

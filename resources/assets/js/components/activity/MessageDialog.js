@@ -20,30 +20,24 @@ class MessageDialog extends React.Component {
         const { mode, submitMessage, toggleOpenState, isDialogOpen } = this.props
         const { messageText } = this.state
         return (
-            <Modal isOpen={isDialogOpen} toggle={toggleOpenState} className={this.props.className}>
-                <ModalHeader toggle={toggleOpenState}>
-                    {`${mode} Message`}
-                </ModalHeader>
 
-                <ModalBody>
-                    {`Please fill in the field below to ${mode.toLowerCase()} message`}.
+            <div className="well">
+                <form className="form-horizontal" role="form">
+                    <h4>What's New</h4>
+                    <div className="form-group p-2">
+                        <textarea className="form-control" placeholder="Update your status" onChange={this.onChange}></textarea>
+                    </div>
+                    <button onClick={() => submitMessage(messageText, mode)} className="btn btn-primary pull-right" type="button">Post</button>
+                    <ul className="list-inline">
+                        <li><a href=""><i className="glyphicon glyphicon-upload"></i></a></li>
+                        <li><a href=""><i className="glyphicon glyphicon-camera"></i></a></li>
+                        <li><a href=""><i className="glyphicon glyphicon-map-marker"></i></a></li>
+                    </ul>
+                </form>
+            </div>
 
-                    <Input
-                        value={messageText}
-                        autoFocus={true}
-                        margin="dense"
-                        id="message"
-                        label="Message"
-                        type="text"
-                        onChange={this.onChange}
-                    />
-                </ModalBody>
 
-                <ModalFooter>
-                    <Button onClick={toggleOpenState} color="primary">Cancel</Button>
-                    <Button onClick={() => submitMessage(messageText, mode)} color="primary">Submit</Button>
-                </ModalFooter>
-            </Modal>
+
         )
     }
 }

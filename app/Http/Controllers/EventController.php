@@ -175,5 +175,16 @@ class EventController extends Controller {
 
         return response()->json($events);
     }
-
+    
+    /**
+     * 
+     * @param type $id
+     * @param Request $request
+     */
+    public function updateEventStatus($id, Request $request) {
+        $user = Auth::user();
+        $event = $this->eventRepository->findEventById($id);
+        $eventRepo = new EventRepository($event);
+        $eventRepo->updateInvitationResponseForUser($user, $request->all());
+    }
 }

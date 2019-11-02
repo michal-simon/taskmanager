@@ -641,699 +641,708 @@ span.menu-text {
 	float: right;
 }
 
-/** Panels **/
 .panel {
 	margin-bottom: 20px;
 	background-color: $white;
 	border: 1px solid transparent;
-	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
 	border-radius: 4px;
-	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	-webkit-box-shadow: 0 1px 1px $black_5;
 	box-shadow: 0 1px 1px $black_5;
-	> {
-		.list-group {
-			margin-bottom: 0;
-			.list-group-item {
-				border-width: 1px 0;
-				//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-				border-radius: 0;
-			}
-			&:first-child .list-group-item:first-child {
-				@extend %extend_6;
-			}
-			&:last-child .list-group-item:last-child {
-				@extend %extend_7;
-			}
-		}
-		.table {
-			margin-bottom: 0;
-			caption {
-				padding-right: 15px;
-				padding-left: 15px;
-			}
-			&:first-child {
-				//Instead of the line below you could use @include border-top-left-radius($radius)
-				border-top-left-radius: 3px;
-				//Instead of the line below you could use @include border-top-right-radius($radius)
-				border-top-right-radius: 3px;
-				> tbody:first-child > tr:first-child {
-					//Instead of the line below you could use @include border-top-left-radius($radius)
-					border-top-left-radius: 3px;
-					//Instead of the line below you could use @include border-top-right-radius($radius)
-					border-top-right-radius: 3px;
-					td {
-						&:first-child {
-							//Instead of the line below you could use @include border-top-left-radius($radius)
-							border-top-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-top-right-radius($radius)
-							border-top-right-radius: 3px;
-						}
-					}
-					th {
-						&:first-child {
-							//Instead of the line below you could use @include border-top-left-radius($radius)
-							border-top-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-top-right-radius($radius)
-							border-top-right-radius: 3px;
-						}
-					}
-				}
-				> thead:first-child > tr:first-child {
-					//Instead of the line below you could use @include border-top-left-radius($radius)
-					border-top-left-radius: 3px;
-					//Instead of the line below you could use @include border-top-right-radius($radius)
-					border-top-right-radius: 3px;
-					td {
-						&:first-child {
-							//Instead of the line below you could use @include border-top-left-radius($radius)
-							border-top-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-top-right-radius($radius)
-							border-top-right-radius: 3px;
-						}
-					}
-					th {
-						&:first-child {
-							//Instead of the line below you could use @include border-top-left-radius($radius)
-							border-top-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-top-right-radius($radius)
-							border-top-right-radius: 3px;
-						}
-					}
-				}
-			}
-			&:last-child {
-				//Instead of the line below you could use @include border-bottom-right-radius($radius)
-				border-bottom-right-radius: 3px;
-				//Instead of the line below you could use @include border-bottom-left-radius($radius)
-				border-bottom-left-radius: 3px;
-				> tbody:last-child > tr:last-child {
-					//Instead of the line below you could use @include border-bottom-right-radius($radius)
-					border-bottom-right-radius: 3px;
-					//Instead of the line below you could use @include border-bottom-left-radius($radius)
-					border-bottom-left-radius: 3px;
-					td {
-						&:first-child {
-							//Instead of the line below you could use @include border-bottom-left-radius($radius)
-							border-bottom-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-bottom-right-radius($radius)
-							border-bottom-right-radius: 3px;
-						}
-					}
-					th {
-						&:first-child {
-							//Instead of the line below you could use @include border-bottom-left-radius($radius)
-							border-bottom-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-bottom-right-radius($radius)
-							border-bottom-right-radius: 3px;
-						}
-					}
-				}
-				> tfoot:last-child > tr:last-child {
-					//Instead of the line below you could use @include border-bottom-right-radius($radius)
-					border-bottom-right-radius: 3px;
-					//Instead of the line below you could use @include border-bottom-left-radius($radius)
-					border-bottom-left-radius: 3px;
-					td {
-						&:first-child {
-							//Instead of the line below you could use @include border-bottom-left-radius($radius)
-							border-bottom-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-bottom-right-radius($radius)
-							border-bottom-right-radius: 3px;
-						}
-					}
-					th {
-						&:first-child {
-							//Instead of the line below you could use @include border-bottom-left-radius($radius)
-							border-bottom-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-bottom-right-radius($radius)
-							border-bottom-right-radius: 3px;
-						}
-					}
-				}
-			}
-			+ .panel-body {
-				border-top: 1px solid $color_alto_approx;
-			}
-			> tbody:first-child > tr:first-child {
-				td {
-					border-top: 0;
-				}
-				th {
-					border-top: 0;
-				}
-			}
-		}
-		.table-responsive {
-			margin-bottom: 0;
-			border: 0;
-			> {
-				.table {
-					margin-bottom: 0;
-					caption {
-						padding-right: 15px;
-						padding-left: 15px;
-					}
-				}
-				.table-bordered {
-					border: 0;
-					> tbody > tr {
-						> td {
-							&:first-child {
-								border-left: 0;
-							}
-							&:last-child {
-								border-right: 0;
-							}
-						}
-						> th {
-							&:first-child {
-								border-left: 0;
-							}
-							&:last-child {
-								border-right: 0;
-							}
-						}
-						&:first-child {
-							> td {
-								border-bottom: 0;
-							}
-							> th {
-								border-bottom: 0;
-							}
-						}
-						&:last-child {
-							> td {
-								border-bottom: 0;
-							}
-							> th {
-								border-bottom: 0;
-							}
-						}
-					}
-					> tfoot > tr {
-						> td {
-							&:first-child {
-								border-left: 0;
-							}
-							&:last-child {
-								border-right: 0;
-							}
-						}
-						> th {
-							&:first-child {
-								border-left: 0;
-							}
-							&:last-child {
-								border-right: 0;
-							}
-						}
-						&:last-child {
-							> td {
-								border-bottom: 0;
-							}
-							> th {
-								border-bottom: 0;
-							}
-						}
-					}
-					> thead > tr {
-						> td {
-							&:first-child {
-								border-left: 0;
-							}
-							&:last-child {
-								border-right: 0;
-							}
-						}
-						> th {
-							&:first-child {
-								border-left: 0;
-							}
-							&:last-child {
-								border-right: 0;
-							}
-						}
-						&:first-child {
-							> td {
-								border-bottom: 0;
-							}
-							> th {
-								border-bottom: 0;
-							}
-						}
-					}
-				}
-			}
-			&:first-child > .table:first-child {
-				//Instead of the line below you could use @include border-top-left-radius($radius)
-				border-top-left-radius: 3px;
-				//Instead of the line below you could use @include border-top-right-radius($radius)
-				border-top-right-radius: 3px;
-				> tbody:first-child > tr:first-child {
-					//Instead of the line below you could use @include border-top-left-radius($radius)
-					border-top-left-radius: 3px;
-					//Instead of the line below you could use @include border-top-right-radius($radius)
-					border-top-right-radius: 3px;
-					td {
-						&:first-child {
-							//Instead of the line below you could use @include border-top-left-radius($radius)
-							border-top-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-top-right-radius($radius)
-							border-top-right-radius: 3px;
-						}
-					}
-					th {
-						&:first-child {
-							//Instead of the line below you could use @include border-top-left-radius($radius)
-							border-top-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-top-right-radius($radius)
-							border-top-right-radius: 3px;
-						}
-					}
-				}
-				> thead:first-child > tr:first-child {
-					//Instead of the line below you could use @include border-top-left-radius($radius)
-					border-top-left-radius: 3px;
-					//Instead of the line below you could use @include border-top-right-radius($radius)
-					border-top-right-radius: 3px;
-					td {
-						&:first-child {
-							//Instead of the line below you could use @include border-top-left-radius($radius)
-							border-top-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-top-right-radius($radius)
-							border-top-right-radius: 3px;
-						}
-					}
-					th {
-						&:first-child {
-							//Instead of the line below you could use @include border-top-left-radius($radius)
-							border-top-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-top-right-radius($radius)
-							border-top-right-radius: 3px;
-						}
-					}
-				}
-			}
-			&:last-child > .table:last-child {
-				//Instead of the line below you could use @include border-bottom-right-radius($radius)
-				border-bottom-right-radius: 3px;
-				//Instead of the line below you could use @include border-bottom-left-radius($radius)
-				border-bottom-left-radius: 3px;
-				> tbody:last-child > tr:last-child {
-					//Instead of the line below you could use @include border-bottom-right-radius($radius)
-					border-bottom-right-radius: 3px;
-					//Instead of the line below you could use @include border-bottom-left-radius($radius)
-					border-bottom-left-radius: 3px;
-					td {
-						&:first-child {
-							//Instead of the line below you could use @include border-bottom-left-radius($radius)
-							border-bottom-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-bottom-right-radius($radius)
-							border-bottom-right-radius: 3px;
-						}
-					}
-					th {
-						&:first-child {
-							//Instead of the line below you could use @include border-bottom-left-radius($radius)
-							border-bottom-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-bottom-right-radius($radius)
-							border-bottom-right-radius: 3px;
-						}
-					}
-				}
-				> tfoot:last-child > tr:last-child {
-					//Instead of the line below you could use @include border-bottom-right-radius($radius)
-					border-bottom-right-radius: 3px;
-					//Instead of the line below you could use @include border-bottom-left-radius($radius)
-					border-bottom-left-radius: 3px;
-					td {
-						&:first-child {
-							//Instead of the line below you could use @include border-bottom-left-radius($radius)
-							border-bottom-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-bottom-right-radius($radius)
-							border-bottom-right-radius: 3px;
-						}
-					}
-					th {
-						&:first-child {
-							//Instead of the line below you could use @include border-bottom-left-radius($radius)
-							border-bottom-left-radius: 3px;
-						}
-						&:last-child {
-							//Instead of the line below you could use @include border-bottom-right-radius($radius)
-							border-bottom-right-radius: 3px;
-						}
-					}
-				}
-			}
-			+ .panel-body {
-				border-top: 1px solid $color_alto_approx;
-			}
-		}
-		.table-bordered {
-			border: 0;
-			> tbody > tr {
-				> td {
-					&:first-child {
-						border-left: 0;
-					}
-					&:last-child {
-						border-right: 0;
-					}
-				}
-				> th {
-					&:first-child {
-						border-left: 0;
-					}
-					&:last-child {
-						border-right: 0;
-					}
-				}
-				&:first-child {
-					> td {
-						border-bottom: 0;
-					}
-					> th {
-						border-bottom: 0;
-					}
-				}
-				&:last-child {
-					> td {
-						border-bottom: 0;
-					}
-					> th {
-						border-bottom: 0;
-					}
-				}
-			}
-			> tfoot > tr {
-				> td {
-					&:first-child {
-						border-left: 0;
-					}
-					&:last-child {
-						border-right: 0;
-					}
-				}
-				> th {
-					&:first-child {
-						border-left: 0;
-					}
-					&:last-child {
-						border-right: 0;
-					}
-				}
-				&:last-child {
-					> td {
-						border-bottom: 0;
-					}
-					> th {
-						border-bottom: 0;
-					}
-				}
-			}
-			> thead > tr {
-				> td {
-					&:first-child {
-						border-left: 0;
-					}
-					&:last-child {
-						border-right: 0;
-					}
-				}
-				> th {
-					&:first-child {
-						border-left: 0;
-					}
-					&:last-child {
-						border-right: 0;
-					}
-				}
-				&:first-child {
-					> td {
-						border-bottom: 0;
-					}
-					> th {
-						border-bottom: 0;
-					}
-				}
-			}
-		}
-		.panel-collapse > {
-			.list-group {
-				margin-bottom: 0;
-				.list-group-item {
-					border-width: 1px 0;
-					//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-					border-radius: 0;
-				}
-				&:first-child .list-group-item:first-child {
-					@extend %extend_6;
-				}
-				&:last-child .list-group-item:last-child {
-					@extend %extend_7;
-				}
-			}
-			.table {
-				margin-bottom: 0;
-				caption {
-					padding-right: 15px;
-					padding-left: 15px;
-				}
-			}
-		}
-	}
 }
 
-.panel>.panel-body+.table,.panel>.panel-body+.table-responsive,.panel>.table+.panel-body,.panel>.table-responsive+.panel-body{
-    border-top:1px solid $color_alto_approx
-}
+/** Panels **/
+//.panel {
+//	margin-bottom: 20px;
+//	background-color: $white;
+//	border: 1px solid transparent;
+//	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+//	border-radius: 4px;
+//	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+//	box-shadow: 0 1px 1px $black_5;
+//	> {
+//		.list-group {
+//			margin-bottom: 0;
+//			.list-group-item {
+//				border-width: 1px 0;
+//				//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+//				border-radius: 0;
+//			}
+//			&:first-child .list-group-item:first-child {
+//				@extend %extend_6;
+//			}
+//			&:last-child .list-group-item:last-child {
+//				@extend %extend_7;
+//			}
+//		}
+//		.table {
+//			margin-bottom: 0;
+//			caption {
+//				padding-right: 15px;
+//				padding-left: 15px;
+//			}
+//			&:first-child {
+//				//Instead of the line below you could use @include border-top-left-radius($radius)
+//				border-top-left-radius: 3px;
+//				//Instead of the line below you could use @include border-top-right-radius($radius)
+//				border-top-right-radius: 3px;
+//				> tbody:first-child > tr:first-child {
+//					//Instead of the line below you could use @include border-top-left-radius($radius)
+//					border-top-left-radius: 3px;
+//					//Instead of the line below you could use @include border-top-right-radius($radius)
+//					border-top-right-radius: 3px;
+//					td {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-top-left-radius($radius)
+//							border-top-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-top-right-radius($radius)
+//							border-top-right-radius: 3px;
+//						}
+//					}
+//					th {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-top-left-radius($radius)
+//							border-top-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-top-right-radius($radius)
+//							border-top-right-radius: 3px;
+//						}
+//					}
+//				}
+//				> thead:first-child > tr:first-child {
+//					//Instead of the line below you could use @include border-top-left-radius($radius)
+//					border-top-left-radius: 3px;
+//					//Instead of the line below you could use @include border-top-right-radius($radius)
+//					border-top-right-radius: 3px;
+//					td {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-top-left-radius($radius)
+//							border-top-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-top-right-radius($radius)
+//							border-top-right-radius: 3px;
+//						}
+//					}
+//					th {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-top-left-radius($radius)
+//							border-top-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-top-right-radius($radius)
+//							border-top-right-radius: 3px;
+//						}
+//					}
+//				}
+//			}
+//			&:last-child {
+//				//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//				border-bottom-right-radius: 3px;
+//				//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//				border-bottom-left-radius: 3px;
+//				> tbody:last-child > tr:last-child {
+//					//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//					border-bottom-right-radius: 3px;
+//					//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//					border-bottom-left-radius: 3px;
+//					td {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//							border-bottom-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//							border-bottom-right-radius: 3px;
+//						}
+//					}
+//					th {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//							border-bottom-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//							border-bottom-right-radius: 3px;
+//						}
+//					}
+//				}
+//				> tfoot:last-child > tr:last-child {
+//					//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//					border-bottom-right-radius: 3px;
+//					//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//					border-bottom-left-radius: 3px;
+//					td {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//							border-bottom-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//							border-bottom-right-radius: 3px;
+//						}
+//					}
+//					th {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//							border-bottom-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//							border-bottom-right-radius: 3px;
+//						}
+//					}
+//				}
+//			}
+//			+ .panel-body {
+//				border-top: 1px solid $color_alto_approx;
+//			}
+//			> tbody:first-child > tr:first-child {
+//				td {
+//					border-top: 0;
+//				}
+//				th {
+//					border-top: 0;
+//				}
+//			}
+//		}
+//		.table-responsive {
+//			margin-bottom: 0;
+//			border: 0;
+//			> {
+//				.table {
+//					margin-bottom: 0;
+//					caption {
+//						padding-right: 15px;
+//						padding-left: 15px;
+//					}
+//				}
+//				.table-bordered {
+//					border: 0;
+//					> tbody > tr {
+//						> td {
+//							&:first-child {
+//								border-left: 0;
+//							}
+//							&:last-child {
+//								border-right: 0;
+//							}
+//						}
+//						> th {
+//							&:first-child {
+//								border-left: 0;
+//							}
+//							&:last-child {
+//								border-right: 0;
+//							}
+//						}
+//						&:first-child {
+//							> td {
+//								border-bottom: 0;
+//							}
+//							> th {
+//								border-bottom: 0;
+//							}
+//						}
+//						&:last-child {
+//							> td {
+//								border-bottom: 0;
+//							}
+//							> th {
+//								border-bottom: 0;
+//							}
+//						}
+//					}
+//					> tfoot > tr {
+//						> td {
+//							&:first-child {
+//								border-left: 0;
+//							}
+//							&:last-child {
+//								border-right: 0;
+//							}
+//						}
+//						> th {
+//							&:first-child {
+//								border-left: 0;
+//							}
+//							&:last-child {
+//								border-right: 0;
+//							}
+//						}
+//						&:last-child {
+//							> td {
+//								border-bottom: 0;
+//							}
+//							> th {
+//								border-bottom: 0;
+//							}
+//						}
+//					}
+//					> thead > tr {
+//						> td {
+//							&:first-child {
+//								border-left: 0;
+//							}
+//							&:last-child {
+//								border-right: 0;
+//							}
+//						}
+//						> th {
+//							&:first-child {
+//								border-left: 0;
+//							}
+//							&:last-child {
+//								border-right: 0;
+//							}
+//						}
+//						&:first-child {
+//							> td {
+//								border-bottom: 0;
+//							}
+//							> th {
+//								border-bottom: 0;
+//							}
+//						}
+//					}
+//				}
+//			}
+//			&:first-child > .table:first-child {
+//				//Instead of the line below you could use @include border-top-left-radius($radius)
+//				border-top-left-radius: 3px;
+//				//Instead of the line below you could use @include border-top-right-radius($radius)
+//				border-top-right-radius: 3px;
+//				> tbody:first-child > tr:first-child {
+//					//Instead of the line below you could use @include border-top-left-radius($radius)
+//					border-top-left-radius: 3px;
+//					//Instead of the line below you could use @include border-top-right-radius($radius)
+//					border-top-right-radius: 3px;
+//					td {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-top-left-radius($radius)
+//							border-top-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-top-right-radius($radius)
+//							border-top-right-radius: 3px;
+//						}
+//					}
+//					th {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-top-left-radius($radius)
+//							border-top-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-top-right-radius($radius)
+//							border-top-right-radius: 3px;
+//						}
+//					}
+//				}
+//				> thead:first-child > tr:first-child {
+//					//Instead of the line below you could use @include border-top-left-radius($radius)
+//					border-top-left-radius: 3px;
+//					//Instead of the line below you could use @include border-top-right-radius($radius)
+//					border-top-right-radius: 3px;
+//					td {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-top-left-radius($radius)
+//							border-top-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-top-right-radius($radius)
+//							border-top-right-radius: 3px;
+//						}
+//					}
+//					th {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-top-left-radius($radius)
+//							border-top-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-top-right-radius($radius)
+//							border-top-right-radius: 3px;
+//						}
+//					}
+//				}
+//			}
+//			&:last-child > .table:last-child {
+//				//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//				border-bottom-right-radius: 3px;
+//				//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//				border-bottom-left-radius: 3px;
+//				> tbody:last-child > tr:last-child {
+//					//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//					border-bottom-right-radius: 3px;
+//					//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//					border-bottom-left-radius: 3px;
+//					td {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//							border-bottom-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//							border-bottom-right-radius: 3px;
+//						}
+//					}
+//					th {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//							border-bottom-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//							border-bottom-right-radius: 3px;
+//						}
+//					}
+//				}
+//				> tfoot:last-child > tr:last-child {
+//					//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//					border-bottom-right-radius: 3px;
+//					//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//					border-bottom-left-radius: 3px;
+//					td {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//							border-bottom-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//							border-bottom-right-radius: 3px;
+//						}
+//					}
+//					th {
+//						&:first-child {
+//							//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//							border-bottom-left-radius: 3px;
+//						}
+//						&:last-child {
+//							//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//							border-bottom-right-radius: 3px;
+//						}
+//					}
+//				}
+//			}
+//			+ .panel-body {
+//				border-top: 1px solid $color_alto_approx;
+//			}
+//		}
+//		.table-bordered {
+//			border: 0;
+//			> tbody > tr {
+//				> td {
+//					&:first-child {
+//						border-left: 0;
+//					}
+//					&:last-child {
+//						border-right: 0;
+//					}
+//				}
+//				> th {
+//					&:first-child {
+//						border-left: 0;
+//					}
+//					&:last-child {
+//						border-right: 0;
+//					}
+//				}
+//				&:first-child {
+//					> td {
+//						border-bottom: 0;
+//					}
+//					> th {
+//						border-bottom: 0;
+//					}
+//				}
+//				&:last-child {
+//					> td {
+//						border-bottom: 0;
+//					}
+//					> th {
+//						border-bottom: 0;
+//					}
+//				}
+//			}
+//			> tfoot > tr {
+//				> td {
+//					&:first-child {
+//						border-left: 0;
+//					}
+//					&:last-child {
+//						border-right: 0;
+//					}
+//				}
+//				> th {
+//					&:first-child {
+//						border-left: 0;
+//					}
+//					&:last-child {
+//						border-right: 0;
+//					}
+//				}
+//				&:last-child {
+//					> td {
+//						border-bottom: 0;
+//					}
+//					> th {
+//						border-bottom: 0;
+//					}
+//				}
+//			}
+//			> thead > tr {
+//				> td {
+//					&:first-child {
+//						border-left: 0;
+//					}
+//					&:last-child {
+//						border-right: 0;
+//					}
+//				}
+//				> th {
+//					&:first-child {
+//						border-left: 0;
+//					}
+//					&:last-child {
+//						border-right: 0;
+//					}
+//				}
+//				&:first-child {
+//					> td {
+//						border-bottom: 0;
+//					}
+//					> th {
+//						border-bottom: 0;
+//					}
+//				}
+//			}
+//		}
+//		.panel-collapse > {
+//			.list-group {
+//				margin-bottom: 0;
+//				.list-group-item {
+//					border-width: 1px 0;
+//					//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+//					border-radius: 0;
+//				}
+//				&:first-child .list-group-item:first-child {
+//					@extend %extend_6;
+//				}
+//				&:last-child .list-group-item:last-child {
+//					@extend %extend_7;
+//				}
+//			}
+//			.table {
+//				margin-bottom: 0;
+//				caption {
+//					padding-right: 15px;
+//					padding-left: 15px;
+//				}
+//			}
+//		}
+//	}
+//}
 
-.panel-body {
-	padding: 15px;
-}
-.panel-heading {
-	padding: 10px 15px;
-	border-bottom: 1px solid transparent;
-	//Instead of the line below you could use @include border-top-left-radius($radius)
-	border-top-left-radius: 3px;
-	//Instead of the line below you could use @include border-top-right-radius($radius)
-	border-top-right-radius: 3px;
-	> .dropdown .dropdown-toggle {
-		color: inherit;
-	}
-	+ .list-group .list-group-item:first-child {
-		border-top-width: 0;
-	}
-}
-.panel-title {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 16px;
-	color: inherit;
-	> a {
-		color: inherit;
-	}
-	> small {
-		color: inherit;
-		> a {
-			color: inherit;
-		}
-	}
-	> .small {
-		color: inherit;
-		> a {
-			color: inherit;
-		}
-	}
-}
-.panel-footer {
-	padding: 10px 15px;
-	background-color: $color_wild_sand_approx;
-	border-top: 1px solid $color_alto_approx;
-	//Instead of the line below you could use @include border-bottom-right-radius($radius)
-	border-bottom-right-radius: 3px;
-	//Instead of the line below you could use @include border-bottom-left-radius($radius)
-	border-bottom-left-radius: 3px;
-}
-.panel-group {
-	margin-bottom: 20px;
-	.panel {
-		margin-bottom: 0;
-		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-		border-radius: 4px;
-		+ .panel {
-			margin-top: 5px;
-		}
-	}
-	.panel-heading {
-		border-bottom: 0;
-		+ .panel-collapse > {
-			.list-group {
-				border-top: 1px solid $color_alto_approx;
-			}
-			.panel-body {
-				border-top: 1px solid $color_alto_approx;
-			}
-		}
-	}
-	.panel-footer {
-		border-top: 0;
-		+ .panel-collapse .panel-body {
-			border-bottom: 1px solid $color_alto_approx;
-		}
-	}
-}
-.panel-default {
-	border-color: $color_alto_approx;
-	> {
-		.panel-heading {
-			color: $color_mine_shaft_approx;
-			background-color: $color_wild_sand_approx;
-			border-color: $color_alto_approx;
-			.badge {
-				color: $color_wild_sand_approx;
-				background-color: $color_mine_shaft_approx;
-			}
-			+ .panel-collapse > .panel-body {
-				border-top-color: $color_alto_approx;
-			}
-		}
-		.panel-footer + .panel-collapse > .panel-body {
-			border-bottom-color: $color_alto_approx;
-		}
-	}
-}
-.panel-primary {
-	border-color: $color_steel_blue_approx;
-	> {
-		.panel-heading {
-			color: $white;
-			background-color: $color_steel_blue_approx;
-			border-color: $color_steel_blue_approx;
-			.badge {
-				color: $color_steel_blue_approx;
-				background-color: $white;
-			}
-			+ .panel-collapse > .panel-body {
-				border-top-color: $color_steel_blue_approx;
-			}
-		}
-		.panel-footer + .panel-collapse > .panel-body {
-			border-bottom-color: $color_steel_blue_approx;
-		}
-	}
-}
-.panel-success {
-	border-color: $color_beryl_green_approx;
-	> {
-		.panel-heading {
-			color: $color_killarney_approx;
-			background-color: $color_willow_brook_approx;
-			border-color: $color_beryl_green_approx;
-			.badge {
-				color: $color_willow_brook_approx;
-				background-color: $color_killarney_approx;
-			}
-			+ .panel-collapse > .panel-body {
-				border-top-color: $color_beryl_green_approx;
-			}
-		}
-		.panel-footer + .panel-collapse > .panel-body {
-			border-bottom-color: $color_beryl_green_approx;
-		}
-	}
-}
-.panel-info {
-	border-color: $color_charlotte_approx;
-	> {
-		.panel-heading {
-			color: $color_calypso_approx;
-			background-color: $color_link_water_approx;
-			border-color: $color_charlotte_approx;
-			.badge {
-				color: $color_link_water_approx;
-				background-color: $color_calypso_approx;
-			}
-			+ .panel-collapse > .panel-body {
-				border-top-color: $color_charlotte_approx;
-			}
-		}
-		.panel-footer + .panel-collapse > .panel-body {
-			border-bottom-color: $color_charlotte_approx;
-		}
-	}
-}
-.panel-warning {
-	border-color: $color_champagne_approx;
-	> {
-		.panel-heading {
-			color: $color_pesto_approx;
-			background-color: $color_solitaire_approx;
-			border-color: $color_champagne_approx;
-			.badge {
-				color: $color_solitaire_approx;
-				background-color: $color_pesto_approx;
-			}
-			+ .panel-collapse > .panel-body {
-				border-top-color: $color_champagne_approx;
-			}
-		}
-		.panel-footer + .panel-collapse > .panel-body {
-			border-bottom-color: $color_champagne_approx;
-		}
-	}
-}
-.panel-danger {
-	border-color: $color_oyster_pink_approx;
-	> {
-		.panel-heading {
-			color: $color_apple_blossom_approx;
-			background-color: $color_vanilla_ice_approx;
-			border-color: $color_oyster_pink_approx;
-			.badge {
-				color: $color_vanilla_ice_approx;
-				background-color: $color_apple_blossom_approx;
-			}
-			+ .panel-collapse > .panel-body {
-				border-top-color: $color_oyster_pink_approx;
-			}
-		}
-		.panel-footer + .panel-collapse > .panel-body {
-			border-bottom-color: $color_oyster_pink_approx;
-		}
-	}
-}
+//.panel>.panel-body+.table,.panel>.panel-body+.table-responsive,.panel>.table+.panel-body,.panel>.table-responsive+.panel-body{
+//    border-top:1px solid $color_alto_approx
+//}
+//
+//.panel-body {
+//	padding: 15px;
+//}
+//.panel-heading {
+//	padding: 10px 15px;
+//	border-bottom: 1px solid transparent;
+//	//Instead of the line below you could use @include border-top-left-radius($radius)
+//	border-top-left-radius: 3px;
+//	//Instead of the line below you could use @include border-top-right-radius($radius)
+//	border-top-right-radius: 3px;
+//	> .dropdown .dropdown-toggle {
+//		color: inherit;
+//	}
+//	+ .list-group .list-group-item:first-child {
+//		border-top-width: 0;
+//	}
+//}
+//.panel-title {
+//	margin-top: 0;
+//	margin-bottom: 0;
+//	font-size: 16px;
+//	color: inherit;
+//	> a {
+//		color: inherit;
+//	}
+//	> small {
+//		color: inherit;
+//		> a {
+//			color: inherit;
+//		}
+//	}
+//	> .small {
+//		color: inherit;
+//		> a {
+//			color: inherit;
+//		}
+//	}
+//}
+//.panel-footer {
+//	padding: 10px 15px;
+//	background-color: $color_wild_sand_approx;
+//	border-top: 1px solid $color_alto_approx;
+//	//Instead of the line below you could use @include border-bottom-right-radius($radius)
+//	border-bottom-right-radius: 3px;
+//	//Instead of the line below you could use @include border-bottom-left-radius($radius)
+//	border-bottom-left-radius: 3px;
+//}
+//.panel-group {
+//	margin-bottom: 20px;
+//	.panel {
+//		margin-bottom: 0;
+//		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+//		border-radius: 4px;
+//		+ .panel {
+//			margin-top: 5px;
+//		}
+//	}
+//	.panel-heading {
+//		border-bottom: 0;
+//		+ .panel-collapse > {
+//			.list-group {
+//				border-top: 1px solid $color_alto_approx;
+//			}
+//			.panel-body {
+//				border-top: 1px solid $color_alto_approx;
+//			}
+//		}
+//	}
+//	.panel-footer {
+//		border-top: 0;
+//		+ .panel-collapse .panel-body {
+//			border-bottom: 1px solid $color_alto_approx;
+//		}
+//	}
+//}
+//.panel-default {
+//	border-color: $color_alto_approx;
+//	> {
+//		.panel-heading {
+//			color: $color_mine_shaft_approx;
+//			background-color: $color_wild_sand_approx;
+//			border-color: $color_alto_approx;
+//			.badge {
+//				color: $color_wild_sand_approx;
+//				background-color: $color_mine_shaft_approx;
+//			}
+//			+ .panel-collapse > .panel-body {
+//				border-top-color: $color_alto_approx;
+//			}
+//		}
+//		.panel-footer + .panel-collapse > .panel-body {
+//			border-bottom-color: $color_alto_approx;
+//		}
+//	}
+//}
+//.panel-primary {
+//	border-color: $color_steel_blue_approx;
+//	> {
+//		.panel-heading {
+//			color: $white;
+//			background-color: $color_steel_blue_approx;
+//			border-color: $color_steel_blue_approx;
+//			.badge {
+//				color: $color_steel_blue_approx;
+//				background-color: $white;
+//			}
+//			+ .panel-collapse > .panel-body {
+//				border-top-color: $color_steel_blue_approx;
+//			}
+//		}
+//		.panel-footer + .panel-collapse > .panel-body {
+//			border-bottom-color: $color_steel_blue_approx;
+//		}
+//	}
+//}
+//.panel-success {
+//	border-color: $color_beryl_green_approx;
+//	> {
+//		.panel-heading {
+//			color: $color_killarney_approx;
+//			background-color: $color_willow_brook_approx;
+//			border-color: $color_beryl_green_approx;
+//			.badge {
+//				color: $color_willow_brook_approx;
+//				background-color: $color_killarney_approx;
+//			}
+//			+ .panel-collapse > .panel-body {
+//				border-top-color: $color_beryl_green_approx;
+//			}
+//		}
+//		.panel-footer + .panel-collapse > .panel-body {
+//			border-bottom-color: $color_beryl_green_approx;
+//		}
+//	}
+//}
+//.panel-info {
+//	border-color: $color_charlotte_approx;
+//	> {
+//		.panel-heading {
+//			color: $color_calypso_approx;
+//			background-color: $color_link_water_approx;
+//			border-color: $color_charlotte_approx;
+//			.badge {
+//				color: $color_link_water_approx;
+//				background-color: $color_calypso_approx;
+//			}
+//			+ .panel-collapse > .panel-body {
+//				border-top-color: $color_charlotte_approx;
+//			}
+//		}
+//		.panel-footer + .panel-collapse > .panel-body {
+//			border-bottom-color: $color_charlotte_approx;
+//		}
+//	}
+//}
+//.panel-warning {
+//	border-color: $color_champagne_approx;
+//	> {
+//		.panel-heading {
+//			color: $color_pesto_approx;
+//			background-color: $color_solitaire_approx;
+//			border-color: $color_champagne_approx;
+//			.badge {
+//				color: $color_solitaire_approx;
+//				background-color: $color_pesto_approx;
+//			}
+//			+ .panel-collapse > .panel-body {
+//				border-top-color: $color_champagne_approx;
+//			}
+//		}
+//		.panel-footer + .panel-collapse > .panel-body {
+//			border-bottom-color: $color_champagne_approx;
+//		}
+//	}
+//}
+//.panel-danger {
+//	border-color: $color_oyster_pink_approx;
+//	> {
+//		.panel-heading {
+//			color: $color_apple_blossom_approx;
+//			background-color: $color_vanilla_ice_approx;
+//			border-color: $color_oyster_pink_approx;
+//			.badge {
+//				color: $color_vanilla_ice_approx;
+//				background-color: $color_apple_blossom_approx;
+//			}
+//			+ .panel-collapse > .panel-body {
+//				border-top-color: $color_oyster_pink_approx;
+//			}
+//		}
+//		.panel-footer + .panel-collapse > .panel-body {
+//			border-bottom-color: $color_oyster_pink_approx;
+//		}
+//	}
+//}
 .list-group + .panel-footer {
 	border-top-width: 0;
 }
@@ -1785,69 +1794,122 @@ table tbody tr td:last-child {
 
 
 /****************** Activities page *********************/
-$color_fuscous_gray_approx: #555;
-$color_mountain_mist_approx: #999;
-
-.reviews {
-	color: $color_fuscous_gray_approx;
-	font-weight: bold;
-	margin: 10px auto 20px;
-}
-.notes {
-	color: $color_mountain_mist_approx;
-	font-size: 12px;
-}
-.media-body {
-	position: relative;
-}
-.media-date {
-	position: absolute;
-	right: 25px;
-	top: 25px;
-	li {
-		padding: 0;
-		&:before {
-			content: '.';
-			margin-left: -2px;
-			margin-right: 2px;
-		}
-		&:first-child:before {
-			content: '';
-		}
-	}
-}
-.media-comment {
-	margin-bottom: 20px;
-}
-.media-replied {
-	margin: 0 0 20px 50px;
-	.media-heading {
-		padding-left: 6px;
-	}
-}
-.media .media-object {
-	max-width: 120px;
-}
-
 //colors
-$color_wild_sand_approx: #f5f5f5;
-$color_mercury_approx: #e3e3e3;
+$black_30: rgba(0, 0, 0, 0.3);
+$color_alto_approx: #dddddd;
+$color_mine_shaft_approx: #333;
+$white: #fff;
+$black: black;
+$color_silver_chalice_approx: #aaaaaa;
+$color_mountain_mist_approx: #999;
+$color_tundora_approx: #454545;
 
-.well-lg {
-	padding: 24px !important;
-	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-	border-radius: 6px !important;
-}
-.well {
-	min-height: 20px;
-	padding: 19px;
-	margin-bottom: 20px;
-	background-color: $color_wild_sand_approx;
-	border: 1px solid $color_mercury_approx;
-	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-	border-radius: 4px;
+.panel-shadow {
 	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
-	box-shadow: inset 0 1px 1px $black_5;
+	box-shadow: $black_30 7px 7px 7px;
+}
+.panel-white {
+	border: 1px solid $color_alto_approx;
+	.panel-heading {
+		color: $color_mine_shaft_approx;
+		background-color: $white;
+		border-color: $color_alto_approx;
+	}
+	.panel-footer {
+		background-color: $white;
+		border-color: $color_alto_approx;
+	}
+}
+.post {
+	.post-heading {
+		height: 95px;
+		padding: 20px 15px;
+		.avatar {
+			width: 60px;
+			height: 60px;
+			display: block;
+			margin-right: 15px;
+		}
+		.meta {
+			.title {
+				margin-bottom: 0;
+				a {
+					color: $black;
+					&:hover {
+						color: $color_silver_chalice_approx;
+					}
+				}
+			}
+			.time {
+				margin-top: 8px;
+				color: $color_mountain_mist_approx;
+			}
+		}
+	}
+	.post-description {
+		padding: 15px;
+		p {
+			font-size: 14px;
+		}
+		.stats {
+			margin-top: 20px;
+			.stat-item {
+				display: inline-block;
+				margin-right: 15px;
+				.icon {
+					margin-right: 8px;
+				}
+			}
+		}
+	}
+	.post-footer {
+		border-top: 1px solid $color_alto_approx;
+		padding: 15px;
+		.comments-list {
+			padding: 0;
+			margin-top: 20px;
+			list-style-type: none;
+			.comment {
+				display: block;
+				width: 100%;
+				margin: 20px 0;
+				.avatar {
+					width: 35px;
+					height: 35px;
+				}
+				.comment-heading {
+					display: block;
+					width: 100%;
+					.user {
+						font-size: 14px;
+						font-weight: bold;
+						display: inline;
+						margin-top: 0;
+						margin-right: 10px;
+					}
+					.time {
+						font-size: 12px;
+						color: $color_silver_chalice_approx;
+						margin-top: 0;
+						display: inline;
+					}
+				}
+				.comment-body {
+					margin-left: 50px;
+				}
+				> .comments-list {
+					margin-left: 50px;
+				}
+			}
+		}
+		.input-group-addon a {
+			color: $color_tundora_approx;
+		}
+	}
+	.post-image .image {
+		width: 100%;
+		height: auto;
+	}
 }
 
 /***************** Chat **********************/

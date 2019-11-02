@@ -3,7 +3,7 @@ import MessageDialog from './MessageDialog'
 import MessageBoard from './MessageBoard'
 import axios from 'axios'
 import { ListGroup, ListGroupItem } from 'reactstrap'
-import MessageCard from './MessageCard'
+import Event from "./Event";
 
 class MessageContainer extends React.Component {
     constructor (props) {
@@ -13,7 +13,8 @@ class MessageContainer extends React.Component {
             mode: '',
             activeMessage: undefined,
             messages: [],
-            notifications: []
+            notifications: [],
+            events: []
         }
         this.setMode = this.setMode.bind(this)
         this.toggleOpenState = this.toggleOpenState.bind(this)
@@ -25,6 +26,7 @@ class MessageContainer extends React.Component {
         this.deleteMessage = this.deleteMessage.bind(this)
         this.changeMessage = this.changeMessage.bind(this)
         this.getUsers = this.getUsers.bind(this)
+        this.updateEvents = this.updateEvents.bind(this)
     }
 
     componentDidMount () {
@@ -68,7 +70,8 @@ class MessageContainer extends React.Component {
             .then((r) => {
                 this.setState({
                     messages: r.data.comments,
-                    notifications: r.data.notifications
+                    notifications: r.data.notifications,
+                    events: r.data.events
                 })
             })
             .catch((e) => {
@@ -91,7 +94,6 @@ class MessageContainer extends React.Component {
 
     newMessage (newMessage) {
         axios.post('/api/comments', newMessage).then(response => {
-            alert('Mike')
             this.setState(prevState => ({
                 messages: [...prevState.messages, newMessage]
             }))
@@ -145,6 +147,9 @@ class MessageContainer extends React.Component {
     commentOnMessage (messageText) {
         const { activeUser } = this.props
         const { activeMessage } = this.state
+
+        console.log('actve', this.state.activeMessage)
+
         const messageId = this.state.messages.length
             ? this.state.messages[this.state.messages.length - 1].id + 1
             : 1
@@ -157,10 +162,18 @@ class MessageContainer extends React.Component {
         this.newMessage(newMessage)
     }
 
+    updateEvents(events) {
+        this.setState({events: events})
+    }
+
     render () {
+
+        console.log('events', this.state.events)
+
         const {
             messages,
             notifications,
+            events,
             mode,
             isDialogOpen,
             users,
@@ -170,13 +183,14 @@ class MessageContainer extends React.Component {
             return (
                 <React.Fragment>
                     <MessageDialog
-                        mode={mode}
+                        mode="Create"
                         message={activeMessage}
                         submitMessage={this.submitMessage}
                         isDialogOpen={isDialogOpen}
                         toggleOpenState={this.toggleOpenState}
                     />
 
+                    <h2>Messages</h2>
                     <MessageBoard
                         setMode={this.setMode}
                         submitMessage={this.submitMessage}
@@ -187,6 +201,18 @@ class MessageContainer extends React.Component {
                         setActiveMessage={this.setActiveMessage}
                     />
 
+                    <h2>Event Invitations</h2>
+                    {events && events.length ? (
+                            events.map((event) => (
+                               <Event
+                                   action={this.updateEvents}
+                                   events={this.state.events}
+                                   event={event}
+                               />
+                            ))
+                    ) : null}
+
+                    <h2 className="text-center">Notifications</h2>
                     {notifications.length ? (
                         <ListGroup className="m-3">
                             {notifications.map((notification) => (

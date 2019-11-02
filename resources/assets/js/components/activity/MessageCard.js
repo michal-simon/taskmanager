@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Button, Collapse, ListGroup, ListGroupItem, Media } from 'reactstrap'
+import {Card, CardHeader, CardBody, CardFooter, Button, Collapse, ListGroup, ListGroupItem, Media} from 'reactstrap'
 import Avatar from '../common/Avatar'
+import TimeAgo from "react-timeago/lib";
 
 const messageListCardStyles = ({
     card: {
@@ -27,16 +28,49 @@ const messageListCardStyles = ({
 })
 
 class MessageCard extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
-            expanded: false
+            expanded: false,
+            messageText: ''
         }
+
         this.handleExpandClick = this.handleExpandClick.bind(this)
+        this.buildComment = this.buildComment.bind(this)
+        this.handleKeyPress = this.handleKeyPress.bind(this)
+        this.handleCommentChange = this.handleCommentChange.bind(this)
     }
 
-    handleExpandClick () {
-        this.setState(state => ({ expanded: !state.expanded }))
+    handleExpandClick() {
+        this.setState(state => ({expanded: !state.expanded}))
+    }
+
+    handleCommentChange (event) {
+        this.setState({
+            messageText: event.target.value
+        })
+    }
+
+    handleKeyPress(event) {
+        const { messageText } = this.state
+
+        const {
+            currentMessage,
+            setActiveMessage,
+            submitMessage,
+            setMode,
+        } = this.props
+
+        if(event.key === 'Enter'){
+            setActiveMessage(currentMessage)
+            setMode('Comment')
+
+            setTimeout(() => {
+                submitMessage(messageText, 'Comment')
+                this.setState({messageText: ''})
+            }, 2000)
+
+        }
     }
 
     formatDate(dateString) {
@@ -59,7 +93,32 @@ class MessageCard extends React.Component {
         )
     }
 
-    render () {
+    buildComment(message) {
+
+        const {users} = this.props
+
+        const author = users.find(
+            (user) => user.id === message.user_id
+        )
+        const firstName = author ? author.first_name : 'Michael'
+        const lastName = author ? author.last_name : 'Hampton'
+
+        return (
+            <li className="comment"><a className="pull-left" href="#">
+                <img className="avatar" src="https://bootdey.com/img/Content/user_1.jpg"
+                     alt="avatar"/> </a>
+                <div className="comment-body">
+                    <div className="comment-heading">
+                        <h4 className="user">{`${firstName}  ${lastName}`}</h4>
+                        <h5 className="time"><TimeAgo date={message.created_at} /></h5>
+                    </div>
+
+                    <p> {message.comment}</p></div>
+            </li>
+        )
+    }
+
+    render() {
         const {
             activeUser,
             users,
@@ -79,106 +138,59 @@ class MessageCard extends React.Component {
         )
 
         return (
-            <Media tag="li">
-                <Media href="#" className="pull-left">
-                    <Media className="img-circle" object src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="Generic placeholder image" />
-                </Media>
+            <div className="col-8 col-md-12">
+                <div className="panel panel-white post panel-shadow">
+                    <div className="post-heading">
+                        <div className="pull-left image">
+                            <img src="https://bootdey.com/img/Content/user_1.jpg"
+                                 className="img-circle avatar" alt="user profile image"/>
+                        </div>
 
-                <Media body>
-                    <div className="well well-lg ml-4">
-                        <Media className="text-uppercase reviews" heading>
-                            {`${firstName2}  ${lastName2}`}
-                        </Media>
-
-                        {this.formatDate(currentMessage.created_at)}
-
-                        <p className="mb-2">
-                            {currentMessage.comment}
-                        </p>
-
-                        {activeUser && currentMessage.author === activeUser.id ? (
-                            <React.Fragment>
-                                <Button color="success"
-                                    aria-label="Edit message"
-                                    onClick={() => {
-                                        setActiveMessage(currentMessage)
-                                        setMode('Edit')
-                                    }}
-                                >Edit</Button>
-
-                                <Button className="ml-2" color="danger"
-                                    aria-label="Delete message"
-                                    onClick={() => deleteMessage(currentMessage.id)}
-                                >Delete</Button>
-
-                            </React.Fragment>
-                        ) : (
-                            <React.Fragment>
-                                {activeUser ? (
-                                    <Button color="info"
-                                        aria-label="Comment message"
-                                        onClick={() => {
-                                            setActiveMessage(currentMessage)
-                                            setMode('Comment')
-                                        }}
-                                    >Reply</Button>
-                                ) : null}
-                            </React.Fragment>
-                        )
-                        }
-                        {childMessages.length ? (
-                            <React.Fragment>
-                                <Button color="warning"
-                                    className="open"
-                                    onClick={this.handleExpandClick}
-                                    aria-expanded={this.state.expanded}
-                                    aria-label="Display comments"
-                                > Comments
-                                </Button>
-                            </React.Fragment>
-                        ) : null}
-
+                        <div className="pull-left meta">
+                            <div className="title h5">
+                                <a href="#">
+                                    <b> {`${firstName2}  ${lastName2}`} </b>
+                                </a>
+                                made a post.
+                            </div>
+                            <h6 className="text-muted time"><TimeAgo date={currentMessage.created_at} /></h6></div>
                     </div>
-                </Media>
+                    <div className="post-description">
+                        <p>{currentMessage.comment}</p>
+                        <div className="stats">
+                            <a href="#" className="btn btn-default stat-item">
+                                <i className="fa fa-thumbs-up icon"></i>2
+                            </a>
 
-                <Collapse
-                    isOpen={this.state.expanded}
-                    timeout="auto"
-                >
-                    {childMessages.map((message) => {
-                        const author = users.find(
-                            (user) => user.id === message.user_id
-                        )
-                        const firstName = author ? author.first_name : 'Michael'
-                        const lastName = author ? author.last_name : 'Hampton'
-                        return (
-                            <Media tag="li">
-                                <Media href="#" className="pull-left">
-                                    <Media className="img-circle" object src="https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg" alt="Generic placeholder image" />
-                                </Media>
+                            <a href="#" className="btn btn-default stat-item">
+                                <i className="fa fa-share icon"></i>12
+                            </a>
 
-                                <Media body>
-                                    <div className="well well-lg">
-                                        <Media className="text-uppercase reviews" heading>
-                                            {`${firstName}  ${lastName}`}
-                                        </Media>
+                            {activeUser && currentMessage.author === activeUser.id ? (
+                                <Button className="ml-2" color="danger"
+                                        aria-label="Delete message"
+                                        onClick={() => deleteMessage(currentMessage.id)}
+                                >Delete</Button>
+                            ) : null}
+                        </div>
+                    </div>
+                    <div className="post-footer">
+                        <div className="input-group">
+                            <input onChange={this.handleCommentChange} value={this.state.messageText} onKeyPress={this.handleKeyPress} className="form-control" placeholder="Add a comment" type="text"/>
 
-                                        <ul className="media-date text-uppercase reviews list-inline">
-                                            <li className="dd">22</li>
-                                            <li className="mm">09</li>
-                                            <li className="aaaa">2014</li>
-                                        </ul>
+                            <span
+                                className="input-group-addon"> <a
+                                href="#"><i className="fa fa-edit"></i></a> </span></div>
+                        <ul className="comments-list">
 
-                                        <p className="mb-2">
-                                            {message.comment}
-                                        </p>
-                                    </div>
-                                </Media>
-                            </Media>
-                        )
-                    })}
-                </Collapse>
-            </Media>
+                            {childMessages.length ? childMessages.map((message) => {
+                                    return this.buildComment(message)
+                                })
+                                : null}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         )
     }
 }

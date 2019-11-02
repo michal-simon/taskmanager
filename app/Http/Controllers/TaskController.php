@@ -12,8 +12,6 @@ use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Product;
 use App\Repositories\ProductRepository;
-use App\Repositories\CategoryRepository;
-use App\Category;
 use App\Repositories\CustomerRepository;
 use App\Customer;
 use Illuminate\Support\Facades\Auth;

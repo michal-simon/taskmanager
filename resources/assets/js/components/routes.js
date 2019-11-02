@@ -38,6 +38,7 @@ const routes = [
     {path: '/activity', name: 'Activity', component: Message},
     {path: '/statuses', name: 'Task Statuses', component: TaskStatus},
     {path: '/permissions', name: 'Permissions', component: Permissions},
+    { path: '/users/:username', exact: true, name: 'User Details', component: UserProfile },
     {path: '/', name: 'Dashboard', component: Dashboard},
     // {path: '/base/list-groups', name: 'List Groups', component: ListGroups},
     // {path: '/base/navbars', name: 'Navbars', component: Navbars},

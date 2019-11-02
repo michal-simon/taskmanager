@@ -21,7 +21,7 @@ class UserProfile extends React.Component {
     }
 
     componentDidMount () {
-        axios.get(`/api/user/profile/${this.props.username}`)
+        axios.get(`/api/user/profile/${this.props.match.params.username}`)
             .then((r) => {
                 this.setState({
                     user: r.data
