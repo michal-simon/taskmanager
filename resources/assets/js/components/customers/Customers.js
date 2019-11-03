@@ -20,7 +20,7 @@ export default class Customers extends Component {
         this.updateCustomers = this.updateCustomers.bind(this)
         this.customerList = this.customerList.bind(this)
         this.getCompanies = this.getCompanies.bind(this)
-        this.filterEvents = this.filterEvents.bind(this)
+        this.filterCustomers = this.filterCustomers.bind(this)
 
         this.ignoredColumns = [
             'first_name', 
