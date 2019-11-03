@@ -157,4 +157,17 @@ class CustomerController extends Controller {
         return response()->json($customerTypes);
     }
 
+     /**
+     * 
+     * @param \App\Http\Controllers\Request $request
+     * @return type
+     */
+    public function filterCustomers(Request $request) {
+        $list = $this->customerRepository->filterCustomers($request->all());
+        $customers = $list->map(function (Customer $customer) {
+                    return $this->transformCustomer($customer);
+                })->all();
+        return response()->json($customers);
+    }
+
 }
