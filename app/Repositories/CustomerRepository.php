@@ -130,4 +130,20 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
         return $this->model->addresses;
     }
 
+    
+      /**
+     * 
+     * @param array $arrFilters
+     * @param type $task_type
+     * @return Support
+     */
+    public function filterCustomers(array $arrFilters): Collection {
+        $query = $this->model->select('customers.*');
+        foreach ($arrFilters as $column => $value) {
+            $query->where($column, '=', $value);
+        }
+        
+        return $query->get();
+    }
+
 }
