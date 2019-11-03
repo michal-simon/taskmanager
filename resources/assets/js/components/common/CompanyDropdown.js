@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+Thanks import React, { Component } from 'react'
 import axios from "axios";
 import { Input, FormGroup, Label, Form } from 'reactstrap'
 
@@ -41,11 +41,13 @@ export default class CompanyDropdown extends Component {
             ))
         }
 
+        const name = this.props.name && this.props.name ? this.props.name : 'company_id'
+
         return (
             <FormGroup>
                 <Label for="company_id">Company</Label>
                 <Input value={this.props.company_id} onChange={this.props.handleInputChanges} type="select"
-                    name="company_id" id="company_id">
+                    name={name} id={name}>
                     <option value="">Select Company</option>
                     {companyList}
                 </Input>
