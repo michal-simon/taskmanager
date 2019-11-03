@@ -177,17 +177,9 @@ class ProductController extends Controller {
      * @param int $id
      * @return type
      */
-    public function filterProducts(string $filter, int $id) {
+    public function filterProducts(Request $request) {
 
-        if ($filter === 'brand') {
-
-            $objBrand = $this->brandRepo->findBrandById($id);
-            $list = $this->productRepo->filterProductsByBrand($objBrand);
-        } else {
-            $objCategory = $this->categoryRepo->findCategoryById($id);
-            $list = $this->productRepo->filterProductsByCategory($objCategory);
-        }
-
+        $list = $this->productRepository->filterProducts)$request->all());
         $products = $list->map(function (Product $product) {
                     return $this->transformProduct($product);
                 })->all();
