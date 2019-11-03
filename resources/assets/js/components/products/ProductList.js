@@ -6,6 +6,8 @@ import AddProduct from './AddProduct'
 import DataTable from '../common/DataTable'
 import { Button } from 'reactstrap'
 import { Input, FormGroup } from 'reactstrap'
+import CategoryDropdown from "../common/CategoryDropdown";
+import CompanyDropdown from "../common/CompanyDropdown";
 
 export default class ProductList extends Component {
     constructor (props) {
