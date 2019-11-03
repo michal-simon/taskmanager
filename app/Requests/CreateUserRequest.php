@@ -19,7 +19,7 @@ class CreateUserRequest extends BaseFormRequest {
             'phone_number' => 'nullable|string',
             'dob' => 'nullable|string',
             'role' => 'nullable|array',
-            'password' => 'required|string',
+            'password' => 'required|string|min:6|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'username' => 'required|string',
             'profile_photo' => 'nullable|string',
             'email' => 'required|string',
