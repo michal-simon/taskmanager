@@ -164,7 +164,7 @@ class CustomerController extends Controller {
      * @return type
      */
     public function filterCustomers(Request $request) {
-        $list = $this->customerRepository->filterCustomers($request->all());
+        $list = $this->customerRepo->filterCustomers($request->all());
         $customers = $list->map(function (Customer $customer) {
                     return $this->transformCustomer($customer);
                 })->all();

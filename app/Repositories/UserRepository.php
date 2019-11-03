@@ -157,4 +157,25 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
         return $this->model->departments()->sync($department_id);
     }
 
+    /**
+     * 
+     * @param array $arrFilters
+     * @param type $task_type
+     * @return Support
+     */
+    public function filterUsers(array $arrFilters): Collection {
+
+        $query = $this->model->select('users.id as id', 'users.*')
+                ->leftJoin('department_user', 'users.id', '=', 'department_user.user_id')
+                ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id');
+
+        foreach ($arrFilters as $column => $value) {
+            $query->where($column, '=', $value);
+        }
+        
+        $query->groupBy('users.id');
+
+        return $query->get();
+    }
+
 }

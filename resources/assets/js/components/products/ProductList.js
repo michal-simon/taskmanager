@@ -4,8 +4,7 @@ import axios from 'axios'
 import EditProduct from './EditProduct'
 import AddProduct from './AddProduct'
 import DataTable from '../common/DataTable'
-import { Button } from 'reactstrap'
-import { Input, FormGroup } from 'reactstrap'
+import { Button, Form, FormGroup } from 'reactstrap'
 import CategoryDropdown from "../common/CategoryDropdown";
 import CompanyDropdown from "../common/CompanyDropdown";
 
@@ -23,6 +22,7 @@ export default class ProductList extends Component {
         this.addProductToState = this.addProductToState.bind(this)
         this.userList = this.userList.bind(this)
         this.filterProducts = this.filterProducts.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
 
         this.ignore = [
             'brand_id', 
@@ -47,7 +47,7 @@ export default class ProductList extends Component {
         this.setState({ products: products })
     }
 
-    filterEvents(e) {
+    filterProducts(event) {
 
         const column = event.target.id
         const value = event.target.value
@@ -72,6 +72,8 @@ export default class ProductList extends Component {
     handleSubmit(event) {
         event.preventDefault()
 
+        console.log('filters', this.state.filters)
+
         axios.post('/api/products/filterProducts',
             this.state.filters)
             .then((response) => {
@@ -95,16 +97,24 @@ export default class ProductList extends Component {
             <Form inline className="pull-right" onSubmit={this.handleSubmit}>
 
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                    <AddProduct
+                        brands={this.state.brands}
+                        categories={this.state.categories}
+                        products={this.state.products}
+                        action={this.addProductToState}
+                    />
                 </FormGroup>
 
               <CompanyDropdown
                   renderErrorFor={this.renderErrorFor}
                   handleInputChanges={this.filterProducts}
-                  companies={this.state.brands}
+                  // companies={this.state.brands}
+                  name="brand_id"
               />
               <CategoryDropdown
+                  name="category_product.category_id"
                   renderErrorFor={this.renderErrorFor}
-                  handleInputChanges={this.filterEvents}
+                  handleInputChanges={this.filterProducts}
                   categories={this.state.categories}
               />
 
@@ -158,7 +168,7 @@ export default class ProductList extends Component {
                     {columnList}
 
                     <td>
-                        <Button color="danger" onClick={() => this.deleteProduct(product.id)}>Delete</Button>
+                        <Button className="mr-2" color="danger" onClick={() => this.deleteProduct(product.id)}>Delete</Button>
                         <EditProduct
                             brands={this.state.brands}
                             categories={this.state.categories}
@@ -192,17 +202,11 @@ export default class ProductList extends Component {
 
     render () {
         const fetchUrl = '/api/products/'
-        const filters = this.getFilters()
+        const filters = this.state.categories.length ?  this.getFilters() : 'Loading filters'
         
         return (
             <div className="data-table m-md-3 m-0">
 
-                <AddProduct
-                    brands={this.state.brands}
-                    categories={this.state.categories}
-                    products={this.state.products}
-                    action={this.addProductToState}
-                />
                 <div>
                 {filters}
                 </div>

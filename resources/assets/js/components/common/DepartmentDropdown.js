@@ -43,11 +43,12 @@ export default class DepartmentDropdown extends Component {
             ))
         }
 
+        const name = this.props.name && this.props.name ? this.props.name : 'department'
+
         return (
-            <FormGroup>
-                <Label for="department">Department</Label>
+            <FormGroup className="mr-2">
                 <Input value={this.props.department} onChange={this.props.handleInputChanges} type="select"
-                       name="department" id="department">
+                       name={name} id={name}>
                     <option value="">Select Department</option>
                     {departmentList}
                 </Input>

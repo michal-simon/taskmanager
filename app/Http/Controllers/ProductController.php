@@ -178,8 +178,7 @@ class ProductController extends Controller {
      * @return type
      */
     public function filterProducts(Request $request) {
-
-        $list = $this->productRepository->filterProducts)$request->all());
+        $list = $this->productRepo->filterProducts($request->all());
         $products = $list->map(function (Product $product) {
                     return $this->transformProduct($product);
                 })->all();

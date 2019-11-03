@@ -132,6 +132,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
         Route::post('user/upload', 'UserController@upload');
         Route::get('user/profile/{username}', 'UserController@profile');
         Route::get('users/department/{department_id}', 'UserController@filterUsersByDepartment');
+	Route::post('users/filterUsers', 'UserController@filterUsers');
 
         // permissions
         Route::get('permissions', 'PermissionController@index');

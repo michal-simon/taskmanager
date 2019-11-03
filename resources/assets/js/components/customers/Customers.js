@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import AddCustomer from './AddCustomer'
 import EditCustomer from './EditCustomer'
-import { Button } from 'reactstrap'
+import { Button, Form, FormGroup } from 'reactstrap'
 import DataTable from '../common/DataTable'
 import Avatar from '../common/Avatar'
 import CustomerTypeDropdown from "../common/CustomerTypeDropdown";
@@ -23,6 +23,7 @@ export default class Customers extends Component {
         this.customerList = this.customerList.bind(this)
         this.getCompanies = this.getCompanies.bind(this)
         this.filterCustomers = this.filterCustomers.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
 
         this.ignoredColumns = [
             'first_name', 
@@ -101,7 +102,13 @@ export default class Customers extends Component {
             <Form inline className="pull-right" onSubmit={this.handleSubmit}>
 
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                </FormGroup
+                    <AddCustomer
+                        customer_type={this.props.customer_type}
+                        action={this.updateCustomers}
+                        customers={this.state.customers}
+                        companies={this.state.companies}
+                    />
+                </FormGroup>
 
               <CompanyDropdown
                   renderErrorFor={this.renderErrorFor}
@@ -187,13 +194,6 @@ export default class Customers extends Component {
 
         return (
             <div className="data-table m-md-3 m-0">
-
-                <AddCustomer
-                    customer_type={this.props.customer_type}
-                    action={this.updateCustomers}
-                    customers={this.state.customers}
-                    companies={this.state.companies}
-                />
 
                 {filters}
 

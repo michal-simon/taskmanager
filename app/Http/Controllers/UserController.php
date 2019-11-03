@@ -180,4 +180,19 @@ class UserController extends Controller {
         return response()->json($users);
     }
 
+    /**
+     * 
+     * @param \App\Http\Controllers\Request $request
+     * @return type
+     */
+    public function filterUsers(Request $request) {
+        $list = $this->userRepository->filterUsers($request->all());
+
+        $users = $list->map(function (User $user) {
+                    return $this->transformUser($user);
+                })->all();
+
+        return response()->json($users);
+    }
+
 }

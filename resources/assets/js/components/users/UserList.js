@@ -3,10 +3,16 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import EditUser from './EditUser'
 import AddUser from './AddUser'
-import { Button } from 'reactstrap'
+import {Button, Form, FormGroup} from 'reactstrap'
 import DataTable from '../common/DataTable'
 import Avatar from '../common/Avatar'
-import { Input, FormGroup } from 'reactstrap'
+import CreateEvent from "../calendar/CreateEvent";
+import TaskDropdown from "../common/TaskDropdown";
+import UserDropdown from "../common/UserDropdown";
+import CustomerDropdown from "../common/CustomerDropdown";
+import EventTypeDropdown from "../common/EventTypeDropdown";
+import DepartmentDropdown from "../common/DepartmentDropdown";
+import RoleDropdown from "../common/RoleDropdown";
 
 export default class UserList extends Component {
     constructor (props) {
@@ -14,12 +20,16 @@ export default class UserList extends Component {
         this.state = {
             users: [],
             departments: [],
-            error: ''
+            error: '',
+            filters: [],
         }
 
         this.cachedResults = []
         this.addUserToState = this.addUserToState.bind(this)
         this.userList = this.userList.bind(this)
+        this.filterUsers = this.filterUsers.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+
         this.ignoredColumns = ['department']
     }
 
@@ -27,45 +37,73 @@ export default class UserList extends Component {
         this.getDepartments()
     }
 
-    filterDepartments (e) {
-        const deptId = e.target.value
+    filterUsers(event) {
 
-        if (deptId === '') {
-            return
+        const column = event.target.id
+        const value = event.target.value
+
+        if (value === 'all') {
+            const updatedRowState = this.state.filters.filter(filter => filter.column !== column)
+            this.setState({filters: updatedRowState})
+            return true
         }
 
-        axios.get(`/api/users/department/${deptId}`)
-            .then((r) => {
-                this.cachedResults = this.state.users
+        this.setState(prevState => ({
+            filters: {
+                ...prevState.filters,
+                [column]: value,
+            },
+        }));
 
-                this.setState({
-                    users: r.data
-                })
+        return true
+    }
+
+    handleSubmit(event) {
+        event.preventDefault()
+
+        axios.post('/api/users/filterUsers',
+            this.state.filters)
+            .then((response) => {
+                this.setState({users: response.data})
             })
-            .catch((e) => {
-                alert(e)
+            .catch((error) => {
+                alert(error)
             })
     }
 
-    buildDepartmentOptions () {
-        let departmentList
-        if (!this.state.departments.length) {
-            departmentList = <option value="">Loading...</option>
-        } else {
-            departmentList = this.state.departments.map((department, index) => (
-                <option key={index} value={department.id}>{department.name}</option>
-            ))
-        }
+    renderErrorFor () {
 
+    }
+
+    resetFilters() {
+        this.props.reset()
+    }
+
+    getFilters() {
         return (
-            <div className="col-4">
-                <FormGroup>
-                    <Input onChange={this.filterDepartments.bind(this)} type="select" name="department" id="department">
-                        <option value="">Select Department</option>
-                        {departmentList}
-                    </Input>
+            <Form inline className="pull-right" onSubmit={this.handleSubmit}>
+
+                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                    <AddUser departments={this.state.departments} users={this.state.users} action={this.addUserToState}/>
                 </FormGroup>
-            </div>
+
+                <DepartmentDropdown
+                    name="department_user.department_id"
+                    renderErrorFor={this.renderErrorFor}
+                    handleInputChanges={this.filterUsers}
+                    departments={this.state.departments}
+                />
+
+                <RoleDropdown
+                    name="role_user.role_id"
+                    renderErrorFor={this.renderErrorFor}
+                    handleInputChanges={this.filterUsers}
+                    name="role_user.role_id"
+                />
+
+                <button className="mr-2 ml-2 btn btn-success">Submit</button>
+                <button onClick={this.resetFilters} className="btn btn-primary">Reset</button>
+            </Form>
         )
     }
 
@@ -134,7 +172,7 @@ export default class UserList extends Component {
 
     render () {
         const fetchUrl = '/api/users/'
-        const departmentOptions = this.buildDepartmentOptions()
+        const filters = this.getFilters()
          const {error} = this.state
 
         return (
@@ -144,9 +182,7 @@ export default class UserList extends Component {
                           {error}
                         </div>}
 
-                <AddUser departments={this.state.departments} users={this.state.users} action={this.addUserToState}/>
-
-                {departmentOptions}
+                {filters}
 
                <DataTable
                     disableSorting={['id']}

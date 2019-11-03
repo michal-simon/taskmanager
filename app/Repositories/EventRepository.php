@@ -134,7 +134,7 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
         $this->model->users()->updateExistingPivot($objUser->id, $status);
     }
 
-      /**
+     /**
      * 
      * @param array $arrFilters
      * @param type $task_type

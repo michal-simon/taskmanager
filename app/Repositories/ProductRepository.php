@@ -242,13 +242,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
      * @return Support
      */
     public function filterProducts(array $arrFilters): Collection {
+        
         $query = $this->model->select('products.id as id', 'products.*')
-                ->leftJoin('product_category', 'products.id', '=', 'product_category.product_id');
+                ->leftJoin('category_product', 'products.id', '=', 'category_product.product_id');
         foreach ($arrFilters as $column => $value) {
             $query->where($column, '=', $value);
         }
         
         $query->groupBy('products.id');
+        
         return $query->get();
     }
 

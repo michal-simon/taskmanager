@@ -43,7 +43,6 @@ export default class CustomerTypeDropdown extends Component {
 
         return (
             <FormGroup>
-                <Label for="company_id">Customer Type</Label>
                 <Input value={this.props.customer_type} onChange={this.props.handleInputChanges} type="select"
                        name="customer_type" id="customer_type">
                     <option value="">Select Customer Type</option>
