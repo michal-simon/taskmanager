@@ -13,13 +13,15 @@ export default class Customers extends Component {
         this.state = {
             per_page: 5,
             customers: [],
-            companies: []
+            companies: [],
+            filters: [],
         }
 
         this.updateCustomers = this.updateCustomers.bind(this)
         this.customerList = this.customerList.bind(this)
         this.getCompanies = this.getCompanies.bind(this)
-        
+        this.filterEvents = this.filterEvents.bind(this)
+
         this.ignoredColumns = [
             'first_name', 
             'last_name',
@@ -49,6 +51,71 @@ export default class Customers extends Component {
                 console.error(e)
             })
     }
+
+    handleSubmit(event) {
+        event.preventDefault()
+
+        axios.post('/api/customers/filterCustomers',
+            this.state.filters)
+            .then((response) => {
+                this.setState({customers: response.data})
+            })
+            .catch((error) => {
+                alert(error)
+            })
+    }
+
+    resetFilters() {
+        this.props.reset()
+    }
+
+    renderErrorFor () {
+
+    }
+
+    filterCustomers(e) {
+
+        const column = event.target.id
+        const value = event.target.value
+
+        if (value === 'all') {
+            const updatedRowState = this.state.filters.filter(filter => filter.column !== column)
+            this.setState({filters: updatedRowState})
+            return true
+        }
+
+        this.setState(prevState => ({
+            filters: {
+                ...prevState.filters,
+                [column]: value,
+            },
+        }));
+
+        return true
+    }
+
+     getFilters() {
+        return (
+            <Form inline className="pull-right" onSubmit={this.handleSubmit}>
+
+                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                </FormGroup
+
+              <CompanyDropdown
+                  renderErrorFor={this.renderErrorFor}
+                  handleInputChanges={this.filterCustomers}
+              />
+              <CustomerTypeDropdown
+                  renderErrorFor={this.renderErrorFor}
+                 handleInputChanges={this.filterCustomers}
+              />
+
+                <button className="mr-2 ml-2 btn btn-success">Submit</button>
+                <button onClick={this.resetFilters} className="btn btn-primary">Reset</button>
+            </Form>
+        )
+    }
+
 
     customerList () {
         if (this.state.customers && this.state.customers.length) {
@@ -114,6 +181,7 @@ export default class Customers extends Component {
     
     render () {
         const fetchUrl = '/api/customers/'
+        const filters = this.getFilters()
 
         return (
             <div className="data-table m-md-3 m-0">
@@ -124,6 +192,8 @@ export default class Customers extends Component {
                     customers={this.state.customers}
                     companies={this.state.companies}
                 />
+
+                {filters}
 
                 <DataTable
                     disableSorting={['id']}
@@ -137,4 +207,3 @@ export default class Customers extends Component {
         )
     }
 }
-
