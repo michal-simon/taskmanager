@@ -59,7 +59,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
         Route::delete('products/{product_id}', 'ProductController@destroy');
         Route::put('products/{product_id}', 'ProductController@update');
         Route::get('products/tasks/{task_id}', 'ProductController@getProductsForTask');
-        Route::get('products/filter/{filter_type}/{id}', 'ProductController@filterProducts');
+        Route::post('products/filterProducts', 'ProductController@filterProducts');
         Route::get('product/{slug}', 'ProductController@getProduct');
 
 // projects
@@ -101,6 +101,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::post('customers', 'CustomerController@store')->middleware('role:null,customercontroller.store');
     Route::delete('customers/{customer_id}', 'CustomerController@destroy')->middleware('role:null,customercontroller.destroy');
     Route::get('customer-types', 'CustomerController@getCustomerTypes')->middleware('role:null,customercontroller.show');
+    Route::post('customers/filterCustomers', 'CustomerController@filterCustomers');
 
 // tasks
     Route::put('tasks/{task_id}', 'TaskController@update')->middleware('role:null,taskcontroller.update');
