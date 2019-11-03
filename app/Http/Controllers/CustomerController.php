@@ -13,6 +13,7 @@ use App\Requests\CreateCustomerRequest;
 use App\Requests\SearchRequest;
 use App\Repositories\CustomerTypeRepository;
 use App\CustomerType;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller {
 
