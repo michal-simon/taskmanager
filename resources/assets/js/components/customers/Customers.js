@@ -6,6 +6,8 @@ import EditCustomer from './EditCustomer'
 import { Button } from 'reactstrap'
 import DataTable from '../common/DataTable'
 import Avatar from '../common/Avatar'
+import CustomerTypeDropdown from "../common/CustomerTypeDropdown";
+import CompanyDropdown from "../common/CompanyDropdown";
 
 export default class Customers extends Component {
     constructor (props) {
