@@ -15,10 +15,13 @@ export default class ProductList extends Component {
             products: [],
             brands: [],
             categories: [],
+            filters: [],
         }
 
         this.addProductToState = this.addProductToState.bind(this)
         this.userList = this.userList.bind(this)
+        this.filterProducts = this.filterProducts.bind(this)
+
         this.ignore = [
             'brand_id', 
             'category_ids', 
@@ -42,63 +45,70 @@ export default class ProductList extends Component {
         this.setState({ products: products })
     }
 
-    filter (e) {
-        if (!e.target.value) {
-            return
+    filterEvents(e) {
+
+        const column = event.target.id
+        const value = event.target.value
+        const project_id = this.props.project_id ? this.props.project_id : 0
+
+        if (value === 'all') {
+            const updatedRowState = this.state.filters.filter(filter => filter.column !== column)
+            this.setState({filters: updatedRowState})
+            return true
         }
 
-        axios.get(`/api/products/filter/${e.target.name}/${e.target.value}`)
-            .then((r) => {
-                this.setState({
-                    products: r.data
-                })
+        this.setState(prevState => ({
+            filters: {
+                ...prevState.filters,
+                [column]: value,
+            },
+        }));
+
+        return true
+    }
+
+    handleSubmit(event) {
+        event.preventDefault()
+
+        axios.post('/api/products/filterProducts',
+            this.state.filters)
+            .then((response) => {
+                this.setState({products: response.data})
             })
-            .catch((e) => {
-                alert(e)
+            .catch((error) => {
+                alert(error)
             })
     }
 
-    buildBrandOptions () {
-        let brandList
-        if (!this.state.brands.length) {
-            brandList = <option value="">Loading...</option>
-        } else {
-            brandList = this.state.brands.map((brand, index) => (
-                <option key={index} value={brand.id}>{brand.name}</option>
-            ))
-        }
+    renderErrorFor () {
 
-        return (
-            <div className="col-3">
-                <FormGroup>
-                    <Input onChange={this.filter.bind(this)} type="select" name="brand" id="brand">
-                        <option value="">Select Brand</option>
-                        {brandList}
-                    </Input>
-                </FormGroup>
-            </div>
-        )
     }
 
-    buildCategoryOptions () {
-        let categoryList
-        if (!this.state.categories.length) {
-            categoryList = <option value="">Loading...</option>
-        } else {
-            categoryList = this.state.categories.map((category, index) => (
-                <option key={index} value={category.id}>{category.name}</option>
-            ))
-        }
+    resetFilters() {
+        this.props.reset()
+    }
 
+    getFilters() {
         return (
-            <div className="col-3">
-                <FormGroup>
-                    <Input onChange={this.filter.bind(this)} type="select" name="category" id="category">
-                        <option value="">Select Category</option>
-                        {categoryList}
-                    </Input>
+            <Form inline className="pull-right" onSubmit={this.handleSubmit}>
+
+                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                 </FormGroup>
-            </div>
+
+              <CompanyDropdown
+                  renderErrorFor={this.renderErrorFor}
+                  handleInputChanges={this.filterProducts}
+                  companies={this.state.brands}
+              />
+              <CategoryDropdown
+                  renderErrorFor={this.renderErrorFor}
+                  handleInputChanges={this.filterEvents}
+                  categories={this.state.categories}
+              />
+
+                <button className="mr-2 ml-2 btn btn-success">Submit</button>
+                <button onClick={this.resetFilters} className="btn btn-primary">Reset</button>
+            </Form>
         )
     }
 
@@ -180,8 +190,7 @@ export default class ProductList extends Component {
 
     render () {
         const fetchUrl = '/api/products/'
-        const brandOptions = this.buildBrandOptions()
-        const categoryOptions = this.buildCategoryOptions()
+        const filters = this.getFilters()
         
         return (
             <div className="data-table m-md-3 m-0">
@@ -193,8 +202,7 @@ export default class ProductList extends Component {
                     action={this.addProductToState}
                 />
                 <div>
-                {brandOptions}
-                {categoryOptions}
+                {filters}
                 </div>
 
                 <DataTable
