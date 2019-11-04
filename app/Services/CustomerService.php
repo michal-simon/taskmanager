@@ -108,7 +108,7 @@ class CustomerService implements CustomerServiceInterface {
             'status' => 1
         ]);
 
-        return $this->transformCustomer($customer);
+        return $customer;
     }
 
     /**
