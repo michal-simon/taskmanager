@@ -2,6 +2,8 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
+import CompanyDropdown from "../common/CompanyDropdown";
+import CategoryDropdown from "../common/CategoryDropdown";
 
 class AddProduct extends React.Component {
     constructor (props) {
@@ -21,8 +23,7 @@ class AddProduct extends React.Component {
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.buildBrandOptions = this.buildBrandOptions.bind(this)
-        this.buildCategoryOptions = this.buildCategoryOptions.bind(this)
+        this.handleInput = this.handleInput.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
     
@@ -73,50 +74,6 @@ class AddProduct extends React.Component {
         this.setState({ selectedCategories: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
-    buildCategoryOptions () {
-        let categoryList = null
-        if (!this.props.categories.length) {
-            categoryList = <option value="">Loading...</option>
-        } else {
-            categoryList = this.props.categories.map((category, index) => (
-                <option key={index} value={category.id}>{category.name}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="users">Categories</Label>
-                <Input defaultValue={this.state.selectedCategories} onChange={this.handleMultiSelect} type="select"
-                    name="category" id="category" multiple>
-                    {categoryList}
-                </Input>
-                {this.renderErrorFor('category')}
-            </FormGroup>
-        )
-    }
-
-    buildBrandOptions () {
-        let brandList
-        if (!this.props.brands.length) {
-            brandList = <option value="">Loading...</option>
-        } else {
-            brandList = this.props.brands.map((brand, index) => (
-                <option key={index} value={brand.id}>{brand.name}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="users">Brand</Label>
-                <Input onChange={this.handleInput.bind(this)} type="select" name="brand" id="brand">
-                    <option value="">Select Brand</option>
-                    {brandList}
-                </Input>
-                {this.renderErrorFor('brand')}
-            </FormGroup>
-        )
-    }
-
     handleInput (e) {
         this.setState({
             [e.target.name]: e.target.value
@@ -132,9 +89,6 @@ class AddProduct extends React.Component {
     }
 
     render () {
-        const brandList = this.buildBrandOptions()
-        const categoryList = this.buildCategoryOptions()
-
         return (
             <React.Fragment>
                 <Button className="pull-right" color="success" onClick={this.toggle}>Add Product</Button>
@@ -177,8 +131,22 @@ class AddProduct extends React.Component {
                             {this.renderErrorFor('sku')}
                         </FormGroup>
 
-                        {brandList}
-                        {categoryList}
+                       <CompanyDropdown
+                          name="brand_id"
+                          hasErrorFor={this.hasErrorFor}
+                          renderErrorFor={this.renderErrorFor}
+                          handleInputChanges={this.handleInput}
+                          companies={this.props.brands}
+                      />
+                       
+                      <CategoryDropdown
+                          multiple={true}
+                          name="category"
+                          hasErrorFor={this.hasErrorFor}
+                          renderErrorFor={this.renderErrorFor}
+                          handleInputChanges={this.handleMultiSelect}
+                          categories={this.props.categories}
+                      />
                     </ModalBody>
 
                     <ModalFooter>
