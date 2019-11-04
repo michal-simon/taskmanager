@@ -4,7 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, L
 import axios from 'axios'
 import PropTypes from 'prop-types'
 import DropdownDate from '../common/DropdownDate'
-import EventTypeDropdown from "../common/EventTypeDropdown";
+import RoleDropdown from "../common/RoleDropdown";
 import DepartmentDropdown from "../common/DepartmentDropdown";
 
 class EditUser extends React.Component {
@@ -39,7 +39,6 @@ class EditUser extends React.Component {
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
-        this.getRoleList = this.getRoleList.bind(this)
         this.setDate = this.setDate.bind(this)
         this.buildGenderDropdown = this.buildGenderDropdown.bind(this)
         this.handleInput = this.handleInput.bind(this)
@@ -134,28 +133,6 @@ class EditUser extends React.Component {
         })
     }
 
-    getRoleList () {
-        let roleList = null
-        if (!this.state.roles.length) {
-            roleList = <option value="">Loading...</option>
-        } else {
-            roleList = this.state.roles.map((role, index) => (
-                <option key={index} value={role.id}>{role.name}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="users">Roles</Label>
-                <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
-                    name="role" id="role" multiple>
-                    {roleList}
-                </Input>
-                {this.renderErrorFor('users')}
-            </FormGroup>
-        )
-    }
-
     setDate (date) {
         this.setValues({ dob: date })
     }
@@ -185,7 +162,6 @@ class EditUser extends React.Component {
 
     render () {
         const genderList = this.buildGenderDropdown()
-        const roleList = this.getRoleList()
         const {message} = this.state
 
         return (
@@ -242,6 +218,13 @@ class EditUser extends React.Component {
                             department={this.state.department}
                             renderErrorFor={this.renderErrorFor}
                             handleInputChanges={this.handleInput}
+                        />
+                                
+                        <RoleDropdown
+                            multiple={true}
+                            name="role"
+                            renderErrorFor={this.renderErrorFor}
+                            handleInputChanges={this.handleMultiSelect}
                         />
 
                         <DropdownDate selectedDate={this.state.user.dob} classes={this.classes} defaultValues={this.defaultValues} onDateChange={this.setDate}/>
