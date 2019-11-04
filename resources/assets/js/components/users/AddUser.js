@@ -3,6 +3,8 @@ import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
 import axios from 'axios'
 import DropdownDate from '../common/DropdownDate'
+import DepartmentDropdown from "../common/DepartmentDropdown";
+import RoleDropdown from "../common/RoleDropdown";
 
 class AddUser extends React.Component {
     constructor (props) {
@@ -30,10 +32,9 @@ class AddUser extends React.Component {
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
-        this.getRoleList = this.getRoleList.bind(this)
         this.setDate = this.setDate.bind(this)
         this.buildGenderDropdown = this.buildGenderDropdown.bind(this)
-        this.buildDepartmentOptions = this.buildDepartmentOptions.bind(this)
+        this.handleInput = this.handleInput.bind(this)
 
         this.defaultValues = {
             year: 'Select Year',
@@ -65,18 +66,6 @@ class AddUser extends React.Component {
                 </span>
             )
         }
-    }
-
-    getRoles () {
-        axios.get('/api/roles')
-            .then((r) => {
-                this.setState({
-                    roles: r.data
-                })
-            })
-            .catch((e) => {
-                console.error(e)
-            })
     }
 
     handleClick () {
@@ -143,50 +132,6 @@ class AddUser extends React.Component {
         this.setState({ selectedRoles: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
-    getRoleList () {
-        let roleList = null
-        if (!this.state.roles.length) {
-            roleList = <option value="">Loading...</option>
-        } else {
-            roleList = this.state.roles.map((role, index) => (
-                <option key={index} value={role.id}>{role.name}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="users">Roles</Label>
-                <Input defaultValue={this.state.selectedRoles} onChange={this.handleMultiSelect} type="select"
-                    name="role" id="role" multiple>
-                    {roleList}
-                </Input>
-                {this.renderErrorFor('users')}
-            </FormGroup>
-        )
-    }
-
-    buildDepartmentOptions () {
-        let departmentList
-        if (!this.props.departments.length) {
-            departmentList = <option value="">Loading...</option>
-        } else {
-            departmentList = this.props.departments.map((department, index) => (
-                <option key={index} value={department.id}>{department.name}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="users">Department</Label>
-                <Input onChange={this.handleInput.bind(this)} type="select" name="department" id="department">
-                    <option value="">Select Department</option>
-                    {departmentList}
-                </Input>
-                {this.renderErrorFor('department')}
-            </FormGroup>
-        )
-    }
-
     setDate (date) {
         this.setState({ dob: date })
     }
@@ -214,9 +159,7 @@ class AddUser extends React.Component {
     }
 
     render () {
-        const roleList = this.getRoleList()
         const genderList = this.buildGenderDropdown()
-        const departmentList = this.buildDepartmentOptions()
         const {message} = this.state
 
         return (
@@ -274,7 +217,21 @@ class AddUser extends React.Component {
                         </FormGroup>
 
                         {genderList}
-                        {departmentList}
+                        
+                        <DepartmentDropdown
+                            departments={this.props.departments}
+                            name="department"
+                            renderErrorFor={this.renderErrorFor}
+                            handleInputChanges={this.handleInput}
+                        />
+                                
+                        <RoleDropdown
+                            name="role"
+                            multiple={true}
+                            renderErrorFor={this.renderErrorFor}
+                            handleInputChanges={this.handleMultiSelect}
+                            role={this.state.selectedRoles}
+                        />
 
                         <DropdownDate classes={this.classes} defaultValues={this.defaultValues} onDateChange={this.setDate}/>
 
