@@ -254,4 +254,54 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $query->get();
     }
 
+      /**
+     * @param $file
+     * @param null $disk
+     * @return bool
+     */
+    public function deleteFile(array $file, $disk = null) : bool
+    {
+        return $this->update(['cover' => null], $file['product']);
+    }
+    /**
+     * @param string $src
+     * @return bool
+     */
+    public function deleteThumb(string $src) : bool
+    {
+        return DB::table('product_images')->where('src', $src)->delete();
+    }
+
+        /**
+     * @return mixed
+     */
+    public function findProductImages() : Collection
+    {
+        return $this->model->images()->get();
+    }
+    /**
+     * @param UploadedFile $file
+     * @return string
+     */
+    public function saveCoverImage(UploadedFile $file) : string
+    {
+        return $file->store('products', ['disk' => 'public']);
+    }
+    /**
+     * @param Collection $collection
+     *
+     * @return void
+     */
+    public function saveProductImages(Collection $collection)
+    {
+        $collection->each(function (UploadedFile $file) {
+            $filename = $this->storeFile($file);
+            $productImage = new ProductImage([
+                'product_id' => $this->model->id,
+                'src' => $filename
+            ]);
+            $this->model->images()->save($productImage);
+        });
+    }
+
 }
