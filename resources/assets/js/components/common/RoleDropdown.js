@@ -48,7 +48,9 @@ export default class RoleDropdown extends Component {
         return (
             <FormGroup>
                 <Input value={this.props.role} onChange={this.props.handleInputChanges} type="select"
-                       name={name} id={name}>
+                    name={name} id={name} 
+                    {this.props.multiple && this.props.multiple === true ? 'multiple' : ''}
+                >
                     <option value="">Select Role</option>
                     {roleList}
                 </Input>
