@@ -14,7 +14,7 @@ use App\Repositories\DepartmentRepository;
 use App\Department;
 use App\Requests\SearchRequest;
 
-class UserService {
+class UserService implements UserServiceInterface {
     use UserTransformable;
     /**
      * @var UserRepositoryInterface
