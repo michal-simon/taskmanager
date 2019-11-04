@@ -219,6 +219,7 @@ class AddUser extends React.Component {
                         {genderList}
                         
                         <DepartmentDropdown
+                            hasErrorFor={this.hasErrorFor}
                             departments={this.props.departments}
                             name="department"
                             renderErrorFor={this.renderErrorFor}
@@ -226,6 +227,7 @@ class AddUser extends React.Component {
                         />
                                 
                         <RoleDropdown
+                            hasErrorFor={this.hasErrorFor}
                             name="role"
                             multiple={true}
                             renderErrorFor={this.renderErrorFor}
