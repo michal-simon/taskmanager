@@ -33,6 +33,35 @@ export default class RoleDropdown extends Component {
             })
     }
 
+   multiSelect (roleList, name) {
+        return (
+            <FormGroup>
+                <Input value={this.props.role} onChange={this.props.handleInputChanges} type="select"
+                       name={name} id={name}
+                       multiple="multiple"
+                >
+                    <option value="">Select Role</option>
+                    {roleList}
+                </Input>
+                {this.props.renderErrorFor('role')}
+            </FormGroup>
+        )
+    }
+
+    singleSelect (roleList, name) {
+        return (
+            <FormGroup>
+                <Input value={this.props.role} onChange={this.props.handleInputChanges} type="select"
+                       name={name} id={name}
+                >
+                    <option value="">Select Role</option>
+                    {roleList}
+                </Input>
+                {this.props.renderErrorFor('role')}
+            </FormGroup>
+        )
+    }
+
     render () {
         let roleList = null
         if (!this.state.roles.length) {
@@ -45,17 +74,10 @@ export default class RoleDropdown extends Component {
 
         const name = this.props.name && this.props.name ? this.props.name : 'role'
 
-        return (
-            <FormGroup>
-                <Input value={this.props.role} onChange={this.props.handleInputChanges} type="select"
-                    name={name} id={name} 
-                    multiple={this.props.multiple && this.props.multiple === true ? 'multiple' : ''}
-                >
-                    <option value="">Select Role</option>
-                    {roleList}
-                </Input>
-                {this.props.renderErrorFor('role')}
-            </FormGroup>
-        )
+        if(this.props.multiple && this.props.multiple === true) {
+            return this.multiSelect(roleList, name)
+        }
+
+        return this.singleSelect(roleList, name)
     }
 }
