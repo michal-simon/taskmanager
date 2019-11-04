@@ -33,14 +33,14 @@ export default class RoleDropdown extends Component {
             })
     }
 
-   multiSelect (roleList, name) {
+    multiSelect (roleList, name) {
         return (
             <FormGroup>
+                <Label>Select Roles for user</Label>
                 <Input value={this.props.role} onChange={this.props.handleInputChanges} type="select"
                        name={name} id={name}
                        multiple="multiple"
                 >
-                    <option value="">Select Role</option>
                     {roleList}
                 </Input>
                 {this.props.renderErrorFor('role')}
