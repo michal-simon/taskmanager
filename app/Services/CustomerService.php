@@ -14,7 +14,7 @@ use App\Repositories\CustomerTypeRepository;
 use App\CustomerType;
 use Illuminate\Http\Request;
 
-class CustomerService {
+class CustomerService implements CustomerServiceInterface {
     use CustomerTransformable;
     
      /**
