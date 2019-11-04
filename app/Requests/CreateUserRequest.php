@@ -28,9 +28,9 @@ class CreateUserRequest extends BaseFormRequest {
                 'regex:/[0-9]/',      // must contain at least one digit
                 'regex:/[@$!%*#?&]/', // must contain a special character
             ],
-            'username' => 'required|string',
+            'username' => ['required', 'string', 'unique:users'],
             'profile_photo' => 'nullable|string',
-            'email' => 'required|string',
+            'email' => ['required', 'email', 'unique:users'],
             'first_name' => 'required|string',
             'last_name' => 'required|string'
         ];
