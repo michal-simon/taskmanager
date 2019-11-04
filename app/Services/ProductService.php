@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use App\ProductAttribute;
 use App\Requests\SearchRequest;
 
-class ProductService {
+class ProductService implements ProductServiceInterface {
     use ProductTransformable,
         LoanProductTransformable;
 
