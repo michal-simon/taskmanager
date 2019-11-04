@@ -96,7 +96,8 @@ if ($request->has('category')) {
         } else {
             $productRepo->detachCategories();
         }
-        return $this->transformProduct($product);
+
+        return $product;
     }
 
     /**
@@ -143,6 +144,7 @@ return $product;
         $product = $this->productRepo->findProductById($id);
         $productRepo = new ProductRepository($product);
         $productRepo->deleteProduct();
+        return true;
     }
      
     /**
