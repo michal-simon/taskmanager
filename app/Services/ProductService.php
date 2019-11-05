@@ -88,10 +88,19 @@ class ProductService implements ProductServiceInterface {
     public function create(CreateProductRequest $request) {
         $data = $request->except('_token', '_method');
         $data['slug'] = str_slug($request->input('name'));
+        
+        if ($request->hasFile('cover') && $request->file('cover') instanceof UploadedFile) {
+            $data['cover'] = $this->productRepo->saveCoverImage($request->file('cover'));
+        }
+
         $product = $this->productRepo->createProduct($data);
         $productRepo = new ProductRepository($product);
         
-if ($request->has('category')) {
+        if ($request->hasFile('image')) {
+            $productRepo->saveProductImages(collect($request->file('image')));
+        }
+
+        if ($request->has('category')) {
             $productRepo->syncCategories($request->input('category'));
         } else {
             $productRepo->detachCategories();
