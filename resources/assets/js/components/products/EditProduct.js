@@ -36,8 +36,6 @@ class EditProduct extends React.Component {
         this.toggle = this.toggle.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        this.buildCategoryOptions = this.buildCategoryOptions.bind(this)
-        this.buildBrandOptions = this.buildBrandOptions.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
         this.handleInput = this.handleInput.bind(this)
     }
@@ -102,58 +100,7 @@ class EditProduct extends React.Component {
         })
     }
 
-    buildCategoryOptions () {
-        let categoryList = null
-        if (!this.props.categories.length) {
-            categoryList = <option value="">Loading...</option>
-        } else {
-            categoryList = this.props.categories.map((category, index) => (
-                <option key={index} value={category.id}>{category.name}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="category">Categories</Label>
-                <Input defaultValue={this.state.selectedCategories} onChange={this.handleMultiSelect} type="select"
-                    name="category"
-                    id="category" multiple>
-                    {categoryList}
-                </Input>
-                {this.renderErrorFor('category')}
-            </FormGroup>
-        )
-    }
-
-    buildBrandOptions () {
-        let brandList
-        if (!this.props.brands.length) {
-            brandList = <option value="">Loading...</option>
-        } else {
-            brandList = this.props.brands.map((brand, index) => (
-                <option key={index} value={brand.id}>{brand.name}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="users">Brand</Label>
-                <Input value={this.state.brand_id} onChange={this.handleInput.bind(this)}
-                    type="select"
-                    name="brand_id"
-                    id="brand_id"
-                >
-                    <option value="">Select Brand</option>
-                    {brandList}
-                </Input>
-                {this.renderErrorFor('brand')}
-            </FormGroup>
-        )
-    }
-
     render () {
-        const brandList = this.buildBrandOptions()
-        const categoryList = this.buildCategoryOptions()
 
         return (
             <React.Fragment>
@@ -203,8 +150,24 @@ class EditProduct extends React.Component {
                             {this.renderErrorFor('sku')}
                         </FormGroup>
 
-                        {brandList}
-                        {categoryList}
+                        <CompanyDropdown
+                          name="brand_id"
+                          company={this.state.brand_id}
+                          hasErrorFor={this.hasErrorFor}
+                          renderErrorFor={this.renderErrorFor}
+                          handleInputChanges={this.handleInput}
+                          companies={this.props.brands}
+                      />
+                       
+                      <CategoryDropdown
+                          multiple={true}
+                          name="category"
+                          category={this.state.selectedCategories}
+                          hasErrorFor={this.hasErrorFor}
+                          renderErrorFor={this.renderErrorFor}
+                          handleInputChanges={this.handleMultiSelect}
+                          categories={this.props.categories}
+                      />
 
                         <ProductAttribute values={this.productAttributes} product={this.props.product} onChange={this.handleInput} />
                     </ModalBody>
