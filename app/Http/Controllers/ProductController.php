@@ -18,6 +18,7 @@ use App\Task;
 use Illuminate\Support\Facades\Validator;
 use App\ProductAttribute;
 use App\Requests\SearchRequest;
+use App\Services\ProductService;
 
 class ProductController extends Controller {
 
@@ -39,6 +40,8 @@ class ProductController extends Controller {
      */
     private $brandRepo;
 
+    private $productService;
+
     /**
      * ProductController constructor.
      *
@@ -47,11 +50,15 @@ class ProductController extends Controller {
      * @param BrandRepositoryInterface $brandRepository
      */
     public function __construct(
-    ProductRepositoryInterface $productRepository, CategoryRepositoryInterface $categoryRepository, BrandRepositoryInterface $brandRepository
+    ProductRepositoryInterface $productRepository,
+    CategoryRepositoryInterface $categoryRepository, 
+    BrandRepositoryInterface $brandRepository,
+    ProductService $productService
     ) {
         $this->productRepo = $productRepository;
         $this->categoryRepo = $categoryRepository;
         $this->brandRepo = $brandRepository;
+        $this->productService = $productService;
     }
 
     /**
@@ -60,25 +67,7 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(SearchRequest $request) {
-        $orderBy = !$request->column ? 'name' : $request->column;
-        $orderDir = !$request->order ? 'asc' : $request->order;
-        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
-
-        if (request()->has('search_term') && !empty($request->search_term)) {            
-            $list = $this->productRepo->searchProduct(request()->input('search_term'));
-        } else {
-            $list = $this->productRepo->listProducts($orderBy, $orderDir);
-        }
-
-        $products = $list->map(function (Product $product) {
-                    return $this->transformProduct($product);
-                })->all();
-
-        if ($recordsPerPage > 0) {
-            $paginatedResults = $this->productRepo->paginateArrayResults($products, $recordsPerPage);
-            return $paginatedResults->toJson();
-        }
-
+        $products = $this->productService->search($request);
         return collect($products)->toJson();
     }
 
@@ -90,18 +79,7 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(CreateProductRequest $request) {
-        $data = $request->except('_token', '_method');
-        $data['slug'] = str_slug($request->input('name'));
-
-        $product = $this->productRepo->createProduct($data);
-
-        $productRepo = new ProductRepository($product);
-
-        if ($request->has('category')) {
-            $productRepo->syncCategories($request->input('category'));
-        } else {
-            $productRepo->detachCategories();
-        }
+        $product = $this->productService->create($request);
 
         return $this->transformProduct($product);
     }
@@ -116,22 +94,7 @@ class ProductController extends Controller {
      * @throws \App\Shop\Products\Exceptions\ProductUpdateErrorException
      */
     public function update(UpdateProductRequest $request, int $id) {
-        $product = $this->productRepo->findProductById($id);
-        $productRepo = new ProductRepository($product);
-        $data = $request->except(
-                '_token', '_method'
-        );
-
-        $data['slug'] = str_slug($request->input('name'));
-
-        if ($request->has('category')) {
-            $productRepo->syncCategories($request->input('category'));
-        } else {
-            $productRepo->detachCategories();
-        }
-
-        $this->saveProductCombinations($request, $product);
-        $productRepo->updateProduct($data);
+        $product = $this->productService->update($request, $id);
 
         return response()->json($product);
 
@@ -148,9 +111,7 @@ class ProductController extends Controller {
      * @throws \Exception
      */
     public function destroy($id) {
-        $product = $this->productRepo->findProductById($id);
-        $productRepo = new ProductRepository($product);
-        $productRepo->deleteProduct();
+        $product = $this->productService->delete($id);
     }
 
     /**
@@ -195,56 +156,6 @@ class ProductController extends Controller {
     public function getProduct(string $slug) {
         $product = $this->productRepo->findProductBySlug(['slug' => $slug]);
         return response()->json($product);
-    }
-
-    /**
-     * @param Request $request
-     * @param Product $product
-     * @return boolean
-     */
-    private function saveProductCombinations(Request $request, Product $product): ProductAttribute {
-        $fields = $request->only(
-                'range_from', 'range_to', 'payable_months', 'number_of_years', 'minimum_downpayment', 'interest_rate'
-        );
-        if ($errors = $this->validateFields($fields)) {
-            return response()->json($errors->errors(), 422);
-        }
-
-        $range_from = $fields['range_from'];
-        $range_to = $fields['range_to'];
-        $payable_months = $fields['payable_months'];
-        $number_of_years = $fields['number_of_years'];
-        $minimum_downpayment = $fields['minimum_downpayment'];
-        $interest_rate = $fields['interest_rate'];
-
-        $productRepo = new ProductRepository($product);
-
-        $productAttributes = new ProductAttribute(compact('range_from', 'range_to', 'payable_months', 'number_of_years', 'minimum_downpayment', 'interest_rate'));
-
-        $productRepo->removeProductAttribute($productAttributes);
-
-        $productAttribute = $productRepo->saveProductAttributes($productAttributes);
-
-        return $productAttribute;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return
-     */
-    private function validateFields(array $data) {
-        $validator = Validator::make($data, [
-                    'range_from' => 'required',
-                    'range_to' => 'required',
-                    'payable_months' => 'required',
-                    'number_of_years' => 'nullable',
-                    'minimum_downpayment' => 'nullable',
-                    'interest_rate' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return $validator;
-        }
     }
 
     /**
