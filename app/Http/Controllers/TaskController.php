@@ -20,6 +20,7 @@ use App\Repositories\SourceTypeRepository;
 use App\SourceType;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TaskCreated;
+use App\Services\TaskService;
 
 class TaskController extends Controller {
 
@@ -40,18 +41,14 @@ class TaskController extends Controller {
      * @param TaskRepositoryInterface $taskRepository
      * @param ProjectRepositoryInterface $projectRepository
      */
-    public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository) {
+    public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository, TaskService $taskService) {
         $this->taskRepository = $taskRepository;
         $this->projectRepository = $projectRepository;
+        $this->taskService = $taskService;
     }
 
     public function index() {
-        $list = $this->taskRepository->listTasks();
-
-        $tasks = $list->map(function (Task $task) {
-                    return $this->transformTask($task);
-                })->all();
-
+        $tasks = $this->taskService->search();
         return response()->json($tasks);
     }
 
@@ -61,31 +58,7 @@ class TaskController extends Controller {
      * @return Response
      */
     public function store(CreateTaskRequest $request) {
-        $validatedData = $request->except('project_id', 'contributors');
-        $currentUser = Auth::user();
-
-        if (!empty($request->project_id)) {
-            $objProject = $this->projectRepository->findProjectById($request->project_id);
-        }
-
-        $validatedData['customer_id'] = empty($validatedData['customer_id']) && isset($objProject) ? $objProject->customer_id : $validatedData['customer_id'];
-        $validatedData['source_type'] = empty($validatedData['source_type']) ? 1 : $validatedData['source_type'];
-        $validatedData['created_by'] = $currentUser->id;
-
-        $task = $this->taskRepository->createTask($validatedData);
-
-        if ($validatedData['task_type'] == 1) {
-            $objProject->tasks()->attach($task);
-        }
-
-        if ($request->has('contributors')) {
-            $taskRepo = new TaskRepository($task);
-            $taskRepo->syncUsers($request->input('contributors'));
-        }
-
-        //send notification
-        Notification::send($currentUser, new TaskCreated($task));
-
+        $task = $this->taskService->create($request);
         return response()->json($this->transformTask($task));
     }
 
@@ -95,9 +68,7 @@ class TaskController extends Controller {
      * @return type
      */
     public function markAsCompleted(int $task_id) {
-        $objTask = $this->taskRepository->findTaskById($task_id);
-        $taskRepo = new TaskRepository($objTask);
-        $taskRepo->updateTask(['is_completed' => true]);
+        $products = $this->taskService->markAsCompleted($task_id);
         return response()->json('Task updated!');
     }
 
@@ -124,9 +95,7 @@ class TaskController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        $objTask = $this->taskRepository->findTaskById($id);
-        $taskRepo = new TaskRepository($objTask);
-        $taskRepo->deleteTask();
+        $products = $this->taskService->delete($id);
         return response()->json('Task deleted!');
     }
 
@@ -137,14 +106,7 @@ class TaskController extends Controller {
      * @return Response
      */
     public function update(UpdateTaskRequest $request, int $id) {
-        $task = $this->taskRepository->findTaskById($id);
-        $taskRepo = new TaskRepository($task);
-        $taskRepo->updateTask($request->except('contributors'));
-
-        if ($request->has('contributors')) {
-            $taskRepo->syncUsers($request->input('contributors'));
-        }
-
+        $products = $this->taskService->update($request, $id);
         return response()->json('Updated task successfully');
     }
 
@@ -174,9 +136,7 @@ class TaskController extends Controller {
      * @param int $id
      */
     public function updateStatus(Request $request, int $id) {
-        $task = $this->taskRepository->findTaskById($id);
-        $taskRepo = new TaskRepository($task);
-        $taskRepo->updateTask(['task_status' => $request->task_status]);
+         $products = $this->taskService->updateStatus($request, $id);
     }
 
     /**
@@ -205,13 +165,7 @@ class TaskController extends Controller {
      * @param Request $request
      */
     public function addProducts(int $task_id, Request $request) {
-        $task = $this->taskRepository->findTaskById($task_id);
-        $taskRepo = new TaskRepository($task);
-
-        if ($request->has('products')) {
-            $taskRepo->buildOrderDetails($request->input('products'));
-        }
-
+         $products = $this->taskService->addProducts($task_id, $request);
         return response()->json('added products to task successfully');
     }
 
@@ -239,43 +193,7 @@ class TaskController extends Controller {
      * @return type
      */
     public function createDeal(Request $request) {
-        $currentUser = Auth::user();
-        $userId = !$currentUser ? 9874 : $currentUser->id;
-        $request->customer_type = 2;
-
-        $customer = (new CustomerRepository(new Customer))->createCustomer($request->except('_token', '_method', 'valued_at', 'title', 'description'));
-
-        if ($request->has('address_1') && !empty($request->address_1)) {
-            $customer->addresses()->create([
-                'company_id' => $request->company_id,
-                'job_title' => $request->job_title,
-                'address_1' => $request->address_1,
-                'address_2' => $request->address_2,
-                'zip' => $request->zip,
-                'city' => $request->city,
-                'country_id' => 225,
-                'status' => 1
-            ]);
-        }
-
-        $task = $this->taskRepository->createTask(
-                [
-                    'created_by' => $userId,
-                    'source_type' => $request->source_type,
-                    'title' => $request->title,
-                    'description' => $request->description,
-                    'customer_id' => $customer->id,
-                    'valued_at' => $request->valued_at,
-                    'task_type' => $request->task_type,
-                    'task_status' => $request->task_status
-                ]
-        );
-
-        if ($request->has('contributors')) {
-            $taskRepo = new TaskRepository($task);
-            $taskRepo->syncUsers($request->input('contributors'));
-        }
-
+        $products = $this->taskService->createDeal($request);
         return response()->json($task);
     }
 
