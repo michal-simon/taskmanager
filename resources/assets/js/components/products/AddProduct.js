@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, CustomInput } from 'reactstrap'
 import axios from 'axios'
 import CompanyDropdown from "../common/CompanyDropdown";
 import CategoryDropdown from "../common/CategoryDropdown";
@@ -42,6 +42,20 @@ class AddProduct extends React.Component {
     }
 
     handleClick () {
+        
+        /*
+        const formData = new FormData();
+        formData.append('icon', this.state.icon)
+        formData.append('name', this.state.name)
+        formData.append('OrganisationID', this.state.organisation_id)
+
+        axios.post(`${Config.API_URL}/api/organisationUnit`, formData, {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+            
+            */
+        
         axios.post('/api/products', {
             name: this.state.name,
             description: this.state.description,
@@ -68,6 +82,12 @@ class AddProduct extends React.Component {
                     errors: error.response.data.errors
                 })
             })
+    }
+    
+     handleFileChange (e) {
+        this.setState({
+            [e.target.name]: e.target.files[0]
+        })
     }
 
     handleMultiSelect (e) {
@@ -130,6 +150,9 @@ class AddProduct extends React.Component {
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('sku')}
                         </FormGroup>
+
+                        <CustomInput onChange={this.handleFileChange.bind(this)} type="file" id="icon" name="icon"
+                            label="Yo, pick a file!"/>
 
                        <CompanyDropdown
                           name="brand_id"
