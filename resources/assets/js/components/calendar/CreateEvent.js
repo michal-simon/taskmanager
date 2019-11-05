@@ -3,6 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, L
 import axios from 'axios'
 import DateTime from 'react-datetime'
 import EventTypeDropdown from '../common/EventTypeDropdown'
+import CustomerDropdown from "../common/CustomerDropdown";
 
 class CreateEvent extends React.Component {
     constructor (props) {
@@ -30,13 +31,11 @@ class CreateEvent extends React.Component {
         this.toggle = this.toggle.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
         this.getUserList = this.getUserList.bind(this)
-        this.getCustomerList = this.getCustomerList.bind(this)
         this.buildForm = this.buildForm.bind(this)
         this.handleInput = this.handleInput.bind(this)
     }
 
     componentDidMount () {
-        this.getCustomers()
         this.getUsers()
     }
 
@@ -98,19 +97,6 @@ class CreateEvent extends React.Component {
             })
     }
 
-    getCustomers () {
-        axios.get('/api/customers')
-            .then((r) => {
-                console.log('customers', r.data)
-                this.setState({
-                    customers: r.data
-                })
-            })
-            .catch((e) => {
-                console.error(e)
-            })
-    }
-
     getUsers () {
         axios.get('/api/users')
             .then((r) => {
@@ -155,32 +141,6 @@ class CreateEvent extends React.Component {
         )
     }
 
-    getCustomerList () {
-        let customerList
-        if (!this.state.customers.length) {
-            customerList = <option value="">Loading...</option>
-        } else {
-            customerList = this.state.customers.map((customer, index) => (
-                <option key={index} value={customer.id}>{customer.name}</option>
-            ))
-        }
-
-        return (
-            <FormGroup>
-                <Label for="location">Customer:</Label>
-                <Input className={this.hasErrorFor('location') ? 'is-invalid' : ''} type="select"
-                    value={this.props.customer_id}
-                    name="customer_id"
-                    id="customer_id"
-                    onChange={this.handleInput.bind(this)}>
-                    <option>Select Customer</option>
-                    {customerList}
-                </Input>
-                {this.renderErrorFor('customer_id')}
-            </FormGroup>
-        )
-    }
-
     handleStartDate (date){
         this.setState({beginDate: date._d})
     };
@@ -190,7 +150,6 @@ class CreateEvent extends React.Component {
     };
 
     buildForm () {
-        const customerList = this.getCustomerList()
         const userList = this.getUserList()
 
         return (
@@ -239,7 +198,10 @@ class CreateEvent extends React.Component {
                     handleInputChanges={this.handleInput}
                 />
 
-                {customerList}
+               <CustomerDropdown
+                   renderErrorFor={this.renderErrorFor}
+                   handleInputChanges={this.handleInput}
+               />
 
                 {userList}
             </Form>

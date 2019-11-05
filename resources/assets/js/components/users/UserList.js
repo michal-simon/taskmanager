@@ -30,7 +30,7 @@ export default class UserList extends Component {
         this.filterUsers = this.filterUsers.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
 
-        this.ignoredColumns = ['department']
+        this.ignoredColumns = ['department', 'phone_number', 'job_description', 'gender', 'dob']
     }
 
     componentDidMount () {

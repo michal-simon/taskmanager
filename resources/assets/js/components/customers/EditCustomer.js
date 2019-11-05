@@ -8,7 +8,7 @@ import CustomerTypeDropdown from '../common/CustomerTypeDropdown'
 class EditCustomer extends React.Component {
     constructor (props) {
         super(props)
-                        
+
         this.state = {
             modal: false,
             id: this.props.customer.id,

@@ -13,6 +13,7 @@ use Illuminate\Http\UploadedFile;
 use App\Repositories\DepartmentRepository;
 use App\Department;
 use App\Requests\SearchRequest;
+use App\Services\Interfaces\UserServiceInterface;
 
 class UserService implements UserServiceInterface {
     use UserTransformable;
@@ -50,7 +51,7 @@ class UserService implements UserServiceInterface {
                 })->all();
         if ($recordsPerPage > 0) {
             $paginatedResults = $this->userRepository->paginateArrayResults($users, $recordsPerPage);
-            return $paginatedResults->toJson();
+            return $paginatedResults;
         }
         return $users;
     }
@@ -84,7 +85,7 @@ class UserService implements UserServiceInterface {
      * @param  int  $id
      * @return Response
      */
-    public function destroy(int $id) {
+    public function delete(int $id) {
         $objUser = $this->userRepository->findUserById($id);
         $userRepo = new UserRepository($objUser);
         $userRepo->deleteUser();

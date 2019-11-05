@@ -50,10 +50,6 @@ class AddUser extends React.Component {
         }
     }
 
-    componentDidMount () {
-        this.getRoles()
-    }
-
     hasErrorFor (field) {
         return !!this.state.errors[field]
     }
@@ -263,8 +259,6 @@ class AddUser extends React.Component {
                             <small className="form-text text-muted">Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character..</small>
                             {this.renderErrorFor('password')}
                         </FormGroup>
-
-                        {roleList}
 
                     </ModalBody>
 

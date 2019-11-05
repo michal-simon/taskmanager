@@ -95,8 +95,13 @@ class TaskController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        $products = $this->taskService->delete($id);
-        return response()->json('Task deleted!');
+        $response = $this->taskService->delete($id);
+        
+        if($response) {
+            return response()->json('Task deleted!');
+        }
+       
+        return response()->json('Unable to delete task!');
     }
 
     /**
@@ -106,8 +111,13 @@ class TaskController extends Controller {
      * @return Response
      */
     public function update(UpdateTaskRequest $request, int $id) {
-        $products = $this->taskService->update($request, $id);
-        return response()->json('Updated task successfully');
+        $response = $this->taskService->update($request, $id);
+        
+        if($response) {
+            return response()->json('Updated task successfully');
+        }
+        
+        return response()->json('unable to update task');
     }
 
     public function getLeads() {

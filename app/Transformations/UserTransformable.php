@@ -22,11 +22,16 @@ trait UserTransformable {
         $prop->last_name = $user->last_name;
         $prop->email = $user->email;
         $prop->username = $user->username;
-        $prop->department = $user->departments()->pluck('department_id')->all();
-        $prop->dept = '';
+        $prop->phone_number = $user->phone_number;
+        $prop->password = $user->password;
+        $prop->job_description = $user->job_description;
+        $prop->gender = $user->gender;
+        $prop->dob = $user->dob;
+        $prop->department = 0;
 
         if ($user->departments->count() > 0) {
             $objDepartment = $user->departments->first();
+            $prop->department = $objDepartment->id;
             $prop->dept = $objDepartment->name;
         }
 

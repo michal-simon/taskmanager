@@ -32,7 +32,8 @@ class LoginController extends Controller {
 
     public function doLogin(LoginRequest $request) {
 
-        $user = \App\User::where('email', $request->email)->get()->first();
+        $user = \App\User::where('email', trim($request->email))->get()->first();
+        
         if ($user && \Hash::check($request->password, $user->password)) { // The passwords match...
             $token = self::getToken($request->email, $request->password);
             $user->auth_token = $token;

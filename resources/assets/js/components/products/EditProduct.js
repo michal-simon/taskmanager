@@ -3,6 +3,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, L
 import axios from 'axios'
 import PropTypes from 'prop-types'
 import ProductAttribute from './ProductAttribute'
+import CompanyDropdown from "../common/CompanyDropdown";
+import CategoryDropdown from "../common/CategoryDropdown";
 
 class EditProduct extends React.Component {
     constructor (props) {
@@ -156,7 +158,7 @@ class EditProduct extends React.Component {
                           hasErrorFor={this.hasErrorFor}
                           renderErrorFor={this.renderErrorFor}
                           handleInputChanges={this.handleInput}
-                          companies={this.props.brands}
+                          //companies={this.props.brands}
                       />
                        
                       <CategoryDropdown

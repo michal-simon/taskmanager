@@ -46,10 +46,7 @@ class UserController extends Controller {
     }
 
     public function index(SearchRequest $request) {
-        
-
-        
-
+        $users = $this->userService->search($request);
         return collect($users)->toJson();
     }
 
@@ -66,9 +63,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(CreateUserRequest $request) {
-        
-       
-
+        $user = $this->userService->create($request);
         return $this->transformUser($user);
     }
 
@@ -83,7 +78,7 @@ class UserController extends Controller {
         $user = $this->userRepository->findUserById($id);
         $roles = $this->roleRepo->listRoles('created_at', 'desc');
         $arrData = [
-            'user' => $user,
+            'user' => $this->transformUser($user),
             'roles' => $roles,
             'selectedIds' => $user->roles()->pluck('role_id')->all()
         ];
@@ -98,8 +93,13 @@ class UserController extends Controller {
      * @return Response
      */
     public function destroy(int $id) {
-       
-        return response()->json('User deleted!');
+        $response = $this->userService->delete($id);
+        
+        if($response) {
+            return response()->json('User deleted!');
+        }
+        
+        return response()->json('User could not be deleted!');
     }
 
     /**
@@ -109,10 +109,7 @@ class UserController extends Controller {
      * @return Response
      */
     public function update(UpdateUserRequest $request, int $id) {        
-        
-
-        
-
+        $this->userService->update($request, $id);
         return response()->json('Updated user successfully');
     }
 

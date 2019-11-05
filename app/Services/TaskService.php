@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Services;
+
 use Illuminate\Http\Request;
 use App\Task;
 use App\Requests\CreateTaskRequest;
@@ -18,16 +20,22 @@ use App\Repositories\SourceTypeRepository;
 use App\SourceType;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TaskCreated;
-class TaskService extends Controller {
+use App\Services\Interfaces\TaskServiceInterface;
+
+class TaskService implements TaskServiceInterface {
+
     use TaskTransformable;
+
     /**
      * @var TaskRepositoryInterface
      */
     private $taskRepository;
+
     /**
      * @var ProjectRepositoryInterface
      */
     private $projectRepository;
+
     /**
      * 
      * @param TaskRepositoryInterface $taskRepository
@@ -37,13 +45,15 @@ class TaskService extends Controller {
         $this->taskRepository = $taskRepository;
         $this->projectRepository = $projectRepository;
     }
-    public function list() {
+
+    public function search() {
         $list = $this->taskRepository->listTasks();
         $tasks = $list->map(function (Task $task) {
                     return $this->transformTask($task);
                 })->all();
-        return response()->json($tasks);
+        return $tasks;
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -70,6 +80,7 @@ class TaskService extends Controller {
         Notification::send($currentUser, new TaskCreated($task));
         return $task;
     }
+
     /**
      * 
      * @param int $task_id
@@ -81,19 +92,22 @@ class TaskService extends Controller {
         $taskRepo->updateTask(['is_completed' => true]);
         return true;
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id) {
+    public function delete($id) {
         $objTask = $this->taskRepository->findTaskById($id);
+        
         $taskRepo = new TaskRepository($objTask);
+        $taskRepo->syncUsers([]);
         $taskRepo->deleteTask();
         return true;
     }
+
     /**
      * @param UpdateTaskRequest $request
      * @param int $id
@@ -110,7 +124,7 @@ class TaskService extends Controller {
 
         return true;
     }
-    
+
     /**
      * 
      * @param Request $request
@@ -121,7 +135,6 @@ class TaskService extends Controller {
         $taskRepo = new TaskRepository($task);
         $taskRepo->updateTask(['task_status' => $request->task_status]);
     }
-    
 
     /**
      * 
@@ -165,4 +178,19 @@ class TaskService extends Controller {
 
         return $task;
     }
+
+    /**
+     * 
+     * @param int $task_id
+     * @param Request $request
+     */
+    public function addProducts(int $task_id, Request $request) {
+        $task = $this->taskRepository->findTaskById($task_id);
+        $taskRepo = new TaskRepository($task);
+        if ($request->has('products')) {
+            $taskRepo->buildOrderDetails($request->input('products'));
+        }
+        return response()->json('added products to task successfully');
+    }
+
 }

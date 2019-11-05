@@ -11,10 +11,15 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Task;
 use App\Brand;
 use App\Category;
+use App\ProductImage;
 use App\ProductAttribute;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use App\Traits\UploadableTrait;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface {
+    
+    use UploadableTrait;
 
     /**
      * ProductRepository constructor.
@@ -292,7 +297,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
      *
      * @return void
      */
-    public function saveProductImages(Collection $collection)
+    public function saveProductImages(Support $collection)
     {
         $collection->each(function (UploadedFile $file) {
             $filename = $this->storeFile($file);

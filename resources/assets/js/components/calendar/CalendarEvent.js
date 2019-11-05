@@ -7,6 +7,7 @@ import axios from 'axios'
 import DateTime from 'react-datetime'
 import EventTypeDropdown from '../common/EventTypeDropdown'
 import CustomerTypeDropdown from "../common/CustomerTypeDropdown";
+import CustomerDropdown from "../common/CustomerDropdown";
 
 const Label2 = styled.span`
   display: flex;
@@ -56,12 +57,10 @@ class CalendarEvent extends React.Component {
         this.toggle = this.toggle.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
         this.getUserList = this.getUserList.bind(this)
-        this.getCustomerList = this.getCustomerList.bind(this)
         this.handleInput = this.handleInput.bind(this)
     }
 
     componentDidMount () {
-        this.getCustomers()
         this.getUsers()
     }
 
@@ -133,18 +132,6 @@ class CalendarEvent extends React.Component {
             })
     }
 
-    getCustomers () {
-        axios.get('/api/customers')
-            .then((r) => {
-                this.setState({
-                    customers: r.data
-                })
-            })
-            .catch((e) => {
-                console.error(e)
-            })
-    }
-
     getUsers () {
         axios.get('/api/users')
             .then((r) => {
@@ -163,33 +150,6 @@ class CalendarEvent extends React.Component {
 
     handleMultiSelect (e) {
         this.setState({ attendees: Array.from(e.target.selectedOptions, (item) => item.value) })
-    }
-
-    getCustomerList () {
-        let customerList
-
-        if (!this.state.customers.length) {
-            customerList = <option value="">Loading...</option>
-        } else {
-            customerList = this.state.customers.map((customer, index) => {
-                const selected = customer.id === this.state.customer_id ? 'selected' : ''
-                return <option selected={selected} key={index} value={customer.id}>{customer.name}</option>
-            })
-        }
-
-        return (
-            <FormGroup>
-                <Label for="customer_id">Customer:</Label>
-                <Input className={this.hasErrorFor('customer_id') ? 'is-invalid' : ''} type="select"
-                    name="customer_id"
-                    id="customer_id"
-                    onChange={this.handleInput.bind(this)}>
-                    <option>Select Customer</option>
-                    {customerList}
-                </Input>
-                {this.renderErrorFor('customer_id')}
-            </FormGroup>
-        )
     }
 
     getUserList () {
@@ -225,7 +185,6 @@ class CalendarEvent extends React.Component {
     render () {
         const { col, colSpan } = this.props
         const userList = this.getUserList()
-        const customerList = this.getCustomerList()
 
         const beginDate = this.convertDate(this.state.beginDate)
         const endDate = this.convertDate(this.state.endDate)
@@ -292,7 +251,11 @@ class CalendarEvent extends React.Component {
                             handleInputChanges={this.handleInput}
                         />
 
-                        {customerList}
+                        <CustomerDropdown
+                            renderErrorFor={this.renderErrorFor}
+                            handleInputChanges={this.handleInput}
+                            customer={this.state.customer_id}
+                        />
 
                         {userList}
 

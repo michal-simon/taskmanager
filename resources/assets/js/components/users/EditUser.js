@@ -215,7 +215,7 @@ class EditUser extends React.Component {
 
                         <DepartmentDropdown
                             departments={this.props.departments && this.props.departments.length ? this.props.departments : ''}
-                            department={this.state.department}
+                            department={this.state.user.department}
                             renderErrorFor={this.renderErrorFor}
                             handleInputChanges={this.handleInput}
                         />
@@ -257,9 +257,6 @@ class EditUser extends React.Component {
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('password')}
                         </FormGroup>
-
-                        {roleList}
-
                     </ModalBody>
 
                     <ModalFooter>

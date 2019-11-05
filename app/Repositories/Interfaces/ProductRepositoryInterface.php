@@ -11,6 +11,7 @@ use App\Brand;
 use App\Category;
 use App\ProductAttribute;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 interface ProductRepositoryInterface extends BaseRepositoryInterface {
 

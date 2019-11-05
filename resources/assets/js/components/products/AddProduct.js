@@ -42,27 +42,21 @@ class AddProduct extends React.Component {
     }
 
     handleClick () {
-        
-        /*
-        const formData = new FormData();
-        formData.append('icon', this.state.icon)
-        formData.append('name', this.state.name)
-        formData.append('OrganisationID', this.state.organisation_id)
 
-        axios.post(`${Config.API_URL}/api/organisationUnit`, formData, {
+        const formData = new FormData();
+        formData.append('cover', this.state.cover)
+        formData.append('image[]', this.state.image)
+        formData.append('name', this.state.name)
+        formData.append('description', this.state.description)
+        formData.append('price', this.state.price)
+        formData.append('sku', this.state.sku)
+        formData.append('brand_id', this.state.brand_id)
+        formData.append('category', this.state.selectedCategories)
+
+        axios.post('/api/products', formData, {
             headers: {
                 'content-type': 'multipart/form-data'
             }
-            
-            */
-        
-        axios.post('/api/products', {
-            name: this.state.name,
-            description: this.state.description,
-            price: this.state.price,
-            sku: this.state.sku,
-            brand_id: this.state.brand,
-            category: this.state.selectedCategories
         })
             .then((response) => {
                 this.toggle()
@@ -151,15 +145,18 @@ class AddProduct extends React.Component {
                             {this.renderErrorFor('sku')}
                         </FormGroup>
 
-                        <CustomInput onChange={this.handleFileChange.bind(this)} type="file" id="icon" name="icon"
-                            label="Yo, pick a file!"/>
+                        <CustomInput onChange={this.handleFileChange.bind(this)} type="file" id="cover" name="cover"
+                            label="Cover!"/>
+
+                        <CustomInput onChange={this.handleFileChange.bind(this)} type="file" id="image" name="image"
+                                     label="Thumbnail!"/>
 
                        <CompanyDropdown
                           name="brand_id"
                           hasErrorFor={this.hasErrorFor}
                           renderErrorFor={this.renderErrorFor}
                           handleInputChanges={this.handleInput}
-                          companies={this.props.brands}
+                          // companies={this.props.brands}
                       />
                        
                       <CategoryDropdown

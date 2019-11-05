@@ -7,15 +7,11 @@ use Illuminate\Http\Request;
 use App\Requests\CreateEventRequest;
 use App\Requests\UpdateEventRequest;
 use App\Repositories\Interfaces\EventRepositoryInterface;
-use App\Repositories\EventRepository;
 use App\Transformations\EventTransformable;
 use App\Repositories\TaskRepository;
 use App\Task;
 use App\Repositories\UserRepository;
 use App\User;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\EventCreated;
-use Illuminate\Support\Facades\Auth;
 use App\Repositories\EventTypeRepository;
 use App\EventType;
 
@@ -24,13 +20,15 @@ class EventController extends Controller {
     use EventTransformable;
 
     private $eventRepository;
+    private $eventService;
 
     /**
      * 
      * @param EventRepositoryInterface $eventRepository
      */
-    public function __construct(EventRepositoryInterface $eventRepository) {
+    public function __construct(EventRepositoryInterface $eventRepository, \App\Services\EventService $eventService) {
         $this->eventRepository = $eventRepository;
+        $this->eventService = $eventService;
     }
 
     public function index() {
@@ -61,36 +59,7 @@ class EventController extends Controller {
      * @return Response
      */
     public function store(CreateEventRequest $request) {
-
-        $user = Auth::user();
-
-        $arrData = [
-            'created_by' => $user->id,
-            'customer_id' => $request->customer_id,
-            'title' => $request->title,
-            'location' => $request->location,
-            'beginDate' => date('Y-m-d H:i:s', strtotime($request->beginDate)),
-            'endDate' => date('Y-m-d H:i:s', strtotime($request->endDate)),
-            'event_type' => $request->event_type,
-            'description' => $request->description
-        ];
-
-        $event = $this->eventRepository->createEvent($arrData);
-
-        //send notification
-
-        Notification::send($user, new EventCreated($event));
-
-
-        //attach invited users
-        $this->eventRepository->attachUsers($event, $request->users);
-
-        $eventRepo = new EventRepository($event);
-
-        if ($request->has('task_id')) {
-            $eventRepo->syncTask($request->input('task_id'));
-        }
-
+        $event = $this->eventService->create($request);
         return $event->toJson();
     }
 
@@ -101,10 +70,12 @@ class EventController extends Controller {
      * @return Response
      */
     public function destroy(int $id) {
-        $objEvent = $this->eventRepository->findEventById($id);
-        $eventRepo = new EventRepository($objEvent);
-        $eventRepo->deleteEvent();
-        return response()->json('Event deleted!');
+        $response = $this->eventService->delete($id);
+
+        if ($response) {
+            return response()->json('Event deleted!');
+        }
+        return response()->json('Unable to delete event!');
     }
 
     /**
@@ -114,23 +85,7 @@ class EventController extends Controller {
      * @return Response
      */
     public function update(UpdateEventRequest $request, int $id) {
-
-        $event = $this->eventRepository->findEventById($id);
-
-        $arrData = [
-            'customer_id' => $request->customer_id,
-            'title' => $request->title,
-            'location' => $request->location,
-            'beginDate' => date('Y-m-d H:i:s', strtotime($request->beginDate)),
-            'endDate' => date('Y-m-d H:i:s', strtotime($request->endDate)),
-            'event_type' => $request->event_type,
-            'description' => $request->description
-        ];
-
-        $eventRepo = new EventRepository($event);
-        $eventRepo->updateEvent($arrData);
-
-        $eventRepo->attachUsers($event, $request->users);
+        $event = $this->eventService->update($request, $id);
     }
 
     /**
@@ -175,16 +130,14 @@ class EventController extends Controller {
 
         return response()->json($events);
     }
-    
+
     /**
      * 
      * @param type $id
      * @param Request $request
      */
     public function updateEventStatus($id, Request $request) {
-        $user = Auth::user();
-        $event = $this->eventRepository->findEventById($id);
-        $eventRepo = new EventRepository($event);
-        $eventRepo->updateInvitationResponseForUser($user, $request->all());
+        $this->eventService->updateEventStatus($id, $request);
     }
+
 }

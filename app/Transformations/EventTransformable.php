@@ -18,7 +18,7 @@ trait EventTransformable {
         $prop = new Event;
         
         $customer = $event->customer;
-
+                
         $prop->id = (int) $event->id;
         $prop->location = $event->location;
         $prop->customer_id = $customer->id;

@@ -1,5 +1,5 @@
-
 <?php
+
 namespace App\Services;
 
 use App\Product;
@@ -7,19 +7,19 @@ use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\BrandRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\ProductRepository;
-use App\Repositories\CategoryRepository;
 use App\Requests\CreateProductRequest;
 use App\Requests\UpdateProductRequest;
 use App\Transformations\ProductTransformable;
 use App\Transformations\LoanProductTransformable;
 use Illuminate\Http\Request;
-use App\Repositories\TaskRepository;
-use App\Task;
 use Illuminate\Support\Facades\Validator;
 use App\ProductAttribute;
 use App\Requests\SearchRequest;
+use App\Services\Interfaces\ProductServiceInterface;
+use Illuminate\Http\UploadedFile;
 
 class ProductService implements ProductServiceInterface {
+
     use ProductTransformable,
         LoanProductTransformable;
 
@@ -27,14 +27,17 @@ class ProductService implements ProductServiceInterface {
      * @var ProductRepositoryInterface
      */
     private $productRepo;
+
     /**
      * @var CategoryRepositoryInterface
      */
     private $categoryRepo;
+
     /**
      * @var BrandRepositoryInterface
      */
     private $brandRepo;
+
     /**
      * ProductController constructor.
      *
@@ -59,8 +62,8 @@ class ProductService implements ProductServiceInterface {
         $orderBy = !$request->column ? 'name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
-       
- if (request()->has('search_term') && !empty($request->search_term)) {            
+
+        if (request()->has('search_term') && !empty($request->search_term)) {
             $list = $this->productRepo->searchProduct(request()->input('search_term'));
         } else {
             $list = $this->productRepo->listProducts($orderBy, $orderDir);
@@ -72,7 +75,7 @@ class ProductService implements ProductServiceInterface {
 
         if ($recordsPerPage > 0) {
             $paginatedResults = $this->productRepo->paginateArrayResults($products, $recordsPerPage);
-            return $paginatedResults->toJson();
+            return $paginatedResults;
         }
 
         return $products;
@@ -86,22 +89,24 @@ class ProductService implements ProductServiceInterface {
      * @return \Illuminate\Http\Response
      */
     public function create(CreateProductRequest $request) {
+        
         $data = $request->except('_token', '_method');
         $data['slug'] = str_slug($request->input('name'));
-        
+
         if ($request->hasFile('cover') && $request->file('cover') instanceof UploadedFile) {
             $data['cover'] = $this->productRepo->saveCoverImage($request->file('cover'));
         }
-
+        
         $product = $this->productRepo->createProduct($data);
         $productRepo = new ProductRepository($product);
-        
+
         if ($request->hasFile('image')) {
             $productRepo->saveProductImages(collect($request->file('image')));
         }
 
         if ($request->has('category')) {
-            $productRepo->syncCategories($request->input('category'));
+            $categories = !is_array($request->input('category')) ? explode(',', $request->input('category')) : $request->input('category');
+            $productRepo->syncCategories($categories);
         } else {
             $productRepo->detachCategories();
         }
@@ -121,14 +126,14 @@ class ProductService implements ProductServiceInterface {
     public function update(UpdateProductRequest $request, int $id) {
         $product = $this->productRepo->findProductById($id);
         $productRepo = new ProductRepository($product);
-        
-$data = $request->except(
+
+        $data = $request->except(
                 '_token', '_method'
         );
 
         $data['slug'] = str_slug($request->input('name'));
-        
-if ($request->has('category')) {
+
+        if ($request->has('category')) {
             $productRepo->syncCategories($request->input('category'));
         } else {
             $productRepo->detachCategories();
@@ -136,8 +141,8 @@ if ($request->has('category')) {
 
         $this->saveProductCombinations($request, $product);
         $productRepo->updateProduct($data);
-        
-return $product;
+
+        return $product;
         //return collect($products)->toJson();
     }
 
@@ -149,15 +154,15 @@ return $product;
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy($id) {
+    public function delete($id) {
         $product = $this->productRepo->findProductById($id);
-        
+
         $product->categories()->sync([]);
-        
+
         $productAttr = $product->attributes();
         /* $productAttr->each(function ($pa) {
-            DB::table('attribute_value_product_attribute')->where('product_attribute_id', $pa->id)->delete();
-        }); */
+          DB::table('attribute_value_product_attribute')->where('product_attribute_id', $pa->id)->delete();
+          }); */
 
         $productAttr->where('product_id', $product->id)->delete();
 
@@ -165,7 +170,7 @@ return $product;
         $productRepo->deleteProduct();
         return true;
     }
-     
+
     /**
      * @param Request $request
      * @param Product $product
@@ -190,6 +195,7 @@ return $product;
         $productAttribute = $productRepo->saveProductAttributes($productAttributes);
         return $productAttribute;
     }
+
     /**
      * @param array $data
      *
@@ -208,4 +214,5 @@ return $product;
             return $validator;
         }
     }
+
 }

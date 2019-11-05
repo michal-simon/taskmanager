@@ -6,7 +6,6 @@ use App\Product;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\BrandRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
-use App\Repositories\ProductRepository;
 use App\Repositories\CategoryRepository;
 use App\Requests\CreateProductRequest;
 use App\Requests\UpdateProductRequest;
@@ -15,8 +14,6 @@ use App\Transformations\LoanProductTransformable;
 use Illuminate\Http\Request;
 use App\Repositories\TaskRepository;
 use App\Task;
-use Illuminate\Support\Facades\Validator;
-use App\ProductAttribute;
 use App\Requests\SearchRequest;
 use App\Services\ProductService;
 

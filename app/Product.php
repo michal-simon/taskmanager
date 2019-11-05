@@ -8,6 +8,7 @@ use App\Traits\SearchableTrait;
 use App\Brand;
 use App\Category;
 use App\ProductAttribute;
+use App\ProductImage;
 
 class Product extends Model {
 
@@ -67,6 +68,13 @@ class Product extends Model {
      */
     public function attributes() {
         return $this->hasMany(ProductAttribute::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images() {
+        return $this->hasMany(ProductImage::class);
     }
 
 }

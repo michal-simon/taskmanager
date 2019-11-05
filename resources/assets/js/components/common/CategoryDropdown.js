@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import axios from "axios";
-import { Input, FormGroup, Label, Form } from 'reactstrap'
+import {Input, FormGroup, Label, Form} from 'reactstrap'
 
 export default class CategoryDropdown extends Component {
     constructor(props) {
@@ -32,7 +32,28 @@ export default class CategoryDropdown extends Component {
             })
     }
 
-    render () {
+    buuildMultiple(name, categoryList) {
+        return (
+            <Input value={this.props.category} onChange={this.props.handleInputChanges} type="select" multiple
+                   name={name} id={name}>
+                <option value="">Select Category</option>
+                {categoryList}
+            </Input>
+        )
+
+    }
+
+    buildSingle(name, categoryList) {
+        return (
+            <Input value={this.props.category} onChange={this.props.handleInputChanges} type="select"
+                   name={name} id={name}>
+                <option value="">Select Category</option>
+                {categoryList}
+            </Input>
+        )
+    }
+
+    render() {
         let categoryList = null
         if (!this.state.categories.length) {
             categoryList = <option value="">Loading...</option>
@@ -43,14 +64,11 @@ export default class CategoryDropdown extends Component {
         }
 
         const name = this.props.name && this.props.name ? this.props.name : 'category'
+        const input = this.props.multiple && this.props.multiple === true ? this.buuildMultiple(name, categoryList) : this.buildSingle(name, categoryList)
 
         return (
             <FormGroup>
-                <Input value={this.props.category} onChange={this.props.handleInputChanges} type="select"
-                       name={name} id={name}>
-                    <option value="">Select Category</option>
-                    {categoryList}
-                </Input>
+                {input}
                 {this.props.renderErrorFor('category')}
             </FormGroup>
         )

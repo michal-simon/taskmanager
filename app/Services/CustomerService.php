@@ -13,6 +13,7 @@ use App\Requests\SearchRequest;
 use App\Repositories\CustomerTypeRepository;
 use App\CustomerType;
 use Illuminate\Http\Request;
+use App\Services\Interfaces\CustomerServiceInterface;
 
 class CustomerService implements CustomerServiceInterface {
     use CustomerTransformable;
@@ -57,7 +58,7 @@ class CustomerService implements CustomerServiceInterface {
 
         if ($recordsPerPage > 0){
             $paginatedResults = $this->customerRepo->paginateArrayResults($customers, $recordsPerPage);
-            return $paginatedResults->toJson();
+            return $paginatedResults;
         }
 
         return $customers;
@@ -96,6 +97,7 @@ class CustomerService implements CustomerServiceInterface {
      * @return \Illuminate\Http\Response
      */
     public function create(CreateCustomerRequest $request) {
+        
         $customer = $this->customerRepo->createCustomer($request->except('_token', '_method'));
         $customer->addresses()->create([
             'company_id' => $request->company_id,
@@ -119,7 +121,7 @@ class CustomerService implements CustomerServiceInterface {
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy($id) {
+    public function delete($id) {
         $customer = $this->customerRepo->findCustomerById($id);
         $address = $customer->addresses;
         

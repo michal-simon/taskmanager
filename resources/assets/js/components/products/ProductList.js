@@ -149,7 +149,7 @@ export default class ProductList extends Component {
     }
 
     userList () {
-        if (!this.state.products.length) {
+        if (!this.state.products.length || !this.state.brands.length) {
             return false
         }
 

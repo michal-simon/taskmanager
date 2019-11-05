@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
-use App\Repositories\CustomerRepository;
-use App\Repositories\AddressRepository;
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
 use App\Transformations\CustomerTransformable;
@@ -98,8 +96,13 @@ class CustomerController extends Controller {
      * @throws \Exception
      */
     public function destroy($id) {
-        $customer = $this->customerService->delete($id);
-        return response()->json('Customer deleted!');
+        $response = $this->customerService->delete($id);
+        
+        if($response) {
+            return response()->json('Customer deleted!');
+        }
+        
+        return response()->json('Unable to delete customer!');
     }
 
     public function getCustomerTypes() {
