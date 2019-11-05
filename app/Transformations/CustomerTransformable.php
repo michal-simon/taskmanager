@@ -14,6 +14,8 @@ trait CustomerTransformable {
         $prop = new Customer;
         $prop->id = (int) $customer->id;
         $prop->name = $customer->first_name . " " . $customer->last_name;
+        $prop->first_name = $customer->first_name;
+        $prop->last_name = $customer->last_name;
         $prop->email = $customer->email;
         $prop->phone = $customer->phone;
         $prop->address = $customer->addresses->count() > 0 ? $customer->addresses->first() : '';
