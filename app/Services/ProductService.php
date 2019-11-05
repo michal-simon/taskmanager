@@ -151,6 +151,16 @@ return $product;
      */
     public function destroy($id) {
         $product = $this->productRepo->findProductById($id);
+        
+        $product->categories()->sync([]);
+        
+        $productAttr = $product->attributes();
+        /* $productAttr->each(function ($pa) {
+            DB::table('attribute_value_product_attribute')->where('product_attribute_id', $pa->id)->delete();
+        }); */
+
+        $productAttr->where('product_id', $product->id)->delete();
+
         $productRepo = new ProductRepository($product);
         $productRepo->deleteProduct();
         return true;
