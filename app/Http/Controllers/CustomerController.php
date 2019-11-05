@@ -14,6 +14,7 @@ use App\Requests\SearchRequest;
 use App\Repositories\CustomerTypeRepository;
 use App\CustomerType;
 use Illuminate\Http\Request;
+use App\Services\CustomerService;
 
 class CustomerController extends Controller {
 
@@ -34,9 +35,12 @@ class CustomerController extends Controller {
      * @param CustomerRepositoryInterface $customerRepository
      * @param AddressRepositoryInterface $addressRepository
      */
-    public function __construct(CustomerRepositoryInterface $customerRepository, AddressRepositoryInterface $addressRepository) {
+    public function __construct(CustomerRepositoryInterface $customerRepository, 
+    AddressRepositoryInterface $addressRepository,
+    CustomerService $customerService) {
         $this->customerRepo = $customerRepository;
         $this->addressRepo = $addressRepository;
+        $this->customerService = $customerService;
     }
 
     /**
@@ -46,24 +50,7 @@ class CustomerController extends Controller {
      */
     public function index(SearchRequest $request) {
 
-        $orderBy = !$request->column || $request->column === 'name' ? 'first_name' : $request->column;
-        $orderDir = !$request->order ? 'asc' : $request->order;
-        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
-
-        if (request()->has('search_term') && !empty($request->search_term)) {
-            $list = $this->customerRepo->searchCustomer(request()->input('search_term'));
-        } else {
-            $list = $this->customerRepo->listCustomers($orderBy, $orderDir);
-        }
-
-        $customers = $list->map(function (Customer $customer) {
-                    return $this->transformCustomer($customer);
-                })->all();
-
-        if ($recordsPerPage > 0) {
-            $paginatedResults = $this->customerRepo->paginateArrayResults($customers, $recordsPerPage);
-            return $paginatedResults->toJson();
-        }
+        $customers = $this->customerService->search($request);
 
         return collect($customers)->toJson();
     }
@@ -87,22 +74,7 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCustomerRequest $request, $id) {
-        $customer = $this->customerRepo->findCustomerById($id);
-        $address = $customer->addresses;
-
-        $update = new CustomerRepository($customer);
-        $data = $request->except('_method', '_token');
-        $update->updateCustomer($data);
-
-        $update->addAddressForCustomer([
-            'address_1' => $request->address_1,
-            'address_2' => $request->address_2,
-            'zip' => $request->zip,
-            'city' => $request->city,
-            'country_id' => 225,
-            'status' => 1
-        ]);
-
+        $customer = $this->customerService->update($request, $id);
         return response()->json($this->transformCustomer($customer));
     }
 
@@ -113,20 +85,7 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(CreateCustomerRequest $request) {
-
-        $customer = $this->customerRepo->createCustomer($request->except('_token', '_method'));
-
-        $customer->addresses()->create([
-            'company_id' => $request->company_id,
-            'job_title' => $request->job_title,
-            'address_1' => $request->address_1,
-            'address_2' => $request->address_2,
-            'zip' => $request->zip,
-            'city' => $request->city,
-            'country_id' => 225,
-            'status' => 1
-        ]);
-
+        $customer = $this->customerService->create($request);
         return $this->transformCustomer($customer);
     }
 
@@ -139,17 +98,7 @@ class CustomerController extends Controller {
      * @throws \Exception
      */
     public function destroy($id) {
-        $customer = $this->customerRepo->findCustomerById($id);
-        $address = $customer->addresses;
-
-        if (!empty($address[0])) {
-            $addRessRepo = new AddressRepository($address[0]);
-            $addRessRepo->deleteAddress();
-        }
-
-        $customerRepo = new CustomerRepository($customer);
-        $customerRepo->deleteCustomer();
-
+        $customer = $this->customerService->delete($id);
         return response()->json('Customer deleted!');
     }
 
