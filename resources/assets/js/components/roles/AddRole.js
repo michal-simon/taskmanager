@@ -12,7 +12,9 @@ import {
     InputGroup,
     Label
 } from 'reactstrap'
+
 import axios from 'axios'
+import Select from 'react-select';
 
 class AddRole extends React.Component {
     constructor (props) {
@@ -177,9 +179,22 @@ class AddRole extends React.Component {
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
                             </InputGroupAddon>
-                            <Input onChange={this.handleMultiSelect} type="select" multiple>
-                                {permissionsList}
-                            </Input>
+                            
+                            <Select
+                                onChange={this.handleMultiSelect}
+                                getOptionLabel={option => option.name}
+                                getOptionValue={option => option.id}
+                                isMulti
+                                name="permissions"
+                                options={this.state.permissions}
+                                className="basic-multi-select"
+                                classNamePrefix="select"
+                            />
+
+
+                            {/*<Input onChange={this.handleMultiSelect} type="select" multiple>*/}
+                            {/*    {permissionsList}*/}
+                            {/*</Input>*/}
                         </InputGroup>
                     </ModalBody>
 
