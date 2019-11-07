@@ -92,7 +92,8 @@ class EventService implements EventServiceInterface {
      */
     public function delete(int $id) {
         $objEvent = $this->eventRepository->findEventById($id);
-        $eventRepo = new EventRepository($objEvent);
+        $eventRepo = EntityManager::getRepository($objEvent);
+        //$eventRepo = new EventRepository($objEvent);
         $eventRepo->deleteEvent();
         return true;
     }
@@ -117,7 +118,8 @@ class EventService implements EventServiceInterface {
             'description' => $request->description
         ];
 
-        $eventRepo = new EventRepository($event);
+        //$eventRepo = new EventRepository($event);
+        $eventRepo = EntityManager::getRepository($event);
         $eventRepo->updateEvent($arrData);
 
         $eventRepo->attachUsers($event, $request->users);
@@ -133,7 +135,8 @@ class EventService implements EventServiceInterface {
     public function updateEventStatus($id, Request $request) {
         $user = Auth::user();
         $event = $this->eventRepository->findEventById($id);
-        $eventRepo = new EventRepository($event);
+        //$eventRepo = new EventRepository($event);
+        $eventRepo = EntityManager::getRepository($event);
         $eventRepo->updateInvitationResponseForUser($user, $request->all());
         return true;
     }
