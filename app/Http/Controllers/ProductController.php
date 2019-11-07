@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use App\Repositories\TaskRepository;
 use App\Task;
 use App\Requests\SearchRequest;
-use App\Services\ProductService;
+use App\Services\interfaces/ProductServiceInterface;
 
 class ProductController extends Controller {
 
@@ -50,7 +50,7 @@ class ProductController extends Controller {
     ProductRepositoryInterface $productRepository,
     CategoryRepositoryInterface $categoryRepository, 
     BrandRepositoryInterface $brandRepository,
-    ProductService $productService
+    ProductServiceInterface $productService
     ) {
         $this->productRepo = $productRepository;
         $this->categoryRepo = $categoryRepository;
