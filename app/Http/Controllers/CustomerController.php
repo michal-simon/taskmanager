@@ -12,7 +12,7 @@ use App\Requests\SearchRequest;
 use App\Repositories\CustomerTypeRepository;
 use App\CustomerType;
 use Illuminate\Http\Request;
-use App\Services\CustomerService;
+use App\Services\interfaces\CustomerServiceInterface;
 
 class CustomerController extends Controller {
 
@@ -35,7 +35,7 @@ class CustomerController extends Controller {
      */
     public function __construct(CustomerRepositoryInterface $customerRepository, 
     AddressRepositoryInterface $addressRepository,
-    CustomerService $customerService) {
+    CustomerServiceInterface $customerService) {
         $this->customerRepo = $customerRepository;
         $this->addressRepo = $addressRepository;
         $this->customerService = $customerService;
