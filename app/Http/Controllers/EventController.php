@@ -14,6 +14,7 @@ use App\Repositories\UserRepository;
 use App\User;
 use App\Repositories\EventTypeRepository;
 use App\EventType;
+use App\Services\interfaces\EventServiceInterface;
 
 class EventController extends Controller {
 
@@ -26,7 +27,7 @@ class EventController extends Controller {
      * 
      * @param EventRepositoryInterface $eventRepository
      */
-    public function __construct(EventRepositoryInterface $eventRepository, \App\Services\EventService $eventService) {
+    public function __construct(EventRepositoryInterface $eventRepository, EventServiceInterface $eventService) {
         $this->eventRepository = $eventRepository;
         $this->eventService = $eventService;
     }
