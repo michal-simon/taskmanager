@@ -67,7 +67,8 @@ class UserService implements UserServiceInterface {
         
         $validatedData = $request->validated();
         $user = $this->userRepository->createUser($validatedData);
-        $userRepo = new UserRepository($user);
+        //$userRepo = new UserRepository($user);
+        $userRepo = EntityManager::getRepository($user);
         if ($request->has('role')) {
             $userRepo->syncRoles([$request->input('role')]);
         }
@@ -87,7 +88,8 @@ class UserService implements UserServiceInterface {
      */
     public function delete(int $id) {
         $objUser = $this->userRepository->findUserById($id);
-        $userRepo = new UserRepository($objUser);
+        $userRepo = EntityManager::getRepository($objUser);
+        //$userRepo = new UserRepository($objUser);
         $userRepo->deleteUser();
         return true;
     }
@@ -100,7 +102,8 @@ class UserService implements UserServiceInterface {
      */
     public function update(UpdateUserRequest $request, int $id) {        
         $user = $this->userRepository->findUserById($id);
-        $userRepo = new UserRepository($user);
+        //$userRepo = new UserRepository($user);
+        $userRepo = EntityManager::getRepository($user);
         $userRepo->updateUser($request->except('_token', '_method', 'password'));
         if ($request->has('password') && !empty($request->input('password'))) {
             $user->password = Hash::make($request->input('password'));
@@ -119,7 +122,8 @@ class UserService implements UserServiceInterface {
     public function upload(Request $request) {
         if ($request->hasFile('file') && $request->file('file') instanceof UploadedFile) {
             $user = auth()->guard('user')->user();
-            $userRepo = new UserRepository($user);
+            //$userRepo = new UserRepository($user);
+            $userRepo = EntityManager::getRepository($user);
             $data['profile_photo'] = $this->userRepository->saveUserImage($request->file('file'));
             $userRepo->updateUser($data);
         }
