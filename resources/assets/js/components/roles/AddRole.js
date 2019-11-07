@@ -181,7 +181,11 @@ class AddRole extends React.Component {
                             </InputGroupAddon>
                             
                             <Select
-                                onChange={this.handleMultiSelect}
+                                 onChange={options => {
+                                    if (Array.isArray(options)) {
+                                        this.setState({attachedPermissions: options.map(opt => opt.id)});
+                                    }
+                                }}
                                 getOptionLabel={option => option.name}
                                 getOptionValue={option => option.id}
                                 isMulti
