@@ -74,11 +74,12 @@ class CustomerService implements CustomerServiceInterface {
     public function update(UpdateCustomerRequest $request, $id) {
         $customer = $this->customerRepo->findCustomerById($id);
         $address = $customer->addresses;
-        $update = new CustomerRepository($customer);
+        //$update = new CustomerRepository($customer);
+        $repo = EntityManager::getRepository($customer);
         $data = $request->except('_method', '_token');
-        $update->updateCustomer($data);
+        $repo->updateCustomer($data);
         
-       $update->addAddressForCustomer([
+       $repo->addAddressForCustomer([
             'address_1' => $request->address_1,
             'address_2' => $request->address_2,
             'zip' => $request->zip,
@@ -126,12 +127,14 @@ class CustomerService implements CustomerServiceInterface {
         $address = $customer->addresses;
         
         if (!empty($address[0])) {
-            $addRessRepo = new AddressRepository($address[0]);
+            $addressRepo = EntityManager::getRepository($address[0]);
+            //$addRessRepo = new AddressRepository($address[0]);
             $addRessRepo->deleteAddress();
         }
 
-        $customerRepo = new CustomerRepository($customer);
-        $customerRepo->deleteCustomer();
+        //$customerRepo = new CustomerRepository($customer);
+        $repo = EntityManager::getRepository($customer);
+        $repo->deleteCustomer();
         return true;
     }
 }
