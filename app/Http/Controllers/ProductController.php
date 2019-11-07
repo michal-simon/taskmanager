@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use App\Repositories\TaskRepository;
 use App\Task;
 use App\Requests\SearchRequest;
-use App\Services\interfaces/ProductServiceInterface;
+use App\Services\interfaces\ProductServiceInterface;
 
 class ProductController extends Controller {
 
