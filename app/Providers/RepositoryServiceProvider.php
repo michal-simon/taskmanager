@@ -42,6 +42,18 @@ use App\Repositories\BrandRepository;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\CategoryRepository;
 
+// services
+use App\Services\interfaces\CustomerServiceInterface;
+use App\Services\CustomerService;
+use App\Services\interfaces\ProductServiceInterface;
+use App\Services\ProductService;
+use App\Services\interfaces\UserServiceInterface;
+use App\Services\UserService;
+use App\Services\interfaces\EventServiceInterface;
+use App\Services\EventService;
+use App\Services\interfaces\TaskServiceInterface;
+use App\Services\TaskService;
+
 class RepositoryServiceProvider extends ServiceProvider {
 
     /**
@@ -133,6 +145,27 @@ class RepositoryServiceProvider extends ServiceProvider {
 
         $this->app->bind(
                 NotificationRepositoryInterface::class, NotificationRepository::class
+        );
+        
+        //services
+        $this->app->bind(
+                CustomerServiceInterface::class, CustomerService::class
+        );
+        
+        $this->app->bind(
+                UserServiceInterface::class, UserService::class
+        );
+        
+        $this->app->bind(
+                ProductServiceInterface::class, ProductService::class
+        );
+        
+        $this->app->bind(
+                EventServiceInterface::class, EventService::class
+        );
+        
+        $this->app->bind(
+                TaskServiceInterface::class, TaskService::class
         );
     }
 
