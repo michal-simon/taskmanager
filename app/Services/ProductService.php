@@ -98,7 +98,8 @@ class ProductService implements ProductServiceInterface {
         }
         
         $product = $this->productRepo->createProduct($data);
-        $productRepo = new ProductRepository($product);
+        $productRepo = EntityManager::getRepository($product);
+        //$productRepo = new ProductRepository($product);
 
         if ($request->hasFile('image')) {
             $productRepo->saveProductImages(collect($request->file('image')));
@@ -125,7 +126,8 @@ class ProductService implements ProductServiceInterface {
      */
     public function update(UpdateProductRequest $request, int $id) {
         $product = $this->productRepo->findProductById($id);
-        $productRepo = new ProductRepository($product);
+        $productRepo = EntityManager::getRepository($product);
+        //$productRepo = new ProductRepository($product);
 
         $data = $request->except(
                 '_token', '_method'
@@ -166,7 +168,8 @@ class ProductService implements ProductServiceInterface {
 
         $productAttr->where('product_id', $product->id)->delete();
 
-        $productRepo = new ProductRepository($product);
+        //$productRepo = new ProductRepository($product);
+        $productRepo = EntityManager::getRepository($product);
         $productRepo->deleteProduct();
         return true;
     }
@@ -189,7 +192,8 @@ class ProductService implements ProductServiceInterface {
         $number_of_years = $fields['number_of_years'];
         $minimum_downpayment = $fields['minimum_downpayment'];
         $interest_rate = $fields['interest_rate'];
-        $productRepo = new ProductRepository($product);
+        $productRepo = EntityManager::getRepository($product);
+        //$productRepo = new ProductRepository($product);
         $productAttributes = new ProductAttribute(compact('range_from', 'range_to', 'payable_months', 'number_of_years', 'minimum_downpayment', 'interest_rate'));
         $productRepo->removeProductAttribute($productAttributes);
         $productAttribute = $productRepo->saveProductAttributes($productAttributes);
