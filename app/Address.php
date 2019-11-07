@@ -48,6 +48,8 @@ class Address extends Model {
      */
     protected $hidden = [];
     protected $dates = ['deleted_at'];
+    
+    private $repository =  'App\Repositories\AddressRepository';
 
     /**
      * Searchable rules.

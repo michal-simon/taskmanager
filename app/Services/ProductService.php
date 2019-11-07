@@ -6,7 +6,6 @@ use App\Product;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\BrandRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
-use App\Repositories\ProductRepository;
 use App\Requests\CreateProductRequest;
 use App\Requests\UpdateProductRequest;
 use App\Transformations\ProductTransformable;
@@ -17,12 +16,15 @@ use App\ProductAttribute;
 use App\Requests\SearchRequest;
 use App\Services\Interfaces\ProductServiceInterface;
 use Illuminate\Http\UploadedFile;
+use App\Services\EntityManager;
 
 class ProductService implements ProductServiceInterface {
 
     use ProductTransformable,
         LoanProductTransformable;
 
+    private $entityManager;
+    
     /**
      * @var ProductRepositoryInterface
      */
@@ -51,6 +53,7 @@ class ProductService implements ProductServiceInterface {
         $this->productRepo = $productRepository;
         $this->categoryRepo = $categoryRepository;
         $this->brandRepo = $brandRepository;
+        $this->entityManager = new EntityManager();
     }
 
     /**
@@ -74,7 +77,7 @@ class ProductService implements ProductServiceInterface {
                 })->all();
 
         if ($recordsPerPage > 0) {
-            $paginatedResults = $this->productRepo->paginateArrayResults($products, $recordsPerPage);
+             $paginatedResults = $this->productRepo->paginateCollection($list, $recordsPerPage);
             return $paginatedResults;
         }
 
@@ -98,7 +101,7 @@ class ProductService implements ProductServiceInterface {
         }
         
         $product = $this->productRepo->createProduct($data);
-        $productRepo = EntityManager::getRepository($product);
+        $productRepo = $this->entityManager::getRepository($product);
         //$productRepo = new ProductRepository($product);
 
         if ($request->hasFile('image')) {
@@ -126,7 +129,7 @@ class ProductService implements ProductServiceInterface {
      */
     public function update(UpdateProductRequest $request, int $id) {
         $product = $this->productRepo->findProductById($id);
-        $productRepo = EntityManager::getRepository($product);
+        $productRepo = $this->entityManager::getRepository($product);
         //$productRepo = new ProductRepository($product);
 
         $data = $request->except(
@@ -169,7 +172,7 @@ class ProductService implements ProductServiceInterface {
         $productAttr->where('product_id', $product->id)->delete();
 
         //$productRepo = new ProductRepository($product);
-        $productRepo = EntityManager::getRepository($product);
+        $productRepo = $this->entityManager::getRepository($product);
         $productRepo->deleteProduct();
         return true;
     }
@@ -192,7 +195,7 @@ class ProductService implements ProductServiceInterface {
         $number_of_years = $fields['number_of_years'];
         $minimum_downpayment = $fields['minimum_downpayment'];
         $interest_rate = $fields['interest_rate'];
-        $productRepo = EntityManager::getRepository($product);
+        $productRepo = $this->entityManager::getRepository($product);
         //$productRepo = new ProductRepository($product);
         $productAttributes = new ProductAttribute(compact('range_from', 'range_to', 'payable_months', 'number_of_years', 'minimum_downpayment', 'interest_rate'));
         $productRepo->removeProductAttribute($productAttributes);

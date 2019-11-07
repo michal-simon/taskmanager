@@ -27,6 +27,8 @@ class Event extends Authenticatable {
         'description',
         'created_by'
     ];
+    
+    private $repository =  'App\Repositories\EventRepository';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

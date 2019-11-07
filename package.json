@@ -49,6 +49,7 @@
     "react-global": "^0.1.8",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.2",
+    "react-select": "^3.0.8",
     "react-test-renderer": "^16.11.0",
     "react-timeago": "^4.4.0",
     "react-toastify": "^5.4.0",

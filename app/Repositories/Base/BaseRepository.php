@@ -1,20 +1,20 @@
 <?php
+
 namespace App\Repositories\Base;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Input;
 
-class BaseRepository implements BaseRepositoryInterface
-{
+class BaseRepository implements BaseRepositoryInterface {
+
     protected $model;
 
     /**
      * BaseRepository constructor.
      * @param Model $model
      */
-    public function __construct(Model $model)
-    {
+    public function __construct(Model $model) {
         $this->model = $model;
     }
 
@@ -22,8 +22,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param array $attributes
      * @return mixed
      */
-    public function create(array $attributes)
-    {
+    public function create(array $attributes) {
         return $this->model->create($attributes);
     }
 
@@ -31,8 +30,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param array $data
      * @return bool
      */
-    public function update(array $data) : bool
-    {
+    public function update(array $data): bool {
         return $this->model->update($data);
     }
 
@@ -42,8 +40,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param string $sortBy
      * @return mixed
      */
-    public function all($columns = ['*'], string $orderBy = 'id', string $sortBy = 'asc')
-    {
+    public function all($columns = ['*'], string $orderBy = 'id', string $sortBy = 'asc') {
         return $this->model->orderBy($orderBy, $sortBy)->get($columns);
     }
 
@@ -51,8 +48,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param string $id
      * @return mixed
      */
-    public function find($id)
-    {
+    public function find($id) {
         return $this->model->find($id);
     }
 
@@ -61,8 +57,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @return mixed
      * @throws ModelNotFoundException
      */
-    public function findOneOrFail($id)
-    {
+    public function findOneOrFail($id) {
         return $this->model->findOrFail($id);
     }
 
@@ -70,8 +65,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param array $data
      * @return Collection
      */
-    public function findBy(array $data)
-    {
+    public function findBy(array $data) {
         return $this->model->where($data)->get();
     }
 
@@ -79,8 +73,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param array $data
      * @return mixed
      */
-    public function findOneBy(array $data)
-    {
+    public function findOneBy(array $data) {
         return $this->model->where($data)->first();
     }
 
@@ -89,8 +82,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @return mixed
      * @throws ModelNotFoundException
      */
-    public function findOneByOrFail(array $data)
-    {
+    public function findOneByOrFail(array $data) {
         return $this->model->where($data)->firstOrFail();
     }
 
@@ -98,8 +90,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @return bool
      * @throws \Exception
      */
-    public function delete() : bool
-    {
+    public function delete(): bool {
         return $this->model->delete();
     }
 
@@ -110,19 +101,32 @@ class BaseRepository implements BaseRepositoryInterface
      * @param int $perPage
      * @return LengthAwarePaginator
      */
-    public function paginateArrayResults(array $data, int $perPage = 50)
-    {
+    public function paginateArrayResults(array $data, int $perPage = 50) {
         $page = Input::get('page', 1);
         $offset = ($page * $perPage) - $perPage;
         return new LengthAwarePaginator(
-            array_values(array_slice($data, $offset, $perPage, true)),
-            count($data),
-            $perPage,
-            $page,
-            [
-                'path' => app('request')->url(),
-                'query' => app('request')->query()
-            ]
+                array_values(array_slice($data, $offset, $perPage, true)), count($data), $perPage, $page, [
+            'path' => app('request')->url(),
+            'query' => app('request')->query()
+                ]
         );
     }
+
+    public function paginateCollection($items, $perPage = 15, $options = []) {
+        $page = Input::get('page', 1);
+        //$items = $items->forPage($page, $perPage); //Filter the page var
+
+        
+        return new LengthAwarePaginator(
+                $items->forPage($page, $perPage),
+                count($items) ?: $this->count(),
+                $perPage,
+                $page,
+                [
+                    'path' => app('request')->url(),
+                    'query' => app('request')->query(),
+                ]
+            );
+    }
+
 }

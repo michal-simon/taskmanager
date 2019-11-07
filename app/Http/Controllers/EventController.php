@@ -14,7 +14,7 @@ use App\Repositories\UserRepository;
 use App\User;
 use App\Repositories\EventTypeRepository;
 use App\EventType;
-use App\Services\interfaces\EventServiceInterface;
+use App\Services\Interfaces\EventServiceInterface;
 
 class EventController extends Controller {
 

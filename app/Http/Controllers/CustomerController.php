@@ -12,7 +12,7 @@ use App\Requests\SearchRequest;
 use App\Repositories\CustomerTypeRepository;
 use App\CustomerType;
 use Illuminate\Http\Request;
-use App\Services\interfaces\CustomerServiceInterface;
+use App\Services\Interfaces\CustomerServiceInterface;
 
 class CustomerController extends Controller {
 
@@ -33,9 +33,7 @@ class CustomerController extends Controller {
      * @param CustomerRepositoryInterface $customerRepository
      * @param AddressRepositoryInterface $addressRepository
      */
-    public function __construct(CustomerRepositoryInterface $customerRepository, 
-    AddressRepositoryInterface $addressRepository,
-    CustomerServiceInterface $customerService) {
+    public function __construct(CustomerRepositoryInterface $customerRepository, AddressRepositoryInterface $addressRepository, CustomerServiceInterface $customerService) {
         $this->customerRepo = $customerRepository;
         $this->addressRepo = $addressRepository;
         $this->customerService = $customerService;
@@ -50,7 +48,11 @@ class CustomerController extends Controller {
 
         $customers = $this->customerService->search($request);
 
-        return collect($customers)->toJson();
+        $customers->getCollection()->transform(function($customer) {
+           return $this->transformCustomer($customer);
+        })->all();
+        
+        return response()->json($customers);
     }
 
     /**
@@ -97,11 +99,11 @@ class CustomerController extends Controller {
      */
     public function destroy($id) {
         $response = $this->customerService->delete($id);
-        
-        if($response) {
+
+        if ($response) {
             return response()->json('Customer deleted!');
         }
-        
+
         return response()->json('Unable to delete customer!');
     }
 
@@ -110,7 +112,7 @@ class CustomerController extends Controller {
         return response()->json($customerTypes);
     }
 
-     /**
+    /**
      * 
      * @param \App\Http\Controllers\Request $request
      * @return type

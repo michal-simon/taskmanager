@@ -8,23 +8,17 @@
 
 namespace App\Services;
 
-use App\Event;
 use Illuminate\Http\Request;
 use App\Requests\CreateEventRequest;
 use App\Requests\UpdateEventRequest;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\EventRepository;
 use App\Transformations\EventTransformable;
-use App\Repositories\TaskRepository;
-use App\Task;
-use App\Repositories\UserRepository;
-use App\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\EventCreated;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\EventTypeRepository;
-use App\EventType;
 use App\Services\Interfaces\EventServiceInterface;
+use App\Services\EntityManager;
 
 /**
  * Description of EventService
@@ -36,6 +30,8 @@ class EventService implements EventServiceInterface {
     use EventTransformable;
 
     private $eventRepository;
+    
+    private $entityManager;
 
     /**
      * 
@@ -43,6 +39,7 @@ class EventService implements EventServiceInterface {
      */
     public function __construct(EventRepositoryInterface $eventRepository) {
         $this->eventRepository = $eventRepository;
+        $this->entityManager = new EntityManager();
     }
 
     /**
@@ -92,7 +89,7 @@ class EventService implements EventServiceInterface {
      */
     public function delete(int $id) {
         $objEvent = $this->eventRepository->findEventById($id);
-        $eventRepo = EntityManager::getRepository($objEvent);
+        $eventRepo = $this->entityManager::getRepository($objEvent);
         //$eventRepo = new EventRepository($objEvent);
         $eventRepo->deleteEvent();
         return true;
@@ -119,7 +116,7 @@ class EventService implements EventServiceInterface {
         ];
 
         //$eventRepo = new EventRepository($event);
-        $eventRepo = EntityManager::getRepository($event);
+        $eventRepo = $this->entityManager::getRepository($event);
         $eventRepo->updateEvent($arrData);
 
         $eventRepo->attachUsers($event, $request->users);
@@ -136,7 +133,7 @@ class EventService implements EventServiceInterface {
         $user = Auth::user();
         $event = $this->eventRepository->findEventById($id);
         //$eventRepo = new EventRepository($event);
-        $eventRepo = EntityManager::getRepository($event);
+        $eventRepo = $this->entityManager::getRepository($event);
         $eventRepo->updateInvitationResponseForUser($user, $request->all());
         return true;
     }

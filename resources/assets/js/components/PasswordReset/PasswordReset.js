@@ -13,7 +13,7 @@ import {
     Form
 } from "reactstrap"
 
-import "./ResetPassword.css"
+import "./PasswordReset.css"
 import axios from 'axios'
 
 export default class ResetPassword extends Component {
@@ -32,19 +32,22 @@ export default class ResetPassword extends Component {
             isConfirming: false,
             isSendingCode: false
         }
+
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSendCodeClick = this.handleSendCodeClick.bind(this)
     }
 
     validateCodeForm () {
         return this.state.email.length > 0
     }
 
-    handleChange = event => {
+    handleChange(event) {
         this.setState({
             [event.target.id]: event.target.value
         })
     }
 
-    handleSendCodeClick = async event => {
+    handleSendCodeClick(event) {
         event.preventDefault()
 
         if (!this.validateCodeForm()) {
@@ -52,7 +55,7 @@ export default class ResetPassword extends Component {
             return false;
         }
 
-        axios.post('/api/login/requestResetPassword', {
+        axios.post('/api/passwordReset/create', {
             email: this.state.email
         })
             .then((response) => {

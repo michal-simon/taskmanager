@@ -26,6 +26,8 @@ class Product extends Model {
             'products.sku' => 5
         ]
     ];
+    
+    private $repository =  'App\Repositories\ProductRepository';
 
     /**
      * The attributes that are mass assignable.

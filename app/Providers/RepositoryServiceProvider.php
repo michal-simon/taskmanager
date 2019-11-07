@@ -43,15 +43,15 @@ use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\CategoryRepository;
 
 // services
-use App\Services\interfaces\CustomerServiceInterface;
+use App\Services\Interfaces\CustomerServiceInterface;
 use App\Services\CustomerService;
-use App\Services\interfaces\ProductServiceInterface;
+use App\Services\Interfaces\ProductServiceInterface;
 use App\Services\ProductService;
-use App\Services\interfaces\UserServiceInterface;
+use App\Services\Interfaces\UserServiceInterface;
 use App\Services\UserService;
-use App\Services\interfaces\EventServiceInterface;
+use App\Services\Interfaces\EventServiceInterface;
 use App\Services\EventService;
-use App\Services\interfaces\TaskServiceInterface;
+use App\Services\Interfaces\TaskServiceInterface;
 use App\Services\TaskService;
 
 class RepositoryServiceProvider extends ServiceProvider {

@@ -14,6 +14,7 @@ use App\Repositories\DepartmentRepository;
 use App\Department;
 use App\Requests\SearchRequest;
 use App\Services\Interfaces\UserServiceInterface;
+use App\Services\EntityManager;
 
 class UserService implements UserServiceInterface {
     use UserTransformable;
@@ -26,6 +27,8 @@ class UserService implements UserServiceInterface {
      */
     private $roleRepo;
     
+    private $entityManager;
+    
 /**
      * UserController constructor.
      *
@@ -35,6 +38,7 @@ class UserService implements UserServiceInterface {
     public function __construct(UserRepositoryInterface $userRepository, RoleRepositoryInterface $roleRepository) {
         $this->userRepository = $userRepository;
         $this->roleRepo = $roleRepository;
+        $this->entityManager = new EntityManager();
     }
 
     public function search(SearchRequest $request) {
@@ -50,7 +54,7 @@ class UserService implements UserServiceInterface {
                     return $this->transformUser($user);
                 })->all();
         if ($recordsPerPage > 0) {
-            $paginatedResults = $this->userRepository->paginateArrayResults($users, $recordsPerPage);
+             $paginatedResults = $this->userRepository->paginateCollection($list, $recordsPerPage);
             return $paginatedResults;
         }
         return $users;
@@ -68,7 +72,7 @@ class UserService implements UserServiceInterface {
         $validatedData = $request->validated();
         $user = $this->userRepository->createUser($validatedData);
         //$userRepo = new UserRepository($user);
-        $userRepo = EntityManager::getRepository($user);
+        $userRepo = $this->entityManager::getRepository($user);
         if ($request->has('role')) {
             $userRepo->syncRoles([$request->input('role')]);
         }
@@ -88,7 +92,7 @@ class UserService implements UserServiceInterface {
      */
     public function delete(int $id) {
         $objUser = $this->userRepository->findUserById($id);
-        $userRepo = EntityManager::getRepository($objUser);
+        $userRepo = $this->entityManager::getRepository($objUser);
         //$userRepo = new UserRepository($objUser);
         $userRepo->deleteUser();
         return true;
@@ -103,7 +107,7 @@ class UserService implements UserServiceInterface {
     public function update(UpdateUserRequest $request, int $id) {        
         $user = $this->userRepository->findUserById($id);
         //$userRepo = new UserRepository($user);
-        $userRepo = EntityManager::getRepository($user);
+        $userRepo = $this->entityManager::getRepository($user);
         $userRepo->updateUser($request->except('_token', '_method', 'password'));
         if ($request->has('password') && !empty($request->input('password'))) {
             $user->password = Hash::make($request->input('password'));
@@ -123,7 +127,7 @@ class UserService implements UserServiceInterface {
         if ($request->hasFile('file') && $request->file('file') instanceof UploadedFile) {
             $user = auth()->guard('user')->user();
             //$userRepo = new UserRepository($user);
-            $userRepo = EntityManager::getRepository($user);
+            $userRepo = $this->entityManager::getRepository($user);
             $data['profile_photo'] = $this->userRepository->saveUserImage($request->file('file'));
             $userRepo->updateUser($data);
         }

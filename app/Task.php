@@ -50,6 +50,8 @@ class Task extends Model {
             'tasks.title' => 10,
         ]
     ];
+    
+    private $repository =  'App\Repositories\TaskRepository';
 
     public function projects() {
         return $this->belongsTo(Project::class);

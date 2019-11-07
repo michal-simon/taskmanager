@@ -164,9 +164,9 @@ Route::group(['middleware' => 'api-header'], function () {
     Route::post('login', 'LoginController@doLogin');
     Route::get('logout', 'LoginController@doLogout');
 
-    Route::post('passwordReset/create', 'PasswordResetController@create');
+    Route::post('passwordReset/create', 'Auth\PasswordResetController@create');
     Route::get('passwordReset/find/{token}', 'PasswordResetController@find');
-    Route::post('passwordReset/reset', 'PasswordResetController@reset');
+    Route::post('passwordReset/reset', 'Auth\PasswordResetController@reset');
 
     // unprotected routes for website
     Route::get("category-list", 'CategoryController@getRootCategories');

@@ -95,10 +95,18 @@ export default class DataTable extends Component {
         })
             .then(response => {
                 if(response.data && Object.keys(response.data).length) {
+                    const compactArray = [];
+                    for (let i in response.data.data) {
+                        compactArray.push(response.data.data[i]);
+                    }
+
+                    response.data.data = compactArray
+
                     this.setState({ entities: response.data, loading: false })
-                    const columns = this.props.columns && this.props.columns.length ? this.props.columns : Object.keys(response.data.data[0])
+
+                    const columns = this.props.columns && this.props.columns.length ? this.props.columns : Object.keys(compactArray[0])
                     this.setState({ columns: columns })
-                    this.props.updateState(response.data.data)
+                    this.props.updateState(compactArray)
                 }
             })
             .catch(error => {

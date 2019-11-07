@@ -8,19 +8,13 @@ use App\Requests\CreateTaskRequest;
 use App\Requests\CreateDealRequest;
 use App\Requests\UpdateTaskRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
-use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Product;
 use App\Repositories\ProductRepository;
-use App\Repositories\CustomerRepository;
-use App\Customer;
-use Illuminate\Support\Facades\Auth;
 use App\Transformations\TaskTransformable;
 use App\Repositories\SourceTypeRepository;
 use App\SourceType;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\TaskCreated;
-use App\Services\interfaces\TaskServiceInterface;
+use App\Services\Interfaces\TaskServiceInterface;
 
 class TaskController extends Controller {
 

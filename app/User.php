@@ -42,6 +42,8 @@ class User extends Authenticatable implements JWTSubject {
         'gender',
         'auth_token'
     ];
+    
+    private $repository =  'App\Repositories\UserRepository';
 
     /**
      * Searchable rules.

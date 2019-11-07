@@ -13,12 +13,14 @@ import {
     Form
 } from "reactstrap"
 
-import "./ResetPassword.css"
+import "./PasswordReset.css"
 import axios from 'axios'
 
 export default class ResetPassword extends Component {
     constructor (props) {
         super(props)
+
+        alert( new URLSearchParams(this.props.location.search).get('token'))
 
         this.state = {
             code: new URLSearchParams(this.props.location.search).get('token'),
@@ -32,6 +34,9 @@ export default class ResetPassword extends Component {
             isConfirming: false,
             isSendingCode: false
         }
+
+        this.handleChange = this.handleChange.bind(this)
+        this.handleConfirmClick = this.handleConfirmClick.bind(this)
     }
 
     validateResetForm () {
@@ -41,13 +46,13 @@ export default class ResetPassword extends Component {
         )
     }
 
-    handleChange = event => {
+    handleChange(event) {
         this.setState({
             [event.target.id]: event.target.value
         })
     }
 
-    handleConfirmClick = async event => {
+    handleConfirmClick(event) {
         event.preventDefault()
 
         if (!this.validateResetForm()) {
@@ -55,16 +60,16 @@ export default class ResetPassword extends Component {
             return false;
         }
 
-        axios.post('/api/login/resetPassword', {
-            resetToken: this.state.code,
+        alert('mike')
+
+        axios.post('/api/passwordReset/reset', {
+            email: this.state.email,
+            token: this.state.code,
             password: this.state.password,
-            confirmPassword: this.state.confirmPassword
+            password_confirmation: this.state.confirmPassword
         })
             .then((response) => {
-
-                if (response.data.success === true) {
                     this.setState({success: "Your password has now been reset", isSendingCode: true})
-                }
             })
             .catch((error) => {
                 this.setState({isSendingCode: false, error: error.response.data})
@@ -106,6 +111,16 @@ export default class ResetPassword extends Component {
                                 {/*    </FormText>*/}
                                 {/*</FormGroup>*/}
                                 {/*<hr/>*/}
+
+                                <FormGroup>
+                                    <Label>Email</Label>
+                                    <Input
+                                        id="email"
+                                        type="email"
+                                        value={this.state.email}
+                                        onChange={this.handleChange}
+                                    />
+                                </FormGroup>
 
                                 <FormGroup>
                                     <Label>New Password</Label>

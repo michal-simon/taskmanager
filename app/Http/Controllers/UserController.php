@@ -10,12 +10,11 @@ use App\Requests\CreateUserRequest;
 use App\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
 use App\Transformations\UserTransformable;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\UploadedFile;
 use App\Repositories\DepartmentRepository;
 use App\Department;
 use App\Requests\SearchRequest;
-use App\Services\UserService;
+use App\Services\Interfaces\UserServiceInterface;
 
 class UserController extends Controller {
 
@@ -39,15 +38,20 @@ class UserController extends Controller {
      * @param UserRepositoryInterface $userRepository
      * @param RoleRepositoryInterface $roleRepository
      */
-    public function __construct(UserRepositoryInterface $userRepository, RoleRepositoryInterface $roleRepository, UserService $userService) {
+    public function __construct(UserRepositoryInterface $userRepository, RoleRepositoryInterface $roleRepository, UserServiceInterface $userService) {
         $this->userRepository = $userRepository;
         $this->roleRepo = $roleRepository;
         $this->userService = $userService;
     }
 
     public function index(SearchRequest $request) {
-        $users = $this->userService->search($request);
-        return collect($users)->toJson();
+       $users = $this->userService->search($request);
+
+        $users->getCollection()->transform(function($user) {
+            return $this->transformUser($user);
+        })->all();
+
+        return response()->json($users);
     }
 
     public function dashboard() {

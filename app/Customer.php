@@ -49,6 +49,8 @@ class Customer extends Model {
             'customers.email' => 5,
         ]
     ];
+    
+    private $repository =  'App\Repositories\CustomerRepository';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

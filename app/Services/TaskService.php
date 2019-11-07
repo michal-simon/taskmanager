@@ -8,24 +8,22 @@ use App\Requests\CreateTaskRequest;
 use App\Requests\CreateDealRequest;
 use App\Requests\UpdateTaskRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
-use App\Repositories\TaskRepository;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
-use App\Product;
-use App\Repositories\ProductRepository;
 use App\Repositories\CustomerRepository;
 use App\Customer;
 use Illuminate\Support\Facades\Auth;
 use App\Transformations\TaskTransformable;
-use App\Repositories\SourceTypeRepository;
-use App\SourceType;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TaskCreated;
 use App\Services\Interfaces\TaskServiceInterface;
+use App\Services\EntityManager;
 
 class TaskService implements TaskServiceInterface {
 
     use TaskTransformable;
 
+     private $entityManager;
+    
     /**
      * @var TaskRepositoryInterface
      */
@@ -44,6 +42,7 @@ class TaskService implements TaskServiceInterface {
     public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository) {
         $this->taskRepository = $taskRepository;
         $this->projectRepository = $projectRepository;
+        $this->entityManager = new EntityManager();
     }
 
     public function search() {
@@ -73,7 +72,7 @@ class TaskService implements TaskServiceInterface {
             $objProject->tasks()->attach($task);
         }
         if ($request->has('contributors')) {
-            $taskRepo = EntityManager::getRepository($task);
+            $taskRepo = $this->entityManager::getRepository($task);
             //$taskRepo = new TaskRepository($task);
             $taskRepo->syncUsers($request->input('contributors'));
         }
@@ -89,7 +88,7 @@ class TaskService implements TaskServiceInterface {
      */
     public function markAsCompleted(int $task_id) {
         $objTask = $this->taskRepository->findTaskById($task_id);
-        $taskRepo = EntityManager::getRepository($objTask);
+        $taskRepo = $this->entityManager::getRepository($objTask);
         //$taskRepo = new TaskRepository($objTask);
         $taskRepo->updateTask(['is_completed' => true]);
         return true;
@@ -105,7 +104,7 @@ class TaskService implements TaskServiceInterface {
         $objTask = $this->taskRepository->findTaskById($id);
         
         //$taskRepo = new TaskRepository($objTask);
-        $taskRepo = EntityManager::getRepository($objTask);
+        $taskRepo = $this->entityManager::getRepository($objTask);
         $taskRepo->syncUsers([]);
         $taskRepo->deleteTask();
         return true;
@@ -120,7 +119,7 @@ class TaskService implements TaskServiceInterface {
     public function update(UpdateTaskRequest $request, int $id) {
         $task = $this->taskRepository->findTaskById($id);
         //$taskRepo = new TaskRepository($task);
-        $taskRepo = EntityManager::getRepository($task);
+        $taskRepo = $this->entityManager::getRepository($task);
         $taskRepo->updateTask($request->except('contributors'));
         if ($request->has('contributors')) {
             $taskRepo->syncUsers($request->input('contributors'));
@@ -137,7 +136,7 @@ class TaskService implements TaskServiceInterface {
     public function updateStatus(Request $request, int $id) {
         $task = $this->taskRepository->findTaskById($id);
         //$taskRepo = new TaskRepository($task);
-        $taskRepo = EntityManager::getRepository($task);
+        $taskRepo = $this->entityManager::getRepository($task);
         $taskRepo->updateTask(['task_status' => $request->task_status]);
     }
 
@@ -178,7 +177,7 @@ class TaskService implements TaskServiceInterface {
 
         if ($request->has('contributors')) {
            // $taskRepo = new TaskRepository($task);
-            $taskRepo = EntityManager::getRepository($task);
+            $taskRepo = $this->entityManager::getRepository($task);
             $taskRepo->syncUsers($request->input('contributors'));
         }
 
@@ -192,7 +191,7 @@ class TaskService implements TaskServiceInterface {
      */
     public function addProducts(int $task_id, Request $request) {
         $task = $this->taskRepository->findTaskById($task_id);
-        $taskRepo = EntityManager::getRepository($task);
+        $taskRepo = $this->entityManager::getRepository($task);
         //$taskRepo = new TaskRepository($task);
         if ($request->has('products')) {
             $taskRepo->buildOrderDetails($request->input('products'));

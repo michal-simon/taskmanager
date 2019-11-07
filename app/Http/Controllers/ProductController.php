@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use App\Repositories\TaskRepository;
 use App\Task;
 use App\Requests\SearchRequest;
-use App\Services\interfaces\ProductServiceInterface;
+use App\Services\Interfaces\ProductServiceInterface;
 
 class ProductController extends Controller {
 
@@ -36,7 +36,6 @@ class ProductController extends Controller {
      * @var BrandRepositoryInterface
      */
     private $brandRepo;
-
     private $productService;
 
     /**
@@ -47,10 +46,7 @@ class ProductController extends Controller {
      * @param BrandRepositoryInterface $brandRepository
      */
     public function __construct(
-    ProductRepositoryInterface $productRepository,
-    CategoryRepositoryInterface $categoryRepository, 
-    BrandRepositoryInterface $brandRepository,
-    ProductServiceInterface $productService
+    ProductRepositoryInterface $productRepository, CategoryRepositoryInterface $categoryRepository, BrandRepositoryInterface $brandRepository, ProductServiceInterface $productService
     ) {
         $this->productRepo = $productRepository;
         $this->categoryRepo = $categoryRepository;
@@ -65,7 +61,12 @@ class ProductController extends Controller {
      */
     public function index(SearchRequest $request) {
         $products = $this->productService->search($request);
-        return collect($products)->toJson();
+
+        $products->getCollection()->transform(function($product) {
+            return $this->transformProduct($product);
+        })->all();
+
+        return response()->json($products);
     }
 
     /**
@@ -167,7 +168,7 @@ class ProductController extends Controller {
         $parentCategory = $repo->findParentCategory();
 
         $list = $request->has('valued_at') ? $this->productRepo->getProductsByDealValueAndCategory($category, $request) : $repo->findProducts()->where('status', 1);
-        
+
         $products = $list->map(function (Product $product) use ($request, $parentCategory) {
                     return $this->transformLoanProduct($product, $parentCategory, $request);
                 })->all();
