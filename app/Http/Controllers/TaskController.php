@@ -20,7 +20,7 @@ use App\Repositories\SourceTypeRepository;
 use App\SourceType;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TaskCreated;
-use App\Services\TaskService;
+use App\Services\interfaces\TaskServiceInterface;
 
 class TaskController extends Controller {
 
@@ -41,7 +41,7 @@ class TaskController extends Controller {
      * @param TaskRepositoryInterface $taskRepository
      * @param ProjectRepositoryInterface $projectRepository
      */
-    public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository, TaskService $taskService) {
+    public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository, TaskServiceInterface $taskService) {
         $this->taskRepository = $taskRepository;
         $this->projectRepository = $projectRepository;
         $this->taskService = $taskService;
