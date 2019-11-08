@@ -11,6 +11,7 @@ class EditInvoice extends Component {
         this.state = {
             due_date: '',
             quantity: '',
+            finance_type: null,
             invoice_id: this.props.invoice_id,
             lines: [],
             address: {},
@@ -97,7 +98,8 @@ class EditInvoice extends Component {
                             quantity: 1,
                             product_id: product.id,
                             unit_price: product.price,
-                            description: product.name
+                            unit_discount: product.unit_discount,
+                            unit_tax: product.unit_tax
                         }
 
                         total += parseFloat(product.price)
@@ -189,7 +191,8 @@ class EditInvoice extends Component {
         this.setState((prevState, props) => {
             return {
                 data: this.state.data.concat({
-                    description: '',
+                    unit_discount: 0,
+                    unit_tax: 0,
                     quantity: 0,
                     unit_price: 0,
                     product_id: 0
@@ -215,6 +218,7 @@ class EditInvoice extends Component {
             invoice_id: this.state.invoice_id,
             task_id: this.props.task_id,
             due_date: this.state.due_date,
+            finance_type: this.state.finance_type,
             customer_id: this.state.customer_id,
             data: JSON.stringify(this.state.data),
             total: this.total,
@@ -295,6 +299,14 @@ class EditInvoice extends Component {
                         value={this.state.due_date} type="date" name="due_date"
                         onChange={this.handleInput.bind(this)}/>
                     {this.renderErrorFor('due_date')}
+                </FormGroup>
+
+                <FormGroup>
+                    <Label for="finance_type">Finance Type(*):</Label>
+                    <Input className={this.hasErrorFor('finance_type') ? 'is-invalid' : ''}
+                        value={this.state.finance_type} type="select" name="finance_type"
+                        onChange={this.handleInput.bind(this)}/>
+                    {this.renderErrorFor('finance_type')}
                 </FormGroup>
 
                 {customerContent}
