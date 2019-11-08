@@ -12,16 +12,19 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\InvoiceCreated;
 use Illuminate\Support\Facades\Auth;
 use App\Requests\SearchRequest;
+use App\Services\Interfaces\InvoiceServiceInterface;
 
 class InvoiceController extends Controller {
 
     use InvoiceTransformable;
 
     private $invoiceLineRepository;
+    private $invoiceService;
 
-    public function __construct(InvoiceRepositoryInterface $invoiceRepository, InvoiceLineRepositoryInterface $invoiceLineRepository) {
+    public function __construct(InvoiceRepositoryInterface $invoiceRepository, InvoiceLineRepositoryInterface $invoiceLineRepository, InvoiceServiceInterface $invoiceService) {
         $this->invoiceRepository = $invoiceRepository;
         $this->invoiceLineRepository = $invoiceLineRepository;
+        $this->invoiceService = $invoiceService;
     }
 
     /**
@@ -30,17 +33,8 @@ class InvoiceController extends Controller {
      * @return type
      */
     public function index(SearchRequest $request) {
-
-        $orderBy = !$request->column ? 'due_date' : $request->column;
-        $orderDir = !$request->order ? 'asc' : $request->order;
         $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
-
-        if (request()->has('search_term') && !empty($request->search_term)) {
-            $list = $this->invoiceRepository->searchInvoice(request()->input('search_term'));
-        } else {
-            $list = $this->invoiceRepository->listInvoices($orderBy, $orderDir, ['*']);
-        }
-
+        $list = $this->invoiceService->search($request);
         $invoices = $list->map(function (Invoice $invoice) {
                     return $this->transformInvoice($invoice);
                 })->all();
@@ -59,27 +53,9 @@ class InvoiceController extends Controller {
      * @return type
      */
     public function store(Request $request) {
-        $arrLines = json_decode($request->data, true);
-        
-        $invoice = $this->invoiceRepository->createInvoice($request->all());
-        $invoiceRepo = new InvoiceRepository($invoice);
-
-        if ($request->has('task_id') && !empty($request->task_id)) {
-            $invoiceRepo->syncTasks($request->input('task_id'));
-        }
-
-        if (is_array($arrLines) && !empty($arrLines)) {
-            foreach ($arrLines as $arrLine) {
-                $this->invoiceLineRepository->createInvoiceLine($invoice, $arrLine);
-            }
-        }
-
-        //send notification
-        $user =  $currentUser =  $user = Auth::user();
-        Notification::send($user, new InvoiceCreated($invoice));
-
-        $invoice = $this->transformInvoice($invoice);
-        return $invoice->toJson();
+        $invoice = $this->invoiceService->create($request);
+        $invoiceTransformed = $this->transformInvoice($invoice);
+        return $invoiceTransformed->toJson();
     }
 
     /**
@@ -106,32 +82,9 @@ class InvoiceController extends Controller {
      * @param Request $request
      */
     public function update(int $id, Request $request) {
-        $arrLines = json_decode($request->data, true);    
-        $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
-
-        $invoiceRepo = new InvoiceRepository($invoice);
-        $invoiceRepo->updateInvoice($request->all());
-
-        if ($request->has('task_id') && !empty($request->task_id)) {
-            $invoiceRepo->syncTasks($request->input('task_id'));
-        }
-
-        $this->invoiceLineRepository->deleteAllLines($invoice);
-
-        if (is_array($arrLines) && !empty($arrLines)) {
-            foreach ($arrLines as $arrLine) {
-
-                $this->invoiceLineRepository->createInvoiceLine($invoice, [
-                    'quantity' => $arrLine['quantity'],
-                    'description' => $arrLine['description'],
-                    'unit_price' => $arrLine['unit_price'],
-                    'product_id' => $arrLine['product_id']
-                ]);
-            }
-        }
-
-        $invoice = $this->transformInvoice($invoice);
-        return $invoice->toJson();
+        $invoice = $this->invoiceService->update($id, $request);
+        $invoiceTransformed = $this->transformInvoice($invoice);
+        return $invoiceTransformed->toJson();
     }
 
 }

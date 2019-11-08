@@ -8,9 +8,12 @@ $factory->define(InvoiceLine::class, function (Faker\Generator $faker) {
     
     return [
         'invoice_id' => $invoice->id,
-        'quantity' => 2,
-        'description' => 'Test Description',
-        'unit_price' => 10.99,
+        'quantity' => $faker->randomDigit,
+        'unit_discount' => $faker->randomFloat,
+        'tax_total' => $faker->randomFloat,
+        'unit_tax' => $faker->randomFloat,
+        'sub_total' => $faker->randomFloat,
+        'unit_price' => $faker->randomFloat,
         'invoice_status' => 1
     ];
 });

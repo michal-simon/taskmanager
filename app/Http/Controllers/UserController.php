@@ -29,7 +29,6 @@ class UserController extends Controller {
      * @var RoleRepositoryInterface
      */
     private $roleRepo;
-
     private $userService;
 
     /**
@@ -45,11 +44,17 @@ class UserController extends Controller {
     }
 
     public function index(SearchRequest $request) {
-       $users = $this->userService->search($request);
+        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
+        $list = $this->userService->search($request);
 
-        $users->getCollection()->transform(function($user) {
-            return $this->transformUser($user);
-        })->all();
+        $users = $list->map(function (User $user) {
+                    return $this->transformUser($user);
+                })->all();
+
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->userRepository->paginateArrayResults($users, $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
 
         return response()->json($users);
     }
@@ -98,11 +103,11 @@ class UserController extends Controller {
      */
     public function destroy(int $id) {
         $response = $this->userService->delete($id);
-        
-        if($response) {
+
+        if ($response) {
             return response()->json('User deleted!');
         }
-        
+
         return response()->json('User could not be deleted!');
     }
 
@@ -112,7 +117,7 @@ class UserController extends Controller {
      *
      * @return Response
      */
-    public function update(UpdateUserRequest $request, int $id) {        
+    public function update(UpdateUserRequest $request, int $id) {
         $this->userService->update($request, $id);
         return response()->json('Updated user successfully');
     }

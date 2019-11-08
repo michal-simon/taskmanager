@@ -25,7 +25,6 @@ class CustomerService implements CustomerServiceInterface {
      * @var AddressRepositoryInterface
      */
     private $addressRepo;
-    
     private $entityManager;
 
     /**
@@ -47,18 +46,12 @@ class CustomerService implements CustomerServiceInterface {
     public function search(SearchRequest $request) {
         $orderBy = !$request->column || $request->column === 'name' ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
-        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
         if (request()->has('search_term') && !empty($request->search_term)) {
-            $list = $this->customerRepo->searchCustomer(request()->input('search_term'));
-        } else {
-            $list = $this->customerRepo->listCustomers($orderBy, $orderDir);
+            return $this->customerRepo->searchCustomer(request()->input('search_term'));
         }
 
-        if ($recordsPerPage > 0) {
-            $paginatedResults = $this->customerRepo->paginateCollection($list, $recordsPerPage);
-            return $paginatedResults;
-        }
+        return $this->customerRepo->listCustomers($orderBy, $orderDir);
 
         return $list;
     }

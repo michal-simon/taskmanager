@@ -3,22 +3,21 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\InvoiceLine;
 use App\Invoice;
 use App\Repositories\InvoiceRepository;
 use App\Repositories\InvoiceLineRepository;
-use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class InvoiceLineTest extends TestCase {
 
-    use DatabaseTransactions;
+    use DatabaseTransactions,
+    WithFaker;
 
     private $invoice;
 
-    public function setUp() : void {
+    public function setUp(): void {
         parent::setUp();
         $this->beginDatabaseTransaction();
         $this->invoice = factory(Invoice::class)->create();
@@ -46,9 +45,13 @@ class InvoiceLineTest extends TestCase {
 
         $data = [
             'invoice_id' => $this->invoice->id,
-            'quantity' => 20,
-            'description' => 'Test',
-            'unit_price' => 20,
+            'quantity' => $this->faker->randomDigit,
+            'unit_discount' => $this->faker->randomFloat,
+            'tax_total' => $this->faker->randomFloat,
+            'unit_tax' => $this->faker->randomFloat,
+            'sub_total' => $this->faker->randomFloat,
+            'unit_price' => $this->faker->randomFloat,
+            'invoice_status' => 1
         ];
 
         $invoiceRepo = new InvoiceRepository(new Invoice);
@@ -61,7 +64,7 @@ class InvoiceLineTest extends TestCase {
         $this->assertEquals($data['quantity'], $invoiceLine->quantity);
     }
 
-    public function tearDown() : void {
+    public function tearDown(): void {
         parent::tearDown();
     }
 

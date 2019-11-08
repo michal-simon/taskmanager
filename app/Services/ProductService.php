@@ -24,7 +24,7 @@ class ProductService implements ProductServiceInterface {
         LoanProductTransformable;
 
     private $entityManager;
-    
+
     /**
      * @var ProductRepositoryInterface
      */
@@ -64,24 +64,11 @@ class ProductService implements ProductServiceInterface {
     public function search(SearchRequest $request) {
         $orderBy = !$request->column ? 'name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
-        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
 
         if (request()->has('search_term') && !empty($request->search_term)) {
-            $list = $this->productRepo->searchProduct(request()->input('search_term'));
-        } else {
-            $list = $this->productRepo->listProducts($orderBy, $orderDir);
+            return $this->productRepo->searchProduct(request()->input('search_term'));
         }
-
-        $products = $list->map(function (Product $product) {
-                    return $this->transformProduct($product);
-                })->all();
-
-        if ($recordsPerPage > 0) {
-             $paginatedResults = $this->productRepo->paginateCollection($list, $recordsPerPage);
-            return $paginatedResults;
-        }
-
-        return $products;
+        return $this->productRepo->listProducts($orderBy, $orderDir);
     }
 
     /**
@@ -92,14 +79,14 @@ class ProductService implements ProductServiceInterface {
      * @return \Illuminate\Http\Response
      */
     public function create(CreateProductRequest $request) {
-        
+
         $data = $request->except('_token', '_method');
         $data['slug'] = str_slug($request->input('name'));
 
         if ($request->hasFile('cover') && $request->file('cover') instanceof UploadedFile) {
             $data['cover'] = $this->productRepo->saveCoverImage($request->file('cover'));
         }
-        
+
         $product = $this->productRepo->createProduct($data);
         $productRepo = $this->entityManager::getRepository($product);
         //$productRepo = new ProductRepository($product);

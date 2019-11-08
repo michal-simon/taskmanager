@@ -60,11 +60,17 @@ class ProductController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(SearchRequest $request) {
-        $products = $this->productService->search($request);
+        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
+        $list = $this->productService->search($request);
 
-        $products->getCollection()->transform(function($product) {
-            return $this->transformProduct($product);
-        })->all();
+        $products = $list->map(function (Product $product) {
+                    return $this->transformProduct($product);
+                })->all();
+
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->productRepo->paginateArrayResults($products, $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
 
         return response()->json($products);
     }

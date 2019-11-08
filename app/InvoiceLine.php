@@ -24,6 +24,8 @@ class InvoiceLine extends Model {
      */
     protected $fillable = [
         'quantity',
+        'sub_total',
+        'tax_total',
         'unit_tax',
         'unit_discount',
         'unit_price',

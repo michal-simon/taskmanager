@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Services;
+
 use App\User;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -17,19 +19,21 @@ use App\Services\Interfaces\UserServiceInterface;
 use App\Services\EntityManager;
 
 class UserService implements UserServiceInterface {
+
     use UserTransformable;
+
     /**
      * @var UserRepositoryInterface
      */
     private $userRepository;
+
     /**
      * @var RoleRepositoryInterface
      */
     private $roleRepo;
-    
     private $entityManager;
-    
-/**
+
+    /**
      * UserController constructor.
      *
      * @param UserRepositoryInterface $userRepository
@@ -44,22 +48,12 @@ class UserService implements UserServiceInterface {
     public function search(SearchRequest $request) {
         $orderBy = !$request->column ? 'first_name' : $request->column;
         $orderDir = !$request->order ? 'asc' : $request->order;
-        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
         if (request()->has('search_term') && !empty($request->search_term)) {
-            $list = $this->userRepository->searchUser(request()->input('search_term'));
-        } else {
-            $list = $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
+            return $this->userRepository->searchUser(request()->input('search_term'));
         }
-        $users = $list->map(function (User $user) {
-                    return $this->transformUser($user);
-                })->all();
-        if ($recordsPerPage > 0) {
-             $paginatedResults = $this->userRepository->paginateCollection($list, $recordsPerPage);
-            return $paginatedResults;
-        }
-        return $users;
+        return $this->userRepository->getActiveUsers(['*'], $orderBy, $orderDir);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -68,7 +62,7 @@ class UserService implements UserServiceInterface {
      * @return \Illuminate\Http\Response
      */
     public function create(CreateUserRequest $request) {
-        
+
         $validatedData = $request->validated();
         $user = $this->userRepository->createUser($validatedData);
         //$userRepo = new UserRepository($user);
@@ -83,7 +77,6 @@ class UserService implements UserServiceInterface {
         return $user;
     }
 
-    
     /**
      * Remove the specified resource from storage.
      *
@@ -104,7 +97,7 @@ class UserService implements UserServiceInterface {
      *
      * @return Response
      */
-    public function update(UpdateUserRequest $request, int $id) {        
+    public function update(UpdateUserRequest $request, int $id) {
         $user = $this->userRepository->findUserById($id);
         //$userRepo = new UserRepository($user);
         $userRepo = $this->entityManager::getRepository($user);
@@ -133,4 +126,5 @@ class UserService implements UserServiceInterface {
         }
         return true;
     }
+
 }

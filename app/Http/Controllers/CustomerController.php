@@ -45,13 +45,18 @@ class CustomerController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(SearchRequest $request) {
+        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
+        $list = $this->customerService->search($request);
 
-        $customers = $this->customerService->search($request);
+        $customers = $list->map(function (Customer $customer) {
+                    return $this->transformCustomer($customer);
+                })->all();
 
-        $customers->getCollection()->transform(function($customer) {
-           return $this->transformCustomer($customer);
-        })->all();
-        
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->customerRepo->paginateArrayResults($customers, $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
+
         return response()->json($customers);
     }
 
