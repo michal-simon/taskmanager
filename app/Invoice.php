@@ -22,7 +22,8 @@ class Invoice extends Model {
         'total',
         'payment_type',
         'due_date',
-        'invoice_status'
+        'invoice_status',
+        'financial_type'
     ];
 
     /**
