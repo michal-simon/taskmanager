@@ -60,7 +60,12 @@ class LineItem extends Component {
                         onChange={this.props.onChange} className='pa2 mr2 f6 form-control'/>
                 </td>
                 <td>
-                    <Input name="description" data-line={lineId} type='text' value={this.props.lineItemData.description}
+                    <Input name="unit_tax" data-line={lineId} type='text' value={this.props.lineItemData.unit_tax}
+                        onChange={this.props.onChange} className='pa2 mr2 f6 form-control'/>
+                </td>
+
+                <td>
+                    <Input name="unit_discount" data-line={lineId} type='text' value={this.props.lineItemData.unit_discount}
                         onChange={this.props.onChange} className='pa2 mr2 f6 form-control'/>
                 </td>
 
