@@ -44,6 +44,8 @@ class LineItemEditor extends Component {
 
         if (e.currentTarget.name === 'product_id') {
             const price = e.target[e.target.selectedIndex].getAttribute('data-price')
+            const tax = e.target[e.target.selectedIndex].getAttribute('data-tax')
+            const discount = e.target[e.target.selectedIndex].getAttribute('data-discount')
 
             setTimeout(() => {
                 this.props.update('unit_price', price, row)
@@ -74,7 +76,8 @@ class LineItemEditor extends Component {
                     <thead>
                         <tr>
                             <th>Quantity</th>
-                            <th>Description</th>
+                            <th>Discount</th>
+                            <th>Tax</th>
                             <th>Product</th>
                             <th>Unit Price</th>
                             <th>Total</th>
