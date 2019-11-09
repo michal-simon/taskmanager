@@ -57,7 +57,7 @@ class FileUpload extends Component {
         return true
     }
 
-    onChangeHandler () {
+    onChangeHandler (event) {
         const files = event.target.files
         if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkFileSize(event)) {
             // if return true allow to setState

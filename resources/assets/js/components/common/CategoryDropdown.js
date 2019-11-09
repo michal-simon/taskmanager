@@ -36,7 +36,6 @@ export default class CategoryDropdown extends Component {
         return (
             <Input value={this.props.category} onChange={this.props.handleInputChanges} type="select" multiple
                    name={name} id={name}>
-                <option value="">Select Category</option>
                 {categoryList}
             </Input>
         )

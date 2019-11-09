@@ -79,7 +79,6 @@ class ProductService implements ProductServiceInterface {
      * @return \Illuminate\Http\Response
      */
     public function create(CreateProductRequest $request) {
-
         $data = $request->except('_token', '_method');
         $data['slug'] = str_slug($request->input('name'));
 

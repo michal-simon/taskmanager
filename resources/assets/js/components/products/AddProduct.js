@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, CustomInput } from 'reactstrap'
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, CustomInput} from 'reactstrap'
 import axios from 'axios'
 import CompanyDropdown from "../common/CompanyDropdown";
 import CategoryDropdown from "../common/CategoryDropdown";
 
 class AddProduct extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props)
         this.state = {
             modal: false,
@@ -26,12 +26,12 @@ class AddProduct extends React.Component {
         this.handleInput = this.handleInput.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
     }
-    
-    hasErrorFor (field) {
+
+    hasErrorFor(field) {
         return !!this.state.errors[field]
     }
 
-    renderErrorFor (field) {
+    renderErrorFor(field) {
         if (this.hasErrorFor(field)) {
             return (
                 <span className='invalid-feedback'>
@@ -41,11 +41,17 @@ class AddProduct extends React.Component {
         }
     }
 
-    handleClick () {
+    handleClick() {
 
         const formData = new FormData();
         formData.append('cover', this.state.cover)
-        formData.append('image[]', this.state.image)
+
+        console.log('images', this.state.image)
+
+        for (let x = 0; x < this.state.image.length; x++) {
+            formData.append('image[]', this.state.image[x])
+        }
+
         formData.append('name', this.state.name)
         formData.append('description', this.state.description)
         formData.append('price', this.state.price)
@@ -77,24 +83,35 @@ class AddProduct extends React.Component {
                 })
             })
     }
-    
-     handleFileChange (e) {
+
+    handleFileChange(e) {
         this.setState({
             [e.target.name]: e.target.files[0]
         })
     }
 
-    handleMultiSelect (e) {
-        this.setState({ selectedCategories: Array.from(e.target.selectedOptions, (item) => item.value) })
+    onChangeHandler(e) {
+        const files = e.target.files
+
+        console.log('files', files)
+
+        // if return true allow to setState
+        this.setState({
+            [e.target.name]: e.target.files
+        })
     }
 
-    handleInput (e) {
+    handleMultiSelect(e) {
+        this.setState({selectedCategories: Array.from(e.target.selectedOptions, (item) => item.value)})
+    }
+
+    handleInput(e) {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
 
-    toggle () {
+    toggle() {
         this.setState({
             modal: !this.state.modal,
             errors: [],
@@ -102,71 +119,71 @@ class AddProduct extends React.Component {
         })
     }
 
-    render () {
+    render() {
         return (
             <React.Fragment>
                 <Button className="pull-right" color="success" onClick={this.toggle}>Add Product</Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>
-                       Add Product
+                        Add Product
                     </ModalHeader>
                     <ModalBody>
                         <FormGroup>
                             <Label for="name">Name(*):</Label>
                             <Input className={this.hasErrorFor('name') ? 'is-invalid' : ''} type="text"
-                                name="name" onChange={this.handleInput.bind(this)}/>
+                                   name="name" onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('name')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="description">Description:</Label>
                             <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''}
-                                type="textarea"
-                                name="description"
-                                onChange={this.handleInput.bind(this)}/>
+                                   type="textarea"
+                                   name="description"
+                                   onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('description')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="price">Price(*):</Label>
                             <Input className={this.hasErrorFor('price') ? 'is-invalid' : ''}
-                                type="text"
-                                name="price"
-                                onChange={this.handleInput.bind(this)}/>
+                                   type="text"
+                                   name="price"
+                                   onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('price')}
                         </FormGroup>
 
                         <FormGroup>
                             <Label for="sku">Sku(*):</Label>
                             <Input className={this.hasErrorFor('sku') ? 'is-invalid' : ''}
-                                type="text"
-                                name="sku"
-                                onChange={this.handleInput.bind(this)}/>
+                                   type="text"
+                                   name="sku"
+                                   onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('sku')}
                         </FormGroup>
 
                         <CustomInput onChange={this.handleFileChange.bind(this)} type="file" id="cover" name="cover"
-                            label="Cover!"/>
+                                     label="Cover!"/>
 
-                        <CustomInput onChange={this.handleFileChange.bind(this)} type="file" id="image" name="image"
+                        <Input onChange={this.onChangeHandler.bind(this)} multiple type="file" id="image" name="image"
                                      label="Thumbnail!"/>
 
-                       <CompanyDropdown
-                          name="brand_id"
-                          hasErrorFor={this.hasErrorFor}
-                          renderErrorFor={this.renderErrorFor}
-                          handleInputChanges={this.handleInput}
-                          // companies={this.props.brands}
-                      />
-                       
-                      <CategoryDropdown
-                          multiple={true}
-                          name="category"
-                          hasErrorFor={this.hasErrorFor}
-                          renderErrorFor={this.renderErrorFor}
-                          handleInputChanges={this.handleMultiSelect}
-                          categories={this.props.categories}
-                      />
+                        <CompanyDropdown
+                            name="brand_id"
+                            hasErrorFor={this.hasErrorFor}
+                            renderErrorFor={this.renderErrorFor}
+                            handleInputChanges={this.handleInput}
+                            // companies={this.props.brands}
+                        />
+
+                        <CategoryDropdown
+                            multiple={true}
+                            name="category"
+                            hasErrorFor={this.hasErrorFor}
+                            renderErrorFor={this.renderErrorFor}
+                            handleInputChanges={this.handleMultiSelect}
+                            categories={this.props.categories}
+                        />
                     </ModalBody>
 
                     <ModalFooter>
