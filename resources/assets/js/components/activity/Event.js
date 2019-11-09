@@ -64,8 +64,9 @@ class Event extends React.Component {
                 <div className="panel panel-white post panel-shadow">
                     <div className="post-heading">
                         <div className="pull-left image">
-                            <img src="https://bootdey.com/img/Content/user_1.jpg" className="img-circle avatar"
-                                 alt="user profile image"/>
+                            <Avatar className="mr-2" name={`${event.owner.first_name}  ${event.owner.last_name}`} large={false}/>
+                            {/*<img src="https://bootdey.com/img/Content/user_1.jpg" className="img-circle avatar"*/}
+                            {/*     alt="user profile image"/>*/}
                         </div>
                         <div className="pull-left meta">
                             <div className="title h5">

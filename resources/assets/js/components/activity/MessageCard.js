@@ -104,9 +104,12 @@ class MessageCard extends React.Component {
         const lastName = author ? author.last_name : 'Hampton'
 
         return (
-            <li className="comment"><a className="pull-left" href="#">
-                <img className="avatar" src="https://bootdey.com/img/Content/user_1.jpg"
-                     alt="avatar"/> </a>
+            <li className="comment">
+                <a className="pull-left" href="#">
+                    <Avatar className="mr-2" name={`${firstName}  ${lastName}`} large={false}/>
+                {/*<img className="avatar" src="https://bootdey.com/img/Content/user_1.jpg"*/}
+                {/*     alt="avatar"/> */}
+            </a>
                 <div className="comment-body">
                     <div className="comment-heading">
                         <h4 className="user">{`${firstName}  ${lastName}`}</h4>
@@ -142,8 +145,9 @@ class MessageCard extends React.Component {
                 <div className="panel panel-white post panel-shadow">
                     <div className="post-heading">
                         <div className="pull-left image">
-                            <img src="https://bootdey.com/img/Content/user_1.jpg"
-                                 className="img-circle avatar" alt="user profile image"/>
+                            <Avatar className="mr-2" name={`${firstName2}  ${lastName2}`} large={false}/>
+                            {/*<img src="https://bootdey.com/img/Content/user_1.jpg"*/}
+                            {/*     className="img-circle avatar" alt="user profile image"/>*/}
                         </div>
 
                         <div className="pull-left meta">

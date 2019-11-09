@@ -8,8 +8,9 @@ class Avatar extends Component {
 
     render () {
         const large = this.props.lg && this.props.lg === true ? 'avatar-circle-md ml-3' : 'avatar-circle-sm'
+        const className = this.props.className ? this.props.className : ''
         const initials = this.props.name.split(' ').map(x => x.charAt(0)).join('').substr(0, 2).toUpperCase()
-        const classNames = this.props.inline && this.props.inline === true ? 'avatar-circle avatar-circle-xs d-inline-block m-2' : 'avatar-circle ' + large
+        const classNames = this.props.inline && this.props.inline === true ? 'avatar-circle avatar-circle-xs d-inline-block m-2' : 'avatar-circle ' + large + ' ' + className
 
         return (
             <React.Fragment>
