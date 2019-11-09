@@ -58,7 +58,10 @@ export default class TabContent extends Component {
                     </div>
 
                     <div label="Invoice" className="tab-content">
-                        <EditInvoice customer_id={this.props.task.customer_id} task_id={this.props.task.id} />
+                        <EditInvoice
+                            customers={this.props.customers}
+                            customer_id={this.props.task.customer_id}
+                            task_id={this.props.task.id} />
                     </div>
 
                     <div label="Attachment" className="tab-content">

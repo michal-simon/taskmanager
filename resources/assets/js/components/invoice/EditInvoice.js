@@ -26,7 +26,8 @@ class EditInvoice extends Component {
             discount_total: this.props.invoice && this.props.invoice.discount_total ? this.props.invoice.discount_total : 0,
             tax_total: this.props.invoice && this.props.invoice.tax_total ? this.props.invoice.tax_total : 0,
             sub_total: this.props.invoice && this.props.invoice.sub_total ? this.props.invoice.sub_total : 0,
-            data: []
+            data: [],
+            success: false
         }
 
         this.updateData = this.updateData.bind(this)
@@ -315,6 +316,7 @@ class EditInvoice extends Component {
                 const firstInvoice = response.data
                 const allInvoices = this.props.invoices
                 allInvoices.push(firstInvoice)
+                this.setState({success: true})
                 this.props.action(allInvoices)
             })
             .catch((error) => {
@@ -398,6 +400,7 @@ class EditInvoice extends Component {
     render() {
         const buttonText = !this.props.add ? 'Create Invoice' : 'Update'
         const form = this.buildForm()
+        const {success} = this.state
 
         if (this.props.modal) {
             return (
@@ -421,6 +424,11 @@ class EditInvoice extends Component {
 
         return (
             <div>
+
+                {success && <div className="alert alert-success" role="alert">
+                    Products added to task successfully
+                </div>}
+
                 {form}
             </div>
         )

@@ -9,7 +9,8 @@ class ProductSelect extends React.Component {
         this.state = {
             products: [],
             selectedProducts: [],
-            errors: []
+            errors: [],
+            success: false
         }
 
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
@@ -38,6 +39,7 @@ class ProductSelect extends React.Component {
             products: this.state.selectedProducts
         })
             .then((response) => {
+                this.setState({success: true})
             })
             .catch((error) => {
                 this.setState({
@@ -65,9 +67,14 @@ class ProductSelect extends React.Component {
 
     render () {
         const productList = this.getProductList()
+        const {success} = this.state
 
         return (
             <React.Fragment>
+
+                {success && <div className="alert alert-success" role="alert">
+                    Products added to task successfully
+                </div>}
 
                 <FormGroup>
                     <Label for="users">Products</Label>
