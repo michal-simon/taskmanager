@@ -2,18 +2,31 @@
 import React, { Component } from 'react'
 import LineItem from './LineItem'
 import { Button } from 'reactstrap'
+import axios from "axios";
 
 class LineItemEditor extends Component {
     constructor (props) {
         super(props)
         this.state = {
             rowData: [],
+            products: [],
             total: this.props.total
         }
 
         this.handleRowChange = this.handleRowChange.bind(this)
         this.handleRowDelete = this.handleRowDelete.bind(this)
         this.handleRowAdd = this.handleRowAdd.bind(this)
+        this.loadProducts = this.loadProducts.bind(this)
+    }
+
+    componentDidMount () {
+        this.loadProducts()
+    }
+
+    loadProducts () {
+        axios.get('/api/products').then(data => {
+            this.setState({ products: data.data })
+        })
     }
 
     handleRowChange (e) {
@@ -23,7 +36,9 @@ class LineItemEditor extends Component {
         this.props.update(e.currentTarget.name, e.currentTarget.value, row)
 
         if (e.currentTarget.name === 'product_id') {
-            const price = e.target[e.target.selectedIndex].getAttribute('data-price')
+            const index = this.state.products.findIndex(product => product.id === parseInt(e.currentTarget.value))
+            const product = this.state.products[index]
+            const price = product.price
 
             setTimeout(() => {
                 this.props.update('unit_price', price, row)
@@ -44,7 +59,7 @@ class LineItemEditor extends Component {
     render () {
         const lineItemRows = this.props.rows.map((lineItem, index) =>
 
-            <LineItem new={true} key={index} lineItemData={lineItem} onChange={this.handleRowChange}
+            <LineItem products={this.state.products} new={true} key={index} lineItemData={lineItem} onChange={this.handleRowChange}
                 handleTaskChange={this.updateTasks} onDelete={this.handleRowDelete}/>
         )
 

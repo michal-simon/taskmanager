@@ -71,7 +71,7 @@ class RoleController extends Controller {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateRoleRequest $request) {        
+    public function store(CreateRoleRequest $request) { 
         $roleObj = $this->roleRepo->createRole($request->except('_method', '_token'));
 
         if ($request->has('permissions')) {
@@ -92,7 +92,7 @@ class RoleController extends Controller {
         $role = $this->roleRepo->findRoleById($id);
         $roleRepo = new RoleRepository($role);
         $attachedPermissionsArrayIds = $roleRepo->listPermissions()->pluck('id')->all();
-        $permissions = $this->permissionRepository->listPermissions(['*'], 'name', 'asc');
+        $permissions = $this->permissionRepository->listPermissions(['id', 'name'], 'name', 'asc');
 
         $arrData = [
             'permissions' => $permissions->toArray(),

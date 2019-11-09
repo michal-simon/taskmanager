@@ -85,7 +85,7 @@ class InvoiceService implements InvoiceServiceInterface {
      * @param int $id
      * @param Request $request
      */
-    public function update(int $id, Request $request) { 
+    public function update(int $id, Request $request) {
         $arrLines = json_decode($request->data, true);
         $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
 

@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, InputGroupAddon, InputGroupText, InputGroup } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, InputGroupAddon, InputGroupText, InputGroup } from 'reactstrap'
 import axios from 'axios'
 
 class EditRole extends React.Component {
@@ -99,14 +98,12 @@ class EditRole extends React.Component {
     
     buildPermissionList () {
         let permissionsList = null
-        console.log('state', this.state)
         if (!this.state.permissions.length) {
             permissionsList = <option value="">Loading...</option>
         } else {
             permissionsList = this.state.permissions.map((permission, index) => {
-                const selected = this.state.attachedPermissions.indexOf(permission.id) > -1 ? 'selected' : ''
                 return (
-                    <option selected={selected} key={index} value={permission.id}>{permission.name}</option>
+                    <option key={index} value={permission.id}>{permission.name}</option>
                 )
             })
         }
@@ -117,7 +114,7 @@ class EditRole extends React.Component {
     render () {
         let permissionsList = this.buildPermissionList()
         const {message} = this.state
-       
+
         return (
             <React.Fragment>
                 <Button className="ml-2" color="success" onClick={this.toggle}>Edit</Button>
@@ -163,7 +160,7 @@ class EditRole extends React.Component {
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
                             </InputGroupAddon>
-                            <Input onChange={this.handleMultiSelect} type="select" multiple>
+                            <Input value={this.state.attachedPermissions} onChange={this.handleMultiSelect} type="select" multiple>
                                 {permissionsList}
                             </Input>
                         </InputGroup>

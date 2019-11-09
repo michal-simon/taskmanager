@@ -2529,3 +2529,12 @@ $color_portage_approx: #7ea8df;
 .tab-content {
 	border: none !important;
 }
+
+.select__input input {
+	min-width: 210px !important;
+}
+
+.basic-multi-select {
+	width: 92% !important;
+}
+

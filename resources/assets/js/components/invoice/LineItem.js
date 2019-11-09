@@ -1,49 +1,22 @@
-/* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import axios from 'axios'
 import { Button, Input } from 'reactstrap'
+import Select from 'react-select';
+import ProductDropdown from "../common/ProductDropdown";
 
 class LineItem extends Component {
     constructor (props) {
         super(props)
         this.state = Object.assign({}, props.lineItemData)
-        this.state.products = []
         this.handleDeleteClick = this.handleDeleteClick.bind(this)
-        this.loadProducts = this.loadProducts.bind(this)
-        this.buildProductOptions = this.buildProductOptions.bind(this)
-    }
-
-    componentDidMount () {
-        this.loadProducts()
-    }
-
-    loadProducts () {
-        axios.get('/api/products').then(data => {
-            this.setState({ products: data.data })
-        })
     }
 
     handleDeleteClick () {
         this.props.onDelete(this.props.id)
     }
 
-    buildProductOptions (product_id) {
-        let productList = null
-        if (!this.state.products.length) {
-            productList = <option value="">Loading...</option>
-        } else {
-            productList = this.state.products.map((product, index) => {
-                return <option key={index} data-price={product.price}
-                    value={product.id}>{product.name}</option>
-            })
-        }
-        return (
-            <Input value={product_id} name="product_id" type='select'
-                onChange={this.props.onChange}>
-                <option value="">Select Product</option>
-                {productList}
-            </Input>
-        )
+    renderErrorFor () {
+
     }
 
     render () {
@@ -56,7 +29,12 @@ class LineItem extends Component {
         const lineForm = (
             <tr data-id={lineId} key={lineId}>
                 <td>
-                    {this.buildProductOptions(this.props.lineItemData.product_id)}
+                    <ProductDropdown
+                        renderErrorFor={this.renderErrorFor}
+                        name="product_id"
+                        handleInputChanges={this.props.onChange}
+                        products={this.props.products}
+                    />
                 </td>
 
                 <td>

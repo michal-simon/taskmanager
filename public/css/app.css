@@ -3798,3 +3798,11 @@ td.rdtYear:hover {
   border: none !important;
 }
 
+.select__input input {
+  min-width: 210px !important;
+}
+
+.basic-multi-select {
+  width: 92% !important;
+}
+

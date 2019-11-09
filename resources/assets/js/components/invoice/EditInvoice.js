@@ -1,16 +1,18 @@
-/* eslint-disable no-unused-vars */
 import React, {Component} from 'react'
 import Address from './Address'
 import LineItemEditor from './LineItemEditor'
 import axios from 'axios'
 import {Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import CustomerDropdown from "../common/CustomerDropdown";
+import 'react-dates/lib/css/_datepicker.css';
+import { SingleDatePicker } from 'react-dates';
+import moment from "moment";
 
 class EditInvoice extends Component {
     constructor(props, context) {
         super(props, context)
         this.state = {
-            due_date: this.props.invoice && this.props.invoice.due_date ? this.props.invoice.due_date : '',
+            due_date: this.props.invoice && this.props.invoice.due_date ? moment(this.props.invoice.due_date).format('DD-MM-YYYY') : '',
             quantity: '',
             finance_type: this.props.invoice && this.props.invoice.finance_type ? this.props.invoice.finance_type : 0,
             invoice_id: this.props.invoice_id,
@@ -29,7 +31,7 @@ class EditInvoice extends Component {
             data: [],
             success: false
         }
-
+        
         this.updateData = this.updateData.bind(this)
         this.saveData = this.saveData.bind(this)
         this.setTotal = this.setTotal.bind(this)
@@ -345,16 +347,25 @@ class EditInvoice extends Component {
         return (
             <div>
 
-                <Button class="primary" onClick={this.handleTaskChange}>Get Products</Button>
+                <Button className="primary" onClick={this.handleTaskChange}>Get Products</Button>
 
                 <h2>{this.state.customerName}</h2>
                 <Address address={this.state.address}/>
 
                 <FormGroup>
                     <Label for="due_date">Due Date(*):</Label>
-                    <Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''}
-                           value={this.state.due_date} type="date" name="due_date"
-                           onChange={this.handleInput.bind(this)}/>
+                    <SingleDatePicker
+                        displayFormat="DD-MM-YYYY"
+                        numberOfMonths={1}
+                        date={moment(this.state.due_date)} // momentPropTypes.momentObj or null
+                        onDateChange={due_date => this.setState({ due_date })} // PropTypes.func.isRequired
+                        focused={this.state.focused} // PropTypes.bool
+                        onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
+                        id="due_date" // PropTypes.string.isRequired,
+                    />
+                    {/*<Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''}*/}
+                    {/*       value={this.state.due_date} type="date" name="due_date"*/}
+                    {/*       onChange={this.handleInput.bind(this)}/>*/}
                     {this.renderErrorFor('due_date')}
                 </FormGroup>
 
