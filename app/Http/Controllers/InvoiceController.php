@@ -4,13 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\InvoiceRepositoryInterface;
-use App\Repositories\InvoiceRepository;
 use App\Repositories\Interfaces\InvoiceLineRepositoryInterface;
 use App\Transformations\InvoiceTransformable;
 use App\Invoice;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\InvoiceCreated;
-use Illuminate\Support\Facades\Auth;
 use App\Requests\SearchRequest;
 use App\Services\Interfaces\InvoiceServiceInterface;
 
@@ -18,6 +14,7 @@ class InvoiceController extends Controller {
 
     use InvoiceTransformable;
 
+    private $invoiceRepository;
     private $invoiceLineRepository;
     private $invoiceService;
 
@@ -85,6 +82,21 @@ class InvoiceController extends Controller {
         $invoice = $this->invoiceService->update($id, $request);
         $invoiceTransformed = $this->transformInvoice($invoice);
         return $invoiceTransformed->toJson();
+    }
+    
+    /**
+     * 
+     * @param string $filter
+     * @param int $id
+     * @return type
+     */
+    public function filterInvoices(Request $request) {
+        $list = $this->invoiceRepository->filterInvoices($request->all());
+        $invoices = $list->map(function (Invoice $invoice) {
+                    return $this->transformInvoice($invoice);
+                })->all();
+
+        return response()->json($invoices);
     }
 
 }

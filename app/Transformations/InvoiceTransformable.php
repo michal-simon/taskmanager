@@ -27,6 +27,9 @@ trait InvoiceTransformable {
         $prop->invoice_status = 'Pending';
         $prop->payment_type = $invoice->paymentType->name;
         $prop->total = $invoice->total;
+        $prop->sub_total = $invoice->sub_total;
+        $prop->tax_total = $invoice->tax_total;
+        $prop->discount_total = $invoice->discount_total;
 
         return $prop;
     }

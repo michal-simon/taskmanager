@@ -26,7 +26,7 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
      * @return Invoice
      */
     public function createInvoice(array $params): Invoice {
-        try {
+        try {           
             $invoice = $this->create($params);
             return $invoice;
         } catch (QueryException $e) {
@@ -99,5 +99,21 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
                         ->where('invoice_task.task_id', $objTask->id)
                         ->get();
     }
-
+    
+    /**
+     * 
+     * @param array $arrFilters
+     * @param type $task_type
+     * @return Support
+     */
+    public function filterInvoices(array $arrFilters): Collection {
+        
+        $query = $this->model->select('invoices.*');
+        
+        foreach ($arrFilters as $column => $value) {
+            $query->where($column, '=', $value);
+        }
+                
+        return $query->get();
+    }
 }

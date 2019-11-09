@@ -14,6 +14,7 @@ use App\Customer;
 use App\Repositories\InvoiceRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
+use Illuminate\Foundation\Testing\WithFaker;
 
 /**
  * Description of InvoiceTest
@@ -22,7 +23,8 @@ use Illuminate\Support\Collection;
  */
 class InvoiceTest extends TestCase {
     
-    use DatabaseTransactions;
+    use DatabaseTransactions,
+            WithFaker;
     
     private $customer;
     
@@ -68,7 +70,9 @@ class InvoiceTest extends TestCase {
         $data = [
             'customer_id' => $this->customer->id,
             'payment_type' => 1,
-            'total' => 1200,
+            'total' => $this->faker->randomFloat(),
+            'tax_total' => $this->faker->randomFloat(),
+            'discount_total' => $this->faker->randomFloat(),
             'invoice_status' => 1,
         ];
 

@@ -20,11 +20,16 @@ class Invoice extends Model {
     protected $fillable = [
         'customer_id',
         'total',
+        'sub_total',
+        'tax_total',
+        'discount_total',
         'payment_type',
         'due_date',
         'invoice_status',
-        'financial_type'
+        'finance_type'
     ];
+    
+     private $repository =  'App\Repositories\InvoiceRepository';
 
     /**
      * Searchable rules.

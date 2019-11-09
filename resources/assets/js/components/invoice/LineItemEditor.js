@@ -14,26 +14,6 @@ class LineItemEditor extends Component {
         this.handleRowChange = this.handleRowChange.bind(this)
         this.handleRowDelete = this.handleRowDelete.bind(this)
         this.handleRowAdd = this.handleRowAdd.bind(this)
-        this.getTotal = this.getTotal.bind(this)
-        this.setTotal = this.setTotal.bind(this)
-    }
-
-    setTotal (total) {
-        this.setState({ total: total })
-        this.props.setTotal(total)
-    }
-
-    getTotal () {
-        let grandTotal = 0
-        const all = document.getElementsByName('unit_price')
-
-        for (let i = 0, max = all.length; i < max; i++) {
-            const quantity = all[i].parentNode.parentNode.firstChild.firstElementChild.value
-            grandTotal += all[i].value * quantity
-        }
-
-        this.setTotal(grandTotal)
-        return grandTotal
     }
 
     handleRowChange (e) {
@@ -65,7 +45,7 @@ class LineItemEditor extends Component {
         const lineItemRows = this.props.rows.map((lineItem, index) =>
 
             <LineItem new={true} key={index} lineItemData={lineItem} onChange={this.handleRowChange}
-                handleTaskChange={this.updateTasks} onDelete={this.handleRowDelete} calculateTotal={this.getTotal}/>
+                handleTaskChange={this.updateTasks} onDelete={this.handleRowDelete}/>
         )
 
         return (
@@ -90,8 +70,29 @@ class LineItemEditor extends Component {
                     <tfoot>
                         <tr>
                             <th/>
+                            <th>Tax total:</th>
+                            <th>{this.props.tax_total}</th>
+                            <th/>
+                        </tr>
+
+                        <tr>
+                            <th/>
+                            <th>Discount total:</th>
+                            <th>{this.props.discount_total}</th>
+                            <th/>
+                        </tr>
+
+                        <tr>
+                            <th/>
+                            <th>Sub total:</th>
+                            <th>{this.props.sub_total}</th>
+                            <th/>
+                        </tr>
+
+                        <tr>
+                            <th/>
                             <th>Grand total:</th>
-                            <th>{this.state.total}</th>
+                            <th>{this.props.total}</th>
                             <th/>
                         </tr>
                     </tfoot>

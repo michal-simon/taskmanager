@@ -91,7 +91,8 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::delete('invoice/line/{line_id}', 'InvoiceLineController@destroyLine')->middleware('role:null,invoicelinecontroller.destroyline');
     Route::put('invoice/line/{line_id}', 'InvoiceLineController@updateLine')->middleware('role:null,invoicelinecontroller.updateline');
     Route::put('invoice/{invoice_id}', 'InvoiceController@update')->middleware('role:null,invoicecontroller.update');
-
+    Route::post('invoice/filterInvoices', 'InvoiceController@filterInvoices');
+    
 
 // customers
     Route::get('customers/dashboard', 'CustomerController@dashboard')->middleware('role:null,customercontroller.dashboard');

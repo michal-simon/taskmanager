@@ -19,10 +19,13 @@ class EditInvoice extends Component {
             customerName: '',
             customer_id: this.props.invoice.customer_id ? this.props.invoice.customer_id : 0,
             invoice_status: 1,
-            customers: [],
+            customers: this.props.customers,
             tasks: [],
             errors: [],
-            total: 0,
+            total: this.props.invoice.total ? this.props.invoice.total : 0,
+            discount_total: this.props.invoice.discount_total ? this.props.invoice.discount_total : 0,
+            tax_total: this.props.invoice.tax_total ? this.props.invoice.tax_total : 0,
+            sub_total: this.props.invoice.sub_total ? this.props.invoice.sub_total : 0,
             data: []
         }
 
@@ -41,6 +44,7 @@ class EditInvoice extends Component {
         this.handleAddFiled = this.handleAddFiled.bind(this)
         this.handleFieldChange = this.handleFieldChange.bind(this)
         this.updatePriceData = this.updatePriceData.bind(this)
+        this.calculateTotals = this.calculateTotals.bind(this)
 
         this.total = 0
     }
@@ -49,8 +53,6 @@ class EditInvoice extends Component {
         if (this.props.task_id) {
             this.handleTaskChange()
         }
-
-        this.loadCustomers()
 
         if (this.props.task_id || this.props.invoice_id) {
             this.loadInvoice()
@@ -122,16 +124,6 @@ class EditInvoice extends Component {
         return !!this.state.errors[field]
     }
 
-    loadCustomers() {
-        axios.get('/api/customers/')
-            .then((r) => {
-                this.setState({customers: r.data})
-            })
-            .catch((e) => {
-                console.warn(e)
-            })
-    }
-
     loadInvoice() {
         const url = this.props.task_id ? `/api/invoice/task/${this.props.task_id}` : `/api/invoice/${this.state.invoice_id}`
 
@@ -166,19 +158,57 @@ class EditInvoice extends Component {
             })
     }
 
-    toggle() {
+    toggle () {
         this.setState({
             modal: !this.state.modal
         })
     }
 
-    updateData(rowData) {
+    updateData (rowData) {
         this.setState(prevState => ({
             data: [...prevState.data, rowData]
         }))
     }
 
-    updatePriceData(index) {
+    calculateTotals () {
+        let total = 0
+        let discount_total = 0
+        let tax_total = 0
+        let sub_total= 0
+
+        this.state.data.map((product) => {
+            const quantity = product.quantity === 0 ? 1 : product.quantity
+
+            const line_total = product.unit_price * quantity
+            total += line_total
+            sub_total += line_total
+
+            if(product.unit_discount > 0) {
+                const n = parseFloat(total);
+                const percentage = n * product.unit_discount /100
+                discount_total += percentage
+                total -= percentage
+            }
+
+            if(product.unit_tax > 0) {
+                const n = parseFloat(total);
+                const tax_percentage = n * product.unit_tax /100
+                tax_total += tax_percentage
+                total += tax_percentage
+            }
+
+            console.log('product', product)
+        })
+
+        this.setState({
+            total: total,
+            discount_total: discount_total,
+            tax_total: tax_total,
+            sub_total: sub_total
+        })
+    }
+
+    updatePriceData (index) {
         const data = this.state.data.slice()
         const currentRow = data[index]
         const price = currentRow.unit_price
@@ -218,15 +248,19 @@ class EditInvoice extends Component {
 
     handleFieldChange(name, value, row) {
         const $this = this;
+        let index = null;
         const newItemArray = this.state.data.map((item, sidx) => {
             if (row !== sidx) return item
-
-            setTimeout(function () {
-                $this.updatePriceData(sidx)
-            }, 1000)
-
+            index = sidx
             return {...item, [name]: value}
         })
+
+        if(index !== null) {
+            setTimeout(function () {
+                $this.calculateTotals()
+                $this.updatePriceData(index)
+            }, 1000)
+        }
 
         this.setState((prevState, props) => {
             return {
@@ -269,7 +303,10 @@ class EditInvoice extends Component {
             finance_type: this.state.finance_type,
             customer_id: this.state.customer_id,
             data: JSON.stringify(this.state.data),
-            total: this.total,
+            total: this.state.total,
+            sub_total: this.state.sub_total,
+            tax_total: this.state.tax_total,
+            discount_total: this.state.discount_total,
             payment_type: 1
         }
 
@@ -334,13 +371,17 @@ class EditInvoice extends Component {
                 </FormGroup>
 
                 <CustomerDropdown
-                    renderErrorFor={this.renderErrorFor}
+                    renderErrorFor={this.renderErrorFor}sub
                     handleInputChanges={this.handleInput}
                     customer={this.state.customer_id}
+                    customers={this.state.customers}
                 />
 
                 <LineItemEditor
                     total={this.state.total}
+                    sub_total={this.state.sub_total}
+                    tax_total={this.state.tax_total}
+                    discount_total={this.state.discount_total}
                     rows={this.state.data}
                     delete={this.handleDelete}
                     update={this.handleFieldChange}

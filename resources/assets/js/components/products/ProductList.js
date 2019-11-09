@@ -51,7 +51,6 @@ export default class ProductList extends Component {
 
         const column = event.target.id
         const value = event.target.value
-        const project_id = this.props.project_id ? this.props.project_id : 0
 
         if (value === 'all') {
             const updatedRowState = this.state.filters.filter(filter => filter.column !== column)

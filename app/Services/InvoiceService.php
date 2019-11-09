@@ -60,11 +60,10 @@ class InvoiceService implements InvoiceServiceInterface {
      * @return type
      */
     public function create(Request $request) {
-        
         $arrLines = json_decode($request->data, true);
 
         $invoice = $this->invoiceRepository->createInvoice($request->all());
-        $invoiceRepo = new InvoiceRepository($invoice);
+        $invoiceRepo = $this->entityManager::getRepository($invoice);
 
         if ($request->has('task_id') && !empty($request->task_id)) {
             $invoiceRepo->syncTasks($request->input('task_id'));
@@ -79,7 +78,7 @@ class InvoiceService implements InvoiceServiceInterface {
 //send notification
         $user = $currentUser = Auth::user();
         Notification::send($user, new InvoiceCreated($invoice));
-        
+
         return $invoice;
     }
 
@@ -88,11 +87,11 @@ class InvoiceService implements InvoiceServiceInterface {
      * @param int $id
      * @param Request $request
      */
-    public function update(int $id, Request $request) {
+    public function update(int $id, Request $request) { 
         $arrLines = json_decode($request->data, true);
         $invoice = $this->invoiceRepository->findInvoiceById($request->invoice_id);
 
-        $invoiceRepo = new InvoiceRepository($invoice);
+        $invoiceRepo = $this->entityManager::getRepository($invoice);
         $invoiceRepo->updateInvoice($request->all());
 
         if ($request->has('task_id') && !empty($request->task_id)) {

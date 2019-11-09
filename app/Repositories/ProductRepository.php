@@ -240,7 +240,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
 
     
-      /**
+    /**
      * 
      * @param array $arrFilters
      * @param type $task_type
