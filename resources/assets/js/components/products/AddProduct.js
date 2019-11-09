@@ -46,10 +46,10 @@ class AddProduct extends React.Component {
         const formData = new FormData();
         formData.append('cover', this.state.cover)
 
-        console.log('images', this.state.image)
-
-        for (let x = 0; x < this.state.image.length; x++) {
-            formData.append('image[]', this.state.image[x])
+        if(this.state.image && this.state.image.length) {
+            for (let x = 0; x < this.state.image.length; x++) {
+                formData.append('image[]', this.state.image[x])
+            }
         }
 
         formData.append('name', this.state.name)

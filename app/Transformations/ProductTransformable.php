@@ -24,9 +24,11 @@ trait ProductTransformable {
         $prod->description = $product->description;
         $prod->price = $product->price;
         $prod->status = $product->status;
+        $prod->cover = $product->cover;
         $prod->brand_id = (int) $product->brand_id;
         $prod->brand = $product->brand->name;
         $prod->category_ids = $product->categories()->pluck('category_id')->all();
+        $prod->images = $product->images()->get(['src']);
 
         $range_from = $range_to = $payable_months = $minimum_downpayment = $number_of_years = $interest_rate = 0;
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label } from 'reactstrap'
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, FormGroup, Label, CustomInput} from 'reactstrap'
 import axios from 'axios'
 import PropTypes from 'prop-types'
 import ProductAttribute from './ProductAttribute'
@@ -27,11 +27,14 @@ class EditProduct extends React.Component {
             description: this.props.product.description,
             price: this.props.product.price,
             sku: this.props.product.sku,
+            images: this.props.product.images,
             id: this.props.product.id,
             categories: [],
             selectedCategories: this.props.product.category_ids ? this.props.product.category_ids : [],
             brand_id: this.props.product.brand_id,
         }
+
+        console.log('product', this.props.product)
         
         this.state = {...this.state, ...this.productAttributes }
         
@@ -40,23 +43,34 @@ class EditProduct extends React.Component {
         this.renderErrorFor = this.renderErrorFor.bind(this)
         this.handleMultiSelect = this.handleMultiSelect.bind(this)
         this.handleInput = this.handleInput.bind(this)
+        this.deleteImage = this.deleteImage.bind(this)
     }
 
     handleClick () {
-        axios.put(`/api/products/${this.state.id}`, {
-            name: this.state.name,
-            description: this.state.description,
-            price: this.state.price,
-            sku: this.state.sku,
-            category: this.state.selectedCategories,
-            brand_id: this.state.brand_id,
-            range_from: this.state.range_from,
-            range_to: this.state.range_to,
-            payable_months: this.state.payable_months,
-            number_of_years: this.state.number_of_years,
-            minimum_downpayment: this.state.minimum_downpayment,
-            interest_rate: this.state.interest_rate,
-        })
+        const formData = new FormData();
+        formData.append('cover', this.state.cover)
+
+        if(this.state.image && this.state.image.length) {
+            for (let x = 0; x < this.state.image.length; x++) {
+                formData.append('image[]', this.state.image[x])
+            }
+        }
+
+        formData.append('name', this.state.name)
+        formData.append('description', this.state.description)
+        formData.append('price', this.state.price)
+        formData.append('sku', this.state.sku)
+        formData.append('brand_id', this.state.brand_id)
+        formData.append('category', this.state.selectedCategories)
+        formData.append('range_from', this.state.range_from)
+        formData.append('range_to', this.state.range_to)
+        formData.append('payable_months', this.state.payable_months)
+        formData.append('number_of_years', this.state.number_of_years)
+        formData.append('minimum_downpayment', this.state.minimum_downpayment)
+        formData.append('interest_rate', this.state.interest_rate)
+        formData.append('_method', 'PUT')
+
+        axios.post(`/api/products/${this.state.id}`, formData)
             .then((response) => {
                 this.toggle()
                 const index = this.props.products.findIndex(product => parseInt(product.id) === this.state.id)
@@ -94,12 +108,47 @@ class EditProduct extends React.Component {
         this.setState({ selectedCategories: Array.from(e.target.selectedOptions, (item) => item.value) })
     }
 
+    handleFileChange(e) {
+        this.setState({
+            [e.target.name]: e.target.files[0]
+        })
+    }
+
+    onChangeHandler(e) {
+        const files = e.target.files
+
+        console.log('files', files)
+
+        // if return true allow to setState
+        this.setState({
+            [e.target.name]: e.target.files
+        })
+    }
+
     toggle () {
         this.setState({
             modal: !this.state.modal,
             errors: [],
             loading: true
         })
+    }
+
+    deleteImage (e) {
+        const src = e.target.getAttribute('data-src')
+
+        axios.post('/api/products/removeImages', {
+            product: this.state.id,
+            image: src
+        })
+            .then(function (response) {
+                // const arrProducts = [...self.state.products]
+                // const index = arrProducts.findIndex(product => product.id === id)
+                // arrProducts.splice(index, 1)
+                // self.addProductToState(arrProducts)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
     }
 
     render () {
@@ -151,6 +200,38 @@ class EditProduct extends React.Component {
                                 onChange={this.handleInput.bind(this)}/>
                             {this.renderErrorFor('sku')}
                         </FormGroup>
+
+                       <FormGroup>
+                            <div className="col-md-3">
+                                <div className="row">
+                                    <img src={`/storage/${this.props.product.cover}`} alt="" className="img-responsive img-thumbnail" />
+                                </div>
+                            </div>
+                       </FormGroup>
+
+                       <FormGroup>
+                           {
+                               this.state.images && this.state.images.map(image => {
+                                   return (<div className="col-md-3">
+                                       <div className="row">
+                                           <img src={`/storage/${image.src}`} alt="" class="img-responsive img-thumbnail" />
+                                               <br/> <br/>
+                                           <Button data-src={image.src} color="danger" onClick={this.deleteImage.bind(this)}>Remove</Button>
+                                               <br/>
+                                       </div>
+                                   </div>)
+                               })
+                           }
+
+
+                       </FormGroup>
+
+
+                        <CustomInput onChange={this.handleFileChange.bind(this)} type="file" id="cover" name="cover"
+                                     label="Cover!"/>
+
+                        <Input onChange={this.onChangeHandler.bind(this)} multiple type="file" id="image" name="image"
+                               label="Thumbnail!"/>
 
                         <CompanyDropdown
                           name="brand_id"

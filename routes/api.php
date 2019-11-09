@@ -57,6 +57,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
         Route::get('products', 'ProductController@index');
         Route::post('products', 'ProductController@store');
         Route::delete('products/{product_id}', 'ProductController@destroy');
+        Route::post('products/removeImages', 'ProductController@removeThumbnail');
         Route::put('products/{product_id}', 'ProductController@update');
         Route::get('products/tasks/{task_id}', 'ProductController@getProductsForTask');
         Route::post('products/filterProducts', 'ProductController@filterProducts');

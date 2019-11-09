@@ -187,4 +187,25 @@ class ProductController extends Controller {
         );
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function removeImage(Request $request)
+    {
+        $this->productRepo->deleteFile($request->only('product', 'image'), 'uploads');
+        return response()->json('Image deleted successfully');
+    }
+    
+     /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function removeThumbnail(Request $request)
+    {
+        $this->productRepo->deleteThumb($request->input('image'));
+         return response()->json('Image deleted successfully');
+    }
 }

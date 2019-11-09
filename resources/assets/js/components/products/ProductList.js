@@ -25,6 +25,8 @@ export default class ProductList extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
 
         this.ignore = [
+            'cover',
+            'images',
             'brand_id', 
             'category_ids', 
             'status', 

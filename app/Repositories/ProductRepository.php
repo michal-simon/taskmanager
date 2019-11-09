@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Repositories\Base\BaseRepository;
 use App\Product;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection as Support;
 use Illuminate\Database\Eloquent\Collection;
 use App\Task;
@@ -16,6 +15,7 @@ use App\ProductAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use App\Traits\UploadableTrait;
+use Illuminate\Support\Facades\DB;
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface {
     

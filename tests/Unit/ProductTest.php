@@ -10,6 +10,10 @@ use App\Transformations\ProductTransformable;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
 use App\Category;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use App\Repositories\ProductImageRepository;
+use App\ProductImage;
 
 class ProductTest extends TestCase {
 
@@ -20,6 +24,61 @@ class ProductTest extends TestCase {
     public function setUp(): void {
         parent::setUp();
         $this->beginDatabaseTransaction();
+    }
+
+    /** @test */
+    public function it_can_return_the_product_of_the_cover_image() {
+        $thumbnails = [
+            UploadedFile::fake()->image('cover.jpg', 600, 600),
+            UploadedFile::fake()->image('cover.jpg', 600, 600),
+            UploadedFile::fake()->image('cover.jpg', 600, 600)
+        ];
+        $collection = collect($thumbnails);
+        $product = factory(Product::class)->create();
+        $productRepo = new ProductRepository($product);
+        $productRepo->saveProductImages($collection, $product);
+        $images = $productRepo->findProductImages();
+        $images->each(function (ProductImage $image) use ($product) {
+            $productImageRepo = new ProductImageRepository($image);
+            $foundProduct = $productImageRepo->findProduct();
+            $this->assertInstanceOf(Product::class, $foundProduct);
+            $this->assertEquals($product->name, $foundProduct->name);
+            $this->assertEquals($product->slug, $foundProduct->slug);
+            $this->assertEquals($product->description, $foundProduct->description);
+            $this->assertEquals($product->quantity, $foundProduct->quantity);
+            $this->assertEquals($product->price, $foundProduct->price);
+            $this->assertEquals($product->status, $foundProduct->status);
+        });
+    }
+    
+    /** @test */
+    public function it_can_save_the_thumbnails_properly_in_the_file_storage()
+    {
+        $thumbnails = [
+            UploadedFile::fake()->image('cover.jpg', 600, 600),
+            UploadedFile::fake()->image('cover.jpg', 600, 600),
+            UploadedFile::fake()->image('cover.jpg', 600, 600)
+        ];
+        $collection = collect($thumbnails);
+        $product = factory(Product::class)->create();
+        $productRepo = new ProductRepository($product);
+        $productRepo->saveProductImages($collection, $product);
+        $images = $productRepo->findProductImages();
+        $images->each(function (ProductImage $image) {
+            $exists = Storage::disk('public')->exists($image->src);
+            $this->assertTrue($exists);
+        });
+    }
+    
+     /** @test */
+    public function it_can_save_the_cover_image_properly_in_file_storage()
+    {
+        $cover = UploadedFile::fake()->image('cover.jpg', 600, 600);
+        $product = factory(Product::class)->create();
+        $productRepo = new ProductRepository($product);
+        $filename = $productRepo->saveCoverImage($cover);
+        $exists = Storage::disk('public')->exists($filename);
+        $this->assertTrue($exists);
     }
 
     /** @test */
@@ -133,6 +192,73 @@ class ProductTest extends TestCase {
         $this->assertEquals($params['description'], $created->description);
         $this->assertEquals($params['price'], $created->price);
         $this->assertEquals($params['status'], $created->status);
+    }
+    
+      /** @test */
+    public function it_can_delete_a_thumbnail_image()
+    {
+        $product = 'apple';
+        $cover = UploadedFile::fake()->image('file.png', 600, 600);
+        $params = [
+            'sku' => $this->faker->numberBetween(1111111, 999999),
+            'name' => $product,
+            'slug' => str_slug($product),
+            'description' => $this->faker->paragraph,
+            'cover' => $cover,
+            'quantity' => 10,
+            'price' => 9.95,
+            'status' => 1,
+            'image' => [
+                UploadedFile::fake()->image('file.png', 200, 200),
+                UploadedFile::fake()->image('file1.png', 200, 200),
+                UploadedFile::fake()->image('file2.png', 200, 200)
+            ]
+        ];
+        $productRepo = new ProductRepository(new Product);
+        $created = $productRepo->createProduct($params);
+        $repo = new ProductRepository($created);
+        $repo->saveProductImages(collect($params['image']), $created);
+        $thumbnails = $repo->findProductImages();
+        $this->assertCount(3, $repo->findProductImages());
+        $thumbnails->each(function ($thumbnail) {
+            $repo = new ProductRepository(new Product());
+            $repo->deleteThumb($thumbnail->src);
+        });
+        $this->assertCount(0, $repo->findProductImages());
+    }
+    /** @test */
+    public function it_can_show_all_the_product_images()
+    {
+        $product = 'apple';
+        $cover = UploadedFile::fake()->image('file.png', 600, 600);
+        $params = [
+            'sku' => $this->faker->numberBetween(1111111, 999999),
+            'name' => $product,
+            'slug' => str_slug($product),
+            'description' => $this->faker->paragraph,
+            'cover' => $cover,
+            'quantity' => 10,
+            'price' => 9.95,
+            'status' => 1,
+            'image' => [
+                UploadedFile::fake()->image('file.png', 200, 200),
+                UploadedFile::fake()->image('file1.png', 200, 200),
+                UploadedFile::fake()->image('file2.png', 200, 200)
+            ]
+        ];
+        $productRepo = new ProductRepository(new Product);
+        $created = $productRepo->createProduct($params);
+        $repo = new ProductRepository($created);
+        $repo->saveProductImages(collect($params['image']), $created);
+        $this->assertCount(3, $repo->findProductImages());
+    }
+
+    /** @test */
+    public function it_can_delete_the_file_only_by_updating_the_database()
+    {
+        $product = factory(Product::class)->create();
+        $productRepo = new ProductRepository($product);
+        $this->assertTrue($productRepo->deleteFile(['product' => $product->id]));
     }
 
     /** @test */

@@ -124,8 +124,17 @@ class ProductService implements ProductServiceInterface {
 
         $data['slug'] = str_slug($request->input('name'));
 
+        if ($request->hasFile('cover')) {
+            $data['cover'] = $productRepo->saveCoverImage($request->file('cover'));
+        }
+
+        if ($request->hasFile('image')) {
+            $productRepo->saveProductImages(collect($request->file('image')));
+        }
+
         if ($request->has('category')) {
-            $productRepo->syncCategories($request->input('category'));
+            $categories = !is_array($request->input('category')) ? explode(',', $request->input('category')) : $request->input('category');
+            $productRepo->syncCategories($categories);
         } else {
             $productRepo->detachCategories();
         }

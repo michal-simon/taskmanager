@@ -2,6 +2,7 @@
 namespace App\Repositories;
 use App\Repositories\Base\BaseRepository;
 use App\Product;
+use App\ProductImage;
 
 class ProductImageRepository extends BaseRepository
 {
