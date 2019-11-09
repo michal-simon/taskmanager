@@ -10,22 +10,22 @@ class EditInvoice extends Component {
     constructor(props, context) {
         super(props, context)
         this.state = {
-            due_date: this.props.invoice.due_date ? this.props.invoice.due_date : '',
+            due_date: this.props.invoice && this.props.invoice.due_date ? this.props.invoice.due_date : '',
             quantity: '',
-            finance_type: this.props.invoice.finance_type ? this.props.invoice.finance_type : 0,
+            finance_type: this.props.invoice && this.props.invoice.finance_type ? this.props.invoice.finance_type : 0,
             invoice_id: this.props.invoice_id,
             lines: [],
             address: {},
             customerName: '',
-            customer_id: this.props.invoice.customer_id ? this.props.invoice.customer_id : 0,
+            customer_id: this.props.invoice && this.props.invoice.customer_id ? this.props.invoice.customer_id : 0,
             invoice_status: 1,
             customers: this.props.customers,
             tasks: [],
             errors: [],
-            total: this.props.invoice.total ? this.props.invoice.total : 0,
-            discount_total: this.props.invoice.discount_total ? this.props.invoice.discount_total : 0,
-            tax_total: this.props.invoice.tax_total ? this.props.invoice.tax_total : 0,
-            sub_total: this.props.invoice.sub_total ? this.props.invoice.sub_total : 0,
+            total: this.props.invoice && this.props.invoice.total ? this.props.invoice.total : 0,
+            discount_total: this.props.invoice && this.props.invoice.discount_total ? this.props.invoice.discount_total : 0,
+            tax_total: this.props.invoice && this.props.invoice.tax_total ? this.props.invoice.tax_total : 0,
+            sub_total: this.props.invoice && this.props.invoice.sub_total ? this.props.invoice.sub_total : 0,
             data: []
         }
 
@@ -50,10 +50,6 @@ class EditInvoice extends Component {
     }
 
     componentDidMount() {
-        if (this.props.task_id) {
-            this.handleTaskChange()
-        }
-
         if (this.props.task_id || this.props.invoice_id) {
             this.loadInvoice()
         }
@@ -346,6 +342,9 @@ class EditInvoice extends Component {
 
         return (
             <div>
+
+                <Button class="primary" onClick={this.handleTaskChange}>Get Products</Button>
+
                 <h2>{this.state.customerName}</h2>
                 <Address address={this.state.address}/>
 
@@ -366,6 +365,7 @@ class EditInvoice extends Component {
                         <option value="">Select Type</option>
                         <option value="1">Invoice</option>
                         <option value="2">Quote</option>
+                        <option value="3">Order</option>
                     </Input>
                     {this.renderErrorFor('finance_type')}
                 </FormGroup>

@@ -138,6 +138,7 @@ export default class Invoice extends Component {
                         <option value="">Select Finance Type </option>
                         <option value="1">Invoices</option>
                         <option value="2">Quotes</option>
+                        <option value="3">Orders</option>
                     </Input>
                 </FormGroup>
 

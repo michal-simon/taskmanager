@@ -2,19 +2,16 @@
 
 namespace App\Services;
 
-use App\Customer;
 use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\Interfaces\AddressRepositoryInterface;
-use App\Transformations\CustomerTransformable;
 use App\Requests\UpdateCustomerRequest;
 use App\Requests\CreateCustomerRequest;
 use App\Requests\SearchRequest;
 use App\Services\Interfaces\CustomerServiceInterface;
 use App\Services\EntityManager;
+use App\Customer;
 
 class CustomerService implements CustomerServiceInterface {
-
-    use CustomerTransformable;
 
     /**
      * @var CustomerRepositoryInterface
@@ -52,8 +49,6 @@ class CustomerService implements CustomerServiceInterface {
         }
 
         return $this->customerRepo->listCustomers($orderBy, $orderDir);
-
-        return $list;
     }
 
     /**
@@ -121,7 +116,7 @@ class CustomerService implements CustomerServiceInterface {
         if (!empty($address[0])) {
             $addressRepo = $this->entityManager::getRepository($address[0]);
             //$addRessRepo = new AddressRepository($address[0]);
-            $addRessRepo->deleteAddress();
+            $addressRepo->deleteAddress();
         }
 
         //$customerRepo = new CustomerRepository($customer);
@@ -130,4 +125,8 @@ class CustomerService implements CustomerServiceInterface {
         return true;
     }
 
+    public function convertCustomerToDeal(Customer $customer) {
+        $customerRepo = $this->entityManager::getRepository($customer);
+        $customerRepo->updateCustomer(['customer_type' => 1]);
+    }
 }

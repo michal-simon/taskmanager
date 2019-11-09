@@ -3,6 +3,7 @@ import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import TabContent from '../tabs/TabContent'
 import CompleteTask from '../CompleteTask'
+import axios from "axios";
 
 class ViewTask extends React.Component {
     constructor (props) {
@@ -12,6 +13,7 @@ class ViewTask extends React.Component {
             errors: []
         }
         this.toggle = this.toggle.bind(this)
+        this.convertLead = this.convertLead.bind(this)
     }
 
     toggle (e) {
@@ -19,6 +21,19 @@ class ViewTask extends React.Component {
         this.setState({
             modal: !this.state.modal
         })
+    }
+
+    convertLead () {
+        axios.get(`/api/tasks/convertToDeal/${this.props.task.id}`)
+            .then(function (response) {
+                const arrTasks = [...this.props.allTasks]
+                const index = arrTasks.findIndex(task => task.id === this.props.task.id)
+                arrTasks.splice(index, 1)
+                this.props.action(arrTasks)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
     }
 
     render () {
@@ -31,6 +46,9 @@ class ViewTask extends React.Component {
                     </ModalHeader>
 
                     <ModalBody>
+
+                        <Button color="success" onClick={this.convertLead}>Convert to Deal</Button>
+
                         <TabContent
                             project_id={this.props.project_id}
                             users={this.props.users}

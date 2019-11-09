@@ -29,6 +29,8 @@ class TaskController extends Controller {
      * @var ProjectRepositoryInterface
      */
     private $projectRepository;
+    
+    private $taskService;
 
     /**
      * 
@@ -42,7 +44,10 @@ class TaskController extends Controller {
     }
 
     public function index() {
-        $tasks = $this->taskService->search();
+        $list = $this->taskRepository->listTasks();
+        $tasks = $list->map(function (Task $task) {
+                    return $this->transformTask($task);
+                })->all();
         return response()->json($tasks);
     }
 
@@ -90,11 +95,11 @@ class TaskController extends Controller {
      */
     public function destroy($id) {
         $response = $this->taskService->delete($id);
-        
-        if($response) {
+
+        if ($response) {
             return response()->json('Task deleted!');
         }
-       
+
         return response()->json('Unable to delete task!');
     }
 
@@ -106,11 +111,11 @@ class TaskController extends Controller {
      */
     public function update(UpdateTaskRequest $request, int $id) {
         $response = $this->taskService->update($request, $id);
-        
-        if($response) {
+
+        if ($response) {
             return response()->json('Updated task successfully');
         }
-        
+
         return response()->json('unable to update task');
     }
 
@@ -140,7 +145,7 @@ class TaskController extends Controller {
      * @param int $id
      */
     public function updateStatus(Request $request, int $id) {
-         $products = $this->taskService->updateStatus($request, $id);
+        $products = $this->taskService->updateStatus($request, $id);
     }
 
     /**
@@ -169,7 +174,7 @@ class TaskController extends Controller {
      * @param Request $request
      */
     public function addProducts(int $task_id, Request $request) {
-         $products = $this->taskService->addProducts($task_id, $request);
+        $products = $this->taskService->addProducts($task_id, $request);
         return response()->json('added products to task successfully');
     }
 
@@ -225,6 +230,21 @@ class TaskController extends Controller {
     public function getTaskTypes() {
         $taskTypes = (new TaskTypeRepository(new TaskType))->getAll();
         return response()->json($taskTypes);
+    }
+
+    /**
+     * 
+     * @param int $task_id
+     * @return type
+     */
+    public function convertToDeal(int $task_id) {
+        $response = $this->taskService->convertLeadToDeal($task_id);
+
+        if($response) {
+            return response()->json('Converted successfully');
+        }
+        
+        return response()->json('Unable to convert');
     }
 
 }

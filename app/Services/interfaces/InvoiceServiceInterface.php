@@ -8,11 +8,32 @@
 
 namespace App\Services\Interfaces;
 
+use App\Requests\SearchRequest;
+use Illuminate\Http\Request;
+
 /**
  * Description of InvoiceServiceInterface
  *
  * @author michael.hampton
  */
 interface InvoiceServiceInterface {
-    //put your code here
+
+    /**
+     * 
+     * @param SearchRequest $request
+     */
+    public function search(SearchRequest $request);
+
+    /**
+     * 
+     * @param Request $request
+     */
+    public function create(Request $request);
+
+    /**
+     * 
+     * @param int $id
+     * @param Request $request
+     */
+    public function update(int $id, Request $request);
 }

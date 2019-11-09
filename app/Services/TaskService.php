@@ -5,18 +5,17 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use App\Task;
 use App\Requests\CreateTaskRequest;
-use App\Requests\CreateDealRequest;
 use App\Requests\UpdateTaskRequest;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
-use App\Repositories\CustomerRepository;
-use App\Customer;
+use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use App\Transformations\TaskTransformable;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TaskCreated;
 use App\Services\Interfaces\TaskServiceInterface;
 use App\Services\EntityManager;
+use App\Services\Interfaces\CustomerServiceInterface;
 
 class TaskService implements TaskServiceInterface {
 
@@ -33,24 +32,28 @@ class TaskService implements TaskServiceInterface {
      * @var ProjectRepositoryInterface
      */
     private $projectRepository;
+    
+     /**
+     * @var CustomerServiceInterface
+     */
+    private $customerServiceInterface;
+    
+     /**
+     * @var CustomerRepositoryInterface
+     */
+    private $customerRepository;
 
     /**
      * 
      * @param TaskRepositoryInterface $taskRepository
      * @param ProjectRepositoryInterface $projectRepository
      */
-    public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository) {
+    public function __construct(TaskRepositoryInterface $taskRepository, ProjectRepositoryInterface $projectRepository, CustomerRepositoryInterface $customerRepository, CustomerServiceInterface $customerService) {
         $this->taskRepository = $taskRepository;
         $this->projectRepository = $projectRepository;
+        $this->customerRepository = $customerRepository;
         $this->entityManager = new EntityManager();
-    }
-
-    public function search() {
-        $list = $this->taskRepository->listTasks();
-        $tasks = $list->map(function (Task $task) {
-                    return $this->transformTask($task);
-                })->all();
-        return $tasks;
+        $this->customerServiceInterface = $customerService;
     }
 
     /**
@@ -73,7 +76,6 @@ class TaskService implements TaskServiceInterface {
         }
         if ($request->has('contributors')) {
             $taskRepo = $this->entityManager::getRepository($task);
-            //$taskRepo = new TaskRepository($task);
             $taskRepo->syncUsers($request->input('contributors'));
         }
         //send notification
@@ -89,7 +91,6 @@ class TaskService implements TaskServiceInterface {
     public function markAsCompleted(int $task_id) {
         $objTask = $this->taskRepository->findTaskById($task_id);
         $taskRepo = $this->entityManager::getRepository($objTask);
-        //$taskRepo = new TaskRepository($objTask);
         $taskRepo->updateTask(['is_completed' => true]);
         return true;
     }
@@ -102,8 +103,6 @@ class TaskService implements TaskServiceInterface {
      */
     public function delete($id) {
         $objTask = $this->taskRepository->findTaskById($id);
-        
-        //$taskRepo = new TaskRepository($objTask);
         $taskRepo = $this->entityManager::getRepository($objTask);
         $taskRepo->syncUsers([]);
         $taskRepo->deleteTask();
@@ -118,7 +117,6 @@ class TaskService implements TaskServiceInterface {
      */
     public function update(UpdateTaskRequest $request, int $id) {
         $task = $this->taskRepository->findTaskById($id);
-        //$taskRepo = new TaskRepository($task);
         $taskRepo = $this->entityManager::getRepository($task);
         $taskRepo->updateTask($request->except('contributors'));
         if ($request->has('contributors')) {
@@ -135,7 +133,6 @@ class TaskService implements TaskServiceInterface {
      */
     public function updateStatus(Request $request, int $id) {
         $task = $this->taskRepository->findTaskById($id);
-        //$taskRepo = new TaskRepository($task);
         $taskRepo = $this->entityManager::getRepository($task);
         $taskRepo->updateTask(['task_status' => $request->task_status]);
     }
@@ -149,7 +146,7 @@ class TaskService implements TaskServiceInterface {
         $currentUser = Auth::user();
         $userId = !$currentUser ? 9874 : $currentUser->id;
         $request->customer_type = 2;
-        $customer = (new CustomerRepository(new Customer))->createCustomer($request->except('_token', '_method', 'valued_at', 'title', 'description'));
+        $customer = $this->customerRepository->createCustomer($request->except('_token', '_method', 'valued_at', 'title', 'description'));
         if ($request->has('address_1') && !empty($request->address_1)) {
             $customer->addresses()->create([
                 'company_id' => $request->company_id,
@@ -176,7 +173,6 @@ class TaskService implements TaskServiceInterface {
         );
 
         if ($request->has('contributors')) {
-           // $taskRepo = new TaskRepository($task);
             $taskRepo = $this->entityManager::getRepository($task);
             $taskRepo->syncUsers($request->input('contributors'));
         }
@@ -192,11 +188,23 @@ class TaskService implements TaskServiceInterface {
     public function addProducts(int $task_id, Request $request) {
         $task = $this->taskRepository->findTaskById($task_id);
         $taskRepo = $this->entityManager::getRepository($task);
-        //$taskRepo = new TaskRepository($task);
         if ($request->has('products')) {
             $taskRepo->buildOrderDetails($request->input('products'));
         }
         return response()->json('added products to task successfully');
     }
-
+    
+    /**
+     * 
+     * @param int $task_id
+     */
+    public function convertLeadToDeal(int $task_id) {
+        $task = $this->taskRepository->findTaskById($task_id);
+        $customer = $task->customer;
+        
+        $taskRepo = $this->entityManager::getRepository($task);
+        $taskRepo->updateTask(['task_type' => 3]);
+        
+        $this->customerServiceInterface->convertCustomerToDeal($customer);
+    }
 }

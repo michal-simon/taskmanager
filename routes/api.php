@@ -52,7 +52,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
         Route::get('event-types', 'EventController@getEventTypes');
         Route::post('events/filterEvents', 'EventController@filterEvents')->middleware('role:null,taskcontroller.filtertasks');
         Route::post('event/status/{event_id}', 'EventController@updateEventStatus');
-        
+
 // products
         Route::get('products', 'ProductController@index');
         Route::post('products', 'ProductController@store');
@@ -93,7 +93,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::put('invoice/line/{line_id}', 'InvoiceLineController@updateLine')->middleware('role:null,invoicelinecontroller.updateline');
     Route::put('invoice/{invoice_id}', 'InvoiceController@update')->middleware('role:null,invoicecontroller.update');
     Route::post('invoice/filterInvoices', 'InvoiceController@filterInvoices');
-    
+
 
 // customers
     Route::get('customers/dashboard', 'CustomerController@dashboard')->middleware('role:null,customercontroller.dashboard');
@@ -121,6 +121,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     Route::get('tasks/products', 'TaskController@getTasksWithProducts')->middleware('role:null,view-invoice');
     Route::get('tasks/source-types', 'TaskController@getSourceTypes')->middleware('role:null,view-invoice');
     Route::get('tasks/task-types', 'TaskController@getTaskTypes')->middleware('role:null,view-invoice');
+    Route::get('tasks/convertToDeal/{task_id}', 'TaskController@convertToDeal')->middleware('role:null,view-invoice');
 
     Route::group(['middleware' => ['role:Manager']], function () {
 
@@ -134,7 +135,7 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
         Route::post('user/upload', 'UserController@upload');
         Route::get('user/profile/{username}', 'UserController@profile');
         Route::get('users/department/{department_id}', 'UserController@filterUsersByDepartment');
-	Route::post('users/filterUsers', 'UserController@filterUsers');
+        Route::post('users/filterUsers', 'UserController@filterUsers');
 
         // permissions
         Route::get('permissions', 'PermissionController@index');

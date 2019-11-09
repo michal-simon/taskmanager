@@ -6,22 +6,17 @@ use App\Product;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\BrandRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Requests\SearchRequest;
 use App\Requests\CreateProductRequest;
 use App\Requests\UpdateProductRequest;
-use App\Transformations\ProductTransformable;
-use App\Transformations\LoanProductTransformable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\ProductAttribute;
-use App\Requests\SearchRequest;
 use App\Services\Interfaces\ProductServiceInterface;
 use Illuminate\Http\UploadedFile;
 use App\Services\EntityManager;
 
 class ProductService implements ProductServiceInterface {
-
-    use ProductTransformable,
-        LoanProductTransformable;
 
     private $entityManager;
 

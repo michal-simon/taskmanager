@@ -2,25 +2,18 @@
 
 namespace App\Services;
 
-use App\User;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Requests\CreateUserRequest;
 use App\Requests\UpdateUserRequest;
-use App\Repositories\UserRepository;
-use App\Transformations\UserTransformable;
+use App\Requests\SearchRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\UploadedFile;
-use App\Repositories\DepartmentRepository;
-use App\Department;
-use App\Requests\SearchRequest;
 use App\Services\Interfaces\UserServiceInterface;
 use App\Services\EntityManager;
 
 class UserService implements UserServiceInterface {
-
-    use UserTransformable;
 
     /**
      * @var UserRepositoryInterface

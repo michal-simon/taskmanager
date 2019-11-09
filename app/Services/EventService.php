@@ -13,7 +13,6 @@ use App\Requests\CreateEventRequest;
 use App\Requests\UpdateEventRequest;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Repositories\EventRepository;
-use App\Transformations\EventTransformable;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\EventCreated;
 use Illuminate\Support\Facades\Auth;
@@ -26,8 +25,6 @@ use App\Services\EntityManager;
  * @author michael.hampton
  */
 class EventService implements EventServiceInterface {
-
-    use EventTransformable;
 
     private $eventRepository;
     
@@ -72,7 +69,7 @@ class EventService implements EventServiceInterface {
         //attach invited users
         $this->eventRepository->attachUsers($event, $request->users);
 
-        $eventRepo = new EventRepository($event);
+        $eventRepo = $this->entityManager::getRepository($event);
 
         if ($request->has('task_id')) {
             $eventRepo->syncTask($request->input('task_id'));
@@ -90,7 +87,6 @@ class EventService implements EventServiceInterface {
     public function delete(int $id) {
         $objEvent = $this->eventRepository->findEventById($id);
         $eventRepo = $this->entityManager::getRepository($objEvent);
-        //$eventRepo = new EventRepository($objEvent);
         $eventRepo->deleteEvent();
         return true;
     }
@@ -115,7 +111,6 @@ class EventService implements EventServiceInterface {
             'description' => $request->description
         ];
 
-        //$eventRepo = new EventRepository($event);
         $eventRepo = $this->entityManager::getRepository($event);
         $eventRepo->updateEvent($arrData);
 
@@ -132,7 +127,6 @@ class EventService implements EventServiceInterface {
     public function updateEventStatus($id, Request $request) {
         $user = Auth::user();
         $event = $this->eventRepository->findEventById($id);
-        //$eventRepo = new EventRepository($event);
         $eventRepo = $this->entityManager::getRepository($event);
         $eventRepo->updateInvitationResponseForUser($user, $request->all());
         return true;
