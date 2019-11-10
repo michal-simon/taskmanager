@@ -1,6 +1,6 @@
 <?php
 namespace App\Repositories;
-use App\Repositories\BaseRepository;
+use App\Repositories\Base\BaseRepository;
 use App\Payment;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
