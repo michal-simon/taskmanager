@@ -1,6 +1,6 @@
 <?php
 namespace App\Repositories;
-use App\Repositories\BaseRepository;
+use App\Repositories\Base\BaseRepository;
 use App\TaxRate;
 use App\Repositories\Interfaces\TaxRateRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
