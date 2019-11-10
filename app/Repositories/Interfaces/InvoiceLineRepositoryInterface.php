@@ -45,7 +45,7 @@ interface InvoiceLineRepositoryInterface {
     /**
      * 
      */
-    public function getInvoiceLinesForTask(Task $objTask) : Support;
+    public function getInvoiceLinesForTask(Task $objTask, int $finance_type) : Support;
     
     /**
      * 

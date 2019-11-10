@@ -12,15 +12,15 @@ class EditInvoice extends Component {
     constructor(props, context) {
         super(props, context)
         this.state = {
-            due_date: this.props.invoice && this.props.invoice.due_date ? moment(this.props.invoice.due_date).format('DD-MM-YYYY') : '',
+            due_date: this.props.invoice && this.props.invoice.due_date && this.props.invoice.due_date.length ? moment(this.props.invoice.due_date).format('DD-MM-YYYY') :  moment(new Date()).format('DD-MM-YYYY'),
             quantity: '',
-            finance_type: this.props.invoice && this.props.invoice.finance_type ? this.props.invoice.finance_type : 0,
+            finance_type: this.props.finance_type ? this.props.finance_type : 1,
             invoice_id: this.props.invoice_id,
             lines: [],
             address: {},
             customerName: '',
             customer_id: this.props.invoice && this.props.invoice.customer_id ? this.props.invoice.customer_id : 0,
-            invoice_status: 1,
+            invoice_status: this.props.invoice && this.props.invoice.invoice_status ? this.props.invoice.invoice_status : 1,
             customers: this.props.customers,
             tasks: [],
             errors: [],
@@ -31,7 +31,7 @@ class EditInvoice extends Component {
             data: [],
             success: false
         }
-        
+
         this.updateData = this.updateData.bind(this)
         this.saveData = this.saveData.bind(this)
         this.setTotal = this.setTotal.bind(this)
@@ -48,6 +48,8 @@ class EditInvoice extends Component {
         this.handleFieldChange = this.handleFieldChange.bind(this)
         this.updatePriceData = this.updatePriceData.bind(this)
         this.calculateTotals = this.calculateTotals.bind(this)
+        this.handleConvert = this.handleConvert.bind(this)
+        this.handleApprove = this.handleApprove.bind(this)
 
         this.total = 0
     }
@@ -124,7 +126,7 @@ class EditInvoice extends Component {
     }
 
     loadInvoice() {
-        const url = this.props.task_id ? `/api/invoice/task/${this.props.task_id}` : `/api/invoice/${this.state.invoice_id}`
+        const url = this.props.task_id ? `/api/invoice/task/${this.props.task_id}/${this.state.finance_type}` : `/api/invoice/${this.state.invoice_id}`
 
         axios.get(url)
             .then((r) => {
@@ -142,12 +144,15 @@ class EditInvoice extends Component {
             })
     }
 
-    changeStatus(status) {
+    changeStatus(status, doSend = false) {
         if (!this.state.invoice_id) {
             return false
         }
+
         axios.put(`/api/invoice/${this.state.invoice_id}`, {
-            invoice_status: status
+            invoice_status: status,
+            send_to_customer: doSend,
+            create_payment: doSend === false
         })
             .then((response) => {
                 this.setState({invoice_status: status})
@@ -339,15 +344,51 @@ class EditInvoice extends Component {
             })
     }
 
+    handleConvert () {
+        alert('convert')
+
+        axios.get(`/api/quotes/convert/${this.state.invoice_id}`)
+            .then((r) => {
+
+            })
+            .catch((e) => {
+                console.warn(e)
+            })
+    }
+
+    handleApprove () {
+        axios.get(`/api/quotes/approve/${this.state.invoice_id}`)
+            .then((r) => {
+
+            })
+            .catch((e) => {
+                console.warn(e)
+            })
+    }
+
     buildForm() {
         const changeStatusButton = this.state.invoice_status === 1
-            ? <Button color="primary" onClick={() => this.changeStatus(2).bind(this)}>Send</Button>
-            : <Button color="primary" onClick={() => this.changeStatus(3).bind(this)}>Paid</Button>
+            ? <Button color="primary" onClick={() => this.changeStatus(2, true).bind(this)}>Send</Button>
+            : <Button color="primary" onClick={() => this.changeStatus(3, false).bind(this)}>Paid</Button>
+
+        const approveButton = this.state.invoice_status !== 4 ? <Button className="primary" onClick={this.handleApprove}>Approve</Button> : null
 
         return (
             <div>
 
                 <Button className="primary" onClick={this.handleTaskChange}>Get Products</Button>
+
+                {this.state.finance_type === 2
+                ? (
+                    <React.Fragment>
+                        {approveButton}
+                        <Button className="primary" onClick={this.handleConvert}>Convert to Invoice</Button>
+                    </React.Fragment>
+
+                    )
+                : null}
+
+
 
                 <h2>{this.state.customerName}</h2>
                 <Address address={this.state.address}/>
@@ -363,24 +404,7 @@ class EditInvoice extends Component {
                         onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
                         id="due_date" // PropTypes.string.isRequired,
                     />
-                    {/*<Input className={this.hasErrorFor('due_date') ? 'is-invalid' : ''}*/}
-                    {/*       value={this.state.due_date} type="date" name="due_date"*/}
-                    {/*       onChange={this.handleInput.bind(this)}/>*/}
                     {this.renderErrorFor('due_date')}
-                </FormGroup>
-
-                <FormGroup>
-                    <Label for="finance_type">Finance Type(*):</Label>
-                    <Input className={this.hasErrorFor('finance_type') ? 'is-invalid' : ''}
-                           name="finance_type"
-                           value={this.state.finance_type} type="select" name="finance_type"
-                           onChange={this.handleInput.bind(this)}>
-                        <option value="">Select Type</option>
-                        <option value="1">Invoice</option>
-                        <option value="2">Quote</option>
-                        <option value="3">Order</option>
-                    </Input>
-                    {this.renderErrorFor('finance_type')}
                 </FormGroup>
 
                 <CustomerDropdown
@@ -391,6 +415,7 @@ class EditInvoice extends Component {
                 />
 
                 <LineItemEditor
+                    finance_type={this.state.finance_type}
                     total={this.state.total}
                     sub_total={this.state.sub_total}
                     tax_total={this.state.tax_total}

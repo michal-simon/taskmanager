@@ -7,8 +7,10 @@ use App\Repositories\Interfaces\InvoiceRepositoryInterface;
 use App\Repositories\Interfaces\InvoiceLineRepositoryInterface;
 use App\Transformations\InvoiceTransformable;
 use App\Invoice;
+use App\Services\Interfaces\PaymentServiceInterface;
 use App\Requests\SearchRequest;
 use App\Services\Interfaces\InvoiceServiceInterface;
+use Illuminate\Support\Facades\Mail;
 
 class InvoiceController extends Controller {
 
@@ -17,11 +19,13 @@ class InvoiceController extends Controller {
     private $invoiceRepository;
     private $invoiceLineRepository;
     private $invoiceService;
+    private $paymentService;
 
-    public function __construct(InvoiceRepositoryInterface $invoiceRepository, InvoiceLineRepositoryInterface $invoiceLineRepository, InvoiceServiceInterface $invoiceService) {
+    public function __construct(InvoiceRepositoryInterface $invoiceRepository, InvoiceLineRepositoryInterface $invoiceLineRepository, InvoiceServiceInterface $invoiceService, PaymentServiceInterface $paymentService) {
         $this->invoiceRepository = $invoiceRepository;
         $this->invoiceLineRepository = $invoiceLineRepository;
         $this->invoiceService = $invoiceService;
+        $this->paymentService = $paymentService;
     }
 
     /**
@@ -79,11 +83,27 @@ class InvoiceController extends Controller {
      * @param Request $request
      */
     public function update(int $id, Request $request) {
+
+        if ($request->has('send_to_customer') && $request->send_to_customer == 1) {
+            $invoice = $this->invoiceRepository->findInvoiceById($id);
+            $this->invoiceService->saveInvitations($invoice);
+            //
+//                    Mail::to($invoice->customer)
+//            ->send(new \App\Mail\SendInvoiceEmail($invoice));  
+        }
+
+        if ($request->has('create_payment') && $request->create_payment == 1) {
+            $invoice = $this->invoiceRepository->findInvoiceById($id);
+            $payment = $this->paymentService->autoBillInvoice($invoice);
+            return response()->json($payment);
+        }
+
         $invoice = $this->invoiceService->update($id, $request);
+
         $invoiceTransformed = $this->transformInvoice($invoice);
         return $invoiceTransformed->toJson();
     }
-    
+
     /**
      * 
      * @param string $filter

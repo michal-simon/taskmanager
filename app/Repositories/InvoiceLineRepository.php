@@ -77,10 +77,12 @@ class InvoiceLineRepository extends BaseRepository implements InvoiceLineReposit
      * @param Task $objTask
      * @return type
      */
-    public function getInvoiceLinesForTask(Task $objTask): Support {
+    public function getInvoiceLinesForTask(Task $objTask, int $finance_type): Support {
         return $this->model->join('invoice_task', 'invoice_task.invoice_id', '=', 'invoice_lines.invoice_id')
+                        ->join('invoices', 'invoice_lines.invoice_id', '=', 'invoices.id')
                         ->select('invoice_lines.*')
                         ->where('invoice_task.task_id', $objTask->id)
+                        ->where('invoices.finance_type', $finance_type)
                         ->get();
     }
 

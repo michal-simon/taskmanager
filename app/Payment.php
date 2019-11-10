@@ -9,11 +9,10 @@ class Payment extends Model
      * @var array
      */
     protected $fillable = [
+        'payment_type_id',
+        'amount',
         'customer_id',
-        'payment_type',
-        'discount_total',
-        'tax_total',
-        'total'
+        'invoice_id'
     ];
     /**
      * The attributes that should be hidden for arrays.

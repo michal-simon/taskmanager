@@ -41,6 +41,10 @@ use App\Repositories\Interfaces\BrandRepositoryInterface;
 use App\Repositories\BrandRepository;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\CategoryRepository;
+use App\Repositories\Interfaces\TaxRateRepositoryInterface;
+use App\Repositories\TaxRateRepository;
+use App\Repositories\Interfaces\PaymentRepositoryInterface;
+use App\Repositories\PaymentRepository;
 // services
 use App\Services\Interfaces\CustomerServiceInterface;
 use App\Services\CustomerService;
@@ -54,6 +58,8 @@ use App\Services\Interfaces\TaskServiceInterface;
 use App\Services\TaskService;
 use App\Services\Interfaces\InvoiceServiceInterface;
 use App\Services\InvoiceService;
+use App\Services\Interfaces\PaymentServiceInterface;
+use App\Services\PaymentService;
 
 class RepositoryServiceProvider extends ServiceProvider {
 
@@ -148,6 +154,14 @@ class RepositoryServiceProvider extends ServiceProvider {
                 NotificationRepositoryInterface::class, NotificationRepository::class
         );
 
+        $this->app->bind(
+                TaxRateRepositoryInterface::class, TaxRateRepository::class
+        );
+
+        $this->app->bind(
+                PaymentRepositoryInterface::class, PaymentRepository::class
+        );
+
         //services
         $this->app->bind(
                 CustomerServiceInterface::class, CustomerService::class
@@ -171,6 +185,10 @@ class RepositoryServiceProvider extends ServiceProvider {
 
         $this->app->bind(
                 InvoiceServiceInterface::class, InvoiceService::class
+        );
+
+        $this->app->bind(
+                PaymentServiceInterface::class, PaymentService::class
         );
     }
 

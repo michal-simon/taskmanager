@@ -54,16 +54,15 @@ class InvoiceLineController extends Controller {
      * @param int $task_id
      * @return type
      */
-    public function getInvoiceLinesForTask(int $task_id) {
-
+    public function getInvoiceLinesForTask(int $task_id, int $finance_type) {
         $task = (new TaskRepository(new Task))->findTaskById($task_id);
-        $invoice = $this->invoiceRepository->getInvoiceForTask($task);
+        $invoice = $this->invoiceRepository->getInvoiceForTask($task, $finance_type);
 
         if (!$invoice->count()) {
             return response()->json('empty');
         }
 
-        $lines = $this->invoiceLineRepository->getInvoiceLinesForTask($task);
+        $lines = $this->invoiceLineRepository->getInvoiceLinesForTask($task, $finance_type);
 
         $arrTest = [
             'lines' => $lines,

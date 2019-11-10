@@ -13,7 +13,8 @@ class PaymentMethod extends Model {
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
+        'payment_type_id'
     ];
 
     /**
@@ -25,6 +26,14 @@ class PaymentMethod extends Model {
 
     public function invoices() {
         return $this->hasMany(Invoice::class);
+    }
+    
+     /**
+     * @return bool
+     */
+    public function requiresDelayedAutoBill()
+    {
+        return $this->payment_type_id === 2;
     }
 
 }

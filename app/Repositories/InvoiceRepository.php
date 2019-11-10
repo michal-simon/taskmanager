@@ -33,6 +33,16 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
             return false;
         }
     }
+    
+        /**
+     * Delete a customer
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function deleteInvoice(): bool {
+        return $this->delete();
+    }
 
     /**
      * @param int $id
@@ -92,11 +102,12 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
      * @param int $customerId
      * @return type
      */
-    public function getInvoiceForTask(Task $objTask): Collection {
+    public function getInvoiceForTask(Task $objTask, int $finance_type): Collection {
 
         return $this->model->join('invoice_task', 'invoice_task.invoice_id', '=', 'invoices.id')
                         ->select('invoices.*')
                         ->where('invoice_task.task_id', $objTask->id)
+                        ->where('invoices.finance_type', $finance_type)
                         ->get();
     }
     

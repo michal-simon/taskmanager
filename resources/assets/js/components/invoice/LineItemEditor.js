@@ -10,6 +10,7 @@ class LineItemEditor extends Component {
         this.state = {
             rowData: [],
             products: [],
+            taxRates: [],
             total: this.props.total
         }
 
@@ -17,15 +18,23 @@ class LineItemEditor extends Component {
         this.handleRowDelete = this.handleRowDelete.bind(this)
         this.handleRowAdd = this.handleRowAdd.bind(this)
         this.loadProducts = this.loadProducts.bind(this)
+        this.loadTaxRates = this.loadTaxRates.bind(this)
     }
 
     componentDidMount () {
         this.loadProducts()
+        this.loadTaxRates()
     }
 
     loadProducts () {
         axios.get('/api/products').then(data => {
             this.setState({ products: data.data })
+        })
+    }
+
+    loadTaxRates () {
+        axios.get('/api/taxRates').then(data => {
+            this.setState({ taxRates: data.data })
         })
     }
 
@@ -59,8 +68,15 @@ class LineItemEditor extends Component {
     render () {
         const lineItemRows = this.props.rows.map((lineItem, index) =>
 
-            <LineItem products={this.state.products} new={true} key={index} lineItemData={lineItem} onChange={this.handleRowChange}
-                handleTaskChange={this.updateTasks} onDelete={this.handleRowDelete}/>
+            <LineItem
+                tax_rates={this.state.taxRates}
+                products={this.state.products}
+                new={true} key={index}
+                lineItemData={lineItem}
+                onChange={this.handleRowChange}
+                handleTaskChange={this.updateTasks}
+                onDelete={this.handleRowDelete}
+            />
         )
 
         return (

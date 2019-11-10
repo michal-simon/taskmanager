@@ -87,13 +87,22 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     // invoice
     Route::post('invoice', 'InvoiceController@store')->middleware('role:null,invoicecontroller.store');
     Route::get('invoice', 'InvoiceController@index')->middleware('role:null,invoicecontroller.index');
-    Route::get('invoice/task/{task_id}', 'InvoiceLineController@getInvoiceLinesForTask')->middleware('role:null,invoicelinecontroller.getinvoicelinesfortask');
+    Route::get('invoice/task/{task_id}/{finance_type}', 'InvoiceLineController@getInvoiceLinesForTask')->middleware('role:null,invoicelinecontroller.getinvoicelinesfortask');
     Route::get('invoice/{invoice_id}', 'InvoiceController@show')->middleware('role:null,invoicecontroller.show');
     Route::delete('invoice/line/{line_id}', 'InvoiceLineController@destroyLine')->middleware('role:null,invoicelinecontroller.destroyline');
     Route::put('invoice/line/{line_id}', 'InvoiceLineController@updateLine')->middleware('role:null,invoicelinecontroller.updateline');
     Route::put('invoice/{invoice_id}', 'InvoiceController@update')->middleware('role:null,invoicecontroller.update');
     Route::post('invoice/filterInvoices', 'InvoiceController@filterInvoices');
 
+    // quotes
+    Route::get('quotes/convert/{invoice_id}', 'QuoteController@convert')->middleware('role:null,invoicecontroller.show');
+    Route::get('quotes/approve/{invoice_id}', 'QuoteController@approve')->middleware('role:null,invoicecontroller.show');
+
+    //payments
+    Route::get('payments', 'PaymentController@index');
+    
+    // tax rates
+    Route::get('taxRates', 'TaxRateController@index')->middleware('role:null,invoicecontroller.index');
 
 // customers
     Route::get('customers/dashboard', 'CustomerController@dashboard')->middleware('role:null,customercontroller.dashboard');

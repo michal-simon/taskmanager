@@ -21,6 +21,7 @@ class Customer extends Model {
      */
     protected $fillable = [
         'first_name',
+        'credits',
         'last_name',
         'email',
         'status',

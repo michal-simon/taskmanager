@@ -14,6 +14,12 @@ export default {
         },
 
         {
+            name: 'Payments',
+            url: '/payments',
+            icon: 'fa fa-dashboard'
+        },
+
+        {
             name: 'User Management',
             icon: 'fa fa-dashboard',
             children: [

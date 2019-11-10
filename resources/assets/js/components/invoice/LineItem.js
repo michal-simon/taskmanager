@@ -33,6 +33,7 @@ class LineItem extends Component {
                         renderErrorFor={this.renderErrorFor}
                         name="product_id"
                         handleInputChanges={this.props.onChange}
+                        product={this.props.lineItemData.product_id}
                         products={this.props.products}
                     />
                 </td>
@@ -56,8 +57,10 @@ class LineItem extends Component {
                 <td>
                     <Input name="unit_tax" data-line={lineId} type='select' value={this.props.lineItemData.unit_tax}
                         onChange={this.props.onChange} className='pa2 mr2 f6 form-control'>
-                        <option value="">Select Tax</option>
-                        <option value="17.5">17.5%</option>
+                        <option value="0">No Tax</option>
+                        {this.props.tax_rates.map(tax_rate =>
+                            <option value={tax_rate.rate} key={tax_rate.id}>{tax_rate.rate}</option>
+                        )}
                     </Input>
                 </td>
 

@@ -19,10 +19,12 @@ import Message from './activity/MessageContainer'
 import UserProfile from './users/UserProfile'
 import TaskStatus from './taskStatus/statusList'
 import Permissions from './permissions/Permissions'
+import Payments from './payments/Payments'
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
     {path: '/customers', name: 'Customers', component: Customers},
+    {path: '/payments', name: 'Payments', component: Payments},
     {path: '/users', exact: true, name: 'Users', component: UserList},
     {path: '/products', name: 'Products', component: ProductList},
     {path: '/kanban/projects', name: 'Projects', component: Kanban},

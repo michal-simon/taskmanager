@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
  * @author michael.hampton
  */
 interface InvoiceServiceInterface {
+    
+    public function saveInvitations(Invoice $invoice);
 
     /**
      * 

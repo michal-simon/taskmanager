@@ -37,6 +37,8 @@ interface InvoiceRepositoryInterface
      * 
      * @param \App\Repositories\Interfaces\Task $objTask
      */
-    public function getInvoiceForTask(Task $objTask): Collection;
+    public function getInvoiceForTask(Task $objTask, int $finance_type): Collection;
+    
+    public function deleteInvoice(): bool;
   
 }
