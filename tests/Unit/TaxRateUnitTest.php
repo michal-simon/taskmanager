@@ -23,7 +23,7 @@ public function setUp() : void {
     {
         $data = [
             'name' => $this->faker->word,
-            'rate' => $this->faker->randomDecimal()
+            'rate' => $this->faker->randomFloat()
         ];
 
         $taxRateRepo = new TaxRateRepository(new TaxRate);
@@ -49,7 +49,7 @@ public function setUp() : void {
     {
         $data = [
             'name' => $this->faker->word,
-            'rate' => $this->faker->randomDecimal()
+            'rate' => $this->faker->randomFloat()
         ];
 
         $taxRateRepo = new TaxRateRepository(new TaxRate);
@@ -75,7 +75,7 @@ public function setUp() : void {
         $taxRateRepo = new TaxRateRepository($taxRate);
         $update = [
             'name' => $this->faker->word,
-            'rate' => $this->faker->randomDecimal(),
+            'rate' => $this->faker->randomFloat(),
         ];
         $updated = $taxRateRepo->updateTaxRate($update);
         $this->assertTrue($updated);
@@ -97,7 +97,7 @@ public function setUp() : void {
     {
         $data = [
             'name' => $this->faker->word,
-            'rate' => $this->faker->randomDecimal(),
+            'rate' => $this->faker->randomFloat(),
         ];
         $taxRateRepo = new TaxRateRepository(new TaxRate);
         $created = $taxRateRepo->createTaxRate($data);
