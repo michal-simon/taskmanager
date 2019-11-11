@@ -8,7 +8,7 @@ class AddTaxRate extends React.Component {
         this.state = {
             modal: false,
             name: '',
-            description: '',
+            rate: '',
             loading: false,
             errors: [],
             message: ''
@@ -41,7 +41,7 @@ class AddTaxRate extends React.Component {
     handleClick () {
         axios.post('/api/taxRates', {
             name: this.state.name,
-            description: this.state.description,
+            rate: this.state.rate,
         })
             .then((response) => {
                 this.toggle()
@@ -97,14 +97,14 @@ class AddTaxRate extends React.Component {
                             {this.renderErrorFor('name')}
                         </InputGroup>
 
-                        <Label>Description</Label>
+                        <Label>Rate</Label>
                         <InputGroup className="mb-3">
                             <InputGroupAddon addonType="prepend">
                                 <InputGroupText><i className="fa fa-user-o"></i></InputGroupText>
                             </InputGroupAddon>
-                            <Input className={this.hasErrorFor('description') ? 'is-invalid' : ''} type="text"
-                                name="description" onChange={this.handleInput.bind(this)}/>
-                            {this.renderErrorFor('description')}
+                            <Input className={this.hasErrorFor('rate') ? 'is-invalid' : ''} type="text"
+                                name="rate" onChange={this.handleInput.bind(this)}/>
+                            {this.renderErrorFor('rate')}
                         </InputGroup>
                         
                     </ModalBody>
