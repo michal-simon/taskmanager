@@ -3,8 +3,21 @@ namespace Tests\Unit;
 use App\TaxRate;
 use App\Repositories\TaxRateRepository;
 use Tests\TestCase;
-class CourierUnitTest extends TestCase
-{
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Transformations\EventTransformable;
+use Illuminate\Foundation\Testing\WithFaker;
+
+class TaxRateUnitTest extends TestCase {
+    
+use DatabaseTransactions,
+        EventTransformable,
+        WithFaker;
+    
+public function setUp() : void {
+        parent::setUp();
+        $this->beginDatabaseTransaction();
+    }
+
     /** @test */
     public function it_can_list_all_the_tax_rates()
     {
