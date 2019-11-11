@@ -103,6 +103,10 @@ Route::group(['middleware' => ['jwt.auth', 'api-header']], function () {
     
     // tax rates
     Route::get('taxRates', 'TaxRateController@index')->middleware('role:null,invoicecontroller.index');
+    Route::post('taxRates', 'TaxRateController@store');
+    Route::delete('taxRates/{taxRate_id}', 'TaxRateController@destroy');
+    Route::get('taxRates/{taxRate_id}', 'TaxRateController@edit');
+    Route::put('taxRates/{taxRate_id}', 'TaxRateController@update');
 
 // customers
     Route::get('customers/dashboard', 'CustomerController@dashboard')->middleware('role:null,customercontroller.dashboard');
