@@ -88,6 +88,25 @@ class InvoiceService implements InvoiceServiceInterface {
             }
         }
 
+        /* if ($invoice->is_recurring) {
+            if (! $isNew && isset($data['start_date']) && $invoice->start_date && $invoice->start_date != Utils::toSqlDate($data['start_date'])) {
+                $invoice->last_sent_date = null;
+            }
+            $invoice->frequency_id = array_get($data, 'frequency_id', FREQUENCY_MONTHLY);
+            $invoice->start_date = Utils::toSqlDate(array_get($data, 'start_date'));
+            $invoice->end_date = Utils::toSqlDate(array_get($data, 'end_date'));
+            $invoice->client_enable_auto_bill = isset($data['client_enable_auto_bill']) && $data['client_enable_auto_bill'] ? true : false;
+            $invoice->auto_bill = array_get($data, 'auto_bill_id') ?: array_get($data, 'auto_bill', AUTO_BILL_OFF);
+            if ($invoice->auto_bill < AUTO_BILL_OFF || $invoice->auto_bill > AUTO_BILL_ALWAYS) {
+                $invoice->auto_bill = AUTO_BILL_OFF;
+            }
+            if (isset($data['recurring_due_date'])) {
+                $invoice->due_date = $data['recurring_due_date'];
+            } elseif (isset($data['due_date'])) {
+                $invoice->due_date = $data['due_date'];
+            }
+        } */
+
 //send notification
         $user = $currentUser = Auth::user();
         Notification::send($user, new InvoiceCreated($invoice));
