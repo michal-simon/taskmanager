@@ -175,7 +175,7 @@ export default class DataTable extends Component {
 
                     <div className="input-group">
                         <Input type="text" className="form-control" placeholder="Search..." value={query} onChange={this.handleSearchChange} />
-                            <Button className="bg-transparent" style={{'marginLeft': '-40px', 'zIndex': '100', 'color': '#000'}} onClick={() => this.reset()}>
+                            <Button color="link" className="bg-transparent" style={{'marginLeft': '-40px', 'zIndex': '100', 'color': '#000'}} onClick={() => this.reset()}>
                                 <i className="fa fa-times" />
                             </Button>
                     </div>
