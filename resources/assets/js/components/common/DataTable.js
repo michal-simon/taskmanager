@@ -74,10 +74,20 @@ export default class DataTable extends Component {
     handleSearchChange (event) {
         const query = event.target.value
         if (query.length < 3 && query.length > 0) {
-            this.setState({ query, loading: false, message: '' })
+            this.setState({query, loading: false, message: ''})
             return false
         }
-        this.setState({ query, loading: true, message: '' }, () => {
+
+        this.setState(prevState => ({
+            parameters: {
+                ...prevState.parameters,
+                page: 1
+            },
+            query: query,
+            loading: true,
+            message: '',
+            current_page: 1
+        }), () => {
             this.fetchEntities()
         })
     }
