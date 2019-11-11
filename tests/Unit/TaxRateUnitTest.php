@@ -63,6 +63,7 @@ public function setUp() : void {
     public function it_errors_updating_the_tax_rate()
     {
         $this->expectException(CourierInvalidArgumentException::class);
+        $taxRate = factory(TaxRate::class)->create();
         $taxRateRepo = new TaxRateRepository($taxRate);
         $taxRateRepo->updateTaxRate(['name' => null]);
     }
@@ -70,6 +71,7 @@ public function setUp() : void {
     /** @test */
     public function it_can_update_the_tax_rate()
     {
+        $taxRate = factory(TaxRate::class)->create();
         $taxRateRepo = new TaxRateRepository($taxRate);
         $update = [
             'name' => $this->faker->word,
