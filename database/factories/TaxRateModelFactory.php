@@ -5,7 +5,7 @@ use App\TaxRate
 $factory->define(TaxRate::class, function (Faker\Generator $faker) {
     
     return [
-        'name' => $faker->sentence
+        'name' => $faker->word,
         'rate' => $faker->randomFloat()
     ];
 });
