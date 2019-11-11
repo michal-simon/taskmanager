@@ -20,6 +20,7 @@ import UserProfile from './users/UserProfile'
 import TaskStatus from './taskStatus/statusList'
 import Permissions from './permissions/Permissions'
 import Payments from './payments/Payments'
+import TaxRates from './TaxRates/TaxRates'
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -39,6 +40,7 @@ const routes = [
     {path: '/chat', name: 'Chat', component: ChatPage},
     {path: '/activity', name: 'Activity', component: Message},
     {path: '/statuses', name: 'Task Statuses', component: TaskStatus},
+     {path: '/tax-rates', name: 'Tax Rates', component: TaxRates},
     {path: '/permissions', name: 'Permissions', component: Permissions},
     { path: '/users/:username', exact: true, name: 'User Details', component: UserProfile },
     {path: '/', name: 'Dashboard', component: Dashboard},
