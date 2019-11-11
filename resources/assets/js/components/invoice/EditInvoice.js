@@ -7,6 +7,8 @@ import CustomerDropdown from "../common/CustomerDropdown";
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
 import moment from "moment";
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 class EditInvoice extends Component {
     constructor(props, context) {
@@ -325,8 +327,10 @@ class EditInvoice extends Component {
                 allInvoices.push(firstInvoice)
                 this.setState({success: true})
                 this.props.action(allInvoices)
+                toast.success('Invoice updated successfully')
             })
             .catch((error) => {
+               toast.error('Unable to update invoice')
                 console.warn(error)
             })
     }
@@ -338,20 +342,23 @@ class EditInvoice extends Component {
                 const allInvoices = this.props.invoices
                 allInvoices.push(firstInvoice)
                 this.props.action(allInvoices)
+                toast.success('invoice updated successfully')
             })
             .catch((error) => {
+             toast.error('Unable to update invoice')
                 console.warn(error)
             })
     }
 
     handleConvert () {
-        alert('convert')
+        
 
         axios.get(`/api/quotes/convert/${this.state.invoice_id}`)
             .then((r) => {
-
+                toast.success('Invoice updated successfully')
             })
             .catch((e) => {
+               toast.error('Unable to update invoice')
                 console.warn(e)
             })
     }
@@ -359,9 +366,10 @@ class EditInvoice extends Component {
     handleApprove () {
         axios.get(`/api/quotes/approve/${this.state.invoice_id}`)
             .then((r) => {
-
+                toast.success('Invoice updated successfully')
             })
             .catch((e) => {
+                toast.error('Unable to update invoice')
                 console.warn(e)
             })
     }
@@ -375,6 +383,8 @@ class EditInvoice extends Component {
 
         return (
             <div>
+
+                <ToastContainer/>
 
                 <Button className="primary" onClick={this.handleTaskChange}>Get Products</Button>
 
