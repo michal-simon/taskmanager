@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Input, Table } from 'reactstrap'
+import { Input, Table, Button } from 'reactstrap'
 
 export default class DataTable extends Component {
     constructor (props) {
@@ -156,6 +156,15 @@ export default class DataTable extends Component {
         })
     }
 
+    reset () {
+        this.setState({
+            query: '',
+            current_page: 1
+        }, () => {
+            this.fetchEntities()
+        })
+    }
+
     render () {
         const { query, loading, message } = this.state
         const loader = loading ? <h2>Loading...</h2> : ''
@@ -163,14 +172,13 @@ export default class DataTable extends Component {
         return (
             <React.Fragment>
                 <div className="col-4 p-0">
-                    <Input
-                        type="text"
-                        name="query"
-                        value={query}
-                        id="search-input"
-                        placeholder="Search..."
-                        onChange={this.handleSearchChange}
-                    />
+
+                    <div className="input-group">
+                        <Input type="text" className="form-control" placeholder="Search..." value={query} onChange={this.handleSearchChange} />
+                            <Button className="bg-transparent" style={{'marginLeft': '-40px', 'zIndex': '100', 'color': '#000'}} onClick={() => this.reset()}>
+                                <i className="fa fa-times" />
+                            </Button>
+                    </div>
 
                     {message && <p className="message">{message}</p>}
 
