@@ -84,7 +84,12 @@ class InvoiceService implements InvoiceServiceInterface {
 
         if (is_array($arrLines) && !empty($arrLines)) {
             foreach ($arrLines as $arrLine) {
-                $this->invoiceLineRepository->createInvoiceLine($invoice, $arrLine);
+                /* $invoiceItemCost = Utils::roundSignificant(Utils::parseFloat($item['cost']));
+                $invoiceItemQty = Utils::roundSignificant(Utils::parseFloat($item['qty']));
+                $discount = empty($item['discount']) ? 0 : round(Utils::parseFloat($item['discount']), 2); */
+                
+
+                  $this->invoiceLineRepository->createInvoiceLine($invoice, $arrLine);
             }
         }
 
@@ -105,7 +110,16 @@ class InvoiceService implements InvoiceServiceInterface {
             } elseif (isset($data['due_date'])) {
                 $invoice->due_date = $data['due_date'];
             }
-        } */
+        } else {
+            if ($isNew && empty($data['due_date']) && empty($data['due_date_sql'])) {
+                // do nothing
+            } elseif (isset($data['due_date']) || isset($data['due_date_sql'])) {
+                $invoice->due_date = isset($data['due_date_sql']) ? $data['due_date_sql'] : Utils::toSqlDate($data['due_date']);
+            }
+            $invoice->frequency_id = 0;
+            $invoice->start_date = null;
+            $invoice->end_date = null;
+        }*/
 
 //send notification
         $user = $currentUser = Auth::user();
