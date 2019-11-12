@@ -25,8 +25,22 @@ class PaymentController extends Controller {
     }
 
     public function index(SearchRequest $request) {
-        $payments = $this->paymentRepo->listPayments();
-        return response()->json($payments);
+        $orderBy = !$request->column ? 'name' : $request->column;
+        $orderDir = !$request->order ? 'asc' : $request->order;
+        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
+        
+        if (request()->has('search_term') && !empty($request->search_term)) {
+            $list = $this->paymentRepo->searchPayment(request()->input('search_term'));
+        } else {
+            $list = $this->paymentRepo->listPayments(['*'], $orderBy, $orderDir);
+        }
+
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->paymentRepo->paginateArrayResults($list, $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
+        
+        return response()->json($list);
     }
 
     /**
