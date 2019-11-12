@@ -1,6 +1,9 @@
 <?php
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SearchableTrait;
+
 class Payment extends Model
 {
     /**
@@ -14,10 +17,26 @@ class Payment extends Model
         'customer_id',
         'invoice_id'
     ];
+    
+     protected $searchable = [
+        'columns' => [
+            'brands.name' => 10
+        ]
+    ];
+    
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [];
+    
+    /**
+     * @param $term
+     *
+     * @return mixed
+     */
+    public function searchPayment($term) {
+        return self::search($term);
+    }
 }
