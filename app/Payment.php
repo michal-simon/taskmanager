@@ -20,7 +20,7 @@ class Payment extends Model
     
      protected $searchable = [
         'columns' => [
-            'brands.name' => 10
+            'payments.name' => 10
         ]
     ];
     
