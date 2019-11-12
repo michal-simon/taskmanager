@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\TaxRateRepository;
 use App\Repositories\Interfaces\TaxRateRepositoryInterface;
 use App\Requests\CreateTaxRateRequest;
+use App\Requests\SearchRequest;
 use App\Shop\Couriers\Requests\UpdateTaxRateRequest;
 use App\Http\Controllers\Controller;
 
@@ -23,9 +24,23 @@ class TaxRateController extends Controller {
         $this->taxRateRepo = $taxRateRepository;
     }
 
-    public function index() {
-        $rates = $this->taxRateRepo->listTaxRates();
-        return response()->json($rates);
+    public function index(SearchRequest $request) {
+        $orderBy = !$request->column ? 'name' : $request->column;
+        $orderDir = !$request->order ? 'asc' : $request->order;
+        $recordsPerPage = !$request->per_page ? 0 : $request->per_page;
+        
+        if (request()->has('search_term') && !empty($request->search_term)) {
+            $list = $this->taxRateRepo->searchTaxRate(request()->input('search_term'));
+        } else {
+            $list = $this->taxRateRepo->listTaxRates(['*'], $orderBy, $orderDir);
+        }
+
+        if ($recordsPerPage > 0) {
+            $paginatedResults = $this->taxRateRepo->paginateArrayResults($list, $recordsPerPage);
+            return $paginatedResults->toJson();
+        }
+        
+        return response()->json($list);
     }
 
     /**
