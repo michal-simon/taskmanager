@@ -78,4 +78,15 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
     {
         return $this->delete();
     }
+    
+     /**
+     * @param string $text
+     * @return mixed
+     */
+    public function searchPayment(string $text = null): Collection {
+        if (is_null($text)) {
+            return $this->all();
+        }
+        return $this->model->searchPayment($text)->get();
+    }
 }
