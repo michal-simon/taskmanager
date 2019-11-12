@@ -76,4 +76,15 @@ class TaxRateRepository extends BaseRepository implements TaxRateRepositoryInter
     public function deleteTaxRate() {
         return $this->delete();
     }
+    
+     /**
+     * @param string $text
+     * @return mixed
+     */
+    public function searchTaxRate(string $text = null): Collection {
+        if (is_null($text)) {
+            return $this->all();
+        }
+        return $this->model->searchTaxRate($text)->get();
+    }
 }
