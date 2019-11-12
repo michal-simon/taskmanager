@@ -2,6 +2,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SearchableTrait;
+
 class TaxRate extends Model
 {
     /**
@@ -13,10 +15,26 @@ class TaxRate extends Model
         'name',
         'rate'
     ];
+    
+     protected $searchable = [
+        'columns' => [
+            'tax_rates.name' => 10
+        ]
+    ];
+    
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [];
+    
+    /**
+     * @param $term
+     *
+     * @return mixed
+     */
+    public function searchTaxRate($term) {
+        return self::search($term);
+    }
 }
